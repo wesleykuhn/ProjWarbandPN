@@ -1,0 +1,7 @@
+DIST: {
+	Swadia -> France
+	Rhodoks -> Britain
+	Vaegier -> Russia
+	Nords -> Prussia
+	Khergit -> Austria
+}
