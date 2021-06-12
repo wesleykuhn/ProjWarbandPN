@@ -1377,12 +1377,13 @@ itm_wall_banner("fac_6", "b"),
 itm_wall_banner("fac_7", "b"),
 itm_wall_banner("fac_8", "b"),
 
- # PN START *************************************************************************
+ # PN START **************************************************************************************
 
-["musket", "Infantry Musket", [("french_charleville", 0)], itp_type_musket|itp_cant_use_on_horseback|itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving, itcf_shoot_musket|itcf_carry_crossbow_back,
- 1182, weight(3.5)|difficulty(0)|weapon_length(100)|spd_rtng(23)|shoot_speed(250)|thrust_damage(100, pierce)|max_ammo(1)|accuracy(75), imodbits_none],
+#  * DONT FORGET TO REMOVE THE MERCHANDISE FLAGS
 
-# PN END *****************************************************************************
+
+
+# PN END ****************************************************************************************************
 
 ["admin_horse", "Admin Horse", [("plated_charger_black",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],

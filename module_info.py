@@ -11,3 +11,4 @@ def export_path(file_name):
   return os.path.join(export_dir, file_name)
 
 scan_module_textures = 1
+scan_module_sounds = 1

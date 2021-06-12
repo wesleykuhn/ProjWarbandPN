@@ -929,11 +929,6 @@ scene_props = [
       (particle_system_emit, "psys_fire_glow_1",9000000),
       ]),
     ]),
-  # PN START ****
-
-  ("pw_buy_musket",spr_buy_item_flags(4),"french_charleville","bo_pw_weapon", spr_buy_item_triggers("itm_musket", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=4)),
-  
-  #PN END ****
 
   ("barrier_20m",sokf_invisible|sokf_type_barrier,"barrier_20m","bo_barrier_20m", []),
   ("barrier_16m",sokf_invisible|sokf_type_barrier,"barrier_16m","bo_barrier_16m", []),
@@ -3113,6 +3108,12 @@ scene_props = [
   ("pw_local_leather_price_area",sokf_invisible,"pw_local_leather_price_area","0", []),
   ("pw_local_precious_price_area",sokf_invisible,"pw_local_precious_price_area","0", []),
 
+  # PN START ************************************************************************************************************************
+
+  #("pw_buy_french_charleville_musket", spr_buy_item_flags(4), "french_charleville", "bo_pw_weapon", spr_buy_item_triggers("itm_french_charleville", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=5)),
+  
+  #PN END ***************************************************************************************************************************
+
   ("code_freeze_agent",sokf_moveable,"0","bo_pw_freeze_agent", []),
   ("code_freeze_horse_agent",sokf_moveable,"0","bo_pw_freeze_horse_agent", []),
 
@@ -3121,7 +3122,6 @@ scene_props = [
   ("custom_script_trigger_c",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
   ("custom_script_trigger_d",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
   ("custom_script_trigger_e",sokf_invisible|spr_use_time(1),"pw_invisible_chest","bo_pw_invisible_chest", []),
-
 ]
 
 def fill_scene_props_list(list_var, trigger_id, modify_function):
