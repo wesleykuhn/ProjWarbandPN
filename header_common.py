@@ -33,6 +33,7 @@ server_event_admin_set_permissions              = 25
 server_event_set_attached_scene_prop            = 26
 server_event_local_animation                    = 27
 server_event_update_scene_prop_hit_points       = 28
+multiplayer_event_return_sound_at_pos           = 110
 
 # Add new events here: above if sent from the server, below if from clients.
 

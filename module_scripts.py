@@ -26,6 +26,100 @@ scripts.extend([
 
   ("game_start", []), # single player only, not used
 
+  # PN START ******************************************************************************************************
+
+  # script_multiplayer_server_play_sound_at_position
+  # Input: arg1 = sound_id
+  # Input: pos56 = position
+  # Output: reg0 = ok?
+  ("multiplayer_server_play_sound_at_position",
+   [
+     (store_script_param, ":sound_id", 1),
+     
+     (assign,reg0,0),
+     (try_begin),
+       (this_or_next|multiplayer_is_server),
+       (neg|game_in_multiplayer_mode),
+       
+       (is_between,":sound_id","snd_click","snd_sounds_end"), # valid sound
+       
+       (try_begin),
+         (neg|multiplayer_is_dedicated_server),
+         (play_sound_at_position, ":sound_id", pos56),
+       (try_end),
+       
+       (try_begin),
+         (game_in_multiplayer_mode),
+         
+         (set_fixed_point_multiplier, 100),
+         (position_get_x,":xvalue", pos56),
+         (position_get_y,":yvalue", pos56),
+         (position_get_z,":zvalue", pos56),
+         
+         # sound id is max 477, so no problem.
+         # max pos in y and x is 1250 meters soo 125000 cm, that can fit in 17 bits (130943) its only positive
+         # max pos in z is ?? it can be neg. 14 bits left,.. tight :D 
+         
+         #pack soundid with posx
+         #z with posy
+         # add 2500 to the z to support up to -25.00 meters to + 138.83 meters.
+         (val_add,":zvalue",2500),
+         
+         #define max value for the scales...
+         (val_clamp,":xvalue",0,130943),
+         (val_clamp,":yvalue",0,130943),
+         (val_clamp,":zvalue",0,16383),
+        
+         # pack the shit.
+         (assign,":sendvar1",":sound_id"),
+         (val_lshift, ":sendvar1", 17), 
+         (val_add,":sendvar1",":xvalue"),
+         (assign,":sendvar2",":zvalue"),
+         (val_lshift, ":sendvar2", 17), 
+         (val_add,":sendvar2",":yvalue"),
+         
+         (try_for_players, ":cur_player", 1),
+           (player_is_active,":cur_player"),
+           
+           (multiplayer_send_2_int_to_player, ":cur_player", multiplayer_event_return_sound_at_pos,":sendvar1",":sendvar2"),
+         (try_end),
+       (try_end),
+       (assign,reg0,1),
+     (try_end),
+   ]),
+
+  # input: pos63 # position of hit.
+  # collision_type # Type of the collision
+  ("mm_on_bullet_hit", 
+  [
+    (try_begin),
+      (neg|multiplayer_is_dedicated_server),
+      
+      (store_script_param, ":collision_type", 1),
+      
+      (try_begin),
+        # 0 = world
+        # 1 = agent
+        # 2 = dynamic prop
+        # 3 = world
+        # 4 = mission object
+        # 8 = friend
+        # 9 = neutral agent
+        # 10 = under water
+        (this_or_next|eq, ":collision_type", 0), # world collisions
+        (eq, ":collision_type", 3), # world collisions
+        (particle_system_burst_no_sync, "psys_musket_hit", pos63, 8),
+        (particle_system_burst_no_sync, "psys_musket_hit_particle", pos63, 8),
+      (else_try),
+        (this_or_next|eq, ":collision_type", 2),
+        (eq, ":collision_type", 4), # mission objects
+        (particle_system_burst_no_sync, "psys_musket_hit", pos63, 8),#psys_musket_hit_objects
+      (try_end),
+    (try_end),
+  ]), 
+
+  # PN END ********************************************************************************************************
+
   ("game_get_use_string", # clients: called by the game when the local player is aiming at a usable scene prop
    [(store_script_param, ":instance_id", 1),
 

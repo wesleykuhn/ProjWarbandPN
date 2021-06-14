@@ -49,6 +49,50 @@ def psys(identifier, flags, mesh,
 
 particle_systems = [
 
+  # PN START *********************************************************************************************
+
+  ("bottle_break", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation|psf_always_emit,  "prtcl_dust_g",
+   850, 8, 0.1, 1.0, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+   (0.1, 0.5), (1, 0),        #alpha keys
+   (0.1, 0.8), (1, 0.8),      #red keys
+   (0.1, 0.7),(1, 0.7),       #green keys
+   (0.1, 0.6), (1, 0.7),      #blue keys
+   (0.0, 1),   (1.5, 1.5),    #scale keys
+   (0.1, 0.1, 0.1),           #emit box size
+   (0, 0, 0),                 #emit velocity
+   2.3,                       #emit dir randomness
+   50,                       #rotation speed
+   0.5,                       #rotation damping
+  ),
+  ("musket_hit", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prtcl_dust_a",
+   500, 3, 8, 0.2, 2, 20, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+   (0.0, 1), (1, 0),     #alpha keys
+   (0.0, 0.95), (1, 0.95),          #red keys
+   (0.0, 0.90), (1, 0.90),           #green keys
+   (0.0, 0.70), (1, 0.70),          #blue keys
+   (0, 3), (0.8, 5),  #scale keys
+   (0, 0, 0),         #emit box size
+   (0, 0, 10),               #emit velocity
+   3,                      #emit dir randomness
+   100,                     #rotation speed
+   0.2,                       #rotation damping
+  ),
+  ("musket_hit_particle", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prt_mesh_mud_1",
+   2000, 2, 0.2, 2, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+   (0.0, 1), (1, 1),     #alpha keys
+   (0.0, 0.1), (1, 0.1),          #red keys
+   (0.0, 0.1), (1, 0.1),           #green keys
+   (0.0, 0.1), (1, 0.1),          #blue keys
+   (0.0, 0.125), (0.8, 0.125),  #scale keys
+   (0, 0, 0),         #emit box size
+   (0, 0, 8),               #emit velocity
+   3,                      #emit dir randomness
+   100,                     #rotation speed
+   0.1,                       #rotation damping
+  ),
+
+  # PN END ***********************************************************************************************
+
   psys("game_rain", psf_billboard_2d|psf_global_emit_dir|psf_always_emit, "prtcl_rain",
     number=500.0, life=0.5, damping=0.33, gravity=1.0, turbulence_size=10.0, turbulence_strength=0.0,
     alpha=[(1.0, 0.3), (1.0, 0.3)],

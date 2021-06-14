@@ -390,6 +390,12 @@ itc_cutting_spear   = itc_spear|itcf_overswing_polearm
 itc_pike            = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
 itc_guandao         = itc_parry_polearm|itcf_overswing_polearm|itcf_thrust_polearm|itcf_slashright_polearm|itcf_slashleft_polearm|itcf_horseback_slashright_onehanded|itcf_horseback_slashleft_onehanded|itcf_horseback_slash_polearm
 
+# PN START *************************************************************************************
+
+itc_lance           = itcf_thrust_onehanded_lance |itcf_thrust_onehanded_lance_horseback | itcf_thrust_polearm | itcf_overswing_spear
+
+# PN END ***************************************************************************************
+
 itc_greatlance      = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
 itc_musket_melee    = itc_parry_polearm|itcf_overswing_musket|itcf_thrust_musket|itcf_slashright_twohanded|itcf_slashleft_twohanded
 
