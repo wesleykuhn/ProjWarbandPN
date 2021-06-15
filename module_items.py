@@ -25,27 +25,49 @@ import header_lazy_evaluation as lazy
 ####################################################################################################################
 
 # Some constants for ease of use.
+#imodbits_none = 0
+#imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
+#imodbits_cloth = imodbit_tattered|imodbit_ragged|imodbit_sturdy|imodbit_thick|imodbit_hardened
+#imodbits_armor = imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
+#imodbits_plate = imodbit_cracked|imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
+#imodbits_polearm = imodbit_cracked|imodbit_bent|imodbit_balanced
+#imodbits_shield = imodbit_cracked|imodbit_battered|imodbit_thick|imodbit_reinforced
+#imodbits_sword = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered
+#imodbits_sword_high = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered|imodbit_masterwork
+#imodbits_axe = imodbit_rusty|imodbit_chipped|imodbit_heavy
+#imodbits_mace = imodbit_rusty|imodbit_chipped|imodbit_heavy
+#imodbits_pick = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_heavy
+#imodbits_bow = imodbit_cracked|imodbit_bent|imodbit_strong|imodbit_masterwork
+#imodbits_crossbow = imodbit_cracked|imodbit_bent|imodbit_masterwork
+#imodbits_missile = imodbit_bent|imodbit_large_bag
+#imodbits_thrown = imodbit_bent|imodbit_heavy|imodbit_balanced|imodbit_large_bag
+#imodbits_thrown_minus_heavy = imodbit_bent|imodbit_balanced|imodbit_large_bag
+
+#imodbits_horse_good = imodbit_spirited|imodbit_heavy
+#imodbits_good = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
+#imodbits_bad = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
+
 imodbits_none = 0
 imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
-imodbits_cloth = imodbit_tattered|imodbit_ragged|imodbit_sturdy|imodbit_thick|imodbit_hardened
-imodbits_armor = imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
-imodbits_plate = imodbit_cracked|imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
-imodbits_polearm = imodbit_cracked|imodbit_bent|imodbit_balanced
-imodbits_shield = imodbit_cracked|imodbit_battered|imodbit_thick|imodbit_reinforced
-imodbits_sword = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered
-imodbits_sword_high = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered|imodbit_masterwork
-imodbits_axe = imodbit_rusty|imodbit_chipped|imodbit_heavy
-imodbits_mace = imodbit_rusty|imodbit_chipped|imodbit_heavy
-imodbits_pick = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_heavy
-imodbits_bow = imodbit_cracked|imodbit_bent|imodbit_strong|imodbit_masterwork
-imodbits_crossbow = imodbit_cracked|imodbit_bent|imodbit_masterwork
-imodbits_missile = imodbit_bent|imodbit_large_bag
-imodbits_thrown = imodbit_bent|imodbit_heavy|imodbit_balanced|imodbit_large_bag
-imodbits_thrown_minus_heavy = imodbit_bent|imodbit_balanced|imodbit_large_bag
+imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened
+imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
+imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
+imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_balanced
+imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_thick | imodbit_reinforced
+imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered
+imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork
+imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy
+imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_heavy
+imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_balanced | imodbit_heavy
+imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_strong |imodbit_masterwork
+imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_masterwork
+imodbits_missile   = imodbit_bent | imodbit_large_bag
+imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag
+imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag
 
 imodbits_horse_good = imodbit_spirited|imodbit_heavy
-imodbits_good = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
-imodbits_bad = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
+imodbits_good   = imodbit_sturdy | imodbit_thick | imodbit_hardened | imodbit_reinforced
+imodbits_bad    = imodbit_rusty | imodbit_chipped | imodbit_tattered | imodbit_ragged | imodbit_cracked | imodbit_bent
 
 imodbit_female = imodbit_meek
 
@@ -1443,7 +1465,7 @@ itm_wall_banner("fac_8", "b"),
 ["british_carbine_ai", "Cavalry Carbine", [("paget_carabine",0)], itp_type_crossbow |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving ,itcf_shoot_musket|itcf_carry_crossbow_back, 
  683 , weight(3.0)|difficulty(0)|spd_rtng(27) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(65),imodbits_none,[]],
 
-# Rifles
+## Rifles
 # Russian
 ["russian_rifle_1805", "Rifle", [("Russian_rifle_1805",0)], itp_type_crossbow |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,itcf_shoot_musket|itcf_carry_crossbow_back, 
  683 , weight(3.0)|difficulty(0)|spd_rtng(18) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(87),imodbits_none,[]],
@@ -1456,7 +1478,7 @@ itm_wall_banner("fac_8", "b"),
 ["british_baker_rifle_melee", "Rifle", [("baker_rifle",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket|itp_can_knock_down,itc_musket_melee|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(0)|spd_rtng(85) | weapon_length(85)|swing_damage(23 , blunt) | thrust_damage(22 ,  blunt),imodbits_none ],
 
-#Muskets
+## Muskets
 # French
 ["french_charleville", "Infantry Musket", [("french_charleville",0)], itp_cant_use_on_horseback|itp_type_crossbow |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,itcf_shoot_musket|itcf_carry_crossbow_back, 
  683 , weight(3.5)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
@@ -1628,9 +1650,13 @@ itm_wall_banner("fac_8", "b"),
  210 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 
 # Ammo
-["bullets","Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_inventory)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, 0, 64,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(30),imodbits_missile,
+#["bolts", "Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_b", ixmesh_carry)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical,
+# 95, weight(2.25)|weapon_length(63)|thrust_damage(1,pierce)|max_ammo(29), imodbits_missile],
+
+["bullets","Cartridges", [("mm_invisible",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_carry)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_dagger_front_right, 41,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(30),imodbits_missile,
  [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
-["pistol_ammo","Pistol Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_inventory)], itp_type_bullets|itp_can_penetrate_shield, 0, 200,weight(1.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(18),imodbits_missile,
+
+["pistol_ammo","Pistol Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_carry)], itp_type_bullets|itp_can_penetrate_shield, 0, 200,weight(1.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(18),imodbits_missile,
  [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
 
 ## Lances and other polearms

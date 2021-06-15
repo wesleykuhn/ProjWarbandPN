@@ -33,7 +33,7 @@ server_event_admin_set_permissions              = 25
 server_event_set_attached_scene_prop            = 26
 server_event_local_animation                    = 27
 server_event_update_scene_prop_hit_points       = 28
-multiplayer_event_return_sound_at_pos           = 110
+multiplayer_event_return_sound_at_pos           = 29
 
 # Add new events here: above if sent from the server, below if from clients.
 
@@ -215,6 +215,66 @@ max_respawn_period                              = 31 # dead agents are removed a
 team_default                                    = 0 # default team, members can attack each other like deathmatch - since multiplayer is hard coded to handle only 2 teams
 team_spawn_invulnerable                         = 1 # team set to be neutral to each other and the default team, so they can't attack or be attacked
 team_spectators                                 = 2 # hard coded spectators team
+
+# PN START **********************************************************************************************************************************
+
+multi_item_class_type_sword = 1
+multi_item_class_type_axe = 2
+multi_item_class_type_blunt = 3
+multi_item_class_type_war_picks = 4
+multi_item_class_type_cleavers = 5
+multi_item_class_type_two_handed_sword = 6
+multi_item_class_type_two_handed_axe = 7
+multi_item_class_type_flag = 8
+multi_item_class_type_lance = 9
+multi_item_class_type_instrument = 10
+multi_item_class_type_large_shield = 11
+multi_item_class_type_gun = 12
+multi_item_class_type_pistol = 29
+multi_item_class_type_crossbow = 13
+multi_item_class_type_arrow = 14
+multi_item_class_type_bullet = 15
+multi_item_class_type_bullet_pistol = 30
+multi_item_class_type_misc = 16
+multi_item_class_type_misc_axe = 17
+multi_item_class_type_horse = 18
+multi_item_class_type_horse_cannon = 19
+multi_item_class_type_horse_howitzer = 20
+multi_item_class_type_uniform = 21
+multi_item_class_type_medium_armor = 22
+multi_item_class_type_heavy_armor = 23
+multi_item_class_type_hat = 24
+multi_item_class_type_heavy_helm = 25
+multi_item_class_type_boot = 26
+multi_item_class_type_heavy_foot = 27
+multi_item_class_type_glove = 28
+
+multi_item_class_type_melee_weapons_begin = multi_item_class_type_sword
+multi_item_class_type_melee_weapons_end = multi_item_class_type_instrument
+multi_item_class_type_ranged_weapons_begin = multi_item_class_type_gun
+multi_item_class_type_ranged_weapons_end = multi_item_class_type_horse
+multi_item_class_type_shields_begin = multi_item_class_type_melee_weapons_end
+multi_item_class_type_shields_end = multi_item_class_type_gun
+
+multi_item_class_type_weapons_begin = multi_item_class_type_sword
+multi_item_class_type_weapons_end = multi_item_class_type_horse
+multi_item_class_type_horses_begin = multi_item_class_type_weapons_end
+multi_item_class_type_horses_end = multi_item_class_type_uniform
+multi_item_class_type_bodies_begin = multi_item_class_type_horses_end
+multi_item_class_type_bodies_end = multi_item_class_type_hat
+multi_item_class_type_heads_begin = multi_item_class_type_bodies_end
+multi_item_class_type_heads_end = multi_item_class_type_boot
+multi_item_class_type_feet_begin = multi_item_class_type_heads_end
+multi_item_class_type_feet_end = multi_item_class_type_glove
+multi_item_class_type_gloves_begin = multi_item_class_type_feet_end
+multi_item_class_type_gloves_end = multi_item_class_type_glove + 1
+
+multiplayer_event_send_player_action = 4
+multiplayer_event_return_agent_stop_sound                     = 106
+
+player_action_surrender = 7
+
+# PN END ************************************************************************************************************************************
 
 net_value_upper_bound = 1 << 31
 net_sound_shift = 16

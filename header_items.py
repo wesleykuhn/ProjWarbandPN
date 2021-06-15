@@ -28,13 +28,11 @@ itp_type_musket          = 0x0000000000000011
 itp_type_bullets         = 0x0000000000000012
 itp_type_animal          = 0x0000000000000013
 itp_type_book            = 0x0000000000000014
-
 itp_force_attach_left_hand      = 0x0000000000000100
 itp_force_attach_right_hand     = 0x0000000000000200
 itp_force_attach_left_forearm   = 0x0000000000000300
 itp_attach_armature             = 0x0000000000000f00
 itp_attachment_mask             = 0x0000000000000f00
-
 itp_unique               = 0x0000000000001000
 itp_always_loot          = 0x0000000000002000
 itp_no_parry             = 0x0000000000004000
@@ -43,7 +41,6 @@ itp_merchandise          = 0x0000000000010000
 itp_wooden_attack        = 0x0000000000020000
 itp_wooden_parry         = 0x0000000000040000
 itp_food                 = 0x0000000000080000
-
 itp_cant_reload_on_horseback = 0x0000000000100000
 itp_two_handed               = 0x0000000000200000
 itp_primary                  = 0x0000000000400000 # for weapons
@@ -64,20 +61,16 @@ itp_offset_lance             = 0x0000000040000000
 itp_covers_head              = 0x0000000080000000
 itp_couchable                = 0x0000000080000000
 itp_crush_through            = 0x0000000100000000
-#itp_knock_back               = 0x0000000200000000 being used?
 itp_remove_item_on_use       = 0x0000000400000000
 itp_unbalanced               = 0x0000000800000000
-
 itp_covers_beard             = 0x0000001000000000 # remove beard mesh
 itp_no_pick_up_from_ground   = 0x0000002000000000
 itp_can_knock_down           = 0x0000004000000000
 itp_covers_hair              = 0x0000008000000000 # remove hair mesh for armors only
-
 itp_force_show_body          = 0x0000010000000000 # forces showing body (works on body armor items)
 itp_force_show_left_hand     = 0x0000020000000000 # forces showing left hand (works on hand armor items)
 itp_force_show_right_hand    = 0x0000040000000000 # forces showing right hand (works on hand armor items)
 itp_covers_hair_partially    = 0x0000080000000000
-
 itp_extra_penetration        = 0x0000100000000000
 itp_has_bayonet              = 0x0000200000000000
 itp_cant_reload_while_moving = 0x0000400000000000
@@ -86,11 +79,9 @@ itp_ignore_friction          = 0x0001000000000000
 itp_is_pike                  = 0x0002000000000000
 itp_offset_musket            = 0x0004000000000000
 itp_no_blur                  = 0x0008000000000000
-
 itp_cant_reload_while_moving_mounted = 0x0010000000000000
 itp_has_upper_stab           = 0x0020000000000000
-itp_disable_agent_sounds     = 0x0040000000000000 # disable agent related sounds, but not voices: useful for animals
-
+itp_disable_agent_sounds     = 0x0040000000000000
 itp_kill_info_mask           = 0x0700000000000000
 itp_kill_info_bits           = 56
 
@@ -280,21 +271,17 @@ itcf_thrust_onehanded                                = 0x0000000000000001
 itcf_overswing_onehanded                             = 0x0000000000000002
 itcf_slashright_onehanded                            = 0x0000000000000004
 itcf_slashleft_onehanded                             = 0x0000000000000008
-
 itcf_thrust_twohanded                                = 0x0000000000000010
 itcf_overswing_twohanded                             = 0x0000000000000020
 itcf_slashright_twohanded                            = 0x0000000000000040
 itcf_slashleft_twohanded                             = 0x0000000000000080
-
 itcf_thrust_polearm                                  = 0x0000000000000100
 itcf_overswing_polearm                               = 0x0000000000000200
 itcf_slashright_polearm                              = 0x0000000000000400
 itcf_slashleft_polearm                               = 0x0000000000000800
-
 itcf_shoot_bow                                       = 0x0000000000001000
 itcf_shoot_javelin                                   = 0x0000000000002000
 itcf_shoot_crossbow                                  = 0x0000000000004000
-
 itcf_throw_stone                                     = 0x0000000000010000
 itcf_throw_knife                                     = 0x0000000000020000
 itcf_throw_axe                                       = 0x0000000000030000
@@ -302,7 +289,6 @@ itcf_throw_javelin                                   = 0x0000000000040000
 itcf_shoot_pistol                                    = 0x0000000000070000
 itcf_shoot_musket                                    = 0x0000000000080000
 itcf_shoot_mask                                      = 0x00000000000ff000
-
 itcf_horseback_thrust_onehanded                      = 0x0000000000100000
 itcf_horseback_overswing_right_onehanded             = 0x0000000000200000
 itcf_horseback_overswing_left_onehanded              = 0x0000000000400000
@@ -310,7 +296,6 @@ itcf_horseback_slashright_onehanded                  = 0x0000000000800000
 itcf_horseback_slashleft_onehanded                   = 0x0000000001000000
 itcf_thrust_onehanded_lance                          = 0x0000000004000000
 itcf_thrust_onehanded_lance_horseback                = 0x0000000008000000
-
 itcf_carry_mask                                      = 0x00000007f0000000
 itcf_carry_sword_left_hip                            = 0x0000000010000000
 itcf_carry_axe_left_hip                              = 0x0000000020000000
@@ -324,7 +309,6 @@ itcf_carry_revolver_right                            = 0x0000000090000000
 itcf_carry_pistol_front_left                         = 0x00000000a0000000
 itcf_carry_bowcase_left                              = 0x00000000b0000000
 itcf_carry_mace_left_hip                             = 0x00000000c0000000
-
 itcf_carry_axe_back                                  = 0x0000000100000000
 itcf_carry_sword_back                                = 0x0000000110000000
 itcf_carry_kite_shield                               = 0x0000000120000000
@@ -334,36 +318,28 @@ itcf_carry_crossbow_back                             = 0x0000000150000000
 itcf_carry_bow_back                                  = 0x0000000160000000
 itcf_carry_spear                                     = 0x0000000170000000
 itcf_carry_board_shield                              = 0x0000000180000000
-
 itcf_carry_katana                                    = 0x0000000210000000
 itcf_carry_wakizashi                                 = 0x0000000220000000
-
 itcf_show_holster_when_drawn                         = 0x0000000800000000
-
 itcf_reload_pistol                                   = 0x0000007000000000
 itcf_reload_musket                                   = 0x0000008000000000
 itcf_reload_mask                                     = 0x000000f000000000
-
 itcf_parry_forward_onehanded                         = 0x0000010000000000
 itcf_parry_up_onehanded                              = 0x0000020000000000
 itcf_parry_right_onehanded                           = 0x0000040000000000
 itcf_parry_left_onehanded                            = 0x0000080000000000
-
 itcf_parry_forward_twohanded                         = 0x0000100000000000
 itcf_parry_up_twohanded                              = 0x0000200000000000
 itcf_parry_right_twohanded                           = 0x0000400000000000
 itcf_parry_left_twohanded                            = 0x0000800000000000
-
 itcf_parry_forward_polearm                           = 0x0001000000000000
 itcf_parry_up_polearm                                = 0x0002000000000000
 itcf_parry_right_polearm                             = 0x0004000000000000
 itcf_parry_left_polearm                              = 0x0008000000000000
-
 itcf_horseback_slash_polearm                         = 0x0010000000000000
 itcf_overswing_spear                                 = 0x0020000000000000
 itcf_overswing_musket                                = 0x0040000000000000
 itcf_thrust_musket                                   = 0x0080000000000000
-
 itcf_force_64_bits                                   = 0x8000000000000000
 
 # combined capabilities
@@ -385,19 +361,19 @@ itc_morningstar     = itc_cut_two_handed|itc_parry_two_handed|itc_cleaver
 itc_parry_polearm   = itcf_parry_forward_polearm|itcf_parry_up_polearm|itcf_parry_right_polearm|itcf_parry_left_polearm
 itc_poleaxe         = itc_parry_polearm|itcf_overswing_polearm|itcf_thrust_polearm|itcf_slashright_polearm|itcf_slashleft_polearm
 itc_staff           = itc_parry_polearm|itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_overswing_polearm|itcf_thrust_polearm|itcf_slashright_polearm|itcf_slashleft_polearm
-itc_spear           = itc_parry_polearm|itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
+itc_spear           = itc_parry_polearm|itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm|itcf_overswing_spear
 itc_cutting_spear   = itc_spear|itcf_overswing_polearm
-itc_pike            = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
+itc_pike            = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm|itcf_overswing_spear
 itc_guandao         = itc_parry_polearm|itcf_overswing_polearm|itcf_thrust_polearm|itcf_slashright_polearm|itcf_slashleft_polearm|itcf_horseback_slashright_onehanded|itcf_horseback_slashleft_onehanded|itcf_horseback_slash_polearm
 
 # PN START *************************************************************************************
 
 itc_lance           = itcf_thrust_onehanded_lance |itcf_thrust_onehanded_lance_horseback | itcf_thrust_polearm | itcf_overswing_spear
+itc_greatlance      = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
+
+itc_musket_melee    = itc_parry_polearm|itcf_overswing_musket|itcf_thrust_musket|itcf_slashright_twohanded|itcf_slashleft_twohanded
 
 # PN END ***************************************************************************************
-
-itc_greatlance      = itcf_thrust_onehanded_lance|itcf_thrust_onehanded_lance_horseback|itcf_thrust_polearm
-itc_musket_melee    = itc_parry_polearm|itcf_overswing_musket|itcf_thrust_musket|itcf_slashright_twohanded|itcf_slashleft_twohanded
 
 # Extra Mesh IDs
 ixmesh_inventory   = 0x1000000000000000

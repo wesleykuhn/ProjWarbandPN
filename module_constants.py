@@ -78,6 +78,18 @@ slot_player_admin_no_animals          = 56
 slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
 
+player_action_voice                       = 59
+player_action_music                       = 60
+player_action_spyglass                    = 61
+player_action_toggle_walk                 = 62
+player_action_has_cheat                   = 63
+player_action_surrender                   = 64
+player_action_misc_item_drinking          = 65
+player_action_custom_order_menu_interact  = 66
+
+player_actions_begin        = player_action_voice
+player_actions_end          = 67
+
 ########################################################
 ##  AGENT SLOTS            #############################
 ########################################################
@@ -114,6 +126,12 @@ slot_agent_animal_food                = 25
 slot_agent_animal_carcass_instance_id = 26
 slot_agent_animal_times_stuck         = 27
 slot_agent_animal_end                 = 28
+slot_agent_last_voice_at              = 29
+slot_agent_last_sound_at              = 30
+slot_agent_used_prop_instance         = 31
+slot_agent_music_play_together        = 32
+slot_agent_base_speed_mod             = 33
+slot_agent_started_playing_music_at   = 34
 
 slot_agent_head_damage_factor         = 40 # agent modifier factors for armor slots
 slot_agent_head_speed_factor          = 41
@@ -368,6 +386,10 @@ slot_troop_equipment_horse_begin      = 9 * troop_slot_count_per_equipment_type
 
 slot_troop_ranking                    = 50 # used for sorting troop types in the player stats chart
 slot_troop_spawn_health_percent       = 51 # respawn health percentage when dying as this troop
+slot_troop_class                      = 52
+slot_troop_class_type                 = 53
+slot_troop_rank                       = 54
+slot_troop_rank_type                  = 55
 
 slot_player_array_size                = 0
 slot_player_array_begin               = 1
@@ -567,6 +589,37 @@ max_scene_prop_instance_id            = 10000 # when trying to loop over all pro
 
 max_food_amount                       = 100
 max_hit_points_percent                = 200
+
+# PN START *********************************
+
+voice_type_cry                         = 1
+voice_type_surrender                   = 2
+voice_type_comm_ready                  = 3
+voice_type_comm_present                = 4
+voice_type_comm_fire                   = 5
+voice_type_comm_charge                 = 6
+voice_type_comm_advance                = 7
+voice_type_comm_hold                   = 8
+voice_type_comm_fire_at_will           = 9
+voice_type_comm_on_me                  = 10
+voice_type_comm_fall_back              = 11
+
+voice_types_begin                      = voice_type_cry
+voice_types_end                        = 12
+
+music_type_start                       = 1
+music_type_stop                        = 2
+music_type_toggle_together             = 3
+music_types_begin                      = music_type_start
+music_types_end                        = music_type_toggle_together + 1
+
+spyglass_type_start                    = 1
+spyglass_type_stop                     = 2
+
+drinking_type_start                    = 1
+drinking_type_stop                     = 2
+
+# PN END ***********************************
 
 all_items_begin = "itm_tattered_headcloth"
 all_items_end = "itm_all_items_end"

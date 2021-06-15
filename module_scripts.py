@@ -116,7 +116,879 @@ scripts.extend([
         (particle_system_burst_no_sync, "psys_musket_hit", pos63, 8),#psys_musket_hit_objects
       (try_end),
     (try_end),
-  ]), 
+  ]),
+
+  # script_client_get_my_agent
+  # Input: 
+  # Output: reg0 = agent_id_of_current_player
+  ("client_get_my_agent",
+   [
+     (assign, ":player_agent", -1),
+     (try_begin),
+       (game_in_multiplayer_mode),
+       (multiplayer_get_my_player, ":my_player_no"),
+       (player_is_active,":my_player_no"),
+       (player_get_agent_id, ":player_agent", ":my_player_no"),
+     (else_try),
+       (get_player_agent_no, ":player_agent"),  
+     (try_end),
+     
+     (assign, reg0, ":player_agent"),
+   ]),
+
+   ("multiplayer_server_agent_play_voicecommand",
+   [
+    #(store_script_param, ":agent_id", 1),
+    #(store_script_param, ":command_type", 2),
+    
+    #(try_begin),
+    #  (this_or_next|multiplayer_is_server),
+    #  (neg|game_in_multiplayer_mode),
+    #  (agent_is_active,":agent_id"),
+    #  (agent_is_alive,":agent_id"),
+      
+    #  (try_begin),
+    #    (call_script,"script_cf_agent_is_playing_music",":agent_id"), # when playing music dont do anything.
+    #  (else_try),
+    #    (call_script,"script_cf_agent_is_playing_piano",":agent_id"),
+       
+    #  (else_try),
+      
+    #    (agent_get_slot,":last_command_at",":agent_id",slot_agent_last_voice_at),
+    #    (store_mission_timer_a,":current_time"),
+    #    (store_sub,":elapsed_time",":current_time",":last_command_at"),
+         
+    #    (agent_get_troop_id, ":agent_troop_id", ":agent_id"),
+
+    #    (troop_get_slot,":agent_troop_rank",":agent_troop_id",slot_troop_rank),
+         
+    #    (assign, ":wait_time", "$g_time_between_voice_commands"), # change later.
+    #    (try_begin),
+    #      (this_or_next|eq, ":agent_troop_rank", mm_rank_sergeant),
+    #      (this_or_next|eq, ":agent_troop_rank", mm_rank_officer),
+    #      (eq, ":agent_troop_rank", mm_rank_general),
+          
+    #    (try_end),
+        
+    #    (gt, ":elapsed_time", ":wait_time"), # last command more then x seconds ago. 
+    #    (agent_set_slot, ":agent_id", slot_agent_last_voice_at, ":current_time"),
+        
+    #    (store_troop_faction, ":agent_faction", ":agent_troop_id"),
+    #    (try_begin),
+    #      (gt,":agent_faction","fac_kingdoms_end"),
+    #      (val_sub,":agent_faction",11),
+    #    (try_end),
+        
+    #    (store_sub,":fac_index",":agent_faction","fac_britain"),
+        
+    #    (try_begin),
+    #      (this_or_next|eq,":agent_faction","fac_austria"),
+    #      (this_or_next|is_between,":agent_troop_id","trp_british_infantry2","trp_british_highlander"),
+    #      (this_or_next|is_between,":agent_troop_id","trp_british_hussar","trp_british_light_dragoon"),
+    #      (eq,":agent_faction","fac_rhine"),
+    #      (assign,":fac_index",2), # set to prussia.
+    #    (try_end),
+
+    #    (assign,":gender",tf_male),
+    #    (try_begin),
+    #      (agent_get_troop_id, ":troop", ":agent_id"),
+    #      (neg|is_between,":troop",multiplayer_ai_troops_begin, multiplayer_ai_troops_end),
+          
+    #      (agent_get_player_id, ":player_id", ":agent_id"),
+    #      (player_is_active,":player_id"),
+    #      (player_get_gender,":gender", ":player_id"), 
+    #    (try_end),
+        
+    #    (assign, ":sound_id", -1),
+    #    (try_begin),
+    #      (eq,":gender",tf_male),
+    #      (try_begin),
+    #        (eq, ":command_type", voice_type_cry),
+    #        (try_begin),
+    #          (this_or_next|eq,":agent_troop_id","trp_british_ship"),
+    #          (eq,":agent_troop_id","trp_british_ship_cannon"),
+    #          (assign, ":sound_id", "snd_voice_cry_pirate"),
+    #        (else_try),
+    #          (is_between,":agent_troop_id","trp_british_highlander","trp_british_foot_guard"),
+    #          (assign, ":sound_id", "snd_voice_cry_brit_scot"),
+    #        (else_try),
+    #          (this_or_next|is_between,":agent_troop_id","trp_russian_hussar","trp_russian_uhlan"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_russian_dragoon","trp_russian_horse_guard"),
+    #          (is_between,":agent_troop_id","trp_austrian_uhlan","trp_austrian_light_horse"),
+    #          (assign, ":sound_id", "snd_voice_cry_russ_ukr"),
+    #        (else_try),
+    #          (eq,":agent_faction","fac_austria"),
+    #          (assign, ":sound_id", "snd_voice_cry_aust"),
+    #        (else_try),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_light_infantry_hessen","trp_rhine_light_infantry_bavaria"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_mounted_jaeger","trp_rhine_uhlan"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_light_dragoon","trp_rhine_cuirassier"),
+    #          (eq,":agent_troop_id","trp_rhine_sapper"),
+    #          (assign, ":sound_id", "snd_voice_cry_rhen"),
+    #        (else_try),
+    #          (assign, ":sound_id", "snd_voice_cry_brit"),
+    #          (val_add,":sound_id",":fac_index"), 
+    #        (try_end),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_surrender),
+    #        (assign, ":sound_id", "snd_voice_surrender_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_ready),
+    #        (assign, ":sound_id", "snd_voice_comm_ready_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_present),
+    #        (assign, ":sound_id", "snd_voice_comm_present_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fire),
+    #        (assign, ":sound_id", "snd_voice_comm_fire_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_charge),
+    #        (assign, ":sound_id", "snd_voice_comm_charge_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_advance),
+    #        (assign, ":sound_id", "snd_voice_comm_advance_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_hold),
+    #        (assign, ":sound_id", "snd_voice_comm_hold_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fire_at_will),
+    #        (assign, ":sound_id", "snd_voice_comm_fire_at_will_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_on_me),
+    #        (assign, ":sound_id", "snd_voice_comm_on_me_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fall_back),
+    #        (assign, ":sound_id", "snd_voice_comm_fall_back_brit"),
+    #      (try_end),
+    #    (else_try),
+    #      (eq,":gender",tf_female),
+    #      (try_begin),
+    #        (eq, ":command_type", voice_type_cry),
+    #        (try_begin),
+    #          (this_or_next|is_between,":agent_troop_id","trp_russian_hussar","trp_russian_cossack"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_russian_dragoon","trp_russian_horse_guard"),
+    #          (is_between,":agent_troop_id","trp_austrian_uhlan","trp_austrian_light_horse"),
+    #          (assign, ":sound_id", "snd_voice_cry_fem_russ_ukr"),
+    #        (else_try),
+    #          (eq,":agent_faction","fac_austria"),
+    #          (assign, ":sound_id", "snd_voice_cry_fem_aust"),
+    #        (else_try),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_light_infantry_hessen","trp_rhine_light_infantry_bavaria"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_mounted_jaeger","trp_rhine_uhlan"),
+    #          (this_or_next|is_between,":agent_troop_id","trp_rhine_light_dragoon","trp_rhine_cuirassier"),
+    #          (eq,":agent_troop_id","trp_rhine_sapper"),
+    #          (assign, ":sound_id", "snd_voice_cry_fem_rhen"),
+    #        (else_try),
+    #          (assign, ":sound_id", "snd_voice_cry_fem_brit"),
+    #          (val_add,":sound_id",":fac_index"), 
+    #        (try_end),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_surrender),
+    #        (assign, ":sound_id", "snd_voice_surrender_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_ready),
+    #        (assign, ":sound_id", "snd_voice_comm_ready_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_present),
+    #        (assign, ":sound_id", "snd_voice_comm_present_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fire),
+    #        (assign, ":sound_id", "snd_voice_comm_fire_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_charge),
+    #        (assign, ":sound_id", "snd_voice_comm_charge_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_advance),
+    #        (assign, ":sound_id", "snd_voice_comm_advance_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_hold),
+    #        (assign, ":sound_id", "snd_voice_comm_hold_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fire_at_will),
+    #        (assign, ":sound_id", "snd_voice_comm_fire_at_will_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_on_me),
+    #        (assign, ":sound_id", "snd_voice_comm_on_me_fem_brit"),
+    #      (else_try),
+    #        (eq, ":command_type", voice_type_comm_fall_back),
+    #        (assign, ":sound_id", "snd_voice_comm_fall_back_fem_brit"),
+    #      (try_end),
+    #    (try_end),
+        
+    #    # change to right sound for faction.
+    #    (try_begin),
+    #      (neq, ":command_type", voice_type_cry),
+    #      (val_add,":sound_id",":fac_index"),
+          
+    #      (try_begin),
+    #        (is_between,":agent_troop_id","trp_austrian_uhlan","trp_austrian_light_horse"),
+    #        (val_add,":sound_id", 2),
+    #      (else_try),
+    #        # add one for ukrain
+    #        (this_or_next|is_between,":agent_troop_id","trp_russian_hussar","trp_russian_uhlan"),
+    #        (is_between,":agent_troop_id","trp_russian_dragoon","trp_russian_horse_guard"),
+    #        (val_add,":sound_id", 1),
+    #      (try_end),
+    #    (try_end),
+        
+    #    (gt, ":sound_id", -1),
+        
+    #    (call_script, "script_multiplayer_server_play_sound_at_agent", ":sound_id", ":agent_id"),
+    #  (try_end),
+    #(try_end),
+  ]),
+
+  ("multiplayer_server_agent_play_music",
+  [
+    #(store_script_param, ":agent_id", 1),
+    #(store_script_param, ":track_index", 2),
+    #(store_script_param, ":auto_started", 3),
+     
+    #(set_fixed_point_multiplier,100),
+    
+    #(try_begin),
+    #  (this_or_next|multiplayer_is_server),
+    #  (neg|game_in_multiplayer_mode),
+    #  (agent_is_active,":agent_id"),
+    #  (agent_is_alive, ":agent_id"), # Still alive?
+    #  (agent_get_team,":agent_team",":agent_id"),
+    #  (team_get_faction,":agent_faction",":agent_team"),
+      
+    #  (assign,":instrument",-1),
+    #  (agent_get_wielded_item,":item_id",":agent_id",0),
+    #  (agent_get_slot,":instance_id",":agent_id",slot_agent_used_prop_instance),
+    #  (try_begin),
+    #    (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"), # a instrument
+        
+    #    (assign,":instrument",":item_id"),
+    #  (else_try),
+    #    #(gt,":instance_id",-1), #patch1115 fix f/16
+    #    (prop_instance_is_valid,":instance_id"),  #patch1115 18/2
+    #    (prop_instance_get_position,pos5,":instance_id"),
+    #    (agent_get_position,pos6,":agent_id"),
+    #    (get_distance_between_positions,":distance",pos5,pos6),
+    #    (lt,":distance",500), # 5 meters.
+        
+    #    (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
+    #    (assign,":instrument",":prop_kind"),
+    #  (try_end),
+      
+    #  (gt,":instrument",-1),
+      
+    # # (try_begin),
+    ##    (call_script,"script_cf_agent_is_playing_music",":agent_id"),
+    #  # always first stop it.
+    #  (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
+    # # (try_end),
+	  
+    #  (assign,":start_cond",-1),
+    #  (assign,":end_cond",-1),
+    #  (assign,":animation",-1),
+    #  (assign,":has_secondary",0),
+    #  #(assign,":channel",1), # animation channel 1 = only top 0 = both top and bottom
+    #  (try_begin),
+    #    (eq,":instrument","itm_drumstick_right"),
+    #    (try_begin),
+    #      (eq,":agent_faction","fac_britain"),
+    #      (assign,":start_cond",drum_sounds_britain_begin),
+    #      (assign,":end_cond",drum_sounds_britain_end),
+    #      (try_begin),
+    #        (agent_get_troop_id,":troop_id",":agent_id"),
+    #        (eq,":troop_id","trp_british_highlander_drum"),
+    #        (assign,":start_cond",drum_sounds_highland_begin),
+    #        (assign,":end_cond",drum_sounds_highland_end),
+    #      (try_end),
+    #    (else_try),
+    #      (this_or_next|eq,":agent_faction","fac_rhine"),
+    #      (eq,":agent_faction","fac_france"),
+    #      (assign,":start_cond",drum_sounds_france_begin),
+    #      (assign,":end_cond",drum_sounds_france_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_prussia"),
+    #      (assign,":start_cond",drum_sounds_prussia_begin),
+    #      (assign,":end_cond",drum_sounds_prussia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_russia"),
+    #      (assign,":start_cond",drum_sounds_russia_begin),
+    #      (assign,":end_cond",drum_sounds_russia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_austria"),
+    #      (assign,":start_cond",drum_sounds_austria_begin),
+    #      (assign,":end_cond",drum_sounds_austria_end),
+    #    (try_end),
+    #    (assign,":has_secondary",1),
+    #    (assign,":sec_start_cond",drum_sounds_calls_begin),
+    #    (assign,":sec_end_cond",drum_sounds_calls_end),
+    #    (assign,":animation","anim_drum"),
+    #  (else_try),
+    #    (eq,":instrument","itm_flute"),
+    #    (try_begin),
+    #      (eq,":agent_faction","fac_britain"),
+    #      (assign,":start_cond",fife_sounds_britain_begin),
+    #      (assign,":end_cond",fife_sounds_britain_end),
+    #    (else_try),
+    #      (this_or_next|eq,":agent_faction","fac_rhine"),
+    #      (eq,":agent_faction","fac_france"),
+    #      (assign,":start_cond",fife_sounds_france_begin),
+    #      (assign,":end_cond",fife_sounds_france_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_prussia"),
+    #      (assign,":start_cond",fife_sounds_prussia_begin),
+    #      (assign,":end_cond",fife_sounds_prussia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_russia"),
+    #      (assign,":start_cond",fife_sounds_russia_begin),
+    #      (assign,":end_cond",fife_sounds_russia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_austria"),
+    #      (assign,":start_cond",fife_sounds_austria_begin),
+    #      (assign,":end_cond",fife_sounds_austria_end),
+    #    (try_end),
+    #    (assign,":animation","anim_flute"),
+    #  (else_try),
+    #    (is_between,":instrument","itm_horn","itm_bagpipe"),
+    #    (try_begin),
+    #      (eq,":agent_faction","fac_britain"),
+    #      (assign,":start_cond",bugle_sounds_britain_begin),
+    #      (assign,":end_cond",bugle_sounds_britain_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_france"),
+    #      (assign,":start_cond",bugle_sounds_france_begin),
+    #      (assign,":end_cond",bugle_sounds_france_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_prussia"),
+    #      (assign,":start_cond",bugle_sounds_prussia_begin),
+    #      (assign,":end_cond",bugle_sounds_prussia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_russia"),
+    #      (assign,":start_cond",bugle_sounds_russia_begin),
+    #      (assign,":end_cond",bugle_sounds_russia_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_austria"),
+    #      (assign,":start_cond",bugle_sounds_austria_begin),
+    #      (assign,":end_cond",bugle_sounds_austria_end),
+    #    (else_try),
+    #      (eq,":agent_faction","fac_rhine"),
+    #      (assign,":start_cond",bugle_sounds_france_begin),
+    #      (store_add,":end_cond",bugle_sounds_france_end,1), #also adding first Prussian bugle tune
+    #    (try_end),
+    #    (assign,":has_secondary",1),
+    #    (assign,":sec_start_cond",bugle_sounds_calls_begin),
+    #    (assign,":sec_end_cond",bugle_sounds_calls_end),
+    #    (assign,":animation","anim_horn"),
+    #  (else_try),
+    #    (eq,":instrument","itm_bagpipe"),
+    #    (try_begin),
+    #      (eq,":agent_faction","fac_britain"),
+    #      (assign,":start_cond",bagpipes_sounds_britain_begin),
+    #      (assign,":end_cond",bagpipes_sounds_britain_end),
+    #      (assign,":has_secondary",1),
+    #      (assign,":sec_start_cond",bagpipes_sounds_extra_begin),
+    #      (assign,":sec_end_cond",bagpipes_sounds_extra_end),
+    #    (try_end),
+    #    (assign,":animation","anim_bagpipe"),
+    #  (else_try),
+    #    (eq,":instrument","spr_mm_piano"),
+    #    (assign,":start_cond",piano_sounds_begin),
+    #    (assign,":end_cond",piano_sounds_end),
+    #    (assign,":animation","anim_piano"),
+    #  (else_try),
+    #    (eq,":instrument","spr_mm_organ"),
+    #    (assign,":start_cond",organ_sounds_begin),
+    #    (assign,":end_cond",organ_sounds_end),
+    #    (assign,":animation","anim_piano"),
+    #  (try_end),
+      
+    #  (store_add,":track_id",":track_index",":start_cond"), # add the sound start to the index
+    #  (assign,":is_valid",0),
+    #  (try_begin),
+    #    (is_between,":track_id",":start_cond",":end_cond"),
+    #    (assign,":is_valid",1),
+    #  (else_try),
+    #    (eq,":has_secondary",1),
+    #    (store_sub,":sec_track_index",":end_cond",":start_cond"),
+    #    (store_sub,":sec_track_index",":track_index",":sec_track_index"),
+    #    (store_add,":track_id",":sec_track_index",":sec_start_cond"),
+    #    (is_between,":track_id",":sec_start_cond",":sec_end_cond"),
+    #    (assign,":is_valid",1),
+    #    (assign,":has_secondary",2), #So we don't play secondary tunes together
+    #  (try_end),
+    #  (eq,":is_valid",1), # is it a valid sound index now?
+      
+    #  # then lets play it baby! :)
+    #  (call_script, "script_multiplayer_server_play_sound_at_agent", ":track_id", ":agent_id"),
+      
+    #  (store_mission_timer_a,":cur_time"),
+    #  (agent_set_slot, ":agent_id", slot_agent_started_playing_music_at, ":cur_time"),
+      
+    #  #NEW FOR COMMANDER BATTLE BOTS:
+    #  (try_begin),
+    #    (eq, "$g_multiplayer_game_type", multiplayer_game_type_commander),
+    #    #We want those bots to start playing a new tune if the old one ended. Normal players can take care of this themselves, bots can't for obvious reasons
+        
+    #    #Get track lengths (yaaaay, awesome script this...)
+    #    (assign,":track_length",20), #Some random value for if we don't have the track for some reason
+        
+    #    #DRUMS AND FIFES
+    #    (try_begin),    #Britain
+    #      (this_or_next|eq,":track_id","snd_drum_britain_1"),
+    #      (eq,":track_id","snd_fife_britain_1"),
+    #      (assign,":track_length",44),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_britain_2"),
+    #      (eq,":track_id","snd_fife_britain_2"),
+    #      (assign,":track_length",43),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_britain_3"),
+    #      (eq,":track_id","snd_fife_britain_3"),
+    #      (assign,":track_length",44),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_britain_4"),
+    #      (eq,":track_id","snd_fife_britain_4"),
+    #      (assign,":track_length",66),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_britain_5"),
+    #      (eq,":track_id","snd_fife_britain_5"),
+    #      (assign,":track_length",50),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_highland_1"),
+    #      (eq,":track_id","snd_bagpipes_britain_1"),
+    #      (assign,":track_length",97),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_highland_2"),
+    #      (eq,":track_id","snd_bagpipes_britain_2"),
+    #      (assign,":track_length",44),
+          
+    #    (else_try),    #France
+    #      (this_or_next|eq,":track_id","snd_drum_france_1"),
+    #      (eq,":track_id","snd_fife_france_1"),
+    #      (assign,":track_length",49),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_france_2"),
+    #      (eq,":track_id","snd_fife_france_2"),
+    #      (assign,":track_length",40),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_france_3"),
+    #      (eq,":track_id","snd_fife_france_3"),
+    #      (assign,":track_length",25),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_france_4"),
+    #      (eq,":track_id","snd_fife_france_4"),
+    #      (assign,":track_length",38),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_france_5"),
+    #      (eq,":track_id","snd_fife_france_5"),
+    #      (assign,":track_length",68),
+          
+    #    (else_try),    #Prussia
+    #      (this_or_next|eq,":track_id","snd_drum_prussia_1"),
+    #      (eq,":track_id","snd_fife_prussia_1"),
+    #      (assign,":track_length",47),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_prussia_3"),
+    #      (eq,":track_id","snd_fife_prussia_2"),
+    #      (assign,":track_length",84),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_prussia_4"),
+    #      (eq,":track_id","snd_fife_prussia_3"),
+    #      (assign,":track_length",10),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_prussia_5"),
+    #      (eq,":track_id","snd_fife_prussia_4"),
+    #      (assign,":track_length",31),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_prussia_6"),
+    #      (eq,":track_id","snd_fife_prussia_5"),
+    #      (assign,":track_length",49),
+          
+    #    (else_try),    #Russia
+    #      (this_or_next|eq,":track_id","snd_drum_russia_1"),
+    #      (eq,":track_id","snd_fife_russia_1"),
+    #      (assign,":track_length",57),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_russia_2"),
+    #      (eq,":track_id","snd_fife_russia_2"),
+    #      (assign,":track_length",23),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_russia_3"),
+    #      (eq,":track_id","snd_fife_russia_3"),
+    #      (assign,":track_length",19),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_russia_4"),
+    #      (eq,":track_id","snd_fife_russia_4"),
+    #      (assign,":track_length",21),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_russia_5"),
+    #      (eq,":track_id","snd_fife_russia_5"),
+    #      (assign,":track_length",15),
+          
+    #    (else_try),    #Austria
+    #      (this_or_next|eq,":track_id","snd_drum_austria_1"),
+    #      (eq,":track_id","snd_fife_austria_1"),
+    #      (assign,":track_length",38),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_austria_2"),
+    #      (eq,":track_id","snd_fife_austria_2"),
+    #      (assign,":track_length",110),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_austria_3"),
+    #      (eq,":track_id","snd_fife_austria_3"),
+    #      (assign,":track_length",75),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_austria_4"),
+    #      (eq,":track_id","snd_fife_austria_4"),
+    #      (assign,":track_length",34),
+    #    (else_try),
+    #      (this_or_next|eq,":track_id","snd_drum_austria_5"),
+    #      (eq,":track_id","snd_fife_austria_5"),
+    #      (assign,":track_length",44),
+        
+    #    #BUGLES, HORNS AND TRUMPETS
+    #    (else_try),    #Britain
+    #      (eq,":track_id","snd_bugle_britain_1"),
+    #      (assign,":track_length",35),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_britain_2"),
+    #      (assign,":track_length",25),
+    #    (else_try),    #France
+    #      (eq,":track_id","snd_bugle_france_1"),
+    #      (assign,":track_length",37),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_france_2"),
+    #      (assign,":track_length",56),
+    #    (else_try),    #Prussia
+    #      (eq,":track_id","snd_bugle_prussia_1"),
+    #      (assign,":track_length",57),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_prussia_2"),
+    #      (assign,":track_length",72),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_prussia_3"),
+    #      (assign,":track_length",27),
+    #    (else_try),    #Russia
+    #      (eq,":track_id","snd_bugle_russia_1"),
+    #      (assign,":track_length",49),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_russia_2"),
+    #      (assign,":track_length",109),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_russia_3"),
+    #      (assign,":track_length",54),
+    #    (else_try),    #Austria
+    #      (eq,":track_id","snd_bugle_austria_1"),
+    #      (assign,":track_length",69),
+    #    (else_try),
+    #      (eq,":track_id","snd_bugle_austria_2"),
+    #      (assign,":track_length",35),
+    #    (try_end),
+        
+    #    (store_add,":end_tune_at",":cur_time",":track_length"), #Adding track length to current time
+    #    (agent_set_slot, ":agent_id", slot_agent_track_ends_at, ":end_tune_at"), #So we'll know when to change tune :)
+    #  (try_end),
+      
+    #  (try_begin),
+    #    (neq,":instrument","spr_mm_piano"),
+    #    (neq,":instrument","spr_mm_organ"),
+    #    (agent_set_animation, ":agent_id", ":animation", 1),
+    #    (set_fixed_point_multiplier,100),
+        
+    #    (try_begin), #patch1115 fix 43/2
+    #      (neq, "$g_multiplayer_game_type", multiplayer_game_type_commander),
+				#	(agent_set_slot,":agent_id",slot_agent_base_speed_mod,55),
+    #      (agent_set_speed_modifier, ":agent_id", 55), # value is in percentage, 100 is default, value can be between [0..1000]#60
+    #    (try_end),
+        
+    #    (try_begin),
+    #      (neq,":auto_started",1),
+    #      (this_or_next|is_between,":has_secondary",0,2), #So we don't play calls together
+    #      (eq,":instrument","itm_bagpipe"), #But bagpipes
+    #      (agent_get_troop_id,":troop_id",":agent_id"),
+    #      (agent_get_position,pos2,":agent_id"),
+    #      (try_for_agents,":agent_no",pos2,1501), #Checking for play-together
+    #        (neq,":agent_no",":agent_id"),
+    #        (agent_is_active,":agent_no"),
+    #        (agent_is_alive, ":agent_no"), # Is alive?
+    #        (agent_is_human, ":agent_no"),
+    #        (neg|agent_is_non_player, ":agent_no"),
+    #        (agent_get_team,":agent_team2",":agent_no"),
+    #        (eq,":agent_team2",":agent_team"),
+    #        (agent_slot_eq, ":agent_no", slot_agent_music_play_together, 1),
+          
+    #        (agent_get_troop_id,":agent_troop",":agent_no"),
+    #        (troop_slot_eq,":agent_troop",slot_troop_rank,mm_rank_musician),
+            
+    #        (agent_get_wielded_item,":item_id",":agent_no",0),
+    #        (assign,":continue",0),
+    #        (try_begin),
+    #          (eq,":instrument","itm_drumstick_right"),
+    #          (neq,":troop_id","trp_british_highlander_drum"),
+    #          (this_or_next|eq,":item_id","itm_drumstick_right"),
+    #          (eq,":item_id","itm_flute"),
+    #          (assign,":continue",1),
+    #        (else_try),
+    #          (eq,":instrument","itm_drumstick_right"),
+    #          (eq,":troop_id","trp_british_highlander_drum"),
+    #          (try_begin),
+    #            (eq,":item_id","itm_drumstick_right"),
+    #            (eq,":agent_troop","trp_british_highlander_drum"),
+    #            (assign,":continue",1),
+    #          (else_try),
+    #            (eq,":item_id","itm_bagpipe"),
+    #            (assign,":continue",1),
+    #          (try_end),
+    #        (else_try),
+    #          (eq,":instrument","itm_flute"),
+    #          (this_or_next|eq,":item_id","itm_drumstick_right"),
+    #          (eq,":item_id","itm_flute"),
+    #          (assign,":continue",1),
+    #        (else_try),
+    #          (is_between,":instrument","itm_horn","itm_bagpipe"),
+    #          (is_between,":item_id","itm_horn","itm_bagpipe"),
+    #          (assign,":continue",1),
+    #        (else_try),
+    #          (eq,":instrument","itm_bagpipe"),
+    #          (try_begin),
+    #            (neq,":has_secondary",2), #Don't play bagpipe-only tunes with drums
+    #            (eq,":item_id","itm_drumstick_right"),
+    #            (eq,":agent_troop","trp_british_highlander_drum"),
+    #            (assign,":continue",1),
+    #          (else_try),
+    #            (eq,":item_id","itm_bagpipe"),
+    #            (assign,":continue",1),
+    #          (try_end),
+    #        (try_end),
+    #        (eq,":continue",1),
+          
+    #        (assign,":continue",1),
+    #        (try_begin),
+    #          (call_script,"script_cf_agent_is_playing_music",":agent_no"),
+    #          (assign,":continue",0),
+    #        (try_end),
+    #        (eq,":continue",1),
+          
+    #        (call_script, "script_multiplayer_server_agent_play_music", ":agent_no", ":track_index", 1),
+    #      (try_end),
+    #    (try_end),
+    #  (else_try),
+    #    (agent_set_animation, ":agent_id", ":animation", 0),
+    #    (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
+        
+    #    (agent_set_wielded_item,":agent_id",-1),  
+        
+    #    # put player on stool.
+    #    (try_begin),
+    #      (eq,":instrument","spr_mm_piano"),
+    #      (position_move_y,pos5,-74),
+    #    (else_try),
+    #      (eq,":instrument","spr_mm_organ"),
+    #      (position_move_y,pos5,-142),
+    #    (try_end),
+    #    (agent_set_position,":agent_id",pos5),
+    #  (try_end),
+    #(try_end),
+  ]),
+
+  ("multiplayer_server_agent_stop_music",
+  [
+    (store_script_param, ":agent_id", 1),
+  
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":agent_id"),
+      
+      (agent_get_animation,":cur_anim",":agent_id",1), #Was 0
+      (try_begin),
+        (is_between,":cur_anim","anim_drum","anim_drum_end"), # Only when Playing music..
+        (agent_set_animation,":agent_id","anim_drum_end",1), #Was 0
+      (try_end),
+      
+      (agent_get_animation,":cur_anim",":agent_id",0),
+      (try_begin),
+        (this_or_next|eq,":cur_anim","anim_piano"),
+        (eq,":cur_anim","anim_shitting"),
+        (agent_set_animation,":agent_id","anim_drum_end",0),
+      (try_end),
+      (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, -1),
+      
+      (call_script, "script_multiplayer_server_play_sound_at_agent", -1, ":agent_id"),
+      
+      (set_fixed_point_multiplier,100),
+      (agent_get_slot,":base_speed",":agent_id",slot_agent_base_speed_mod),
+	  (lt, ":base_speed", 100),
+	  (assign, ":base_speed", 100),
+	  (agent_set_slot,":agent_id",slot_agent_base_speed_mod, 100),
+      (agent_set_speed_modifier, ":agent_id", ":base_speed"), # value is in percentage, 100 is default, value can be between [0..1000]
+    (try_end),
+  ]),
+  
+  
+  # script_multiplayer_server_agent_use_spyglass
+  # Input1: agent_id of agent
+  # Input2: start or stop
+  ("multiplayer_server_agent_use_spyglass",
+  [
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":action", 2),
+  
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      
+      (agent_get_animation,":cur_anim",":agent_id",1),
+      (try_begin),
+        (eq,":action",spyglass_type_start),
+        (agent_get_wielded_item,":cur_weapon",":agent_id",0),#PATCH1115 fix 14/1 
+        (eq, ":cur_weapon", "itm_spyglass"),
+        (neq,":cur_anim","anim_spyglass"),
+        (agent_set_animation,":agent_id","anim_spyglass",1),
+      (else_try),
+        (eq,":action",spyglass_type_stop),
+        (eq,":cur_anim","anim_spyglass"),
+        (agent_set_animation,":agent_id","anim_drum_end",1),
+      (try_end),
+    (try_end),
+  ]),
+
+  ("multiplayer_server_play_sound_at_agent",
+   [
+    (store_script_param, ":sound_id", 1),
+    (store_script_param, ":agent_id", 2),
+    
+    (try_begin),
+      (this_or_next|eq, ":sound_id", -1),
+      (is_between,":sound_id","snd_click","snd_sounds_end"), # valid sound
+      (agent_is_active,":agent_id"),
+
+      (try_begin),
+        (multiplayer_is_server),
+        
+        (try_begin),
+          (eq, ":sound_id", -1), # Stop sound
+          
+          (try_for_players, ":cur_player", "$g_ignore_server"),
+            (player_is_active,":cur_player"),
+            (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_agent_stop_sound, ":agent_id"),
+          (try_end),
+          (agent_stop_sound,":agent_id"),
+        (else_try),
+          (agent_play_sound,":agent_id",":sound_id"),
+        (try_end),
+      (else_try),
+        (neg|game_in_multiplayer_mode),
+        (try_begin),
+          (eq,":sound_id",-1),
+          (agent_stop_sound,":agent_id"),
+        (else_try),
+          (agent_play_sound,":agent_id",":sound_id"),
+        (try_end),
+      (try_end),
+    (try_end),
+   ]),
+
+   ("multiplayer_agent_drinking_get_animation",
+  [
+    (store_script_param, ":item_id", 1),
+    (assign, ":animation_id", -1),
+    #Note: this check is also performed manually in mission templates
+    #Note: multiplayer_agent_drinking also contains a list of all animations to stop them
+    (try_begin),
+      (eq, ":item_id", "itm_drinking_cup"),
+      (assign, ":animation_id", "anim_drinking_cup_loop"),
+    (else_try),
+      (eq, ":item_id", "itm_drinking_tea_cup"),
+      (assign, ":animation_id", "anim_drinking_tea_loop"),
+    (else_try),
+      (eq, ":item_id", "itm_drinking_tea_cup_plate"),
+      (assign, ":animation_id", "anim_drinking_tea_loop"),
+    (else_try),
+      (eq, ":item_id", "itm_drinking_bottle"),
+      (assign, ":animation_id", "anim_drinking_bottle"),
+    (try_end),
+    (assign, reg0, ":animation_id"),
+  ]),
+
+  # script_multiplayer_agent_drinking
+  # Input1: agent_id
+  # Input2: action (drinking_type_start or drinking_type_stop)
+  ("multiplayer_agent_drinking",
+  [
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":action", 2),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+
+      (agent_is_active, ":agent_id"),
+      (agent_is_alive, ":agent_id"),
+
+      (agent_get_animation, ":cur_animation_id", ":agent_id", 1),
+      (agent_get_wielded_item, ":item_id", ":agent_id", 0),
+      (try_begin),
+        (eq, ":action", drinking_type_start),
+        (call_script, "script_multiplayer_agent_drinking_get_animation", ":item_id"),
+        (assign, ":animation_id", reg0),
+        (gt, ":animation_id", -1),
+        (neq, ":cur_animation_id", ":animation_id"),
+        (agent_set_animation, ":agent_id", ":animation_id", 1),
+      (else_try),
+        (eq, ":action", drinking_type_stop),
+        (assign, reg0, ":cur_animation_id"),
+        (assign, reg1, ":animation_id"),
+        (this_or_next|eq, ":cur_animation_id", "anim_drinking_cup_loop"),
+        (this_or_next|eq, ":cur_animation_id", "anim_drinking_tea_loop"),
+        (eq, ":cur_animation_id", "anim_drinking_bottle"),
+        (try_begin),
+          (eq, ":item_id", "itm_drinking_cup"),
+          (assign, ":animation_id", "anim_drinking_cup_idle"),
+        (else_try),
+          (this_or_next|eq, ":item_id", "itm_drinking_tea_cup"),
+          (eq, ":item_id", "itm_drinking_tea_cup_plate"),
+          (assign, ":animation_id", "anim_drinking_tea_idle"),
+        (else_try),
+          (assign, ":animation_id", "anim_drum_end"),
+        (try_end),
+        (agent_set_animation, ":agent_id", ":animation_id", 1),
+      (try_end),
+    (try_end),
+  ]),
+
+  ("cf_agent_is_playing_music",
+  [
+    (store_script_param, ":agent_id", 1),
+    
+    (agent_is_active,":agent_id"),
+    
+    (agent_get_animation,":cur_anim",":agent_id",1),
+    (is_between,":cur_anim","anim_drum","anim_drum_end"), # Only when Playing music..
+  ]),
+  
+  # script_cf_agent_is_playing_piano
+  # Input: agent_id
+  # Output: reg0 > yes/no 1/0
+  ("cf_agent_is_playing_piano",
+  [
+    (store_script_param, ":agent_id", 1),
+
+    (agent_is_active,":agent_id"),
+    
+    (agent_get_animation,":cur_anim",":agent_id",0),
+    (eq,":cur_anim","anim_piano"), # Only when Playing music..
+  ]),
+
+  ("cf_agent_is_surrendering",
+  [
+    (store_script_param, ":agent_id", 1),
+
+    (agent_is_active,":agent_id"),
+    
+    (agent_get_animation,":cur_anim",":agent_id",1),
+    (eq,":cur_anim","anim_surrender"), 
+  ]),
 
   # PN END ********************************************************************************************************
 
@@ -536,6 +1408,7 @@ scripts.extend([
   ("game_receive_network_message", # called by the game whenever a custom network message is received, both clients and servers
    [(store_script_param, ":sender_player_id", 1),
     (store_script_param, ":event_type", 2),
+    (store_script_param, ":player_no", 1),
 
     (try_begin), # section of events received by clients from the server
       (neg|multiplayer_is_server),
@@ -565,6 +1438,132 @@ scripts.extend([
           (prop_instance_get_position, pos1, ":instance_id"),
           (play_sound_at_position, ":sound_id", pos1),
         (try_end),
+
+    # PN START *******************************************************************************************************
+
+      (else_try),
+          (eq, ":event_type", multiplayer_event_send_player_action),
+          (try_begin),
+            (store_script_param, ":action_type", 3),
+            (is_between,":action_type",player_actions_begin,player_actions_end),
+
+            (try_begin),
+              (eq,":action_type",player_action_has_cheat),
+              (kick_player,":player_no"),
+            (try_end),
+
+            (player_get_agent_id, ":player_agent", ":player_no"),
+            (agent_is_active,":player_agent"),
+           
+            (try_begin),
+              (eq,":action_type",player_action_voice),
+              (store_script_param, ":action", 4),
+              (is_between,":action",voice_types_begin,voice_types_end),
+              (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
+
+            (else_try),
+              (eq,":action_type",player_action_music),
+              (store_script_param, ":action", 4),
+              (is_between,":action",music_types_begin,music_types_end),
+
+              (try_begin),
+                (eq,":action",music_type_start),
+                (store_script_param, ":track_index", 5),
+
+                (try_begin),
+                  (store_mission_timer_a,":cur_time"),
+                  (agent_get_slot,":started_playing_music_at",":player_agent",slot_agent_started_playing_music_at),
+                  (store_sub, ":elapsed_time", ":cur_time", ":started_playing_music_at"),
+                  (ge,":elapsed_time",1),
+                  (call_script,"script_multiplayer_server_agent_play_music", ":player_agent", ":track_index", 0),
+                (try_end),
+
+              (else_try),
+                (eq,":action",music_type_stop),
+                (call_script,"script_multiplayer_server_agent_stop_music", ":player_agent"),
+
+              (else_try),
+                (eq,":action",music_type_toggle_together),
+                (store_script_param, ":value", 5),
+                (is_between,":value",0,2),
+                (agent_set_slot,":player_agent",slot_agent_music_play_together,":value"),
+              (try_end),
+
+            (else_try),
+              (eq,":action_type",player_action_spyglass),
+              (store_script_param, ":action", 4),
+              (this_or_next|eq,":action",spyglass_type_start),
+              (eq,":action",spyglass_type_stop),
+              (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
+
+            (else_try),
+              (eq, ":action_type", player_action_misc_item_drinking),
+              (store_script_param, ":action", 4),
+              (this_or_next|eq, ":action", drinking_type_start),
+              (eq, ":action", drinking_type_stop),
+              (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
+
+            (else_try),
+              (eq, ":action_type", player_action_custom_order_menu_interact),
+
+            (else_try),
+              (eq,":action_type",player_action_toggle_walk),
+              (agent_is_alive,":player_agent"),
+              (assign,":contine",1),
+              (try_begin),
+                (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
+                (assign,":contine",0),
+              (try_end),
+
+              (eq,":contine",1),
+
+              (try_begin),
+                (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
+                (agent_set_animation,":player_agent","anim_surrender_end",1),
+              (try_end),
+
+              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+
+              (try_begin),
+                (this_or_next|eq,":value",350),
+                (eq,":value",100),
+                (assign,":value",55),
+              (else_try),
+                (assign,":value",100),
+                (agent_set_horse_speed_factor, ":player_agent", 100),
+              (try_end),
+
+              (set_fixed_point_multiplier,100),
+              (agent_set_speed_modifier,":player_agent", ":value"),
+              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+
+            (else_try),
+              (eq,":action_type",player_action_surrender),
+              (agent_is_alive,":player_agent"),
+              (store_script_param, ":action", 4),
+              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+              (try_begin),
+                (eq,":action",music_type_start),
+                (agent_set_wielded_item,":player_agent",-1),  
+                (agent_set_animation,":player_agent","anim_surrender",1),
+                (assign,":value",55),
+                (agent_set_horse_speed_factor, ":player_agent", 55),
+
+              (else_try),
+                (eq,":action",music_type_stop),
+                (agent_set_animation,":player_agent","anim_surrender_end",1),
+                (assign,":value",100),
+                (agent_set_horse_speed_factor, ":player_agent", 100),
+              (try_end),
+
+              (set_fixed_point_multiplier,100),
+              (agent_set_speed_modifier,":player_agent", ":value"),
+              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+            (try_end),
+          (try_end),
+
+    # PN END *********************************************************************************************************
+
       (else_try), # play a sound at a position, the coordinate values packed into one integer for a smaller network message
         (eq, ":event_type", server_event_play_sound_at_position),
         (store_script_param, ":sound_id", 3),
@@ -1797,12 +2796,84 @@ scripts.extend([
   ("game_character_screen_requested", []),
 
   ("game_missile_launch", # called by the game whenever a missile is shot or thrown
-   [#(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":agent_weapon_item_id", 2),
-    #(store_script_param, ":missile_weapon_item_id", 3),
-    #(store_script_param, ":missile_item_id", 4),
+   [ 
+    (try_begin),
+      (neg|multiplayer_is_dedicated_server),
+      
+      (store_script_param, ":agent_id", 1),
+      (store_script_param, ":item_id", 2),
+      #(store_script_param, ":missile_weapon_id", 3),
+      
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      #(neq,":missile_weapon_id", "itm_cannon_canister_dummy"),
 
-    ]),
+      (set_fixed_point_multiplier, 100),
+      (copy_position,pos41,pos1),
+      (assign, ":sound_id", -1),
+      (assign, ":muzzle_y", 0),
+      (assign, ":muzzle_x", -16),
+      (assign, ":muzzle_y_rot", 0),
+      (assign, ":has_pan", 1),
+      (assign, ":smoke_size", 17),
+      (assign, ":spark_size", 100),
+      (assign, ":pan_smoke_size", 8),
+
+      (try_begin),
+        (is_between,":item_id","itm_french_cav_pistol","itm_french_mousquiton"), # Pistols
+        (assign, ":sound_id", "snd_pistol"),
+        (assign, ":muzzle_y", 44),
+        (assign, ":muzzle_x", 0),
+        (assign, ":muzzle_y_rot", -45),
+        (assign, ":has_pan", 0),
+        (assign, ":smoke_size", 14),
+        (assign, ":spark_size", 40),
+      (else_try),
+        (is_between,":item_id","itm_french_mousquiton","itm_russian_rifle_1805"), # Carabines
+        (assign, ":sound_id", "snd_musket"), #  snd_carabine
+        (assign, ":muzzle_y", 104),
+      (else_try),
+        (is_between,":item_id","itm_russian_rifle_1805","itm_french_charleville"), # Rifles
+        (assign, ":sound_id", "snd_rifle"),
+        (assign, ":muzzle_y", 90),
+      (else_try),
+        (is_between,":item_id","itm_french_charleville","itm_french_art_off_sword"), # Muskets
+        (assign, ":sound_id", "snd_musket"),
+        (assign, ":muzzle_y", 132),
+      (try_end),
+      
+      (try_begin),
+        (call_script, "script_client_get_my_agent"),
+        (eq, ":agent_id", reg0), # shooting myself.
+        # particles for myself 65% so i can see what I shoot at.
+        (val_mul,":smoke_size", 65),
+        (val_div,":smoke_size", 100),
+        (val_mul,":pan_smoke_size", 65),
+        (val_div,":pan_smoke_size", 100),
+      (try_end),
+       
+      # Sounds
+      (gt, ":sound_id", -1),
+      (play_sound_at_position, ":sound_id", pos41),
+
+      # Default movement
+      (position_move_x,pos41,":muzzle_x"),
+      (position_move_y,pos41,18),
+
+      # pan flash and smoke..
+      (try_begin),
+        (eq,":has_pan",1),
+        (particle_system_burst_no_sync, "psys_pan_smoke", pos41, ":pan_smoke_size"),
+        (particle_system_burst_no_sync, "psys_pan_flash", pos41, 4),
+      (try_end),
+      
+      # the fire particles
+      (position_rotate_z,pos41,":muzzle_y_rot"),
+      (position_move_y,pos41,":muzzle_y"),
+      (particle_system_burst_no_sync, "psys_musket_smoke", pos41, ":smoke_size"),
+      (particle_system_burst_no_sync, "psys_musket_flash", pos41, ":spark_size"),
+    (try_end),
+  ]),
 
   ("game_missile_dives_into_water", # called by the game whenever a missle drops below water level
    [#(store_script_param, ":missile_item_id", 1),

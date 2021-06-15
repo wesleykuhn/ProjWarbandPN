@@ -51,45 +51,669 @@ particle_systems = [
 
   # PN START *********************************************************************************************
 
-  ("bottle_break", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation|psf_always_emit,  "prtcl_dust_g",
-   850, 8, 0.1, 1.0, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
-   (0.1, 0.5), (1, 0),        #alpha keys
-   (0.1, 0.8), (1, 0.8),      #red keys
-   (0.1, 0.7),(1, 0.7),       #green keys
-   (0.1, 0.6), (1, 0.7),      #blue keys
-   (0.0, 1),   (1.5, 1.5),    #scale keys
-   (0.1, 0.1, 0.1),           #emit box size
-   (0, 0, 0),                 #emit velocity
-   2.3,                       #emit dir randomness
-   50,                       #rotation speed
-   0.5,                       #rotation damping
+  ("pistol_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+   40, 13, 0.9, -0.00003, 40, 1,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+   (0.0, 0.75), (1, 0),       #alpha keys
+   (0.0, 0.7), (1, 0.4),      #red keys
+   (0.0, 0.7),(1, 0.4),       #green keys
+   (0.0, 0.7), (1, 0.4),      #blue keys
+   (0, 4.1),   (0.5, 12.0),   #scale keys
+   (0.2, 0.45, 0.2),           #emit box size
+   (0.0, 0.0, 0.0),                 #emit velocity
+   0.0,                        #emit dir randomness
+   100,                       #rotation speed
+   0.5,                        #rotation damping
   ),
-  ("musket_hit", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prtcl_dust_a",
-   500, 3, 8, 0.2, 2, 20, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
-   (0.0, 1), (1, 0),     #alpha keys
-   (0.0, 0.95), (1, 0.95),          #red keys
-   (0.0, 0.90), (1, 0.90),           #green keys
-   (0.0, 0.70), (1, 0.70),          #blue keys
-   (0, 3), (0.8, 5),  #scale keys
-   (0, 0, 0),         #emit box size
-   (0, 0, 10),               #emit velocity
-   3,                      #emit dir randomness
-   100,                     #rotation speed
-   0.2,                       #rotation damping
-  ),
-  ("musket_hit_particle", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prt_mesh_mud_1",
-   2000, 2, 0.2, 2, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
-   (0.0, 1), (1, 1),     #alpha keys
-   (0.0, 0.1), (1, 0.1),          #red keys
-   (0.0, 0.1), (1, 0.1),           #green keys
-   (0.0, 0.1), (1, 0.1),          #blue keys
-   (0.0, 0.125), (0.8, 0.125),  #scale keys
-   (0, 0, 0),         #emit box size
-   (0, 0, 8),               #emit velocity
-   3,                      #emit dir randomness
-   100,                     #rotation speed
-   0.1,                       #rotation damping
-  ),
+  ("cannon_ball_hit", psf_billboard_3d|psf_always_emit|psf_randomize_size,  "prtcl_dust_c",
+     2000, 2, 15, -0.65, 12.0, 0.4,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (6.0, 6.7),   (7, 8.2),    #scale keys
+     (0.45, 0.46, 3.2),         #emit box size
+     (0, 0, 0.1),               #emit velocity
+     4,                         #emit dir randomness
+     15,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+    ("cannon_blood", psf_billboard_3d |psf_randomize_size|psf_randomize_rotation,  "prt_mesh_blood_1",
+     2000, 1.05, 3, 0.5, 0, 0,        #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.7), (0.7, 0.7),          #alpha keys
+     (0.1, 0.7), (1, 0.7),      #red keys
+     (0.1, 0.7), (1, 0.7),       #green keys
+     (0.1, 0.7), (1, 0.7),      #blue keys
+     (0.1, 0.11),   (1.1, 0.028),  #scale keys
+     (0.10, 0.10, 1),               #emit box size
+     (0, 1.0, 0.3),                #emit velocity
+     0.9,                       #emit dir randomness
+     0,                         #rotation speed
+     0,                         #rotation damping
+    ),
+    ("cannon_blood_2", psf_billboard_3d | psf_randomize_size|psf_randomize_rotation ,  "prt_mesh_blood_3",
+     2000, 1, 3, 0.3, 0, 0,        #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.25), (0.7, 0.1),        #alpha keys
+     (0.1, 0.7), (1, 0.7),      #red keys
+     (0.1, 0.7), (1, 0.7),       #green keys
+     (0.1, 0.7), (1, 0.7),      #blue keys
+     (0.3, 0.75),   (1.2, 0.65),    #scale keys
+     (0.11, 0.3, 0.11),             #emit box size
+     (0.2, 0.3, 0),                 #emit velocity
+     0.3,                         #emit dir randomness
+     150,                       #rotation speed
+     0,                       #rotation damping
+     ),
+     ("cannon_smoke", psf_billboard_3d, "prtcl_dust_a",
+     1900, 11, 1.14, -0.006, 40, 1.75,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.90), (0.85, 0),       #alpha keys
+     (0.0, 0.99), (1, 0.99),      #red keys
+     (0.0, 0.99),(1, 0.99),       #green keys
+     (0.0, 0.99), (1, 0.99),      #blue keys
+     (-0.1, 6),   (1.0, 16.0),   #scale keys
+     (0.1, 0.1, 0.1),           #emit box size
+     (6.4, 0.2, 0),                 #emit velocity
+     1.8,                        #emit dir randomness
+     90,                       #rotation speed
+     0.4,                        #rotation damping
+    ),
+    ("cannon_flash", psf_billboard_3d | psf_randomize_size , "prt_sparks_mesh_1",
+     3000, 0.4, 0.1, -0.00003, 50.0, 1.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+    (0.1, 0.8), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.6), (1, 0.1),      #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (-0.1, 3.1),   (0.9, 2.2),   #scale keys
+     (0.1, 0.1, 0.1),           #emit box size
+     (2.2, 0.26, 0),                 #emit velocity  #patch1115 fix 21/1
+     0.05,                       #emit dir randomness
+     100.0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+     ("musket_flash", psf_billboard_3d | psf_randomize_size , "prt_sparks_mesh_1",
+     3000, 0.8, 0.1, -0.00003, 50.0, 1.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.8), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.6), (1, 0.1),      #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0.0, 0.9),   (0.75, 0.1),   #scale keys
+     (0.1, 0.2, 0.1),           #emit box size
+     (0.6, 3.2, 0.6),                 #emit velocity
+     0.05,                       #emit dir randomness
+     100.0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+    ("musket_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+     75, 22, 2, -0.006040, 90, 3.3,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.45), (0.449, 0),       #alpha keys
+     (0.0, 0.99), (1, 0.99),      #red keys
+     (0.0, 0.99),(1, 0.99),       #green keys
+     (0.0, 0.99), (1, 0.99),      #blue keys
+     (-0.01, 3.45),   (0.5, 12.7),   #scale keys
+     (0.05, 0.05, 0.05),           #emit box size
+     (0.0, 5.6, 0.0),                 #emit velocity
+     0.85,                        #emit dir randomness
+     90,                       #rotation speed
+     0.25,                        #rotation damping
+    ),
+   ("pan_flash", psf_billboard_3d | psf_randomize_size , "prt_sparks_mesh_1",
+     3000, 0.6, 0.1, -0.00003, 50.0, 1.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.8), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.6), (1, 0.1),      #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0.0, 1.0),   (0.6, 0.7),   #scale keys
+     (0.1, 0.1, 0.6),           #emit box size
+     (0, 0, 0.6),                 #emit velocity
+     0.05,                       #emit dir randomness
+     100.0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+   ("pan_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+     60, 10.6, 1.8, -0.0003, 90, 4,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.55), (0.549, 0),       #alpha keys
+     (0.0, 0.99), (1, 0.99),      #red keys
+     (0.0, 0.99),(1, 0.99),       #green keys
+     (0.0, 0.99), (1, 0.99),      #blue keys
+     (-0.07, 1.5),   (0.5, 3.75),   #scale keys
+     (0.02, 0.02, 0.02),           #emit box size
+     (-1.6, 0.6, 0.0),                 #emit velocity
+     0.0,                        #emit dir randomness                       
+    ),
+  ("musket_sparks", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size,  "prt_sparks_mesh_1",
+     10, 0.7, 0.2, 0, 10.0, 0.02,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.8), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.6), (1, 0.1),      #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0.1, 0.05),   (1, 0.05),  #scale keys
+     (0.1, 0.1, 0.1),           #emit box size
+     (0, 0, 0.9),               #emit velocity
+     0.0,                       #emit dir randomness
+     0,
+     0,
+    ),
+    ("cannon_frizzle_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+     40, 10, 1.8, -0.0003, 20, 1.75,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.75), (0.85, 0),       #alpha keys
+     (0.0, 0.7), (1, 0.4),      #red keys
+     (0.0, 0.7),(1, 0.4),       #green keys
+     (0.0, 0.7), (1, 0.4),      #blue keys
+     (-0.04, 1.5),   (0.5, 5.75),   #scale keys
+     (0.02, 0.02, 0.02),           #emit box size
+     (-1.6, 0.6, 0.0),                 #emit velocity
+     0.0,                        #emit dir randomness
+    ),
+    ("bullet_hit_smoke", psf_billboard_3d|psf_randomize_size,  "prt_mesh_dust_1",
+     2000, 4, 15, -0.05, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.0, 1.1),   (2, 4.2),    #scale keys
+     (0.2, 0.2, 2.2),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.2,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+    ("bottle_break", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation|psf_always_emit,  "prtcl_dust_g",
+     850, 8, 0.1, 1.0, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+  (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.0, 1),   (1.5, 1.5),    #scale keys
+     (0.1, 0.1, 0.1),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     50,                       #rotation speed
+     0.5,                       #rotation damping
+    ),
+    ("bird_blood", psf_billboard_3d | psf_randomize_size|psf_randomize_rotation ,  "prt_mesh_blood_3",
+     2000, 0.6, 3, 0.3, 0, 0,        #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.25), (0.7, 0.1),        #alpha keys
+     (0.1, 22.7), (1, 0.7),      #red keys
+     (0.1, 0.7), (1, 0.7),       #green keys
+     (0.1, 0.7), (1, 0.7),      #blue keys
+     (0.0, 0.15),   (1, 0.35),    #scale keys
+     (0.01, 0.2, 0.01),             #emit box size
+     (0.2, 0.3, 0),                 #emit velocity
+     0.3,                         #emit dir randomness
+     150,                       #rotation speed
+     0,                       #rotation damping
+     ),
+    ("explosion_flash", psf_billboard_3d | psf_randomize_size , "prt_sparks_mesh_1",
+     3000, 0.8, 0.1, -0.00003, 50.0, 1.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+   (0.1, 0.8), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.6), (1, 0.1),      #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0.1, 7.1),   (1.0, 0.2),   #scale keys
+     (0.4, 0.4, 4.1),           #emit box size
+     (0.0, 0.0, 0.0),                 #emit velocity
+     0.05,                       #emit dir randomness
+     100.0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+    ("explosion_smoke", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     800, 13, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 13.2),   (1, 10.0),    #scale keys
+     (0.5, 0.5, 5.5),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("explosion_smoke2", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     1000, 11, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 12.2),   (1, 10.0),    #scale keys
+     (1.7, 1.7, 1.4),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("explosion_particles", psf_randomize_size | psf_randomize_rotation,  "prt_mesh_straw_1",
+     4000, 20, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 0.3),   (1, 0.3),    #scale keys
+     (1.7, 1.7, 4.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("cannon_ball_hit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_c",
+     8000, 20, 1.5, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.8),   (1, 1.3),    #scale keys
+     (1.7, 1.7, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("cannonball_ground_smoke", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_c",
+     800, 3, 11, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 3.2),   (1, 2.0),    #scale keys
+     (0.2, 0.2, 3.8),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("cannonball_ground_smoke2", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_c",
+     1000, 4, 11, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 5.2),   (1, 2.0),    #scale keys
+     (0.7, 0.7, 1.8),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("explosives_fuse_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+     10, 1, 1.8, -0.0003, 20, 1.75,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.75), (0.85, 0),       #alpha keys
+     (0.0, 0.7), (1, 0.4),      #red keys
+     (0.0, 0.7),(1, 0.4),       #green keys
+     (0.0, 0.7), (1, 0.4),      #blue keys
+     (-0.04, 1.5),   (0.5, 5.75),   #scale keys
+     (0.02, 0.02, 0.02),           #emit box size
+     (-1.6, 0.6, 0.0),                 #emit velocity
+     0.0,                        #emit dir randomness
+    ),
+   ("wallhit_smoke", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     800, 15, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 19.2),   (1, 7.0),    #scale keys
+     (1.5, 1.5, 5.5),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("wallhit_smoke2", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     900, 13, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 9.2),   (1, 7.0),    #scale keys
+     (1.7, 1.7, 2.4),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("wallhit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_d",
+     250, 5, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.3),   (1, 1.3),    #scale keys
+     (1.1, 1.1, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("walldeserthit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_l",
+     250, 5, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.3),   (1, 1.3),    #scale keys
+     (1.1, 1.1, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    
+   ("fort_wallhit_smoke", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     20, 15, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 9.2),   (1, 6.0),    #scale keys
+     (0.5, 0.5, 5.5),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("fort_wallhit_smoke2", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     23, 13, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 8.2),   (1, 6.0),    #scale keys
+     (1.7, 1.7, 1.4),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("fort_wallhit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_e",
+     10, 15, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.3),   (1, 1.3),    #scale keys
+     (1.1, 1.1, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("woodwallhit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_f",
+     50, 5, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.3),   (1, 1.3),    #scale keys
+     (1.1, 1.1, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("musket_hit", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prtcl_dust_a",
+      500, 3, 8, 0.2, 2, 20, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 1), (1, 0),     #alpha keys
+      (0.0, 0.95), (1, 0.95),          #red keys
+      (0.0, 0.90), (1, 0.90),           #green keys
+      (0.0, 0.70), (1, 0.70),          #blue keys
+      (0, 3), (0.8, 5),  #scale keys
+      (0, 0, 0),         #emit box size
+      (0, 0, 10),               #emit velocity
+      3,                      #emit dir randomness
+      100,                     #rotation speed
+      0.2,                       #rotation damping
+    ),
+	("musket_hit_particle", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation| psf_global_emit_dir, "prt_mesh_mud_1",
+	2000, 2, 0.2, 2, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 1), (1, 1),     #alpha keys
+      (0.0, 0.1), (1, 0.1),          #red keys
+      (0.0, 0.1), (1, 0.1),           #green keys
+      (0.0, 0.1), (1, 0.1),          #blue keys
+      (0.0, 0.125), (0.8, 0.125),  #scale keys
+      (0, 0, 0),         #emit box size
+      (0, 0, 8),               #emit velocity
+      3,                      #emit dir randomness
+      100,                     #rotation speed
+      0.1,                       #rotation damping
+    ),
+	("musket_hit_objects", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation, "prtcl_dust_a",
+        500, 3.5, 6, 0, 2, 40, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+        (0.0, 1), (1, 0),     #alpha keys
+        (0.0, 0.95), (1, 0.95),          #red keys
+        (0.0, 0.90), (1, 0.90),           #green keys
+        (0.0, 0.80), (1, 0.80),          #blue keys
+        (0, 1), (0.75, 10),  #scale keys
+        (0, 0, 0),         #emit box size
+        (0, -15, 0),               #emit velocity
+        1,                      #emit dir randomness
+        100,                     #rotation speed
+        0.2,                       #rotation damping
+    ),
+    ("water_hit_a", psf_billboard_3d | psf_randomize_size | psf_randomize_rotation | psf_global_emit_dir, "prtcl_splash_b",
+        80, 1.5, 4, 0.8, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+        (0.0, 1), (1, 0),     #alpha keys
+        (0.0, 0.95), (1, 0.95),          #red keys
+        (0.0, 0.90), (1, 0.90),           #green keys
+        (0.0, 0.70), (1, 0.70),          #blue keys
+        (0, 0.3), (1, 2),  #scale keys
+        (0, 0, 0),         #emit box size
+        (0, 0, 6),               #emit velocity
+        0,                      #emit dir randomness
+        100,                     #rotation speed
+        0.2,                       #rotation damping
+        ),
+		
+		("water_hit_b",psf_randomize_size | psf_randomize_rotation | psf_turn_to_velocity|psf_global_emit_dir, "prtcl_splash_b",
+      4, 3, 0, 0, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 1), (1, 0),     #alpha keys
+      (0.0, 0.95), (1, 0.95),          #red keys
+      (0.0, 0.90), (1, 0.90),           #green keys
+      (0.0, 0.70), (1, 0.70),          #blue keys
+      (0, 1), (1, 5),  #scale keys
+      (0.1, 0.1, 0),         #emit box size
+      (0, 0, -0.01),               #emit velocity
+      0,                      #emit dir randomness
+      25,                     #rotation speed
+      0.15,                       #rotation damping
+    ),
+    
+    ("cannonball_water_hit_a", psf_billboard_3d | psf_randomize_size | psf_randomize_rotation | psf_global_emit_dir, "prtcl_splash_b",
+        110, 2.5, 4, 0.5, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+        (0.0, 1), (1, 0),     #alpha keys
+        (0.0, 0.95), (1, 0.95),          #red keys
+        (0.0, 0.90), (1, 0.90),           #green keys
+        (0.0, 0.70), (1, 0.70),          #blue keys
+        (0, 0.3), (1, 7),  #scale keys
+        (0, 0, 0),         #emit box size
+        (0, 0, 13),               #emit velocity
+        0,                      #emit dir randomness
+        100,                     #rotation speed
+        0.2,                       #rotation damping
+        ),
+		
+    ("cannonball_water_hit_b",psf_randomize_size | psf_randomize_rotation | psf_turn_to_velocity|psf_global_emit_dir, "prtcl_splash_b",
+      4, 4, 0, 0, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 1), (1, 0),     #alpha keys
+      (0.0, 0.95), (1, 0.95),          #red keys
+      (0.0, 0.90), (1, 0.90),           #green keys
+      (0.0, 0.70), (1, 0.70),          #blue keys
+      (0, 1), (1, 12),  #scale keys
+      (0.1, 0.1, 0),         #emit box size
+      (0, 0, -0.01),               #emit velocity
+      0,                      #emit dir randomness
+      25,                     #rotation speed
+      0.15,                       #rotation damping
+    ),
+    
+   ("mm_rain_drop",psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prtcl_drop",
+      1, 0.288, 0, 0, 10.5, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 0.8), (1, 0),     #alpha keys
+      (0.0, 0.8), (1, 1),          #red keys
+      (0.0, 0.8), (1, 1),           #green keys
+      (0.0, 1), (1, 1),          #blue keys
+      (0, 0.05), (1, 2.9),  #scale keys
+      (0.3, 0.3, 0.03),         #emit box size
+      (0, 0, 0),               #emit velocity
+      0,                      #emit dir randomness
+      0,                     #rotation speed
+      0.5,                       #rotation damping
+    ),
+
+    ("mm_rain_wave",psf_randomize_size | psf_randomize_rotation | psf_turn_to_velocity|psf_global_emit_dir, "prtcl_splash_b",
+      1, 1, 0, 0, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+      (0.0, 1), (1, 0),     #alpha keys
+      (0.0, 0.95), (1, 0.95),          #red keys
+      (0.0, 0.90), (1, 0.90),           #green keys
+      (0.0, 0.70), (1, 0.70),          #blue keys
+      (0, 1), (1, 1.5),  #scale keys
+      (0.1, 0.1, 0),         #emit box size
+      (0, 0, -0.01),               #emit velocity
+      0,                      #emit dir randomness
+      25,                     #rotation speed
+      0.15,                       #rotation damping
+    ),
+
+
+    ("mm_watersplash", psf_emit_at_water_level , "prt_mesh_water_wave_1",
+     5, 2.0, 0, 0.0, 10.0, 0.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.03, 0.2), (1, 0.0),        #alpha keys
+     (1.0, 1.0), (1, 1.0),      #red keys
+     (1.0, 1.0), (1, 1.0),      #green keys
+     (1.0, 1.0), (1, 1.0),      #blue keys
+     (0.0, 3),   (1.0, 10),   #scale keys
+     (0.0, 0.0, 0.0),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     0.0,                       #emit dir randomness
+     0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+  ("mm_bug_fly_1", psf_billboard_2d | psf_always_emit, "prtcl_dust_i",
+     2, 18, 0.02, -0.025, 1, 5,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),        #alpha keys
+     (0, 0.5), (1, 0.5),      #red keys
+     (0, 0.5), (1, 0.5),      #green keys
+     (0, 0.5), (1, 0.5),      #blue keys
+     (0, 1.25),   (1, 1.25),    #scale keys
+     (10, 5, 0.1),             #emit box size
+     (0, 0, -0.9),              #emit velocity
+      0.01,                        #emit dir randomness
+      10,                        #rotation speed
+      0,                         #rotation damping
+    ),
+  ("mm_bug_fly_2", psf_billboard_2d | psf_always_emit, "prtcl_dust_j",
+     2, 18, 0.02, -0.025, 1, 5,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),        #alpha keys
+     (0, 0.5), (1, 0.5),      #red keys
+     (0, 0.5), (1, 0.5),      #green keys
+     (0, 0.5), (1, 0.5),      #blue keys
+     (0, 1.25),   (1, 1.25),    #scale keys
+     (10, 5, 0.1),             #emit box size
+     (0, 0, -0.9),              #emit velocity
+      0.01,                        #emit dir randomness
+      10,                        #rotation speed
+      0,                         #rotation damping
+    ),
+  ("mm_bug_fly_3", psf_billboard_2d | psf_always_emit, "prtcl_dust_k",
+     2, 18, 0.02, -0.025, 1, 5,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),        #alpha keys
+     (0, 0.5), (1, 0.5),      #red keys
+     (0, 0.5), (1, 0.5),      #green keys
+     (0, 0.5), (1, 0.5),      #blue keys
+     (0, 1.25),   (1, 1.25),    #scale keys
+     (10, 5, 0.1),             #emit box size
+     (0, 0, -0.9),              #emit velocity
+      0.01,                        #emit dir randomness
+      10,                        #rotation speed
+      0,                         #rotation damping
+    ),
+    ("cannon_ball_hit_particles_snow", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_h",
+     9000, 20, 1.5, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.8),   (1, 1.3),    #scale keys
+     (1.7, 1.7, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    ("cannonball_ground_smoke_snow", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_h",
+     1000, 3, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 3.2),   (1, 2.0),    #scale keys
+     (0.2, 0.2, 3.8),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("cannonball_ground_smoke2_snow", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_h",
+     1300, 4, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 5.2),   (1, 2.0),    #scale keys
+     (0.7, 0.7, 1.8),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+    ("rocket_smoke", psf_billboard_3d|psf_randomize_size|psf_randomize_rotation|psf_always_emit, "prtcl_dust_a", # psf_global_emit_dir psf_billboard_3d | psf_randomize_size psf_always_emit
+     80, 12.6, 1.9, -0.0003, 90, 4,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.0, 0.55), (0.549, 0),       #alpha keys
+     (0.0, 0.99), (1, 0.99),      #red keys
+     (0.0, 0.99),(1, 0.99),       #green keys
+     (0.0, 0.99), (1, 0.99),      #blue keys
+     (-0.07, 1.5),   (0.5, 3.75),   #scale keys
+     (0.02, 0.02, 0.02),           #emit box size
+     (-1.6, 0.6, 0.0),                 #emit velocity
+     0.0,                        #emit dir randomness                       
+    ),
+  ("fort_complete_wallhit_smoke", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     20, 15, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.6, 9.2),   (1, 6.0),    #scale keys
+     (0.5, 0.5, 5.5),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     0.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("fort_complete_wallhit_smoke2", psf_billboard_3d|psf_randomize_size,  "prtcl_dust_a",
+     23, 13, 15, -0.04, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (10.0, 8.2),   (1, 6.0),    #scale keys
+     (1.7, 1.7, 1.4),           #emit box size
+     (-1.2, 0, 0.05),               #emit velocity
+     1.8,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
+   ("fort_complete_wallhit_particles", psf_randomize_size | psf_randomize_rotation,  "prtcl_dust_e",
+     10, 15, 2, 0.58, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1.3),   (1, 1.3),    #scale keys
+     (1.1, 1.1, 5.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
 
   # PN END ***********************************************************************************************
 
@@ -470,19 +1094,6 @@ particle_systems = [
     rotation_speed=0.0,
     rotation_damping=0.0),
 
-  psys("pistol_smoke", psf_billboard_3d, "prtcl_dust_a",
-    number=90.0, life=2.5, damping=0.6, gravity=-0.2, turbulence_size=60.0, turbulence_strength=1.5,
-    alpha=[(0.0, 0.75), (1.0, 0.0)],
-    red=  [(0.0, 0.7), (1.0, 0.4)],
-    green=[(0.0, 0.7), (1.0, 0.4)],
-    blue= [(0.0, 0.7), (1.0, 0.4)],
-    scale=[(0.0, 1.5), (0.5, 11.0)],
-    emit_box=     (0.1, 0.1, 0.1),
-    emit_velocity=(2.0, 2.0, 0.0),
-    emit_direction_randomness=0.1,
-    rotation_speed=0.0,
-    rotation_damping=0.0),
-
   psys("brazier_fire_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
     number=25.0, life=0.5, damping=0.1, gravity=0.0, turbulence_size=10.0, turbulence_strength=0.0,
     alpha=[(0.5, 0.4), (1.0, 0.0)],
@@ -574,137 +1185,147 @@ particle_systems = [
     rotation_speed=100.0,
     rotation_damping=0.5),
 
-  psys("dummy_smoke", psf_billboard_3d|psf_randomize_size, "prt_mesh_dust_1",
-    number=500.0, life=3.0, damping=15.0, gravity=-0.05, turbulence_size=10.0, turbulence_strength=0.2,
-    alpha=[(0.1, 0.5), (1.0, 0.0)],
-    red=  [(0.1, 0.8), (1.0, 0.8)],
-    green=[(0.1, 0.7), (1.0, 0.7)],
-    blue= [(0.1, 0.6), (1.0, 0.7)],
-    scale=[(0.0, 0.7), (1.0, 2.2)],
-    emit_box=     (0.2, 0.2, 0.5),
-    emit_velocity=(0.0, 0.0, 0.05),
-    emit_direction_randomness=2.0,
-    rotation_speed=10.0,
-    rotation_damping=0.1),
+  ("dummy_smoke", psf_billboard_3d|psf_randomize_size,  "prt_mesh_dust_1",
+     500, 3, 15, -0.05, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.0, 0.7),   (1, 2.2),    #scale keys
+     (0.2, 0.2, 0.5),           #emit box size
+     (0, 0, 0.05),               #emit velocity
+     2,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
 
-  psys("dummy_straw", psf_randomize_size|psf_randomize_rotation, "prt_mesh_straw_1",
-    number=500.0, life=1.0, damping=2.0, gravity=0.9, turbulence_size=10.0, turbulence_strength=2.0,
-    alpha=[(0.1, 1.0), (1.0, 1.0)],
-    red=  [(0.1, 0.6), (1.0, 0.6)],
-    green=[(0.1, 0.5), (1.0, 0.5)],
-    blue= [(0.1, 0.4), (1.0, 0.4)],
-    scale=[(0.0, 0.3), (1.0, 0.3)],
-    emit_box=     (0.2, 0.2, 0.5),
-    emit_velocity=(0.0, 0.0, 0.0),
-    emit_direction_randomness=2.3,
-    rotation_speed=200.0,
-    rotation_damping=0.0),
+    ("dummy_straw", psf_randomize_size | psf_randomize_rotation,  "prt_mesh_straw_1",
+     500, 1, 2, 0.9, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 0.3),   (1, 0.3),    #scale keys
+     (0.2, 0.2, 0.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
 
-  psys("dummy_smoke_big", psf_billboard_3d|psf_randomize_size, "prt_mesh_dust_1",
-    number=500.0, life=9.0, damping=15.0, gravity=-0.05, turbulence_size=10.0, turbulence_strength=0.2,
-    alpha=[(0.1, 0.9), (1.0, 0.0)],
-    red=  [(0.1, 0.8), (1.0, 0.8)],
-    green=[(0.1, 0.7), (1.0, 0.7)],
-    blue= [(0.1, 0.6), (1.0, 0.7)],
-    scale=[(0.0, 5.0), (1.0, 15.0)],
-    emit_box=     (3.0, 3.0, 5.0),
-    emit_velocity=(0.0, 0.0, 0.05),
-    emit_direction_randomness=2.0,
-    rotation_speed=10.0,
-    rotation_damping=0.1),
+    ("dummy_smoke_big", psf_billboard_3d|psf_randomize_size,  "prt_mesh_dust_1",
+     500, 9, 15, -0.05, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.9), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.0, 5),   (1, 15.0),    #scale keys
+     (3, 3, 5),           #emit box size
+     (0, 0, 0.05),               #emit velocity
+     2,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
 
-  psys("dummy_straw_big", psf_randomize_size|psf_randomize_rotation, "prt_mesh_straw_1",
-    number=500.0, life=3.0, damping=2.0, gravity=2.0, turbulence_size=10.0, turbulence_strength=2.0,
-    alpha=[(0.1, 1.0), (1.0, 1.0)],
-    red=  [(0.1, 0.6), (1.0, 0.6)],
-    green=[(0.1, 0.5), (1.0, 0.5)],
-    blue= [(0.1, 0.4), (1.0, 0.4)],
-    scale=[(0.0, 0.8), (1.0, 0.8)],
-    emit_box=     (3.0, 3.0, 3.0),
-    emit_velocity=(0.0, 0.0, 0.0),
-    emit_direction_randomness=2.3,
-    rotation_speed=200.0,
-    rotation_damping=0.0),
+    ("dummy_straw_big", psf_randomize_size | psf_randomize_rotation,  "prt_mesh_straw_1",
+     500, 3, 2, 2.0, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 0.8),   (1, 0.8),    #scale keys
+     (3, 3, 3),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
 
-  psys("gourd_smoke", psf_billboard_3d|psf_randomize_size, "prt_mesh_dust_1",
-    number=500.0, life=3.0, damping=15.0, gravity=-0.05, turbulence_size=10.0, turbulence_strength=0.2,
-    alpha=[(0.1, 0.5), (1.0, 0.0)],
-    red=  [(0.1, 0.8), (1.0, 0.8)],
-    green=[(0.1, 0.7), (1.0, 0.7)],
-    blue= [(0.1, 0.6), (1.0, 0.7)],
-    scale=[(0.0, 0.5), (1.0, 1.0)],
-    emit_box=     (0.2, 0.2, 0.5),
-    emit_velocity=(0.0, 0.0, 0.05),
-    emit_direction_randomness=2.0,
-    rotation_speed=10.0,
-    rotation_damping=0.1),
+  ("gourd_smoke", psf_billboard_3d|psf_randomize_size,  "prt_mesh_dust_1",
+     500, 3, 15, -0.05, 10.0, 0.2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.5), (1, 0),        #alpha keys
+     (0.1, 0.8), (1, 0.8),      #red keys
+     (0.1, 0.7),(1, 0.7),       #green keys
+     (0.1, 0.6), (1, 0.7),      #blue keys
+     (0.0, 0.5),   (1, 1),    #scale keys
+     (0.2, 0.2, 0.5),           #emit box size
+     (0, 0, 0.05),               #emit velocity
+     2,                         #emit dir randomness
+     10,                        #rotation speed
+     0.1,                       #rotation damping
+    ),
 
-  psys("gourd_piece_1", psf_randomize_rotation, "prt_gourd_piece_1",
-    number=15.0, life=1.0, damping=2.0, gravity=0.9, turbulence_size=10.0, turbulence_strength=2.0,
-    alpha=[(0.1, 1.0), (1.0, 1.0)],
-    red=  [(0.1, 0.6), (1.0, 0.6)],
-    green=[(0.1, 0.5), (1.0, 0.5)],
-    blue= [(0.1, 0.4), (1.0, 0.4)],
-    scale=[(0.0, 1.0), (1.0, 1.0)],
-    emit_box=     (0.2, 0.2, 0.5),
-    emit_velocity=(0.0, 0.0, 0.0),
-    emit_direction_randomness=2.3,
-    rotation_speed=200.0,
-    rotation_damping=0.0),
+    ("gourd_piece_1", psf_randomize_rotation,  "prt_gourd_piece_1",
+     15, 1, 2, 0.9, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1),   (1, 1),    #scale keys
+     (0.2, 0.2, 0.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
+    
+    ("gourd_piece_2", psf_randomize_size | psf_randomize_rotation,  "prt_gourd_piece_2",
+     50, 1, 2, 0.9, 10, 2,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 1), (1, 1),          #alpha keys
+     (0.1, 0.6), (1, 0.6),      #red keys
+     (0.1, 0.5),(1, 0.5),       #green keys
+     (0.1, 0.4), (1, 0.4),      #blue keys
+     (0.0, 1),   (1, 1),    #scale keys
+     (0.2, 0.2, 0.5),           #emit box size
+     (0, 0, 0),                 #emit velocity
+     2.3,                       #emit dir randomness
+     200,                       #rotation speed
+     0,                       #rotation damping
+    ),
 
-  psys("gourd_piece_2", psf_randomize_size|psf_randomize_rotation, "prt_gourd_piece_2",
-    number=50.0, life=1.0, damping=2.0, gravity=0.9, turbulence_size=10.0, turbulence_strength=2.0,
-    alpha=[(0.1, 1.0), (1.0, 1.0)],
-    red=  [(0.1, 0.6), (1.0, 0.6)],
-    green=[(0.1, 0.5), (1.0, 0.5)],
-    blue= [(0.1, 0.4), (1.0, 0.4)],
-    scale=[(0.0, 1.0), (1.0, 1.0)],
-    emit_box=     (0.2, 0.2, 0.5),
-    emit_velocity=(0.0, 0.0, 0.0),
-    emit_direction_randomness=2.3,
-    rotation_speed=200.0,
-    rotation_damping=0.0),
+  ("fire_fly_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit, "prt_sparks_mesh_1",
+     2, 5, 1.2, 0, 50, 7,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.1, 0.8), (1, 0.2),        #alpha keys
+     (0.5, .7), (1, 0.7),      #red keys
+     (0.5, 0.8), (1, 0.8),      #green keys
+     (0.5, 1), (1, 1),      #blue keys
+     (0, 0.1),   (1, 0.1),    #scale keys
+     (20, 20, 0.5),             #emit box size
+     (0, 0, 0),              #emit velocity
+      5,                        #emit dir randomness
+      0,                        #rotation speed
+      0,                         #rotation damping
+    ),
 
-  psys("fire_fly_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit, "prt_sparks_mesh_1",
-    number=2.0, life=5.0, damping=1.2, gravity=0.0, turbulence_size=50.0, turbulence_strength=7.0,
-    alpha=[(0.1, 0.8), (1.0, 0.2)],
-    red=  [(0.5, 0.7), (1.0, 0.7)],
-    green=[(0.5, 0.8), (1.0, 0.8)],
-    blue= [(0.5, 1.0), (1.0, 1.0)],
-    scale=[(0.0, 0.1), (1.0, 0.1)],
-    emit_box=     (20.0, 20.0, 0.5),
-    emit_velocity=(0.0, 0.0, 0.0),
-    emit_direction_randomness=5.0,
-    rotation_speed=0.0,
-    rotation_damping=0.0),
+     ("bug_fly_1", psf_billboard_2d | psf_always_emit, "prt_mesh_rose_a",
+     20, 8, 0.02, 0.025, 1, 5,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),        #alpha keys
+     (0, 0.5), (1, 0.5),      #red keys
+     (0, 0.5), (1, 0.5),      #green keys
+     (0, 0.5), (1, 0.5),      #blue keys
+     (0, 0.25),   (1, 0.25),    #scale keys
+     (10, 5, 0.1),             #emit box size
+     (0, 0, -0.9),              #emit velocity
+      0.01,                        #emit dir randomness
+      10,                        #rotation speed
+      0,                         #rotation damping
+    ),
 
-  psys("bug_fly_1", psf_billboard_2d|psf_always_emit, "prt_mesh_rose_a",
-    number=20.0, life=8.0, damping=0.02, gravity=0.025, turbulence_size=1.0, turbulence_strength=5.0,
-    alpha=[(0.0, 1.0), (1.0, 1.0)],
-    red=  [(0.0, 0.5), (1.0, 0.5)],
-    green=[(0.0, 0.5), (1.0, 0.5)],
-    blue= [(0.0, 0.5), (1.0, 0.5)],
-    scale=[(0.0, 0.25), (1.0, 0.25)],
-    emit_box=     (10.0, 5.0, 0.1),
-    emit_velocity=(0.0, 0.0, -0.9),
-    emit_direction_randomness=0.01,
-    rotation_speed=10.0,
-    rotation_damping=0.0),
+  ("moon_beam_1", psf_billboard_2d|psf_global_emit_dir|psf_always_emit|psf_randomize_size, "prt_mesh_moon_beam",#prt_mesh_moon_beam
+     2, 4, 1.2, 0, 0, 0,          #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.5, 1), (1, 0),            #alpha keys
+     (0, 0.4), (1, 0.4),                #red keys
+     (0, 0.5), (1, 0.5),                #green keys
+     (0, 0.6), (1, 0.6),                #blue keys
+     (0, 2),   (1, 2.2),        #scale keys
+     (1, 1, 0.2),                 #emit box size
+     (0, 0, -2),                     #emit velocity
+      0,                            #emit dir randomness
+      100,                          #rotation speed
+      0.5,                          #rotation damping
+       ),
 
-  psys("moon_beam_1", psf_billboard_2d|psf_global_emit_dir|psf_always_emit|psf_randomize_size, "prt_mesh_moon_beam",
-    number=2.0, life=4.0, damping=1.2, gravity=0.0, turbulence_size=0.0, turbulence_strength=0.0,
-    alpha=[(0.5, 1.0), (1.0, 0.0)],
-    red=  [(0.0, 0.4), (1.0, 0.4)],
-    green=[(0.0, 0.5), (1.0, 0.5)],
-    blue= [(0.0, 0.6), (1.0, 0.6)],
-    scale=[(0.0, 2.0), (1.0, 2.2)],
-    emit_box=     (1.0, 1.0, 0.2),
-    emit_velocity=(0.0, 0.0, -2),
-    emit_direction_randomness=0.0,
-    rotation_speed=100.0,
-    rotation_damping=0.5),
-
-  psys("moon_beam_particle_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size, "prt_sparks_mesh_1",
+   psys("moon_beam_particle_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size, "prt_sparks_mesh_1",
     number=10.0, life=1.5, damping=1.5, gravity=0.0, turbulence_size=10.0, turbulence_strength=10.0,
     alpha=[(0.5, 1.0), (1.0, 0.0)],
     red=  [(0.5, 0.5), (1.0, 0.5)],
@@ -717,44 +1338,46 @@ particle_systems = [
     rotation_speed=0.0,
     rotation_damping=0.0),
 
-  psys("night_smoke_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit, "prt_mesh_dust_1",
-    number=5.0, life=10.0, damping=1.5, gravity=0.0, turbulence_size=50.0, turbulence_strength=2.0,
-    alpha=[(0.3, 0.1), (1.0, 0.0)],
-    red=  [(0.5, 0.5), (1.0, 0.5)],
-    green=[(0.5, 0.5), (1.0, 0.5)],
-    blue= [(0.5, 0.5), (1.0, 0.6)],
-    scale=[(0.0, 10.0), (1.0, 10.0)],
-    emit_box=     (25.0, 25.0, 0.5),
-    emit_velocity=(0.0, 1.0, 0.0),
-    emit_direction_randomness=2.0,
-    rotation_speed=20.0,
-    rotation_damping=1.0),
-
-  psys("fireplace_fire_small", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
-    number=25.0, life=0.8, damping=0.2, gravity=-0.1, turbulence_size=10.0, turbulence_strength=0.0,
-    alpha=[(0.5, 0.5), (1.0, 0.0)],
-    red=  [(0.5, 1.0), (1.0, 0.9)],
-    green=[(0.5, 0.7), (1.0, 0.3)],
-    blue= [(0.5, 0.2), (1.0, 0.0)],
-    scale=[(0.0, 0.2), (1.0, 0.7)],
-    emit_box=     (0.2, 0.1, 0.01),
-    emit_velocity=(0.0, 0.0, 0.2),
-    emit_direction_randomness=0.1,
-    rotation_speed=100.0,
-    rotation_damping=0.5),
-
-  psys("fireplace_fire_big", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
-    number=35.0, life=0.6, damping=0.2, gravity=-0.2, turbulence_size=10.0, turbulence_strength=0.0,
-    alpha=[(0.5, 0.5), (1.0, 0.0)],
-    red=  [(0.5, 1.0), (1.0, 0.9)],
-    green=[(0.5, 0.7), (1.0, 0.3)],
-    blue= [(0.5, 0.2), (1.0, 0.0)],
-    scale=[(0.0, 0.4), (1.0, 1.0)],
-    emit_box=     (0.4, 0.2, 0.01),
-    emit_velocity=(0.0, 0.0, 0.4),
-    emit_direction_randomness=0.1,
-    rotation_speed=100.0,
-    rotation_damping=0.5),
+  ("night_smoke_1", psf_billboard_3d|psf_global_emit_dir|psf_always_emit, "prt_mesh_dust_1",
+     5, 10, 1.5, 0, 50, 2,      #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.3, 0.1), (1, 0),        #alpha keys
+     (0.5, 0.5), (1, 0.5),      #red keys
+     (0.5, 0.5), (1, 0.5),      #green keys
+     (0.5, 0.5), (1, 0.6),      #blue keys
+     (0, 10),   (1, 10),        #scale keys
+     (25, 25, 0.5),               #emit box size
+     (0, 1, 0),                 #emit velocity
+      2,                        #emit dir randomness
+      20,                       #rotation speed
+      1,                         #rotation damping
+       ),
+#-*-*-*- Fire For Fireplace -*-*-*-#
+    ("fireplace_fire_small", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
+     25, 0.8, 0.2, -0.1, 10.0, 0.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.5, 0.5), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.7),(1, 0.3),       #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0, 0.2),   (1, 0.7),   #scale keys
+     (0.2, 0.1, 0.01),      #emit box size
+     (0, 0, 0.2),               #emit velocity
+     0.1,                       #emit dir randomness
+     100,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+    ("fireplace_fire_big", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
+     35, 0.6, 0.2, -0.2, 10.0, 0.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.5, 0.5), (1, 0),        #alpha keys
+     (0.5, 1.0), (1, 0.9),      #red keys
+     (0.5, 0.7),(1, 0.3),       #green keys
+     (0.5, 0.2), (1, 0.0),      #blue keys
+     (0, 0.4),   (1, 1),   #scale keys
+     (0.4, 0.2, 0.01),            #emit box size
+     (0, 0, 0.4),               #emit velocity
+     0.1,                       #emit dir randomness
+     100,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
 
   psys("village_fire_big", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
     number=50.0, life=1.0, damping=0.0, gravity=-1.2, turbulence_size=25.0, turbulence_strength=10.0,
@@ -821,18 +1444,19 @@ particle_systems = [
     rotation_speed=0.0,
     rotation_damping=0.1),
 
-  psys("dungeon_water_drops", psf_billboard_2d|psf_global_emit_dir|psf_always_emit, "prtcl_rain",
-    number=1.0, life=1.0, damping=0.33, gravity=0.8, turbulence_size=0.0, turbulence_strength=0.0,
-    alpha=[(1.0, 0.2), (1.0, 0.2)],
-    red=  [(1.0, 1.0), (1.0, 1.0)],
-    green=[(1.0, 1.0), (1.0, 1.0)],
-    blue= [(1.0, 1.0), (1.0, 1.0)],
-    scale=[(1.0, 0.8), (1.0, 0.8)],
-    emit_box=     (0.05, 0.05, 0.5),
-    emit_velocity=(0.0, 0.0, -5.0),
-    emit_direction_randomness=0.0,
-    rotation_speed=0.0,
-    rotation_damping=0.0),
+  ("dungeon_water_drops", psf_billboard_2d|psf_global_emit_dir|psf_always_emit, "prtcl_rain",
+     1, 1, 0.33, 0.8, 0, 0, #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (1.0, 0.2), (1, 0.2),      #alpha keys
+     (1.0, 1.0), (1, 1.0),      #red keys
+     (1.0, 1.0), (1, 1.0),      #green keys
+     (1.0, 1.0), (1, 1.0),      #blue keys
+     (1.0, 0.8),   (1.0, 0.8),  #scale keys
+     (0.05, 0.05, 0.5),         #emit box size
+     (0, 0, -5.0),              #emit velocity
+     0.0,                       #emit dir randomness
+     0,                         #rotation speed
+     0,                         #rotation damping
+     ),
 
   psys("wedding_rose", psf_billboard_2d|psf_always_emit, "prt_mesh_rose_a",
     number=50.0, life=8.0, damping=0.02, gravity=0.025, turbulence_size=1.0, turbulence_strength=5.0,
@@ -847,31 +1471,32 @@ particle_systems = [
     rotation_speed=10.0,
     rotation_damping=0.0),
 
-  psys("sea_foam_a", psf_turn_to_velocity|psf_always_emit|psf_randomize_size, "prt_foam_a",
-    number=1.0, life=3.0, damping=1.0, gravity=0.0, turbulence_size=0.0, turbulence_strength=0.0,
-    alpha=[(0.7, 0.1), (1.0, 0.0)],
-    red=  [(1.0, 1.0), (1.0, 1.0)],
-    green=[(1.0, 1.0), (1.0, 1.0)],
-    blue= [(1.0, 1.0), (1.0, 1.0)],
-    scale=[(0.0, 4.0), (1.0, 4.5)],
-    emit_box=     (10.0, 1.0, 0.0),
-    emit_velocity=(0.0, 1.0, 0.0),
-    emit_direction_randomness=0.0,
-    rotation_speed=0.0,
-    rotation_damping=0.5),
-
-  psys("fall_leafs_a", psf_billboard_2d|psf_always_emit, "prt_mesh_yrellow_leaf_a",
-    number=1.0, life=9.0, damping=0.0, gravity=0.025, turbulence_size=4.0, turbulence_strength=4.0,
-    alpha=[(0.0, 1.0), (1.0, 1.0)],
-    red=  [(0.0, 0.5), (1.0, 0.5)],
-    green=[(0.0, 0.5), (1.0, 0.5)],
-    blue= [(0.0, 0.5), (1.0, 0.5)],
-    scale=[(0.0, 0.25), (1.0, 0.25)],
-    emit_box=     (4.0, 4.0, 4.0),
-    emit_velocity=(0.0, 0.01, -0.9),
-    emit_direction_randomness=0.02,
-    rotation_speed=15.0,
-    rotation_damping=0.0),
+  ("sea_foam_a", psf_turn_to_velocity | psf_always_emit|psf_randomize_size, "prt_foam_a",
+     1, 3.0, 1, 0.0, 0.0, 0.0,     #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0.7, 0.1), (1, 0.0),        #alpha keys
+     (1.0, 1.0), (1, 1.0),      #red keys
+     (1.0, 1.0), (1, 1.0),      #green keys
+     (1.0, 1.0), (1, 1.0),      #blue keys
+     (0.0, 4),   (1.0, 4.5),   #scale keys
+     (10.0, 1.0, 0),           #emit box size
+     (0, 1, 0),                 #emit velocity
+     0.0,                       #emit dir randomness
+     0,                       #rotation speed
+     0.5,                        #rotation damping
+    ),
+    ("fall_leafs_a", psf_billboard_2d | psf_always_emit, "prt_mesh_yrellow_leaf_a",
+     1, 9, 0, 0.025, 4, 4,      #num_particles, life, damping, gravity_strength, turbulance_size, turbulance_strength
+     (0, 1), (1, 1),            #alpha keys
+     (0, 0.5), (1, 0.5),        #red keys
+     (0, 0.5), (1, 0.5),        #green keys
+     (0, 0.5), (1, 0.5),        #blue keys
+     (0, 0.25),   (1, 0.25),    #scale keys
+     (4, 4, 4),                 #emit box size
+     (0, 0.01, -0.9),           #emit velocity
+      0.02,                     #emit dir randomness
+      15,                       #rotation speed
+      0,                        #rotation damping
+    ),
 
   psys("wood_heap_fire", psf_billboard_3d|psf_global_emit_dir|psf_always_emit|psf_randomize_size|psf_randomize_rotation, "prt_mesh_fire_1",
     number=50.0, life=0.7, damping=0.0, gravity=-0.8, turbulence_size=25.0, turbulence_strength=10.0,

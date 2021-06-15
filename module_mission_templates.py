@@ -161,6 +161,36 @@ before_mission_start_setup = (ti_before_mission_start, 0, 0, [], # set up basic 
     (try_end),
     ])
 
+# PN START *******************************************************************************************************************
+
+multiplayer_client_surrender = (
+    0, 0.5, 0.1, [
+    (neg|multiplayer_is_dedicated_server),
+    (neg|is_presentation_active, "prsnt_multiplayer_admin_chat"),
+    (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
+    (neg|is_presentation_active, "prsnt_multiplayer_custom_chat"),
+    (game_key_clicked,gk_party_window),
+    (try_begin),
+      (call_script,"script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
+      (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
+    (try_end),
+    ],
+    [
+      (try_begin),
+        (call_script,"script_client_get_my_agent"),
+        (assign,":agent_id",reg0),
+        (agent_is_active,":agent_id"),
+        (agent_is_alive,":agent_id"),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
+      (try_end),
+])
+
+# PN END *******************************************************************************************************************
+
 after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move certain things after most other set up is done
    [(set_spawn_effector_scene_prop_kind, 0, -1),
     (set_spawn_effector_scene_prop_kind, 1, -1),
