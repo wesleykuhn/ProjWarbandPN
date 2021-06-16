@@ -165,7 +165,7 @@ animations = [
  [0.8, "run_man_forward_onehanded", 0, 24, arf_use_walk_progress|arf_cyclic|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.4],
 ],
 ["run_forward_staff", acf_enforce_lowerbody, amf_use_cycle_period|amf_client_prediction,
- [0.8, "AoN_run_forward_staff", 0, 24, arf_use_walk_progress|arf_cyclic|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.4],
+ [0.8, "run_forward_musket", 0, 24, arf_use_walk_progress|arf_cyclic|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.4]
 ],
 ["run_forward_greatsword", acf_enforce_lowerbody, amf_use_cycle_period|amf_client_prediction,
  [0.8, "AoN_run_forward_staff", 0, 24, arf_use_walk_progress|arf_cyclic|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.4], 

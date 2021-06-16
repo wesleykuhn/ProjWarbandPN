@@ -1438,132 +1438,6 @@ scripts.extend([
           (prop_instance_get_position, pos1, ":instance_id"),
           (play_sound_at_position, ":sound_id", pos1),
         (try_end),
-
-    # PN START *******************************************************************************************************
-
-      (else_try),
-          (eq, ":event_type", multiplayer_event_send_player_action),
-          (try_begin),
-            (store_script_param, ":action_type", 3),
-            (is_between,":action_type",player_actions_begin,player_actions_end),
-
-            (try_begin),
-              (eq,":action_type",player_action_has_cheat),
-              (kick_player,":player_no"),
-            (try_end),
-
-            (player_get_agent_id, ":player_agent", ":player_no"),
-            (agent_is_active,":player_agent"),
-           
-            (try_begin),
-              (eq,":action_type",player_action_voice),
-              (store_script_param, ":action", 4),
-              (is_between,":action",voice_types_begin,voice_types_end),
-              (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
-
-            (else_try),
-              (eq,":action_type",player_action_music),
-              (store_script_param, ":action", 4),
-              (is_between,":action",music_types_begin,music_types_end),
-
-              (try_begin),
-                (eq,":action",music_type_start),
-                (store_script_param, ":track_index", 5),
-
-                (try_begin),
-                  (store_mission_timer_a,":cur_time"),
-                  (agent_get_slot,":started_playing_music_at",":player_agent",slot_agent_started_playing_music_at),
-                  (store_sub, ":elapsed_time", ":cur_time", ":started_playing_music_at"),
-                  (ge,":elapsed_time",1),
-                  (call_script,"script_multiplayer_server_agent_play_music", ":player_agent", ":track_index", 0),
-                (try_end),
-
-              (else_try),
-                (eq,":action",music_type_stop),
-                (call_script,"script_multiplayer_server_agent_stop_music", ":player_agent"),
-
-              (else_try),
-                (eq,":action",music_type_toggle_together),
-                (store_script_param, ":value", 5),
-                (is_between,":value",0,2),
-                (agent_set_slot,":player_agent",slot_agent_music_play_together,":value"),
-              (try_end),
-
-            (else_try),
-              (eq,":action_type",player_action_spyglass),
-              (store_script_param, ":action", 4),
-              (this_or_next|eq,":action",spyglass_type_start),
-              (eq,":action",spyglass_type_stop),
-              (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
-
-            (else_try),
-              (eq, ":action_type", player_action_misc_item_drinking),
-              (store_script_param, ":action", 4),
-              (this_or_next|eq, ":action", drinking_type_start),
-              (eq, ":action", drinking_type_stop),
-              (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
-
-            (else_try),
-              (eq, ":action_type", player_action_custom_order_menu_interact),
-
-            (else_try),
-              (eq,":action_type",player_action_toggle_walk),
-              (agent_is_alive,":player_agent"),
-              (assign,":contine",1),
-              (try_begin),
-                (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
-                (assign,":contine",0),
-              (try_end),
-
-              (eq,":contine",1),
-
-              (try_begin),
-                (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
-                (agent_set_animation,":player_agent","anim_surrender_end",1),
-              (try_end),
-
-              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-
-              (try_begin),
-                (this_or_next|eq,":value",350),
-                (eq,":value",100),
-                (assign,":value",55),
-              (else_try),
-                (assign,":value",100),
-                (agent_set_horse_speed_factor, ":player_agent", 100),
-              (try_end),
-
-              (set_fixed_point_multiplier,100),
-              (agent_set_speed_modifier,":player_agent", ":value"),
-              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
-
-            (else_try),
-              (eq,":action_type",player_action_surrender),
-              (agent_is_alive,":player_agent"),
-              (store_script_param, ":action", 4),
-              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-              (try_begin),
-                (eq,":action",music_type_start),
-                (agent_set_wielded_item,":player_agent",-1),  
-                (agent_set_animation,":player_agent","anim_surrender",1),
-                (assign,":value",55),
-                (agent_set_horse_speed_factor, ":player_agent", 55),
-
-              (else_try),
-                (eq,":action",music_type_stop),
-                (agent_set_animation,":player_agent","anim_surrender_end",1),
-                (assign,":value",100),
-                (agent_set_horse_speed_factor, ":player_agent", 100),
-              (try_end),
-
-              (set_fixed_point_multiplier,100),
-              (agent_set_speed_modifier,":player_agent", ":value"),
-              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
-            (try_end),
-          (try_end),
-
-    # PN END *********************************************************************************************************
-
       (else_try), # play a sound at a position, the coordinate values packed into one integer for a smaller network message
         (eq, ":event_type", server_event_play_sound_at_position),
         (store_script_param, ":sound_id", 3),
@@ -2466,8 +2340,131 @@ scripts.extend([
           (call_script, "script_cf_try_execute_animation", ":sender_player_id", ":string_id", 0),
         (try_end),
       (try_end),
+
+      # PN START *******************************************************************************************************
+      (else_try),
+          (eq, ":event_type", multiplayer_event_send_player_action),
+          (try_begin),
+            (store_script_param, ":action_type", 3),
+            (is_between,":action_type",player_actions_begin,player_actions_end),
+
+            (try_begin),
+              (eq,":action_type",player_action_has_cheat),
+              (kick_player,":player_no"),
+            (try_end),
+
+            (player_get_agent_id, ":player_agent", ":player_no"),
+            (agent_is_active,":player_agent"),
+           
+            (try_begin),
+              (eq,":action_type",player_action_voice),
+              (store_script_param, ":action", 4),
+              (is_between,":action",voice_types_begin,voice_types_end),
+              (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
+
+            (else_try),
+              (eq,":action_type",player_action_music),
+              (store_script_param, ":action", 4),
+              (is_between,":action",music_types_begin,music_types_end),
+
+              (try_begin),
+                (eq,":action",music_type_start),
+                (store_script_param, ":track_index", 5),
+
+                (try_begin),
+                  (store_mission_timer_a,":cur_time"),
+                  (agent_get_slot,":started_playing_music_at",":player_agent",slot_agent_started_playing_music_at),
+                  (store_sub, ":elapsed_time", ":cur_time", ":started_playing_music_at"),
+                  (ge,":elapsed_time",1),
+                  (call_script,"script_multiplayer_server_agent_play_music", ":player_agent", ":track_index", 0),
+                (try_end),
+
+              (else_try),
+                (eq,":action",music_type_stop),
+                (call_script,"script_multiplayer_server_agent_stop_music", ":player_agent"),
+
+              (else_try),
+                (eq,":action",music_type_toggle_together),
+                (store_script_param, ":value", 5),
+                (is_between,":value",0,2),
+                (agent_set_slot,":player_agent",slot_agent_music_play_together,":value"),
+              (try_end),
+
+            (else_try),
+              (eq,":action_type",player_action_spyglass),
+              (store_script_param, ":action", 4),
+              (this_or_next|eq,":action",spyglass_type_start),
+              (eq,":action",spyglass_type_stop),
+              (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
+
+            (else_try),
+              (eq, ":action_type", player_action_misc_item_drinking),
+              (store_script_param, ":action", 4),
+              (this_or_next|eq, ":action", drinking_type_start),
+              (eq, ":action", drinking_type_stop),
+              (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
+
+            (else_try),
+              (eq, ":action_type", player_action_custom_order_menu_interact),
+
+            (else_try),
+              (eq,":action_type",player_action_toggle_walk),
+              (agent_is_alive,":player_agent"),
+              (assign,":contine",1),
+              (try_begin),
+                (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
+                (assign,":contine",0),
+              (try_end),
+
+              (eq,":contine",1),
+
+              (try_begin),
+                (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
+                (agent_set_animation,":player_agent","anim_surrender_end",1),
+              (try_end),
+
+              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+
+              (try_begin),
+                (this_or_next|eq,":value",350),
+                (eq,":value",100),
+                (assign,":value",55),
+              (else_try),
+                (assign,":value",100),
+                (agent_set_horse_speed_factor, ":player_agent", 100),
+              (try_end),
+
+              (set_fixed_point_multiplier,100),
+              (agent_set_speed_modifier,":player_agent", ":value"),
+              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+
+            (else_try),
+              (eq,":action_type",player_action_surrender),
+              (agent_is_alive,":player_agent"),
+              (store_script_param, ":action", 4),
+              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+              (try_begin),
+                (eq,":action",music_type_start),
+                (agent_set_wielded_item,":player_agent",-1),  
+                (agent_set_animation,":player_agent","anim_surrender",1),
+                (assign,":value",55),
+                (agent_set_horse_speed_factor, ":player_agent", 55),
+
+              (else_try),
+                (eq,":action",music_type_stop),
+                (agent_set_animation,":player_agent","anim_surrender_end",1),
+                (assign,":value",100),
+                (agent_set_horse_speed_factor, ":player_agent", 100),
+              (try_end),
+
+              (set_fixed_point_multiplier,100),
+              (agent_set_speed_modifier,":player_agent", ":value"),
+              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+        (try_end),
+      (try_end),
+        # PN END **************************************************************************************************************
     (try_end),
-    ]),
+    ]),#END SCRIPTS
 
   ("game_get_multiplayer_server_option_for_mission_template", # server option values in the popup over entries in the server list
    [#(store_script_param, ":mission_template_id", 1),

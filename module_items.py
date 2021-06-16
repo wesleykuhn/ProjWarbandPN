@@ -1480,8 +1480,8 @@ itm_wall_banner("fac_8", "b"),
 
 ## Muskets
 # French
-["french_charleville", "Infantry Musket", [("french_charleville",0)], itp_cant_use_on_horseback|itp_type_crossbow |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,itcf_shoot_musket|itcf_carry_crossbow_back, 
- 683 , weight(3.5)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+["french_charleville", "Infantry Musket", [("french_charleville",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee,
+ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["french_charleville_melee", "Infantry Musket", [("french_charleville",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(0)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 ["french_versailles", "Infantry Musket", [("french_versailles",0)], itp_cant_use_on_horseback|itp_type_crossbow |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,itcf_shoot_musket|itcf_carry_crossbow_back, 
@@ -1653,10 +1653,14 @@ itm_wall_banner("fac_8", "b"),
 #["bolts", "Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_b", ixmesh_carry)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical,
 # 95, weight(2.25)|weapon_length(63)|thrust_damage(1,pierce)|max_ammo(29), imodbits_missile],
 
-["bullets","Cartridges", [("mm_invisible",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_carry)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_dagger_front_right, 41,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(30),imodbits_missile,
- [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
+#["bullets","Cartridges", [("mm_invisible",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_inventory)], itp_type_bolts|itp_default_ammo|itp_can_penetrate_shield, 0, 41,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(30),imodbits_missile,
+# [
+#     (ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])
+# ]],
 
-["pistol_ammo","Pistol Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_carry)], itp_type_bullets|itp_can_penetrate_shield, 0, 200,weight(1.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(18),imodbits_missile,
+["bullets","Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_inventory)], itp_type_bullets|itp_default_ammo|itp_can_penetrate_shield, 0, 64,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(30),imodbits_missile,
+ [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
+["pistol_ammo","Pistol Cartridges", [("cartridge_box_mesh",0),("bullet_projectile",ixmesh_flying_ammo),("cartridge_a",ixmesh_inventory)], itp_type_bullets|itp_can_penetrate_shield, 0, 200,weight(1.0)|abundance(100)|weapon_length(1)|thrust_damage(1,pierce)|max_ammo(18),imodbits_missile,
  [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
 
 ## Lances and other polearms
