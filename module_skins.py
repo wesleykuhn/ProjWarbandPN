@@ -88,8 +88,8 @@ skins = [
 
     (280, 0,  0.0,  1.0, "Post-Edit"),
    ],
-   ["man_hair_s","man_hair_m","man_hair_n","man_hair_o","man_hair_y10","man_hair_y12","man_hair_p","man_hair_r","man_hair_q","man_hair_v","man_hair_t","man_hair_y6","man_hair_y3","man_hair_y7","man_hair_y9","man_hair_y11","man_hair_u","man_hair_y","man_hair_y2","man_hair_y4","man_hair_y5","man_hair_y8"],
-   ["beard_e","beard_d","beard_k","beard_l","beard_i","beard_j","beard_z","beard_m","beard_n","beard_y","beard_p","beard_o","beard_v","beard_f","beard_b","beard_c","beard_t","beard_u","beard_r","beard_s","beard_a","beard_h","beard_g","beard_q"],
+   ["h_simplest","h_bbeards","h_buckli","h_smalltail","a_la_garde","a_la_garde_v2","a_la_hussard","a_la_hussard_v2","a_la_russe","a_la_russian_grenadier","a_la_sans_culotte","a_la_sans_culotte_v2","man_hair_s","man_hair_m","man_hair_n","man_hair_o","man_hair_y10","man_hair_y12","man_hair_p","man_hair_r","man_hair_q","man_hair_v","man_hair_t","man_hair_y6","man_hair_y3","man_hair_y7","man_hair_y9","man_hair_y11","man_hair_u","man_hair_y","man_hair_y2","man_hair_y4","man_hair_y5","man_hair_y8", "man_hair_c"],
+   ["accessory_glasses_simple","accessory_monocle","accessory_eyepatch_simple","beard_e","beard_d","beard_k","beard_l","beard_i","beard_j","beard_z","beard_m","beard_n","beard_y","beard_p","beard_o","beard_v","beard_f","beard_b","beard_c","beard_t","beard_u","beard_r","beard_s","beard_a","beard_h","beard_g","beard_q"],
    ["hair_blonde","hair_red","hair_brunette","hair_black","hair_white"],
    ["beard_blonde","beard_red","beard_brunette","beard_black","beard_white"],
    [("manface_young_2",0xffcbe0e0,["hair_blonde"],[0xffffffff, 0xffb04717, 0xff502a19]),
@@ -156,8 +156,8 @@ skins = [
 
     (280, 0,  0.0,  1.0, "Post-Edit"),
    ],
-   ["woman_hair_p","woman_hair_n","woman_hair_o","woman_hair_q","woman_hair_r","woman_hair_t","woman_hair_s"],
-   [],
+   ["female_1tail_1","female_1tail_2","female_2tails1","female_pigtails","h_simplest","h_buckli","a_la_garde","a_la_hussard","a_la_hussard_v2","a_la_russe","a_la_sans_culotte","a_la_sans_culotte_v2","woman_hair_p","woman_hair_n","woman_hair_o","woman_hair_q","woman_hair_r","woman_hair_t","woman_hair_s", "woman_hair_c","woman_hair_f", "woman_hair_g"],
+   ["accessory_single_earing", "accessory_two_earings", "accessory_glasses_simple","accessory_monocle","accessory_eyepatch_simple"],
    ["hair_blonde","hair_red","hair_brunette","hair_black","hair_white"],
    [],
    [("womanface_young",0xffe3e8ef,["hair_blonde"],[0xffffffff, 0xffb04717, 0xff502a19, 0xff19100c]),
@@ -172,6 +172,5 @@ skins = [
    ],
    "skel_human", 1.0, "psys_game_blood","psys_game_blood_2",
   ),
-
 ]
 

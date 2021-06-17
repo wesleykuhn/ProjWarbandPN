@@ -235,6 +235,7 @@ tableaus = [
 
   ("faction_banner_pole", 0, "pw_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_banner_pole()),
   ("stats_chart_banner", 0, "pw_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_stats_chart_banner()),
+
   ("stats_chart_banner_war", 0, "pw_banner_pole", 512, 1024, 0, 0, 0, 0, tableau_stats_chart_banner(war=True)),
 
 ]

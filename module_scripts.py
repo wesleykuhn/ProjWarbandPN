@@ -2827,7 +2827,7 @@ scripts.extend([
         (assign, ":spark_size", 40),
       (else_try),
         (is_between,":item_id","itm_french_mousquiton","itm_russian_rifle_1805"), # Carabines
-        (assign, ":sound_id", "snd_musket"), #  snd_carabine
+        (assign, ":sound_id", "snd_musket"), # snd_carabine
         (assign, ":muzzle_y", 104),
       (else_try),
         (is_between,":item_id","itm_russian_rifle_1805","itm_french_charleville"), # Rifles
@@ -2900,9 +2900,9 @@ scripts.extend([
 
   ("store_profile_troop_equipment", # store random body and leg armor items for the profile selection presentation
    [
-    (call_script, "script_get_random_equipment", "itm_linen_tunic", "itm_tribal_warrior_outfit"),
+    (call_script, "script_get_random_equipment", "itm_civil_shirt_1", "itm_civil_shirt_2"),
     (assign, "$g_profile_troop_body_item", reg0),
-    (call_script, "script_get_random_equipment", "itm_sarranid_boots_a", "itm_khergit_leather_boots"),
+    (call_script, "script_get_random_equipment", "itm_prussian_hussar_pants_officer", "itm_prussian_freikorps_pants"),
     (assign, "$g_profile_troop_foot_item", reg0),
     ]),
 
