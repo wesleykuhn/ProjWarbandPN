@@ -4597,6 +4597,103 @@ presentations.extend([
       ]),
     ]),
 
+    # PN START **********************************************************************
+
+  ("spyglass_dummy", prsntf_read_only|prsntf_manual_end_only, 0,
+   [
+    (ti_on_presentation_load,
+      [
+          (call_script,"script_client_get_my_agent"),
+          (assign,":agent_id",reg0),
+          (agent_is_active,":agent_id"),
+          (agent_is_alive,":agent_id"),
+
+          (agent_set_visibility, ":agent_id", 0),
+          (set_fixed_point_multiplier,100),
+          (set_zoom_amount,165),
+          (create_mesh_overlay, reg0, "mesh_mm_spyglass_ui"),
+          (position_set_x, pos1, 50), #-1
+          (position_set_y, pos1, 40), #-1
+          (overlay_set_position, reg0, pos1),
+          (position_set_x, pos1, 101), #-1
+          (position_set_y, pos1, 100), #-1
+          (overlay_set_size, reg0, pos1),
+          
+          (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_spyglass,spyglass_type_start),
+          (presentation_set_duration, 999999),
+      ]),
+
+    (ti_on_presentation_run,
+      [ 
+          (call_script,"script_client_get_my_agent"),
+          (assign,":agent_id",reg0),
+          (agent_is_active,":agent_id"),
+          (assign,":continue",0),
+          (try_begin),
+            (neg|game_key_is_down,gk_defend), 
+            (assign,":continue",1),
+          (else_try),
+            (agent_get_wielded_item,":item_id",":agent_id",0),
+            (neq,":item_id","itm_spyglass"),
+            (assign,":continue",1),
+          (try_end),
+          (eq,":continue",1),
+
+          (set_fixed_point_multiplier,100),
+          (set_zoom_amount,0),
+          (agent_set_visibility, ":agent_id", 1),
+
+          (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_spyglass,spyglass_type_stop),
+          (presentation_set_duration, 0),
+      ]),
+     ]),
+
+     ("drinking", prsntf_read_only|prsntf_manual_end_only, 0,
+   [
+    (ti_on_presentation_load,
+      [
+          (call_script, "script_client_get_my_agent"),
+          (assign, ":agent_id", reg0),
+          (agent_is_active,":agent_id"),
+          (agent_is_alive,":agent_id"),
+          (try_begin),
+            (game_in_multiplayer_mode),
+            (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_misc_item_drinking, drinking_type_start),
+          (else_try),
+            (call_script, "script_multiplayer_agent_drinking", ":agent_id", drinking_type_start),
+          (try_end),
+          (presentation_set_duration, 999999),
+      ]),
+
+    (ti_on_presentation_run,
+      [
+          (call_script, "script_client_get_my_agent"),
+          (assign, ":agent_id", reg0),
+          (agent_is_active, ":agent_id"),
+          (assign, ":stop_drinking", 0),
+          (try_begin),
+            (neg|game_key_is_down, gk_defend),
+            (assign, ":stop_drinking", 1),
+          (else_try),
+            (agent_get_wielded_item, ":item_id", ":agent_id", 0),
+            (call_script, "script_multiplayer_agent_drinking_get_animation", ":item_id"),
+            #reg0 = animation_id or -1 if the item can not be used for drinking
+            (lt, reg0, 0),
+            (assign, ":stop_drinking", 1),
+          (try_end),
+          (eq, ":stop_drinking", 1),
+          (try_begin),
+            (game_in_multiplayer_mode),
+            (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_misc_item_drinking, drinking_type_stop),
+          (else_try),
+            (call_script, "script_multiplayer_agent_drinking", ":agent_id", drinking_type_stop),
+          (try_end),
+          (presentation_set_duration, 0),
+      ]),
+     ]),
+
+   # PN END ******************************************************************************************
+
   ("food_bar", prsntf_read_only|prsntf_manual_end_only, 0, # bar showing the player agent's current food amount, below the health bar
    [(ti_on_presentation_load,
      [(set_fixed_point_multiplier, 10000),

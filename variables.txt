@@ -19,3 +19,6 @@ g_presentation_credits_obj_6_alpha
 g_presentation_credits_obj_7_alpha
 g_presentation_credits_obj_8_alpha
 g_presentation_credits_obj_9_alpha
+
+spy_item_worn
+spy_quest_troop

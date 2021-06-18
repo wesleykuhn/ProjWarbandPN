@@ -2339,10 +2339,8 @@ scripts.extend([
         (try_begin),
           (call_script, "script_cf_try_execute_animation", ":sender_player_id", ":string_id", 0),
         (try_end),
-      (try_end),
-
       # PN START *******************************************************************************************************
-      (else_try),
+        (else_try),
           (eq, ":event_type", multiplayer_event_send_player_action),
           (try_begin),
             (store_script_param, ":action_type", 3),
@@ -2460,6 +2458,7 @@ scripts.extend([
               (set_fixed_point_multiplier,100),
               (agent_set_speed_modifier,":player_agent", ":value"),
               (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+        (try_end),
         (try_end),
       (try_end),
         # PN END **************************************************************************************************************

@@ -6,6 +6,7 @@ from header_sounds import *
 from header_music import *
 from header_items import *
 from module_constants import *
+from module_animations import *
 import header_debug as dbg
 import header_lazy_evaluation as lazy
 
@@ -160,36 +161,6 @@ before_mission_start_setup = (ti_before_mission_start, 0, 0, [], # set up basic 
       (call_script, "script_load_profile_options"),
     (try_end),
     ])
-
-# PN START *******************************************************************************************************************
-
-multiplayer_client_surrender = (
-    0, 0.5, 0.1, [
-    (neg|multiplayer_is_dedicated_server),
-    (neg|is_presentation_active, "prsnt_multiplayer_admin_chat"),
-    (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
-    (neg|is_presentation_active, "prsnt_multiplayer_custom_chat"),
-    (game_key_clicked,gk_party_window),
-    (try_begin),
-      (call_script,"script_client_get_my_agent"),
-      (assign,":agent_id",reg0),
-      (agent_is_active,":agent_id"),
-      (agent_is_alive,":agent_id"),
-      (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
-      (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
-    (try_end),
-    ],
-    [
-      (try_begin),
-        (call_script,"script_client_get_my_agent"),
-        (assign,":agent_id",reg0),
-        (agent_is_active,":agent_id"),
-        (agent_is_alive,":agent_id"),
-        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
-      (try_end),
-])
-
-# PN END *******************************************************************************************************************
 
 after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move certain things after most other set up is done
    [(set_spawn_effector_scene_prop_kind, 0, -1),
@@ -811,6 +782,56 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
     (multiplayer_send_string_to_server, ":event", s0),
     ])
 
+# PN START *******************************************************************************************************************
+
+multiplayer_client_walking = (
+  0, 0, 0.1, [
+  (game_key_clicked, gk_zoom),
+  ],
+  [
+    (try_begin),
+      (neg|is_zoom_disabled),
+      (multiplayer_get_my_player, ":player_id"),
+      (player_is_active, ":player_id"),
+      (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_has_cheat),
+    (else_try),
+      (call_script,"script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_toggle_walk),
+    (try_end),
+])
+
+multiplayer_client_spyglass = (
+  0, 0, 1, [
+  (game_key_is_down,gk_defend),
+  ],
+  [
+    (neg|is_presentation_active,"prsnt_spyglass_dummy"),
+    (neg|is_presentation_active,"prsnt_drinking"),
+    (call_script,"script_client_get_my_agent"),
+    (assign,":agent_id",reg0),
+    (agent_is_active,":agent_id"),
+    (agent_is_alive,":agent_id"),
+    (agent_get_wielded_item,":item_id",":agent_id",0),
+    (try_begin),
+      (eq,":item_id","itm_spyglass"),
+      (start_presentation,"prsnt_spyglass_dummy"),
+    (else_try),
+      #drinking
+      #(call_script, "script_multiplayer_agent_drinking_get_animation", ":item_id"),
+      (this_or_next|eq, ":item_id", "itm_drinking_cup"),
+      (this_or_next|eq, ":item_id", "itm_drinking_tea_cup"),
+      (this_or_next|eq, ":item_id", "itm_drinking_tea_cup_plate"),
+      (eq, ":item_id", "itm_drinking_bottle"),
+      (start_presentation, "prsnt_drinking"),
+      #end drinking
+    (try_end),
+  ])
+
+# PN END *******************************************************************************************************************
+
 local_chat_pressed = (0, 0.05, 0, [(game_key_clicked, gk_local_chat),(call_script, "script_cf_no_input_presentation_active")], # clients: local chat entry box
    [(assign, "$g_chat_box_string_id", "str_send_message_to_players_nearby"),
     (assign, "$g_chat_box_event_type", chat_event_type_local),
@@ -955,6 +976,12 @@ def common_triggers(self):
     target_agent_pressed,
     chat_overlay_toggled,
     chat_resend_check,
+
+    multiplayer_client_spyglass,
+    multiplayer_client_walking,
+    #common_use_binocular_1,
+    #common_use_binocular_2,
+
     local_chat_pressed,
     faction_chat_pressed,
     admin_chat_pressed,
@@ -968,7 +995,7 @@ def common_triggers(self):
     shadow_recalculation,
     adjust_weather_effects,
     render_weather_effects,
-    ]
+]
 
 mission_templates = [
   ("conquest", mtf_battle_mode, -1, "Conquest.", spawn_points_0_99,

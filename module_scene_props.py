@@ -3113,7 +3113,7 @@ scene_props = [
   #("pw_buy_french_charleville_musket", spr_buy_item_flags(4), "french_charleville", "bo_pw_weapon", spr_buy_item_triggers("itm_french_charleville", pos_offset=(-5,0,0), resources=["itm_iron_piece", "itm_stick"], engineer=5)),
   
   # SHIPS
-  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=1200, length=340, width=90, height=-35, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
+  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=1200, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
   ("pn_ship_longboat_sail",sokf_moveable,"pn_ship_longboat_sail","bo_birdmodel", []),
   ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_longboat", []),
 

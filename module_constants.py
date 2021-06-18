@@ -78,17 +78,58 @@ slot_player_admin_no_animals          = 56
 slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
 
-player_action_voice                       = 59
-player_action_music                       = 60
-player_action_spyglass                    = 61
-player_action_toggle_walk                 = 62
-player_action_has_cheat                   = 63
-player_action_surrender                   = 64
-player_action_misc_item_drinking          = 65
-player_action_custom_order_menu_interact  = 66
+# PN START *********************************
 
+voice_type_cry                         = 1
+voice_type_surrender                   = 2
+voice_type_comm_ready                  = 3
+voice_type_comm_present                = 4
+voice_type_comm_fire                   = 5
+voice_type_comm_charge                 = 6
+voice_type_comm_advance                = 7
+voice_type_comm_hold                   = 8
+voice_type_comm_fire_at_will           = 9
+voice_type_comm_on_me                  = 10
+voice_type_comm_fall_back              = 11
+voice_types_begin                      = voice_type_cry
+voice_types_end                        = 12
+
+music_type_start                       = 1
+music_type_stop                        = 2
+music_type_toggle_together             = 3
+music_types_begin                      = music_type_start
+music_types_end                        = music_type_toggle_together + 1
+
+spyglass_type_start                    = 1
+spyglass_type_stop                     = 2
+
+drinking_type_start                    = 1
+drinking_type_stop                     = 2
+
+player_action_voice                       = 1
+player_action_music                       = 2
+player_action_spyglass                    = 3
+player_action_toggle_walk                 = 4
+player_action_has_cheat                   = 5
+player_action_surrender                   = 6
+player_action_misc_item_drinking          = 7
+player_action_custom_order_menu_interact  = 8
+player_action_key_up_held = 9
+player_action_key_down_held = 10
+player_action_key_left_held = 11
+player_action_key_right_held = 12
+player_action_key_up_right_held = 13
+player_action_key_up_left_held = 14
+player_action_key_down_right_held = 15
+player_action_key_down_left_held = 16
+player_action_key_v = 17
+player_action_key_b = 18
+player_action_misc_item_drinking = 19
+player_action_custom_order_menu_interact = 20
 player_actions_begin        = player_action_voice
-player_actions_end          = 67
+player_actions_end          = 21
+
+# PN END ***********************************
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -589,37 +630,6 @@ max_scene_prop_instance_id            = 10000 # when trying to loop over all pro
 
 max_food_amount                       = 100
 max_hit_points_percent                = 200
-
-# PN START *********************************
-
-voice_type_cry                         = 1
-voice_type_surrender                   = 2
-voice_type_comm_ready                  = 3
-voice_type_comm_present                = 4
-voice_type_comm_fire                   = 5
-voice_type_comm_charge                 = 6
-voice_type_comm_advance                = 7
-voice_type_comm_hold                   = 8
-voice_type_comm_fire_at_will           = 9
-voice_type_comm_on_me                  = 10
-voice_type_comm_fall_back              = 11
-
-voice_types_begin                      = voice_type_cry
-voice_types_end                        = 12
-
-music_type_start                       = 1
-music_type_stop                        = 2
-music_type_toggle_together             = 3
-music_types_begin                      = music_type_start
-music_types_end                        = music_type_toggle_together + 1
-
-spyglass_type_start                    = 1
-spyglass_type_stop                     = 2
-
-drinking_type_start                    = 1
-drinking_type_stop                     = 2
-
-# PN END ***********************************
 
 all_items_begin = "itm_tattered_headcloth"
 all_items_end = "itm_all_items_end"
