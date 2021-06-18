@@ -80,6 +80,11 @@ slot_player_admin_end                 = 58
 
 # PN START *********************************
 
+player_character_language_french = 1
+player_character_language_english = 2
+player_character_language_german = 3
+player_character_language_russian = 4
+
 voice_type_cry                         = 1
 voice_type_surrender                   = 2
 voice_type_comm_ready                  = 3
@@ -106,28 +111,23 @@ spyglass_type_stop                     = 2
 drinking_type_start                    = 1
 drinking_type_stop                     = 2
 
-player_action_voice                       = 1
-player_action_music                       = 2
-player_action_spyglass                    = 3
-player_action_toggle_walk                 = 4
-player_action_has_cheat                   = 5
-player_action_surrender                   = 6
-player_action_misc_item_drinking          = 7
-player_action_custom_order_menu_interact  = 8
-player_action_key_up_held = 9
-player_action_key_down_held = 10
-player_action_key_left_held = 11
-player_action_key_right_held = 12
-player_action_key_up_right_held = 13
-player_action_key_up_left_held = 14
-player_action_key_down_right_held = 15
-player_action_key_down_left_held = 16
-player_action_key_v = 17
-player_action_key_b = 18
-player_action_misc_item_drinking = 19
-player_action_custom_order_menu_interact = 20
+player_action_voice         = 1
+player_action_music         = 2
+player_action_spyglass      = 3
+player_action_place_rocket  = 4
+player_action_toggle_walk   = 5
+player_action_has_cheat     = 6
+player_action_surrender = 7
+player_action_key_v = 8
+player_action_key_b = 9
+player_action_misc_item_drinking          = 10
+player_action_custom_order_menu_interact  = 11
+player_action_key_v = 12
+player_action_key_b = 13
+player_action_misc_item_drinking = 14
+player_action_custom_order_menu_interact = 15
 player_actions_begin        = player_action_voice
-player_actions_end          = 21
+player_actions_end          = 16
 
 # PN END ***********************************
 
@@ -306,6 +306,86 @@ slot_animal_herd_manager_starving     = 101
 
 slot_animal_carcass_meat_count        = 100
 slot_animal_carcass_hide_count        = 101
+
+########################################################
+##  SCENE PROP SLOTS  *PN*     #########################
+########################################################
+
+scene_prop_open_or_close_slot       = 1
+scene_prop_smoke_effect_done        = 2
+scene_prop_slot_is_spawned          = 3
+scene_prop_slot_in_use              = 4
+scene_prop_slot_x_value             = 5
+scene_prop_slot_y_value             = 6
+scene_prop_slot_z_value             = 7
+scene_prop_slot_x_rot               = 8
+scene_prop_slot_y_rot               = 9
+scene_prop_slot_z_rot               = 10
+scene_prop_slot_z_rotation_limit    = 11
+scene_prop_slot_x_scale             = 12
+scene_prop_slot_y_scale             = 13
+scene_prop_slot_z_scale             = 14
+scene_prop_slot_is_scaled           = 15
+scene_prop_slot_x_extra             = 16
+scene_prop_slot_y_extra             = 17
+scene_prop_slot_z_extra             = 18
+scene_prop_slot_time                = 19
+scene_prop_slot_bounces             = 20
+scene_prop_slot_times_hit           = 21
+scene_prop_slot_owner_team          = 22
+scene_prop_slot_time_left           = 23
+scene_prop_slot_has_ball            = 24
+scene_prop_slot_is_loaded           = 25
+scene_prop_slot_is_active           = 26
+scene_prop_slot_just_fired          = 27
+scene_prop_slot_health              = 28
+scene_prop_slot_max_health          = 29
+scene_prop_slot_displayed_particle  = 30
+scene_prop_slot_ammo_type           = 31
+scene_prop_slot_ignore_inherit_movement = 32
+scene_prop_slot_float_ground        = 33
+scene_prop_slot_ground_offset       = 34
+scene_prop_slot_spawned_at          = 35
+scene_prop_slot_is_not_pushed_back  = 36
+scene_prop_slot_just_pushed_back    = 37
+
+# under here slots that need -1 as default
+scene_prop_slot_replaced_by         = 52
+scene_prop_slot_replacing           = 53
+scene_prop_slot_last_hit_by         = 54
+scene_prop_slot_user_agent          = 55
+scene_prop_slot_controller_agent    = 56
+scene_prop_slot_carrier_agent       = 57
+scene_prop_slot_linked_prop         = 58
+
+scene_prop_slot_sound_effect        = 59
+scene_prop_slot_particle_effect1    = 60
+scene_prop_slot_particle_effect2    = 61
+scene_prop_slot_particle_effect3    = 62
+scene_prop_slot_particle_effect4    = 63
+
+scene_prop_slot_parent_prop         = 80
+scene_prop_slot_child_prop1         = 81
+scene_prop_slot_child_prop2         = 82
+scene_prop_slot_child_prop3         = 83
+scene_prop_slot_child_prop4         = 84
+scene_prop_slot_child_prop5         = 85
+scene_prop_slot_child_prop6         = 86
+scene_prop_slot_child_prop7         = 88
+scene_prop_slot_child_prop8         = 89
+scene_prop_slot_child_prop9         = 90
+scene_prop_slot_child_prop10        = 91
+scene_prop_slot_child_prop11        = 92
+scene_prop_slot_child_prop12        = 93
+scene_prop_slot_child_prop13        = 94
+scene_prop_slot_child_prop14        = 95
+scene_prop_slot_child_prop15        = 96
+scene_prop_slot_child_prop16        = 97
+
+scene_prop_slots_begin              = scene_prop_open_or_close_slot
+scene_prop_slots_end                = 98
+
+scene_prop_slots_defmin_begin       = scene_prop_slot_replaced_by
 
 ########################################################
 ##  ITEM SLOTS             #############################

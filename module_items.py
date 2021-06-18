@@ -24,29 +24,6 @@ import header_lazy_evaluation as lazy
 #  10) [Optional] Factions: List of factions that item can be found as merchandise.
 ####################################################################################################################
 
-# Some constants for ease of use.
-#imodbits_none = 0
-#imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
-#imodbits_cloth = imodbit_tattered|imodbit_ragged|imodbit_sturdy|imodbit_thick|imodbit_hardened
-#imodbits_armor = imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
-#imodbits_plate = imodbit_cracked|imodbit_rusty|imodbit_battered|imodbit_crude|imodbit_thick|imodbit_reinforced|imodbit_lordly
-#imodbits_polearm = imodbit_cracked|imodbit_bent|imodbit_balanced
-#imodbits_shield = imodbit_cracked|imodbit_battered|imodbit_thick|imodbit_reinforced
-#imodbits_sword = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered
-#imodbits_sword_high = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_tempered|imodbit_masterwork
-#imodbits_axe = imodbit_rusty|imodbit_chipped|imodbit_heavy
-#imodbits_mace = imodbit_rusty|imodbit_chipped|imodbit_heavy
-#imodbits_pick = imodbit_rusty|imodbit_chipped|imodbit_balanced|imodbit_heavy
-#imodbits_bow = imodbit_cracked|imodbit_bent|imodbit_strong|imodbit_masterwork
-#imodbits_crossbow = imodbit_cracked|imodbit_bent|imodbit_masterwork
-#imodbits_missile = imodbit_bent|imodbit_large_bag
-#imodbits_thrown = imodbit_bent|imodbit_heavy|imodbit_balanced|imodbit_large_bag
-#imodbits_thrown_minus_heavy = imodbit_bent|imodbit_balanced|imodbit_large_bag
-
-#imodbits_horse_good = imodbit_spirited|imodbit_heavy
-#imodbits_good = imodbit_sturdy|imodbit_thick|imodbit_hardened|imodbit_reinforced
-#imodbits_bad = imodbit_rusty|imodbit_chipped|imodbit_tattered|imodbit_ragged|imodbit_cracked|imodbit_bent
-
 imodbits_none = 0
 imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
 imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened
@@ -2998,10 +2975,10 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 
 # PN END ****************************************************************************************************
 
-["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_crossbow|itp_primary|itp_two_handed|itp_next_item_as_melee ,itcf_shoot_musket|itcf_carry_crossbow_back, 
- 683 , weight(1.0)|difficulty(0)|spd_rtng(50) | shoot_speed(250) | thrust_damage(300 ,pierce)|max_ammo(5)|accuracy(100),imodbits_none,[]],
+["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_musket|itp_primary|itp_two_handed|itp_next_item_as_melee ,
+ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(1.0)|difficulty(0)|spd_rtng(50) | shoot_speed(250) | thrust_damage(5000 ,pierce)|max_ammo(5)|accuracy(100),imodbits_none,[]],
 ["admin_musket_melee", "Admin Musket", [("french_versailles",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(0)|spd_rtng(120) | weapon_length(138)|swing_damage(200 ,  pierce) | thrust_damage(200 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(0)|spd_rtng(120) | weapon_length(138)|swing_damage(500 , pierce) | thrust_damage(500 ,  pierce),imodbits_none ],
 ["admin_horse", "Admin Horse", [("plated_charger_black",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
 ["invisible_head", "Invisible Head", [("invisible",0)], itp_type_head_armor|itp_covers_head, 0,

@@ -784,6 +784,29 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
 
 # PN START *******************************************************************************************************************
 
+multiplayer_client_surrender = (
+  0, 0.5, 0.1, [
+  (key_clicked, key_o),
+  (try_begin),
+    (call_script,"script_client_get_my_agent"),
+    (assign,":agent_id",reg0),
+    (agent_is_active,":agent_id"),
+    (agent_is_alive,":agent_id"),
+    (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
+    
+    #(multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
+  (try_end),
+  ],
+  [
+    (try_begin),
+      (call_script,"script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
+    (try_end),
+  ])
+
 multiplayer_client_walking = (
   0, 0, 0.1, [
   (game_key_clicked, gk_zoom),
@@ -820,7 +843,7 @@ multiplayer_client_spyglass = (
       (start_presentation,"prsnt_spyglass_dummy"),
     (else_try),
       #drinking
-      #(call_script, "script_multiplayer_agent_drinking_get_animation", ":item_id"),
+      (call_script, "script_multiplayer_agent_drinking_get_animation", ":item_id"),
       (this_or_next|eq, ":item_id", "itm_drinking_cup"),
       (this_or_next|eq, ":item_id", "itm_drinking_tea_cup"),
       (this_or_next|eq, ":item_id", "itm_drinking_tea_cup_plate"),
@@ -828,6 +851,41 @@ multiplayer_client_spyglass = (
       (start_presentation, "prsnt_drinking"),
       #end drinking
     (try_end),
+  ])
+
+# Trigger Param 1: damage inflicted agent_id
+# Trigger Param 2: damage dealer agent_id
+# Trigger Param 3: inflicted damage
+# Register 0: damage dealer item_id
+# Position Register 0: position of the blow
+#                      rotation gives the direction of the blow
+# Trigger result: if returned result is greater than or equal to zero, inflicted damage is set to the value specified by the module.
+# this trigger is called server only apparently after testing lol.. just added checks to make sure. ( you know warband patches.. :P )
+multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
+  [
+    (store_trigger_param_1,":hit_agent_no"),
+    (assign,":item_id",reg0),
+
+    (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
+
+    ##drinking bottle break script
+    (try_begin),
+      (eq, ":item_id", "itm_drinking_bottle_melee"),
+      (store_trigger_param_2, ":attacker_agent_no"),
+      (assign, ":end_cond", ek_head),
+      (try_for_range, ":equipment_slot", ek_item_0, ":end_cond"),
+        (agent_get_item_slot, ":cur_item_id", ":attacker_agent_no", ":equipment_slot"),
+        (this_or_next|eq, ":cur_item_id", "itm_drinking_bottle_melee"),
+        (eq, ":cur_item_id", "itm_drinking_bottle"),
+        (val_add, ":equipment_slot", 1),
+        (agent_unequip_item, ":attacker_agent_no", ":cur_item_id", ":equipment_slot"),
+        (agent_equip_item, ":attacker_agent_no", "itm_brokenbottle", ":equipment_slot"),
+        (agent_set_wielded_item, ":attacker_agent_no", "itm_brokenbottle"),
+        (call_script, "script_multiplayer_server_play_sound_at_agent", "snd_glass_break", ":attacker_agent_no"),
+        (assign, ":end_cond", 0),
+      (try_end),
+    (try_end),
+    ##end drinking bottle break script
   ])
 
 # PN END *******************************************************************************************************************
@@ -977,10 +1035,10 @@ def common_triggers(self):
     chat_overlay_toggled,
     chat_resend_check,
 
-    multiplayer_client_spyglass,
+    multiplayer_client_surrender,
     multiplayer_client_walking,
-    #common_use_binocular_1,
-    #common_use_binocular_2,
+    multiplayer_client_spyglass,
+    multiplayer_server_agent_hit_common,
 
     local_chat_pressed,
     faction_chat_pressed,

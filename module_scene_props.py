@@ -16,6 +16,74 @@ import header_lazy_evaluation as lazy
 #  5) Triggers: Simple triggers that are associated with the scene prop
 ####################################################################################################################
 
+check_mm_on_destroy_window_trigger = (ti_on_scene_prop_destroy,
+  [
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+
+      (store_trigger_param_1, ":instance_id"),      
+      (prop_instance_is_valid,":instance_id"),
+      (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
+      (prop_instance_get_position,pos49,":instance_id"),
+      
+      (copy_position,pos56,pos49),
+      (position_move_z,pos56,140),
+      (particle_system_burst, "psys_bottle_break", pos56, 10),
+      (call_script, "script_multiplayer_server_play_sound_at_position", "snd_glass_break"),
+      
+      (assign,":prop_to_spawn",-1),
+      (try_begin),
+        (eq,":prop_kind","spr_mm_window1"),
+        (assign,":prop_to_spawn","spr_mm_window1d"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window2"),
+        (assign,":prop_to_spawn","spr_mm_window2d"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window1_poor"),
+        (assign,":prop_to_spawn","spr_mm_window1d_poor"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window2_poor"),
+        (assign,":prop_to_spawn","spr_mm_window2d_poor"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window3"),
+        (assign,":prop_to_spawn","spr_mm_window3d"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window4"),
+        (assign,":prop_to_spawn","spr_mm_window4d"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window3_poor"),
+        (assign,":prop_to_spawn","spr_mm_window3d_poor"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_window4_poor"),
+        (assign,":prop_to_spawn","spr_mm_window4d_poor"),
+      (try_end),
+      
+      (try_begin),
+        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+        (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+        (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
+        (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+      (else_try),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+      (try_end),
+      (assign,":destroyed_prop",reg0),
+      
+      (scene_prop_set_slot, ":destroyed_prop", scene_prop_slot_replacing, ":instance_id"),
+      
+      (scene_prop_get_slot,":wall_instance",":instance_id", scene_prop_slot_parent_prop),
+      (try_begin),
+        (prop_instance_is_valid,":wall_instance"),
+        (scene_prop_set_slot,":destroyed_prop",scene_prop_slot_parent_prop,":wall_instance"),
+        
+        (scene_prop_set_slot,":wall_instance",scene_prop_slot_child_prop1,":destroyed_prop"),
+      (try_end),
+      
+      (call_script, "script_clean_up_prop_instance", ":instance_id"),
+    (try_end),
+  ])
+
 from header_item_modifiers import *
 
 link_scene_prop = -100.0
@@ -576,7 +644,14 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0),
+
+      (assign, ":is_little_boat", 0),
+      (try_begin),
+        (eq, length, 290),
+        (assign, ":is_little_boat", 1),
+      (try_end),
+
+      (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0, ":is_little_boat"),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,

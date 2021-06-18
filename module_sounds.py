@@ -309,7 +309,7 @@ sounds = [
  ("pistol", sf_priority_15|sf_vol_15,["musket1.wav"]),
  ("cannon", sf_priority_15|sf_vol_15, ["canon01.ogg","canon02.ogg","canon03.ogg","canon04.ogg","canon05.ogg","canon06.ogg"]),
  ("rocket_launch", sf_priority_15|sf_vol_15, ["rocket_launch.wav","rocket_launch2.wav","rocket_launch1.wav"]),
- ("cannon_hit", sf_priority_7|sf_vol_10, ["cannon_hit.ogg","cannon_hit2.ogg"]), 
+ ("cannon_hit", sf_priority_7|sf_vol_10, ["cannon_hit.ogg","cannon_hit2.ogg"]),
  ("cannon_hit_ground",sf_priority_7|sf_vol_9, ["cannonhitground.ogg"]),
  ("cannon_hit_wall",sf_priority_10|sf_vol_15, ["walls_destroy1.ogg","walls_destroy2.ogg"]),
  ("cannon_hit_wood_wall",sf_priority_10|sf_vol_15, ["wallhit_wood.wav"]),

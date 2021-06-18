@@ -298,6 +298,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("allow_disallow_announcing", "allow / disallow announcing for"),
   ("outlaw", "outlaw"),
   ("request_poll", "Request Poll"),
+  ("character_language", "Choose Character Language"),
   ("choose_a_poll_type", "Choose a poll type:"),
   ("s0__reg0_", "{!}{s0} ({reg0})"),
   ("choose_poll_scene", "Change the scene"),
@@ -419,6 +420,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("limit_sergeant", "limit_sergeant"),
   ("limit_officer", "limit_officer"),
   ("limit_general", "limit_general"),
+
+  ("character_language_french", "French"),
+  ("character_language_english", "English"),
+  ("character_language_german", "German"),
+  ("character_language_russian", "Russian"),
 
   ("max_players", "Maximum number of players:"),
   ("friendly_fire", "friendly_fire:"),

@@ -779,7 +779,7 @@ reg123 = opmask_register|123
 reg124 = opmask_register|124
 reg125 = opmask_register|125
 reg126 = opmask_register|126
-reg127 = opmask_register|127
+reg127 = opmask_register|127 # PN Uses this reg to check if the player is current surredering
 
 spf_all_teams_are_enemy                      = 0x00000001
 spf_is_horseman                              = 0x00000002
