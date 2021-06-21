@@ -28,13 +28,13 @@ from header_skills import *
 ####################################################################################################################
 
 def wp(x):
-  return wp_one_handed(x)|wp_two_handed(x)|wp_polearm(x)|wp_archery(x)|wp_crossbow(x)|wp_throwing(x)
+  return wp_one_handed(x)|wp_two_handed(x)|wp_polearm(x)|wp_archery(x)|wp_firearm(x)|wp_throwing(x)
 
 def wpe(m,a,c,t):
-  return wp_one_handed(m)|wp_two_handed(m)|wp_polearm(m)|wp_archery(a)|wp_crossbow(c)|wp_throwing(t)
+  return wp_one_handed(m)|wp_two_handed(m)|wp_polearm(m)|wp_archery(a)|wp_firearm(c)|wp_throwing(t)
 
 def wpex(o,w,p,a,c,t):
-  return wp_one_handed(o)|wp_two_handed(w)|wp_polearm(p)|wp_archery(a)|wp_crossbow(c)|wp_throwing(t)
+  return wp_one_handed(o)|wp_two_handed(w)|wp_polearm(p)|wp_archery(a)|wp_firearm(c)|wp_throwing(t)
 
 def wp_melee(x):
   return wp_one_handed(x + 20)|wp_two_handed(x)|wp_polearm(x + 10)
@@ -91,9 +91,9 @@ troops = [
   ["crossbowman","Crossbowman","a crossbowman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_flimsy_crossbow","itm_crude_bolts","itm_blunt_falchion"],
    str_14|agi_14|pw_attr,wpex(90,60,60,50,150,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
-  ["lancer","Lancer","a lancer",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_woolen_cap","itm_tattered_headcloth","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_bent_lance"],
-   str_14|agi_14|pw_attr,wpex(90,60,120,10,30,80),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_power_throw_2|knows_athletics_1|knows_riding_6,default_face_1,default_face_2],
+  #["lancer","Lancer","a lancer",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+  # ["itm_ragged_woolen_cap","itm_tattered_headcloth","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_bent_lance"],
+  # str_14|agi_14|pw_attr,wpex(90,60,120,10,30,80),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_power_throw_2|knows_athletics_1|knows_riding_6,default_face_1,default_face_2],
   ["man_at_arms","Man at Arms","a man at arms",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_old_tabard","itm_old_hide_boots","itm_rusty_sword","itm_worn_sword","itm_old_shield"],
    str_15|agi_15|pw_attr,wpex(105,120,110,20,50,30),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_shield_1|knows_athletics_2|knows_riding_4,default_face_1,default_face_2],
@@ -118,9 +118,11 @@ troops = [
   ["herdsman","Herdsman","a herdsman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_coarse_tunic","itm_ragged_shirt","itm_tattered_wrapping_boots","itm_old_knife"],
    str_10|agi_14|pw_attr,wpex(50,35,40,0,10,40),knows_pw|knows_power_strike_1|knows_athletics_5|knows_labouring_2|knows_herding_5,default_face_1,default_face_2],
-  ["lord","Lord","the lord",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_tabard","itm_ripped_woolen_hose","itm_old_hide_boots","itm_worn_sword"],
-   str_15|agi_15|pw_attr,wpex(115,115,115,50,70,50),knows_pw|knows_leadership_1|knows_ironflesh_6|knows_power_strike_4|knows_shield_2|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
+  
+  ["lord","General","the general",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_spyglass"],
+   str_12|agi_15|pw_attr,wpex(140,20,20,0,100,20),knows_pw|knows_leadership_4|knows_ironflesh_5|knows_power_strike_2|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
+  
   ["ruffian","Ruffian","a ruffian",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_club","itm_spiked_club"],
    str_14|agi_12|pw_attr,wpex(80,65,80,10,20,80),knows_pw|knows_ironflesh_3|knows_power_strike_4|knows_athletics_3|knows_riding_1|knows_looting_2,default_face_1,default_face_2],
@@ -130,6 +132,44 @@ troops = [
   ["mercenary","Mercenary","a mercenary",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_ragged_woolen_cap","itm_stained_felt_hat_b","itm_tattered_headcloth","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_old_hide_boots","itm_chipped_falchion","itm_rusty_sword","itm_crude_spear","itm_old_shield","itm_flimsy_crossbow","itm_crude_bolts"],
    str_14|agi_14|pw_attr,wpex(90,70,80,30,75,70),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_3|knows_riding_2|knows_engineer_1|knows_sailing_3|knows_tailoring_1,default_face_1,default_face_2],
+  
+  # PN START *************************************************************************************
+  # Infantry
+  ["line_infantry","Line Infantry","a line infantry",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
+   str_11|agi_11|pw_attr,wpex(50,20,100,0,120,20),knows_pw|knows_ironflesh_2|knows_power_strike_3|knows_athletics_3|knows_riding_2|knows_sailing_1,default_face_1,default_face_2],
+
+  ["grenadier","Grenadier","a grenadier",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
+   str_14|agi_12|pw_attr,wpex(70,20,140,0,135,80),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2|knows_sailing_1,default_face_1,default_face_2],
+
+  ["skirmisher","Skirmisher","a skirmisher",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets", "itm_training_light_sabre"],
+   str_12|agi_14|pw_attr,wpex(90,20,50,0,150,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_5|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
+
+  ["infantry_officer","Infantry Officer","an infantry officer",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_training_officer_sword", "itm_spyglass"],
+   str_14|agi_14|pw_attr,wpex(110,20,100,0,100,80),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_5|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
+
+  # Cavalry
+  ["hussar","Hussar","a hussar",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
+   str_13|agi_13|pw_attr,wpex(120,20,50,0,20,20),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_1|knows_riding_4|knows_sailing_1,default_face_1,default_face_2],
+
+  ["lancer","Lancer","a lancer",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_lance"],
+   str_13|agi_13|pw_attr,wpex(50,20,140,0,20,20),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_1|knows_riding_4|knows_sailing_1,default_face_1,default_face_2],
+
+  ["cuirassier","Cuirassier","a cuirassier",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_heavy_sword"],
+   str_14|agi_13|pw_attr,wpex(140,20,50,0,20,20),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_1|knows_riding_5|knows_sailing_1,default_face_1,default_face_2],
+
+  ["cavalry_officer","Cavalry Officer","a cavalry officer",tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_training_officer_sword", "itm_spyglass"],
+   str_14|agi_14|pw_attr,wpex(150,20,80,0,100,20),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_1|knows_riding_6|knows_sailing_1,default_face_1,default_face_2],
+
+  # PN END ***************************************************************************************
+   
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_red_shirt","itm_linen_tunic","itm_woolen_hose","itm_invisible_sword"],
    str_30|agi_30|pw_attr,wpex(300,300,300,300,300,300),knows_pw|knows_ironflesh_10|knows_power_strike_10|knows_power_draw_10|knows_power_throw_10|knows_shield_10|knows_athletics_10|knows_riding_10|knows_engineer_10|knows_wound_treatment_10|knows_looting_10|knows_labouring_10|knows_sailing_10|knows_tailoring_10|knows_herding_10,default_face_1,default_face_2],

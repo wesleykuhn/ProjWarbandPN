@@ -786,6 +786,7 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
 
 multiplayer_client_surrender = (
   0, 0.5, 0.1, [
+  (neg|multiplayer_is_dedicated_server),
   (key_clicked, key_o),
   (try_begin),
     (call_script,"script_client_get_my_agent"),
@@ -794,7 +795,7 @@ multiplayer_client_surrender = (
     (agent_is_alive,":agent_id"),
     (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
     
-    #(multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
+    (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
   (try_end),
   ],
   [
@@ -828,6 +829,7 @@ multiplayer_client_walking = (
 
 multiplayer_client_spyglass = (
   0, 0, 1, [
+  (neg|multiplayer_is_dedicated_server),
   (game_key_is_down,gk_defend),
   ],
   [
@@ -886,6 +888,52 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
       (try_end),
     (try_end),
     ##end drinking bottle break script
+  ])
+
+# This is the taunt:
+multiplayer_client_voicecommands = (
+  0, 0, 1, [(key_clicked, key_v),],
+  [
+    (store_mission_timer_a, ":current_time"),
+    (store_sub, ":elapsed_time", ":current_time", "$g_last_voice_command_at"),
+    
+    (call_script, "script_client_get_my_agent"),
+    (assign, ":player_agent", reg0),
+    
+    (agent_is_active,":player_agent"),
+    (agent_is_alive, ":player_agent"), # Still alive?
+    
+    (try_begin),
+      (call_script,"script_cf_agent_is_playing_music",":player_agent"), # when playing music dont do anything.
+    (else_try),
+      (call_script,"script_cf_agent_is_playing_piano",":player_agent"), # when playing music dont do anything.
+      
+    (else_try),
+      #(agent_get_troop_id, ":player_troop_id", ":player_agent"),
+       
+      (assign, ":wait_time", "$g_time_between_voice_commands"),
+      
+      (val_add,":wait_time",5), # add two due to lag...  changed to 5.
+      (gt, ":elapsed_time", ":wait_time"), # last command more then x seconds ago. 
+
+      # not in some presentation?
+      (neg|is_presentation_active, "prsnt_escape_menu"),
+      (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
+      (neg|is_presentation_active, "prsnt_admin_message"),
+      (neg|is_presentation_active, "prsnt_chat_box"), #custom_chat:
+      
+      (assign, ":voice_type", -1),
+      (try_begin),
+        (key_clicked, key_v),
+        (assign, ":voice_type", voice_type_cry),
+      (try_end),
+
+      (try_begin),
+        (gt, ":voice_type", -1),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action,player_action_voice,":voice_type"),
+        (store_mission_timer_a, "$g_last_voice_command_at"),
+      (try_end),
+    (try_end),
   ])
 
 # PN END *******************************************************************************************************************
@@ -1039,6 +1087,7 @@ def common_triggers(self):
     multiplayer_client_walking,
     multiplayer_client_spyglass,
     multiplayer_server_agent_hit_common,
+    multiplayer_client_voicecommands,
 
     local_chat_pressed,
     faction_chat_pressed,

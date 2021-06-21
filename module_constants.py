@@ -82,8 +82,10 @@ slot_player_admin_end                 = 58
 
 player_character_language_french = 1
 player_character_language_english = 2
-player_character_language_german = 3
-player_character_language_russian = 4
+player_character_language_austrian = 3
+player_character_language_prussian = 4
+player_character_language_russian = 5
+player_character_language_pirate = 6
 
 voice_type_cry                         = 1
 voice_type_surrender                   = 2
@@ -111,23 +113,20 @@ spyglass_type_stop                     = 2
 drinking_type_start                    = 1
 drinking_type_stop                     = 2
 
-player_action_voice         = 1
-player_action_music         = 2
-player_action_spyglass      = 3
-player_action_place_rocket  = 4
-player_action_toggle_walk   = 5
-player_action_has_cheat     = 6
-player_action_surrender = 7
-player_action_key_v = 8
-player_action_key_b = 9
-player_action_misc_item_drinking          = 10
-player_action_custom_order_menu_interact  = 11
-player_action_key_v = 12
-player_action_key_b = 13
-player_action_misc_item_drinking = 14
-player_action_custom_order_menu_interact = 15
-player_actions_begin        = player_action_voice
-player_actions_end          = 16
+player_action_change_lang                   = 87
+player_action_voice                         = 88
+player_action_music                         = 89
+player_action_spyglass                      = 90
+player_action_place_rocket                  = 91
+player_action_toggle_walk                   = 92
+player_action_has_cheat                     = 93
+player_action_surrender                     = 94
+player_action_misc_item_drinking            = 95
+player_action_custom_order_menu_interact    = 96
+player_action_misc_item_drinking            = 97
+player_action_custom_order_menu_interact    = 98
+player_actions_begin                        = player_action_voice
+player_actions_end                          = 99
 
 # PN END ***********************************
 

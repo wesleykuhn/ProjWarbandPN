@@ -1385,10 +1385,12 @@ itm_wall_banner("fac_8", "b"),
  230 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(60 ,pierce)|max_ammo(1)|accuracy(25),imodbits_none, []],
 ["french_officer_pistol", "French Officer Pistol", [("french_officer_pistol",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
  230 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(60 ,pierce)|max_ammo(1)|accuracy(25),imodbits_none, []],
-["french_pistol_1766", "French Pistol", [("french_pistol_1766",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
- 230 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(60 ,pierce)|max_ammo(1)|accuracy(25),imodbits_none, []],
 ["french_pistol_1777", "French Pistol", [("french_pistol_1777",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
  230 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(60 ,pierce)|max_ammo(1)|accuracy(25),imodbits_none, []],
+
+ # Neutral
+["neutral_old_pistol_1766", "Old Pistol", [("french_pistol_1766",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
+ 230 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(50 ,pierce)|max_ammo(1)|accuracy(20),imodbits_none, []],
 
  # Russian
 ["russian_pistol", "Russian Pistol", [("Russian_pistol",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
@@ -1642,8 +1644,8 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 ["austrian_lance", "Austrian Lance", [("lance_austria",0)],itp_has_upper_stab| itp_couchable|itp_type_polearm|itp_offset_lance|itp_no_parry| itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_is_pike|itp_no_blur, itc_lance,
  180 , weight(2.5)|difficulty(0)|spd_rtng(76) | weapon_length(185)|swing_damage(25 ,  pierce) | thrust_damage(30 ,  pierce),imodbits_polearm ], 
  
-# Rhine
-["saxon_lance", "Saxon Uhlan Lance", [("saxon_ulan_pike",0)],itp_has_upper_stab| itp_couchable|itp_type_polearm|itp_offset_lance|itp_no_parry| itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_is_pike|itp_no_blur, itc_lance,
+# Neutral
+["neutral_lance", "Lance", [("saxon_ulan_pike",0)],itp_has_upper_stab| itp_couchable|itp_type_polearm|itp_offset_lance|itp_no_parry| itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_is_pike|itp_no_blur, itc_lance,
  180 , weight(2.5)|difficulty(0)|spd_rtng(76) | weapon_length(185)|swing_damage(25 ,  pierce) | thrust_damage(30 ,  pierce),imodbits_polearm ], 
  
 # Russian
@@ -1798,7 +1800,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
  210 , weight(0)|difficulty(0)|spd_rtng(93)|weapon_length(102)|swing_damage(30, cut)|thrust_damage(30, pierce), imodbits_sword_high],
 ["key_gold", "Golden Key", [("key_gold",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, 0,
  210 , weight(0)|difficulty(0)|spd_rtng(93)|weapon_length(102)|swing_damage(30, cut)|thrust_damage(30, pierce), imodbits_sword_high],
-["spyglass","Spyglass", [("spyglass",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, 0, 
+["spyglass","Spyglass", [("spyglass",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_dagger_front_right, 
  210 , weight(0)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(30 , cut) | thrust_damage(30 ,  pierce),imodbits_sword_high],
 ["drinking_cup", "Cup", [("drinking_cup_carry",0), ("drinking_cup", ixmesh_carry)], itp_type_two_handed_wpn|itp_wooden_parry|itp_primary, 0,
  210, weight(1)|difficulty(0)|spd_rtng(90)|weapon_length(32)|swing_damage(24, blunt)|thrust_damage(18, blunt), imodbits_sword_high ],
@@ -2192,8 +2194,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["russian_militia_officer", "Russian Militia Officer Uniform", [("rus_militia_off",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
-["russian_militia_ranker", "Russian Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
- 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["russian_guard_officer", "Russian Guard Infantry Officer Uniform", [("rus_preobr_off",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["russian_guard_nco", "Russian Guard Infantry Sergeant Uniform", [("rus_preobr_nco",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
@@ -2231,10 +2231,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 ["russian_dragoon_ranker", "Russian Dragoon Uniform", [("rus_dragoon_ranker",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["russian_dragoon_trumpeter", "Russian Dragoon Trumpeter Uniform", [("rus_dragoon_trump",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
- 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
-["rus_partizan1", "Russian Partizan Coat", [("rus_partizan",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
- 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
-["rus_partizan2", "Russian Partizan Coat", [("rus_partizan1",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["russian_uhlan_officer", "Russian Uhlan Officer Uniform", [("rus_uhlan_officer",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
@@ -2473,11 +2469,23 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 ["baden_dragoon_officer", "Austrian Chevau-leger Officer Uniform", [("baden_dragoon_officer",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
  100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 
-# Civilian Cloths
-["civil_shirt_1", "Civilian Shirt", [("civil_shirt_1",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0,
+# Neutral All Cloths Kinds
+["neutral_militia_uniform", "Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
+ 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+["neutral_shirt_1", "Shirt", [("civil_shirt_1",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0,
  100, weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
-["civil_shirt_2", "Civilian Shirt", [("civil_shirt_2",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0,
+["neutral_shirt_2", "Shirt", [("civil_shirt_2",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0,
  100, weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+["neutral_coat1", "Coat", [("rus_partizan",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
+ 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+["neutral_coat2", "Coat", [("rus_partizan1",0)],  itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
+ 100 , weight(3)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+["neutral_pants_grey", "Gray Pants", [("british_rifle_pants_grey",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
+ 10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
+["neutral_militia_pants1", "Militia Boots", [("rus_militia_ranker_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
+  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
+["neutral_militia_pants2", "Militia Pants", [("rus_militia_ranker_pants1",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
+  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 
 ## Hats
 # Russian
@@ -2774,15 +2782,11 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["rus_horse_guard_pants", "Russian Horse Guard Pants", [("rus_chevalier_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["rus_cossack_off_pants", "Russian Cossack Pants", [("rus_cossack_off_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
+["rus_cossack_off_pants", "Russian Cossack Officer Pants", [("rus_cossack_off_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["rus_kutuzov_pants", "Russian General's Pants", [("rus_kutuzov_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["rus_militia_off_pants", "Russian Militia Pants", [("rus_militia_off_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
-  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["rus_militia_ranker_pants", "Russian Militia Boots", [("rus_militia_ranker_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
-  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["rus_militia_ranker_pants1", "Russian Militia Pants", [("rus_militia_ranker_pants1",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
+["rus_militia_off_pants", "Russian Militia Officer Pants", [("rus_militia_off_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["rus_jaeger_pants", "Russian Jaeger Pants", [("rus_jaeger_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
@@ -2827,8 +2831,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 ["british_rifle_captain_pants", "British Rifleman Officer Pants", [("british_rifle_captain_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["british_rifle_pants_green", "British Rifleman Green Pants", [("british_rifle_pants_green",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["british_rifle_pants_grey", "British Rifleman Gray Pants", [("british_rifle_pants_grey",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["british_rifle_pants_rolled", "British Rifleman Pants", [("british_rifle_pants_rolled",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],

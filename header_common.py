@@ -33,10 +33,14 @@ server_event_admin_set_permissions              = 25
 server_event_set_attached_scene_prop            = 26
 server_event_local_animation                    = 27
 server_event_update_scene_prop_hit_points       = 28
+
 multiplayer_event_return_sound_at_pos           = 29
+multiplayer_event_send_player_action            = 30
+multiplayer_event_return_agent_stop_sound       = 31
 
 # Add new events here: above if sent from the server, below if from clients.
 
+client_event_change_character_language          = 94
 client_event_request_animation                  = 95
 client_event_reveal_money_pouch                 = 96
 client_event_agent_loot_armor                   = 97
@@ -268,11 +272,6 @@ multi_item_class_type_feet_begin = multi_item_class_type_heads_end
 multi_item_class_type_feet_end = multi_item_class_type_glove
 multi_item_class_type_gloves_begin = multi_item_class_type_feet_end
 multi_item_class_type_gloves_end = multi_item_class_type_glove + 1
-
-multiplayer_event_send_player_action = 4
-multiplayer_event_return_agent_stop_sound                     = 106
-
-player_action_surrender = 7
 
 # PN END ************************************************************************************************************************************
 

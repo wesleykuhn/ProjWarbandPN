@@ -364,7 +364,15 @@ sounds = [
    "brit_nosey1.wav", # Hurrah for old nosey
    "brit_nosey2.wav",
    "brit_king1.wav", # For king and country
-   "brit_king2.wav"
+   "brit_king2.wav",
+   "brit_bastard1.wav", # Come on yer bastards
+   "brit_bastard2.wav",
+   "brit_scotland1.wav", # Scotland Ferever
+   "brit_scotland2.wav", 
+   "brit_sonsof1.wav", # Sons of the hounds, come here and get flesh
+   "brit_sonsof2.wav",
+   "brit_bydand1.wav", # Bydand
+   "brit_bydand2.wav"
  ]), 
  ("voice_cry_fren", sf_priority_8|sf_vol_13, [
    "fren_empereur1.wav", # Vive lEmpereur!
@@ -415,7 +423,14 @@ sounds = [
    "rus_battlecry10.wav",
    "rus_battlecry11.wav",
    "rus_battlecry12.wav",
-   "rus_battlecry13.wav"
+   "rus_battlecry13.wav",
+   "ukr_battlecry1.wav", 
+   "ukr_battlecry2.wav",
+   "ukr_battlecry3.wav",
+   "rus_battlecry3.wav",
+   "rus_battlecry10.wav",
+   "rus_battlecry11.wav",
+   "rus_battlecry12.wav"
  ]),
  ("voice_cry_aust", sf_priority_8|sf_vol_13, [
    "aus_kaiser1.wav",	# Fur den Kaiser !
@@ -432,41 +447,12 @@ sounds = [
    "prus_hurra3.wav",
    "prus_hurra4.wav",
    "prus_aufgehts1.wav", # Auf gehts Kameraden !
-   "prus_aufgehts2.wav"
- ]),
- ("voice_cry_brit_scot", sf_priority_8|sf_vol_13, [
-   "brit_bastard1.wav", # Come on yer bastards
-   "brit_bastard2.wav",
-   "brit_scotland1.wav", # Scotland Ferever
-   "brit_scotland2.wav", 
-   "brit_sonsof1.wav", # Sons of the hounds, come here and get flesh
-   "brit_sonsof2.wav",
-   "brit_bydand1.wav", # Bydand
-   "brit_bydand2.wav"
- ]),
- ("voice_cry_russ_ukr", sf_priority_8|sf_vol_13, [
-   "ukr_battlecry1.wav", 
-   "ukr_battlecry2.wav",
-   "ukr_battlecry3.wav",
-   "rus_battlecry3.wav",
-   "rus_battlecry10.wav",
-   "rus_battlecry11.wav",
-   "rus_battlecry12.wav"
- ]),
- ("voice_cry_rhen", sf_priority_8|sf_vol_13, [
+   "prus_aufgehts2.wav",
    "prus_fuervater1.wav", # Fur das Vaterland !
    "prus_fuervater2.wav",
    "prus_fuervater3.wav",
-   "prus_fuervater4.wav", 
-   "prus_schlagt1.wav", # Schlagt sie !
-   "prus_schlagt2.wav",
-   "prus_hurra1.wav",	# Hurra !
-   "prus_hurra2.wav",
-   "prus_hurra3.wav",
-   "prus_hurra4.wav",
-   "prus_aufgehts1.wav", # Auf gehts Kameraden !
-   "prus_aufgehts2.wav"
- ]), 
+   "prus_fuervater4.wav"
+ ]),
  ("voice_cry_pirate", sf_priority_8|sf_vol_13, [
    "pirate_1.wav",
    "pirate_2.wav",
