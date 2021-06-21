@@ -787,14 +787,13 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
 multiplayer_client_surrender = (
   0, 0.5, 0.1, [
   (neg|multiplayer_is_dedicated_server),
-  (key_clicked, key_o),
+  (key_clicked, key_b),
   (try_begin),
     (call_script,"script_client_get_my_agent"),
     (assign,":agent_id",reg0),
     (agent_is_active,":agent_id"),
     (agent_is_alive,":agent_id"),
     (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender,music_type_start),
-    
     (multiplayer_send_2_int_to_server,multiplayer_event_send_player_action,player_action_voice,voice_type_surrender),
   (try_end),
   ],
@@ -891,7 +890,7 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
   ])
 
 # This is the taunt:
-multiplayer_client_voicecommands = (
+multiplayer_client_voice_warcry = (
   0, 0, 1, [(key_clicked, key_v),],
   [
     (store_mission_timer_a, ":current_time"),
@@ -930,11 +929,24 @@ multiplayer_client_voicecommands = (
 
       (try_begin),
         (gt, ":voice_type", -1),
-        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action,player_action_voice,":voice_type"),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_voice, ":voice_type"),
         (store_mission_timer_a, "$g_last_voice_command_at"),
       (try_end),
     (try_end),
-  ])
+])
+
+multiplayer_client_voice_orders = (
+  0, 0.5, 0.1,[(key_clicked, key_o)],
+  [
+    (neg|multiplayer_is_dedicated_server),
+    (try_begin),
+      (call_script,"script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      (start_presentation,"prsnt_orders_menu"),
+    (try_end),
+])
 
 # PN END *******************************************************************************************************************
 
@@ -1087,7 +1099,8 @@ def common_triggers(self):
     multiplayer_client_walking,
     multiplayer_client_spyglass,
     multiplayer_server_agent_hit_common,
-    multiplayer_client_voicecommands,
+    multiplayer_client_voice_warcry,
+    multiplayer_client_voice_orders,
 
     local_chat_pressed,
     faction_chat_pressed,

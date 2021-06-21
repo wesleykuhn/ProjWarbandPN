@@ -504,9 +504,7 @@ sounds = [
    "rus_surrender5.wav",
    "rus_surrender6.wav",
    "rus_surrender7.wav",
-   "rus_surrender8.wav"
- ]),
-  ("voice_surrender_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, [
+   "rus_surrender8.wav",
    "ukr_surrender1.wav",
    "ukr_surrender2.wav",
    "ukr_surrender3.wav",
@@ -519,63 +517,63 @@ sounds = [
  ("voice_comm_ready_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_armes1.wav","fren_armes2.wav","fren_armes3.wav"]),
  ("voice_comm_ready_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_bereit1.wav","prus_bereit2.wav","prus_bereit3.wav","prus_bereit4.wav","prus_bereit5.wav"]),
  ("voice_comm_ready_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_ready1.wav","rus_ready2.wav","rus_ready3.wav"]),
- ("voice_comm_ready_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_ready1.wav","ukr_ready2.wav"]),
+ #("voice_comm_ready_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_ready1.wav","ukr_ready2.wav"]),
  
  # Present
  ("voice_comm_present_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_pres1.wav","brit_pres2.wav","brit_pres3.wav","brit_pres4.wav","brit_pres5.wav"]),
  ("voice_comm_present_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_enjou1.wav","fren_enjou2.wav","fren_enjou3.wav"]),
  ("voice_comm_present_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_anlegen1.wav","prus_anlegen2.wav","prus_anlegen3.wav","prus_anlegen4.wav"]),
  ("voice_comm_present_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_present1.wav","rus_present2.wav"]),
- ("voice_comm_present_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_present1.wav","ukr_present2.wav"]),
+ #("voice_comm_present_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_present1.wav","ukr_present2.wav"]),
  
  # Fire
  ("voice_comm_fire_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_fire1.wav","brit_fire2.wav","brit_fire3.wav","brit_fire4.wav"]),
  ("voice_comm_fire_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_feau1.wav","fren_feau2.wav","fren_feau3.wav"]),
  ("voice_comm_fire_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_feuer1.wav","prus_feuer2.wav","prus_feuer3.wav"]),
  ("voice_comm_fire_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_fire1.wav","rus_fire2.wav","rus_fire3.wav"]),
- ("voice_comm_fire_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_fire1.wav","ukr_fire2.wav"]),
+ #("voice_comm_fire_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_fire1.wav","ukr_fire2.wav"]),
  
  # Charge
  ("voice_comm_charge_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_charge1.wav","brit_charge2.wav","brit_charge3.wav"]),
  ("voice_comm_charge_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_charge1.wav","fren_bayonet1.wav","fren_bayonet2.wav","fren_bayonet3.wav","fren_bayonet4.wav"]),
  ("voice_comm_charge_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_nahkampfangriff1.wav","prus_angriff1.wav","prus_angriff2.wav","prus_attacke1.wav","prus_attacke2.wav","prus_attacke3.wav","prus_inden1.wav","prus_inden2.wav","prus_inden3.wav"]),
  ("voice_comm_charge_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_charge1.wav","rus_charge2.wav","rus_charge3.wav","rus_charge4.wav"]),
- ("voice_comm_charge_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_charge1.wav","rus_charge2.wav","rus_charge3.wav","rus_charge4.wav"]),
+ #("voice_comm_charge_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_charge1.wav","rus_charge2.wav","rus_charge3.wav","rus_charge4.wav"]),
  
  # Company, advance!
  ("voice_comm_advance_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_advance1.wav","brit_advance2.wav","brit_advance3.wav","brit_advance4.wav","brit_advance5.wav","brit_advance6.wav"]),
  ("voice_comm_advance_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_avance1.wav","fren_march1.wav","fren_enaveant1.wav","fren_compagnie1.wav"]),
  ("voice_comm_advance_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_kompanie1.wav","prus_kompanie2.wav","prus_kompanie3.wav","prus_vorruecken1.wav","prus_vorruecken2.wav"]),
  ("voice_comm_advance_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_advance1.wav","rus_advance2.wav","rus_advance3.wav","rus_advance4.wav","rus_advance5.wav"]),
- ("voice_comm_advance_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_onme1.wav","ukr_onme2.wav"]),
+ #("voice_comm_advance_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_onme1.wav","ukr_onme2.wav"]),
  
  # Hold this position!
  ("voice_comm_hold_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_hold1.wav","brit_hold2.wav","brit_hold3.wav","brit_hold4.wav","brit_hold5.wav"]),
  ("voice_comm_hold_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_tenezcette1.wav","fren_tenezlapos1.wav","fren_defendez1.wav"]),
  ("voice_comm_hold_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_dieposition1.wav","prus_dieposition2.wav","prus_haltet1.wav","prus_haltet2.wav","prus_haltet3.wav","prus_verteidigt1.wav","prus_verteidigt2.wav","prus_verteidigt3.wav","prus_verteidigt4.wav"]),
  ("voice_comm_hold_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_holdpos1.wav","rus_holdpos2.wav","rus_holdpos3.wav"]),
- ("voice_comm_hold_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_holdpos1.wav","ukr_holdpos2.wav","ukr_holdpos3.wav"]),
+ #("voice_comm_hold_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_holdpos1.wav","ukr_holdpos2.wav","ukr_holdpos3.wav"]),
  
  # Fire at will!
  ("voice_comm_fire_at_will_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_fireatwill1.wav","brit_fireatwill2.wav","brit_fireatwill3.wav"]),
  ("voice_comm_fire_at_will_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_volon1.wav","fren_volon2.wav"]),
  ("voice_comm_fire_at_will_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_feuernach1.wav","prus_feuernach2.wav","prus_feuernach3.wav","prus_feuerfrei1.wav","prus_feuerfrei2.wav","prus_feuerfrei3.wav"]),
  ("voice_comm_fire_at_will_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_fireatwill1.wav","rus_fireatwill2.wav"]),
- ("voice_comm_fire_at_will_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_fireatwill1.wav"]),
+ #("voice_comm_fire_at_will_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_fireatwill1.wav"]),
  
  # Company, on me! 
  ("voice_comm_on_me_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_onme1.wav","brit_onme2.wav","brit_onme3.wav","brit_onme4.wav"]),
  ("voice_comm_on_me_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_avec1.wav","fren_avec2.wav","fren_avec3.wav","fren_avec4.wav","fren_avec5.wav"]),
  ("voice_comm_on_me_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_zumir1.wav","prus_zumir2.wav","prus_zumir3.wav"]),
  ("voice_comm_on_me_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_onme1.wav","rus_onme2.wav","rus_onme3.wav"]),
- ("voice_comm_on_me_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_onme1.wav","ukr_onme2.wav","ukr_onme3.wav","ukr_onme4.wav"]),
+ #("voice_comm_on_me_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_onme1.wav","ukr_onme2.wav","ukr_onme3.wav","ukr_onme4.wav"]),
  
  # Fall back!
  ("voice_comm_fall_back_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_fallback1.wav","brit_fallback2.wav","brit_fallback3.wav"]),
  ("voice_comm_fall_back_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["fren_ret1.wav","fren_ret2.wav","fren_ret3.wav"]),
  ("voice_comm_fall_back_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_zurueck1.wav","prus_zurueck2.wav"]),
  ("voice_comm_fall_back_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_all_retreat1.wav","rus_retreat1.wav","rus_fallback1.wav"]),
- ("voice_comm_fall_back_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_all_retreat1.wav","ukr_retreat1.wav","ukr_fallback1.wav"]),
+ #("voice_comm_fall_back_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_all_retreat1.wav","ukr_retreat1.wav","ukr_fallback1.wav"]),
  
  ## Female voices 
   # battle cries
@@ -652,27 +650,13 @@ sounds = [
   "prus_f_battlecry_9.wav",
   "prus_f_battlecry_10.wav"
  ]),
- ("voice_cry_fem_russ_ukr", sf_priority_8|sf_vol_13, [
-  "ukr_f_battlecry_1.wav",
-  "ukr_f_battlecry_2.wav",
-  "rus_f_battlecry1.wav",
-  "rus_f_battlecry2.wav"
- ]),
- ("voice_cry_fem_rhen", sf_priority_8|sf_vol_13, [
-  "prus_f_battlecry_4.wav",
-  "prus_f_battlecry_5.wav",
-  "prus_f_battlecry_6.wav",
-  "prus_f_battlecry_8.wav",
-  "prus_f_battlecry_9.wav",
-  "prus_f_battlecry_10.wav"
- ]),
  
  # Surrendering
  ("voice_surrender_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_surrender_1.wav","brit_f_surrender_2.wav","brit_f_surrender_3.wav","brit_f_surrender_4.wav","brit_f_surrender_5.wav"]),
  ("voice_surrender_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_surrender_1.wav","french_f_surrender_2.wav","french_f_surrender_3.wav","french_f_surrender_4.wav"]),
  ("voice_surrender_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_surrender_1.wav","prus_f_surrender_2.wav","prus_f_surrender_3.wav"]),
  ("voice_surrender_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_surrender1.wav","rus_f_surrender2.wav","rus_f_surrender3.wav","rus_f_surrender4.wav","rus_f_surrender5.wav","rus_f_surrender6.wav","rus_f_surrender7.wav","rus_f_surrender8.wav"]),
- ("voice_surrender_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_surrender_1.wav","ukr_f_surrender_2.wav","ukr_f_surrender_3.wav","ukr_f_surrender_4.wav","ukr_f_surrender_5.wav","ukr_f_surrender_6.wav"]),
+ #("voice_surrender_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_surrender_1.wav","ukr_f_surrender_2.wav","ukr_f_surrender_3.wav","ukr_f_surrender_4.wav","ukr_f_surrender_5.wav","ukr_f_surrender_6.wav"]),
  
  ## Officer commands ##
  # Make Ready
@@ -680,63 +664,63 @@ sounds = [
  ("voice_comm_ready_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_ready_1.wav","french_f_ready_2.wav","french_f_ready_3.wav","french_f_ready_5.wav"]),
  ("voice_comm_ready_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_ready_1.wav","prus_f_ready_2.wav"]),
  ("voice_comm_ready_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_ready1.wav","rus_f_ready2.wav","rus_f_ready3.wav"]),
- ("voice_comm_ready_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_ready_1.wav","ukr_f_ready_2.wav","ukr_f_ready_3.wav"]),
+ #("voice_comm_ready_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_ready_1.wav","ukr_f_ready_2.wav","ukr_f_ready_3.wav"]),
  
  # Present
  ("voice_comm_present_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_present_1.wav","brit_f_present_2.wav"]),
  ("voice_comm_present_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_present_1.wav","french_f_present_2.wav","french_f_present_3.wav"]),
  ("voice_comm_present_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_present_1.wav","prus_f_present_2.wav"]),
  ("voice_comm_present_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_present1.wav","rus_f_present2.wav"]),
- ("voice_comm_present_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_present_1.wav","ukr_f_present_2.wav"]),
+ #("voice_comm_present_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_present_1.wav","ukr_f_present_2.wav"]),
  
  # Fire
  ("voice_comm_fire_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_fire_1.wav","brit_f_fire_2.wav","brit_f_fire_3.wav","brit_f_fire_4.wav"]),
  ("voice_comm_fire_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_fire_1.wav","french_f_fire_2.wav","french_f_fire_3.wav","french_f_fire_4.wav"]),
  ("voice_comm_fire_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_fire_1.wav","prus_f_fire_2.wav"]),
  ("voice_comm_fire_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_fire1.wav","rus_f_fire2.wav"]),
- ("voice_comm_fire_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_fire_1.wav","ukr_f_fire_2.wav"]),
+ #("voice_comm_fire_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_fire_1.wav","ukr_f_fire_2.wav"]),
  
  # Charge
  ("voice_comm_charge_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_charge_1.wav","brit_f_charge_2.wav","brit_f_charge_3.wav","brit_f_charge_4.wav"]),
  ("voice_comm_charge_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_charge_1.wav","french_f_charge_2.wav","french_f_charge_3.wav","french_f_charge_4.wav","french_f_charge_5.wav","french_f_charge_6.wav"]),
  ("voice_comm_charge_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_charge_1.wav","prus_f_charge_2.wav","prus_f_charge_3.wav","prus_f_charge_4.wav","prus_f_charge_5.wav"]),
  ("voice_comm_charge_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_charge1.wav","rus_f_charge2.wav","rus_f_charge3.wav","rus_f_charge4.wav","rus_f_charge5.wav","rus_f_charge6.wav","rus_f_charge7.wav"]),
- ("voice_comm_charge_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_charge5.wav"]),
+ #("voice_comm_charge_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_charge5.wav"]),
  
  # Company, advance!
  ("voice_comm_advance_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_advance_1.wav","brit_f_advance_2.wav","brit_f_advance_3.wav","brit_f_advance_4.wav","brit_f_advance_5.wav","brit_f_advance_6.wav","brit_f_advance_7.wav","brit_f_advance_8.wav","brit_f_advance_9.wav"]),
  ("voice_comm_advance_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_advance_1.wav","french_f_advance_2.wav","french_f_advance_3.wav","french_f_advance_4.wav","french_f_advance_5.wav","french_f_advance_6.wav"]),
  ("voice_comm_advance_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_advance_1.wav","prus_f_advance_2.wav","prus_f_advance_3.wav"]),
  ("voice_comm_advance_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_advance1.wav","rus_f_advance2.wav","rus_f_advance3.wav","rus_f_advance4.wav"]),
- ("voice_comm_advance_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_advance_1.wav","ukr_f_advance_2.wav","ukr_f_advance_3.wav","ukr_f_advance_4.wav","rus_f_advance1.wav","rus_f_advance2.wav"]),
+ #("voice_comm_advance_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_advance_1.wav","ukr_f_advance_2.wav","ukr_f_advance_3.wav","ukr_f_advance_4.wav","rus_f_advance1.wav","rus_f_advance2.wav"]),
  
  # Hold this position!
  ("voice_comm_hold_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_holdpos_1.wav","brit_f_holdpos_2.wav","brit_f_holdpos_3.wav","brit_f_holdpos_4.wav","brit_f_holdpos_5.wav","brit_f_holdpos_6.wav"]),
  ("voice_comm_hold_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_holdpos_1.wav","french_f_holdpos_2.wav","french_f_holdpos_3.wav","french_f_holdpos_4.wav"]),
  ("voice_comm_hold_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_holdpos_1.wav","prus_f_holdpos_2.wav","prus_f_holdpos_3.wav"]),
  ("voice_comm_hold_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_holdpos1.wav","rus_f_holdpos2.wav"]),
- ("voice_comm_hold_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_holdpos_1.wav","ukr_f_holdpos_2.wav"]),
+ #("voice_comm_hold_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_holdpos_1.wav","ukr_f_holdpos_2.wav"]),
  
  # Fire at will!
  ("voice_comm_fire_at_will_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_fireatwill_1.wav","brit_f_fireatwill_2.wav","brit_f_fireatwill_3.wav","brit_f_fireatwill_4.wav","brit_f_fireatwill_5.wav","brit_f_fireatwill_6.wav"]),
  ("voice_comm_fire_at_will_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_fireatwill_1.wav","french_f_fireatwill_2.wav","french_f_fireatwill_3.wav"]),
  ("voice_comm_fire_at_will_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_fireatwill_1.wav","prus_f_fireatwill_2.wav","prus_f_fireatwill_3.wav"]),
  ("voice_comm_fire_at_will_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_fireatwill1.wav","rus_f_fireatwill2.wav"]),
- ("voice_comm_fire_at_will_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_fireatwill_1.wav","ukr_f_fireatwill_2.wav"]),
+ #("voice_comm_fire_at_will_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_fireatwill_1.wav","ukr_f_fireatwill_2.wav"]),
  
  # Company, on me! 
  ("voice_comm_on_me_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_onme_1.wav","brit_f_onme_2.wav","brit_f_onme_3.wav"]),
  ("voice_comm_on_me_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_onme_1.wav","french_f_onme_2.wav","french_f_onme_3.wav","french_f_onme_4.wav","french_f_onme_5.wav","french_f_onme_6.wav","french_f_onme_7.wav","french_f_onme_8.wav"]),
  ("voice_comm_on_me_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_onme_1.wav","prus_f_onme_2.wav"]),
  ("voice_comm_on_me_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_onme1.wav","rus_f_onme2.wav"]),
- ("voice_comm_on_me_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_onme_1.wav","ukr_f_onme_2.wav"]),
+ #("voice_comm_on_me_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_onme_1.wav","ukr_f_onme_2.wav"]),
  
  # Fall back!
  ("voice_comm_fall_back_fem_brit", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["brit_f_fallback_1.wav","brit_f_fallback_2.wav","brit_f_fallback_3.wav"]),
  ("voice_comm_fall_back_fem_fren", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["french_f_fallback_1.wav","french_f_fallback_2.wav","french_f_fallback_3.wav","french_f_fallback_4.wav","french_f_fallback_5.wav","french_f_fallback_6.wav"]),
  ("voice_comm_fall_back_fem_prus", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["prus_f_retreat_1.wav","prus_f_retreat_2.wav"]),
  ("voice_comm_fall_back_fem_russ", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["rus_f_retreat1.wav","rus_f_retreat2.wav","rus_f_retreat3.wav","rus_f_retreat4.wav"]),
- ("voice_comm_fall_back_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_retreat_1.wav","ukr_f_retreat_2.wav","ukr_f_retreat_3.wav","ukr_f_retreat_4.wav","ukr_f_retreat_5.wav","ukr_f_retreat_6.wav"]),
+ #("voice_comm_fall_back_fem_ukra", sf_priority_8|sf_vol_13|sf_stream_from_hd, ["ukr_f_retreat_1.wav","ukr_f_retreat_2.wav","ukr_f_retreat_3.wav","ukr_f_retreat_4.wav","ukr_f_retreat_5.wav","ukr_f_retreat_6.wav"]),
 
  ### Muscician sounds
  ## DRUM

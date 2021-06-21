@@ -422,11 +422,21 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   ("character_language", "Choose Character Nationality"),
   ("character_language_french", "French"),
-  ("character_language_english", "English"),
+  ("character_language_english", "British"),
   ("character_language_prussian", "Prussian"),
   ("character_language_austrian", "Austrian"),
   ("character_language_russian", "Russian"),
   ("character_language_pirate", "I'm a pirate!"),
+
+  ("comm_menu_follow_me", "1 - Follow Me"),
+  ("comm_menu_hold_position", "2 - Hold This Position"),
+  ("comm_menu_advance", "3 - Advance"),
+  ("comm_menu_presents", "4 - Presents"),
+  ("comm_menu_ready", "5 - Ready"),
+  ("comm_menu_fire", "6 - Fire"),
+  ("comm_menu_fire_at_will", "7 - Fire At Will"),
+  ("comm_menu_charge", "8 - Charge"),
+  ("comm_menu_fall_back", "9 - Fall Back"),
 
   ("max_players", "Maximum number of players:"),
   ("friendly_fire", "friendly_fire:"),
