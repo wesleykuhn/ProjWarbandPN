@@ -4928,19 +4928,16 @@ scene_props = [
             (le, ":player_horse", 0),
             
             (try_begin),
+              
               (set_fixed_point_multiplier, 100),
               
               (agent_get_position,pos33,":agent_id"),
               (prop_instance_get_position, pos40, ":instance_id"),
               
-              (position_move_y,pos40,-250),
+              (position_move_y,pos40,-200),
               (get_distance_between_positions,":dist",pos33,pos40),
               
               (lt, ":dist", 280),
-              
-              #(get_angle_between_positions, ":rotation", pos33, pos40),
-              
-            
               (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
               (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
               
@@ -4949,10 +4946,10 @@ scene_props = [
               (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano_angle"),
             (try_end),
           (else_try),
-            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_organ"),
+            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano"),
           (try_end),
         (else_try),
-          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_organ_in_use"),
+          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_piano_in_use"),
         (try_end),
       ]),
     ]),

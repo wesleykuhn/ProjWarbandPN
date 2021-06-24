@@ -1660,7 +1660,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
  87 , weight(1.5)|difficulty(9)|spd_rtng(90) | weapon_length(50)|swing_damage(33 , cut) | thrust_damage(0 ,  pierce),imodbits_axe ],
 ["brokenbottle","Broken Bottle", [("Russian_vodka_bottle",0)], itp_type_thrown|itp_next_item_as_melee,itcf_throw_stone,
  360, weight(1)|difficulty(0)|spd_rtng(90) | shoot_speed(16) | thrust_damage(33,cut)|max_ammo(1)|weapon_length(33),imodbits_none,
- [(ti_on_missile_hit, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),(particle_system_burst, "psys_bottle_break", pos1, 10),(copy_position,pos56,pos1),(call_script, "script_multiplayer_server_play_sound_at_position", "snd_glass_break"),])]],
+ [(ti_on_missile_hit, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),(particle_system_burst, "psys_bottle_break", pos1, 10),(copy_position,pos0,pos1),(call_script, "script_play_sound_at_position", "snd_glass_break"),])]],
 ["brokenbottle_melee", "Broken Bottle", [("Russian_vodka_bottle",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itc_dagger, 
  210 , weight(1)|difficulty(0)|spd_rtng(95) | weapon_length(29)|swing_damage(22, blunt)| thrust_damage(20 ,  pierce),imodbits_sword_high ],
 ["russian_kindjal","Russian Cossack Kindjal", [("Russian_kindjal",0)], itp_type_one_handed_wpn|itp_primary|itp_secondary|itp_no_parry, itc_dagger|itcf_carry_dagger_front_left,

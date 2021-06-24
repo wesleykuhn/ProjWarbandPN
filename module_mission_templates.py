@@ -1133,15 +1133,13 @@ multiplayer_agent_wield_item_common = (
       (gt,":item_id",-1),
       (try_begin),
         (call_script,"script_cf_agent_is_playing_piano",":agent_id"),
-        
         (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
       (else_try),
         (call_script,"script_cf_agent_is_taking_a_shit",":agent_id"),
-        
         (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
+
       (else_try),
         (call_script,"script_cf_agent_is_surrendering",":agent_id"),
-        
         (set_fixed_point_multiplier,100),
         (agent_set_speed_modifier,":agent_id", 100),
         (agent_set_slot,":agent_id",slot_agent_base_speed_mod,100),

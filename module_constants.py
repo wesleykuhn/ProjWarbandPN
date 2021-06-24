@@ -77,6 +77,7 @@ slot_player_admin_no_mute             = 55
 slot_player_admin_no_animals          = 56
 slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
+slot_player_character_language        = 59
 
 # PN START *********************************
 
@@ -363,6 +364,7 @@ slot_agent_has_fallen_off_horse       = 70
 slot_agent_last_rotz                  = 71
 slot_agent_last_speed_same_count      = 72
 slot_agent_current_command            = 73
+slot_agent_character_language         = 74
 
 ########################################################
 ##  SCENE PROP SLOTS       #############################
