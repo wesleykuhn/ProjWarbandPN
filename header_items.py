@@ -82,6 +82,7 @@ itp_no_blur                  = 0x0008000000000000
 itp_cant_reload_while_moving_mounted = 0x0010000000000000
 itp_has_upper_stab           = 0x0020000000000000
 itp_disable_agent_sounds     = 0x0040000000000000
+itp_is_carriage              = 0x0080000000000000
 itp_kill_info_mask           = 0x0700000000000000
 itp_kill_info_bits           = 56
 

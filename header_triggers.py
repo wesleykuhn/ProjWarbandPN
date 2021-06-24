@@ -65,6 +65,8 @@ ti_on_leave_area                                  = -30.0
 ti_on_scene_prop_init                             = -40.0
 # trigger param 1: instance id
 
+ti_on_init_scene_prop    = ti_on_scene_prop_init
+
 ti_on_scene_prop_hit                              = -42.0
 # trigger param 1: instance id
 # trigger param 2: hit damage (server only)

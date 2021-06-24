@@ -34,9 +34,22 @@ server_event_set_attached_scene_prop            = 26
 server_event_local_animation                    = 27
 server_event_update_scene_prop_hit_points       = 28
 
-multiplayer_event_return_sound_at_pos           = 29
-multiplayer_event_send_player_action            = 30
-multiplayer_event_return_agent_stop_sound       = 31
+multiplayer_event_return_sound_at_pos                       = 29
+multiplayer_event_send_player_action                        = 30
+multiplayer_event_return_agent_stop_sound                   = 31
+multiplayer_event_return_prop_effects                       = 32
+multiplayer_event_show_server_message                       = 33
+multiplayer_event_return_server_action                      = 34
+multiplayer_event_show_multiplayer_message                  = 35
+multiplayer_event_return_scale_object                       = 36
+multiplayer_event_return_destructible_prop_spawn_or_destroy = 37
+multiplayer_event_return_currently_controlling_object       = 38
+multiplayer_event_return_cannon_hit_effect_event            = 39
+multiplayer_event_return_confirmation                       = 40
+multiplayer_event_return_rejection                          = 41
+multiplayer_event_player_build_prop                         = 42
+multiplayer_event_send_control_command                      = 43
+multiplayer_event_return_particle_at_pos                    = 44
 
 # Add new events here: above if sent from the server, below if from clients.
 
@@ -221,6 +234,13 @@ team_spawn_invulnerable                         = 1 # team set to be neutral to 
 team_spectators                                 = 2 # hard coded spectators team
 
 # PN START **********************************************************************************************************************************
+
+multiplayer_message_type_error                       = 2
+multiplayer_message_type_warning                     = 3
+multiplayer_message_type_message                     = 4
+multiplayer_message_type_message_custom_color        = 5
+multiplayer_message_types_begin                      = multiplayer_message_type_error
+multiplayer_message_types_end                        = 6
 
 multi_item_class_type_sword = 1
 multi_item_class_type_axe = 2

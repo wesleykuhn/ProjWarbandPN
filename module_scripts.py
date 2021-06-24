@@ -119,6 +119,8 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":agent_id", 1),
     (store_script_param, ":command_type", 2),
 
+    (agent_get_player_id, ":player_id", ":agent_id"),
+
     (try_begin),
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
@@ -140,9 +142,9 @@ scripts.extend([("game_start", []), # single player only, not used
         (gt, ":elapsed_time", ":wait_time"), # last command more then x seconds ago.
         (agent_set_slot, ":agent_id", slot_agent_last_voice_at, ":current_time"),
 
-        (assign,":gender",tf_male),
+        (assign,":gender", tf_male),
 
-        (player_get_gender,":gender", ":agent_id"),
+        (player_get_gender,":gender", ":player_id"),
 
         (assign, ":sound_id", -1),
         (try_begin),
@@ -643,477 +645,274 @@ scripts.extend([("game_start", []), # single player only, not used
 
   ("multiplayer_server_agent_play_music",
   [
-    #(store_script_param, ":agent_id", 1),
-    #(store_script_param, ":track_index", 2),
-    #(store_script_param, ":auto_started", 3),
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":track_index", 2),
+    (store_script_param, ":auto_started", 3),
      
-    #(set_fixed_point_multiplier,100),
+    (set_fixed_point_multiplier,100),
     
-    #(try_begin),
-    #  (this_or_next|multiplayer_is_server),
-    #  (neg|game_in_multiplayer_mode),
-    #  (agent_is_active,":agent_id"),
-    #  (agent_is_alive, ":agent_id"), # Still alive?
-    #  (agent_get_team,":agent_team",":agent_id"),
-    #  (team_get_faction,":agent_faction",":agent_team"),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive, ":agent_id"),
       
-    #  (assign,":instrument",-1),
-    #  (agent_get_wielded_item,":item_id",":agent_id",0),
-    #  (agent_get_slot,":instance_id",":agent_id",slot_agent_used_prop_instance),
-    #  (try_begin),
-    #    (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"), # a
-    #    instrument
+      (assign,":instrument",-1),
+      (agent_get_wielded_item,":item_id",":agent_id",0),
+      (agent_get_slot,":instance_id",":agent_id",slot_agent_used_prop_instance),
+      (try_begin),
+        (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"),
+
+        (assign,":instrument",":item_id"),
+      (else_try),
+        (prop_instance_is_valid,":instance_id"), #patch1115 18/2
+        (prop_instance_get_position,pos5,":instance_id"),
+        (agent_get_position,pos6,":agent_id"),
+        (get_distance_between_positions,":distance",pos5,pos6),
+        (lt,":distance",500), # 5 meters.
         
-    #    (assign,":instrument",":item_id"),
-    #  (else_try),
-    #    #(gt,":instance_id",-1), #patch1115 fix f/16
-    #    (prop_instance_is_valid,":instance_id"), #patch1115 18/2
-    #    (prop_instance_get_position,pos5,":instance_id"),
-    #    (agent_get_position,pos6,":agent_id"),
-    #    (get_distance_between_positions,":distance",pos5,pos6),
-    #    (lt,":distance",500), # 5 meters.
-        
-    #    (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
-    #    (assign,":instrument",":prop_kind"),
-    #  (try_end),
+        (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
+        (assign,":instrument",":prop_kind"),
+      (try_end),
       
-    #  (gt,":instrument",-1),
-      
-    # # (try_begin),
-    ##    (call_script,"script_cf_agent_is_playing_music",":agent_id"),
-    #  # always first stop it.
-    #  (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
-    # # (try_end),
+      (gt,":instrument",-1),
+
+      (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
 	  
-    #  (assign,":start_cond",-1),
-    #  (assign,":end_cond",-1),
-    #  (assign,":animation",-1),
-    #  (assign,":has_secondary",0),
-    #  #(assign,":channel",1), # animation channel 1 = only top 0 = both top
-    #  and bottom
-    #  (try_begin),
-    #    (eq,":instrument","itm_drumstick_right"),
-    #    (try_begin),
-    #      (eq,":agent_faction","fac_britain"),
-    #      (assign,":start_cond",drum_sounds_britain_begin),
-    #      (assign,":end_cond",drum_sounds_britain_end),
-    #      (try_begin),
-    #        (agent_get_troop_id,":troop_id",":agent_id"),
-    #        (eq,":troop_id","trp_british_highlander_drum"),
-    #        (assign,":start_cond",drum_sounds_highland_begin),
-    #        (assign,":end_cond",drum_sounds_highland_end),
-    #      (try_end),
-    #    (else_try),
-    #      (this_or_next|eq,":agent_faction","fac_rhine"),
-    #      (eq,":agent_faction","fac_france"),
-    #      (assign,":start_cond",drum_sounds_france_begin),
-    #      (assign,":end_cond",drum_sounds_france_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_prussia"),
-    #      (assign,":start_cond",drum_sounds_prussia_begin),
-    #      (assign,":end_cond",drum_sounds_prussia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_russia"),
-    #      (assign,":start_cond",drum_sounds_russia_begin),
-    #      (assign,":end_cond",drum_sounds_russia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_austria"),
-    #      (assign,":start_cond",drum_sounds_austria_begin),
-    #      (assign,":end_cond",drum_sounds_austria_end),
-    #    (try_end),
-    #    (assign,":has_secondary",1),
-    #    (assign,":sec_start_cond",drum_sounds_calls_begin),
-    #    (assign,":sec_end_cond",drum_sounds_calls_end),
-    #    (assign,":animation","anim_drum"),
-    #  (else_try),
-    #    (eq,":instrument","itm_flute"),
-    #    (try_begin),
-    #      (eq,":agent_faction","fac_britain"),
-    #      (assign,":start_cond",fife_sounds_britain_begin),
-    #      (assign,":end_cond",fife_sounds_britain_end),
-    #    (else_try),
-    #      (this_or_next|eq,":agent_faction","fac_rhine"),
-    #      (eq,":agent_faction","fac_france"),
-    #      (assign,":start_cond",fife_sounds_france_begin),
-    #      (assign,":end_cond",fife_sounds_france_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_prussia"),
-    #      (assign,":start_cond",fife_sounds_prussia_begin),
-    #      (assign,":end_cond",fife_sounds_prussia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_russia"),
-    #      (assign,":start_cond",fife_sounds_russia_begin),
-    #      (assign,":end_cond",fife_sounds_russia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_austria"),
-    #      (assign,":start_cond",fife_sounds_austria_begin),
-    #      (assign,":end_cond",fife_sounds_austria_end),
-    #    (try_end),
-    #    (assign,":animation","anim_flute"),
-    #  (else_try),
-    #    (is_between,":instrument","itm_horn","itm_bagpipe"),
-    #    (try_begin),
-    #      (eq,":agent_faction","fac_britain"),
-    #      (assign,":start_cond",bugle_sounds_britain_begin),
-    #      (assign,":end_cond",bugle_sounds_britain_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_france"),
-    #      (assign,":start_cond",bugle_sounds_france_begin),
-    #      (assign,":end_cond",bugle_sounds_france_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_prussia"),
-    #      (assign,":start_cond",bugle_sounds_prussia_begin),
-    #      (assign,":end_cond",bugle_sounds_prussia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_russia"),
-    #      (assign,":start_cond",bugle_sounds_russia_begin),
-    #      (assign,":end_cond",bugle_sounds_russia_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_austria"),
-    #      (assign,":start_cond",bugle_sounds_austria_begin),
-    #      (assign,":end_cond",bugle_sounds_austria_end),
-    #    (else_try),
-    #      (eq,":agent_faction","fac_rhine"),
-    #      (assign,":start_cond",bugle_sounds_france_begin),
-    #      (store_add,":end_cond",bugle_sounds_france_end,1), #also adding
-    #      first Prussian bugle tune
-    #    (try_end),
-    #    (assign,":has_secondary",1),
-    #    (assign,":sec_start_cond",bugle_sounds_calls_begin),
-    #    (assign,":sec_end_cond",bugle_sounds_calls_end),
-    #    (assign,":animation","anim_horn"),
-    #  (else_try),
-    #    (eq,":instrument","itm_bagpipe"),
-    #    (try_begin),
-    #      (eq,":agent_faction","fac_britain"),
-    #      (assign,":start_cond",bagpipes_sounds_britain_begin),
-    #      (assign,":end_cond",bagpipes_sounds_britain_end),
-    #      (assign,":has_secondary",1),
-    #      (assign,":sec_start_cond",bagpipes_sounds_extra_begin),
-    #      (assign,":sec_end_cond",bagpipes_sounds_extra_end),
-    #    (try_end),
-    #    (assign,":animation","anim_bagpipe"),
-    #  (else_try),
-    #    (eq,":instrument","spr_mm_piano"),
-    #    (assign,":start_cond",piano_sounds_begin),
-    #    (assign,":end_cond",piano_sounds_end),
-    #    (assign,":animation","anim_piano"),
-    #  (else_try),
-    #    (eq,":instrument","spr_mm_organ"),
-    #    (assign,":start_cond",organ_sounds_begin),
-    #    (assign,":end_cond",organ_sounds_end),
-    #    (assign,":animation","anim_piano"),
-    #  (try_end),
+      (assign,":start_cond",-1),
+      (assign,":end_cond",-1),
+      (assign,":animation",-1),
+      (assign,":has_secondary",0),
+      (try_begin),
+        (eq,":instrument","itm_drumstick_right"),
+        (try_begin),
+          (this_or_next|eq,"$g_pn_character_language", player_character_language_english),
+          (eq,"$g_pn_character_language", player_character_language_pirate),
+          (assign,":start_cond",drum_sounds_britain_begin),
+          (assign,":end_cond",drum_sounds_britain_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_french),
+          (assign,":start_cond",drum_sounds_france_begin),
+          (assign,":end_cond",drum_sounds_france_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_prussian),
+          (assign,":start_cond",drum_sounds_prussia_begin),
+          (assign,":end_cond",drum_sounds_prussia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_russian),
+          (assign,":start_cond",drum_sounds_russia_begin),
+          (assign,":end_cond",drum_sounds_russia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_austrian),
+          (assign,":start_cond",drum_sounds_austria_begin),
+          (assign,":end_cond",drum_sounds_austria_end),
+        (try_end),
+        (assign,":has_secondary",1),
+        (assign,":sec_start_cond",drum_sounds_calls_begin),
+        (assign,":sec_end_cond",drum_sounds_calls_end),
+        (assign,":animation","anim_drum"),
+      (else_try),
+        (eq,":instrument","itm_flute"),
+        (try_begin),
+          (this_or_next|eq,"$g_pn_character_language", player_character_language_english),
+          (eq,"$g_pn_character_language", player_character_language_pirate),
+          (assign,":start_cond",fife_sounds_britain_begin),
+          (assign,":end_cond",fife_sounds_britain_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_french),
+          (assign,":start_cond",fife_sounds_france_begin),
+          (assign,":end_cond",fife_sounds_france_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_prussian),
+          (assign,":start_cond",fife_sounds_prussia_begin),
+          (assign,":end_cond",fife_sounds_prussia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_russian),
+          (assign,":start_cond",fife_sounds_russia_begin),
+          (assign,":end_cond",fife_sounds_russia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_austrian),
+          (assign,":start_cond",fife_sounds_austria_begin),
+          (assign,":end_cond",fife_sounds_austria_end),
+        (try_end),
+        (assign,":animation","anim_flute"),
+      (else_try),
+        (is_between,":instrument","itm_horn","itm_bagpipe"),
+        (try_begin),
+          (this_or_next|eq,"$g_pn_character_language", player_character_language_english),
+          (eq,"$g_pn_character_language", player_character_language_pirate),
+          (assign,":start_cond",bugle_sounds_britain_begin),
+          (assign,":end_cond",bugle_sounds_britain_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_french),
+          (assign,":start_cond",bugle_sounds_france_begin),
+          (assign,":end_cond",bugle_sounds_france_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_prussian),
+          (assign,":start_cond",bugle_sounds_prussia_begin),
+          (assign,":end_cond",bugle_sounds_prussia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_russian),
+          (assign,":start_cond",bugle_sounds_russia_begin),
+          (assign,":end_cond",bugle_sounds_russia_end),
+        (else_try),
+          (eq,"$g_pn_character_language", player_character_language_austrian),
+          (assign,":start_cond",bugle_sounds_austria_begin),
+          (assign,":end_cond",bugle_sounds_austria_end),
+        (try_end),
+        (assign,":has_secondary",1),
+        (assign,":sec_start_cond",bugle_sounds_calls_begin),
+        (assign,":sec_end_cond",bugle_sounds_calls_end),
+        (assign,":animation","anim_horn"),
+      (else_try),
+        (eq,":instrument","itm_bagpipe"),
+        (try_begin),
+          (eq,"$g_pn_character_language", player_character_language_english),
+          (assign,":start_cond",bagpipes_sounds_britain_begin),
+          (assign,":end_cond",bagpipes_sounds_britain_end),
+          (assign,":has_secondary",1),
+          (assign,":sec_start_cond",bagpipes_sounds_extra_begin),
+          (assign,":sec_end_cond",bagpipes_sounds_extra_end),
+        (try_end),
+        (assign,":animation","anim_bagpipe"),
+      (else_try),
+        (eq,":instrument","spr_mm_piano"),
+        (assign,":start_cond",piano_sounds_begin),
+        (assign,":end_cond",piano_sounds_end),
+        (assign,":animation","anim_piano"),
+      (else_try),
+        (eq,":instrument","spr_mm_organ"),
+        (assign,":start_cond",organ_sounds_begin),
+        (assign,":end_cond",organ_sounds_end),
+        (assign,":animation","anim_piano"),
+      (try_end),
       
-    #  (store_add,":track_id",":track_index",":start_cond"), # add the sound
-    #  start to the index
-    #  (assign,":is_valid",0),
-    #  (try_begin),
-    #    (is_between,":track_id",":start_cond",":end_cond"),
-    #    (assign,":is_valid",1),
-    #  (else_try),
-    #    (eq,":has_secondary",1),
-    #    (store_sub,":sec_track_index",":end_cond",":start_cond"),
-    #    (store_sub,":sec_track_index",":track_index",":sec_track_index"),
-    #    (store_add,":track_id",":sec_track_index",":sec_start_cond"),
-    #    (is_between,":track_id",":sec_start_cond",":sec_end_cond"),
-    #    (assign,":is_valid",1),
-    #    (assign,":has_secondary",2), #So we don't play secondary tunes
-    #    together
-    #  (try_end),
-    #  (eq,":is_valid",1), # is it a valid sound index now?
+      (store_add,":track_id",":track_index",":start_cond"), # add the sound start to the index
+      (assign,":is_valid",0),
+      (try_begin),
+        (is_between,":track_id",":start_cond",":end_cond"),
+        (assign,":is_valid",1),
+      (else_try),
+        (eq,":has_secondary",1),
+        (store_sub,":sec_track_index",":end_cond",":start_cond"),
+        (store_sub,":sec_track_index",":track_index",":sec_track_index"),
+        (store_add,":track_id",":sec_track_index",":sec_start_cond"),
+        (is_between,":track_id",":sec_start_cond",":sec_end_cond"),
+        (assign,":is_valid",1),
+        (assign,":has_secondary",2), #So we don't play secondary tunes together
+      (try_end),
+      (eq,":is_valid",1), # is it a valid sound index now?
       
-    #  # then lets play it baby!  :)
-    #  (call_script, "script_multiplayer_server_play_sound_at_agent",
-    #  ":track_id", ":agent_id"),
+      # then lets play it baby!  :)
+      (call_script, "script_multiplayer_server_play_sound_at_agent", ":track_id", ":agent_id"),
       
-    #  (store_mission_timer_a,":cur_time"),
-    #  (agent_set_slot, ":agent_id", slot_agent_started_playing_music_at,
-    #  ":cur_time"),
-      
-    #  #NEW FOR COMMANDER BATTLE BOTS:
-    #  (try_begin),
-    #    (eq, "$g_multiplayer_game_type", multiplayer_game_type_commander),
-    #    #We want those bots to start playing a new tune if the old one ended.
-    #    Normal players can take care of this themselves, bots can't for
-    #    obvious reasons
+      (store_mission_timer_a,":cur_time"),
+      (agent_set_slot, ":agent_id", slot_agent_started_playing_music_at, ":cur_time"),
+
+      (try_begin),
+        (neq,":instrument","spr_mm_piano"),
+        (neq,":instrument","spr_mm_organ"),
+        (agent_set_animation, ":agent_id", ":animation", 1),
+        (set_fixed_point_multiplier,100),
         
-    #    #Get track lengths (yaaaay, awesome script this...)
-    #    (assign,":track_length",20), #Some random value for if we don't have
-    #    the track for some reason
+        (agent_set_slot,":agent_id",slot_agent_base_speed_mod,55),
+        (agent_set_speed_modifier, ":agent_id", 55), # value is in percentage, 100 is default, value can be between [0..1000]#60
         
-    #    #DRUMS AND FIFES
-    #    (try_begin), #Britain
-    #      (this_or_next|eq,":track_id","snd_drum_britain_1"),
-    #      (eq,":track_id","snd_fife_britain_1"),
-    #      (assign,":track_length",44),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_britain_2"),
-    #      (eq,":track_id","snd_fife_britain_2"),
-    #      (assign,":track_length",43),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_britain_3"),
-    #      (eq,":track_id","snd_fife_britain_3"),
-    #      (assign,":track_length",44),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_britain_4"),
-    #      (eq,":track_id","snd_fife_britain_4"),
-    #      (assign,":track_length",66),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_britain_5"),
-    #      (eq,":track_id","snd_fife_britain_5"),
-    #      (assign,":track_length",50),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_highland_1"),
-    #      (eq,":track_id","snd_bagpipes_britain_1"),
-    #      (assign,":track_length",97),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_highland_2"),
-    #      (eq,":track_id","snd_bagpipes_britain_2"),
-    #      (assign,":track_length",44),
+        (try_begin),
+          (neq,":auto_started",1),
+          (this_or_next|is_between,":has_secondary",0,2), #So we don't play calls together
+          (eq,":instrument","itm_bagpipe"), #But bagpipes
+
+          (agent_get_position,pos2,":agent_id"),
+          (try_for_agents,":agent_no",pos2,1501), #Checking for play-together
+            (neq,":agent_no",":agent_id"),
+            (agent_is_active,":agent_no"),
+            (agent_is_alive, ":agent_no"), # Is alive?
+            (agent_is_human, ":agent_no"),
+            (neg|agent_is_non_player, ":agent_no"),
+
+            # todo = lets try to enable play together with diferent teams if doesnt work try to fix this
+            #(agent_get_team,":agent_team2",":agent_no"),
+            #(eq,":agent_team2",":agent_team"),
+            (agent_slot_eq, ":agent_no", slot_agent_music_play_together, 1),
           
-    #    (else_try), #France
-    #      (this_or_next|eq,":track_id","snd_drum_france_1"),
-    #      (eq,":track_id","snd_fife_france_1"),
-    #      (assign,":track_length",49),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_france_2"),
-    #      (eq,":track_id","snd_fife_france_2"),
-    #      (assign,":track_length",40),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_france_3"),
-    #      (eq,":track_id","snd_fife_france_3"),
-    #      (assign,":track_length",25),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_france_4"),
-    #      (eq,":track_id","snd_fife_france_4"),
-    #      (assign,":track_length",38),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_france_5"),
-    #      (eq,":track_id","snd_fife_france_5"),
-    #      (assign,":track_length",68),
-          
-    #    (else_try), #Prussia
-    #      (this_or_next|eq,":track_id","snd_drum_prussia_1"),
-    #      (eq,":track_id","snd_fife_prussia_1"),
-    #      (assign,":track_length",47),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_prussia_3"),
-    #      (eq,":track_id","snd_fife_prussia_2"),
-    #      (assign,":track_length",84),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_prussia_4"),
-    #      (eq,":track_id","snd_fife_prussia_3"),
-    #      (assign,":track_length",10),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_prussia_5"),
-    #      (eq,":track_id","snd_fife_prussia_4"),
-    #      (assign,":track_length",31),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_prussia_6"),
-    #      (eq,":track_id","snd_fife_prussia_5"),
-    #      (assign,":track_length",49),
-          
-    #    (else_try), #Russia
-    #      (this_or_next|eq,":track_id","snd_drum_russia_1"),
-    #      (eq,":track_id","snd_fife_russia_1"),
-    #      (assign,":track_length",57),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_russia_2"),
-    #      (eq,":track_id","snd_fife_russia_2"),
-    #      (assign,":track_length",23),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_russia_3"),
-    #      (eq,":track_id","snd_fife_russia_3"),
-    #      (assign,":track_length",19),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_russia_4"),
-    #      (eq,":track_id","snd_fife_russia_4"),
-    #      (assign,":track_length",21),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_russia_5"),
-    #      (eq,":track_id","snd_fife_russia_5"),
-    #      (assign,":track_length",15),
-          
-    #    (else_try), #Austria
-    #      (this_or_next|eq,":track_id","snd_drum_austria_1"),
-    #      (eq,":track_id","snd_fife_austria_1"),
-    #      (assign,":track_length",38),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_austria_2"),
-    #      (eq,":track_id","snd_fife_austria_2"),
-    #      (assign,":track_length",110),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_austria_3"),
-    #      (eq,":track_id","snd_fife_austria_3"),
-    #      (assign,":track_length",75),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_austria_4"),
-    #      (eq,":track_id","snd_fife_austria_4"),
-    #      (assign,":track_length",34),
-    #    (else_try),
-    #      (this_or_next|eq,":track_id","snd_drum_austria_5"),
-    #      (eq,":track_id","snd_fife_austria_5"),
-    #      (assign,":track_length",44),
-        
-    #    #BUGLES, HORNS AND TRUMPETS
-    #    (else_try), #Britain
-    #      (eq,":track_id","snd_bugle_britain_1"),
-    #      (assign,":track_length",35),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_britain_2"),
-    #      (assign,":track_length",25),
-    #    (else_try), #France
-    #      (eq,":track_id","snd_bugle_france_1"),
-    #      (assign,":track_length",37),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_france_2"),
-    #      (assign,":track_length",56),
-    #    (else_try), #Prussia
-    #      (eq,":track_id","snd_bugle_prussia_1"),
-    #      (assign,":track_length",57),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_prussia_2"),
-    #      (assign,":track_length",72),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_prussia_3"),
-    #      (assign,":track_length",27),
-    #    (else_try), #Russia
-    #      (eq,":track_id","snd_bugle_russia_1"),
-    #      (assign,":track_length",49),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_russia_2"),
-    #      (assign,":track_length",109),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_russia_3"),
-    #      (assign,":track_length",54),
-    #    (else_try), #Austria
-    #      (eq,":track_id","snd_bugle_austria_1"),
-    #      (assign,":track_length",69),
-    #    (else_try),
-    #      (eq,":track_id","snd_bugle_austria_2"),
-    #      (assign,":track_length",35),
-    #    (try_end),
-        
-    #    (store_add,":end_tune_at",":cur_time",":track_length"), #Adding track
-    #    length to current time
-    #    (agent_set_slot, ":agent_id", slot_agent_track_ends_at,
-    #    ":end_tune_at"), #So we'll know when to change tune :)
-    #  (try_end),
-      
-    #  (try_begin),
-    #    (neq,":instrument","spr_mm_piano"),
-    #    (neq,":instrument","spr_mm_organ"),
-    #    (agent_set_animation, ":agent_id", ":animation", 1),
-    #    (set_fixed_point_multiplier,100),
-        
-    #    (try_begin), #patch1115 fix 43/2
-    #      (neq, "$g_multiplayer_game_type", multiplayer_game_type_commander),
-				#	(agent_set_slot,":agent_id",slot_agent_base_speed_mod,55),
-    #      (agent_set_speed_modifier, ":agent_id", 55), # value is in
-    #      percentage, 100 is default, value can be between [0..1000]#60
-    #    (try_end),
-        
-    #    (try_begin),
-    #      (neq,":auto_started",1),
-    #      (this_or_next|is_between,":has_secondary",0,2), #So we don't play
-    #      calls together
-    #      (eq,":instrument","itm_bagpipe"), #But bagpipes
-    #      (agent_get_troop_id,":troop_id",":agent_id"),
-    #      (agent_get_position,pos2,":agent_id"),
-    #      (try_for_agents,":agent_no",pos2,1501), #Checking for play-together
-    #        (neq,":agent_no",":agent_id"),
-    #        (agent_is_active,":agent_no"),
-    #        (agent_is_alive, ":agent_no"), # Is alive?
-    #        (agent_is_human, ":agent_no"),
-    #        (neg|agent_is_non_player, ":agent_no"),
-    #        (agent_get_team,":agent_team2",":agent_no"),
-    #        (eq,":agent_team2",":agent_team"),
-    #        (agent_slot_eq, ":agent_no", slot_agent_music_play_together, 1),
-          
-    #        (agent_get_troop_id,":agent_troop",":agent_no"),
-    #        (troop_slot_eq,":agent_troop",slot_troop_rank,mm_rank_musician),
+            (agent_get_troop_id,":agent_troop",":agent_no"),
+            (this_or_next|eq,":agent_troop", "trp_military_musician"),
+            (player_is_admin, ":agent_no"),
             
-    #        (agent_get_wielded_item,":item_id",":agent_no",0),
-    #        (assign,":continue",0),
-    #        (try_begin),
-    #          (eq,":instrument","itm_drumstick_right"),
-    #          (neq,":troop_id","trp_british_highlander_drum"),
-    #          (this_or_next|eq,":item_id","itm_drumstick_right"),
-    #          (eq,":item_id","itm_flute"),
-    #          (assign,":continue",1),
-    #        (else_try),
-    #          (eq,":instrument","itm_drumstick_right"),
-    #          (eq,":troop_id","trp_british_highlander_drum"),
-    #          (try_begin),
-    #            (eq,":item_id","itm_drumstick_right"),
-    #            (eq,":agent_troop","trp_british_highlander_drum"),
-    #            (assign,":continue",1),
-    #          (else_try),
-    #            (eq,":item_id","itm_bagpipe"),
-    #            (assign,":continue",1),
-    #          (try_end),
-    #        (else_try),
-    #          (eq,":instrument","itm_flute"),
-    #          (this_or_next|eq,":item_id","itm_drumstick_right"),
-    #          (eq,":item_id","itm_flute"),
-    #          (assign,":continue",1),
-    #        (else_try),
-    #          (is_between,":instrument","itm_horn","itm_bagpipe"),
-    #          (is_between,":item_id","itm_horn","itm_bagpipe"),
-    #          (assign,":continue",1),
-    #        (else_try),
-    #          (eq,":instrument","itm_bagpipe"),
-    #          (try_begin),
-    #            (neq,":has_secondary",2), #Don't play bagpipe-only tunes with
-    #            drums
-    #            (eq,":item_id","itm_drumstick_right"),
-    #            (eq,":agent_troop","trp_british_highlander_drum"),
-    #            (assign,":continue",1),
-    #          (else_try),
-    #            (eq,":item_id","itm_bagpipe"),
-    #            (assign,":continue",1),
-    #          (try_end),
-    #        (try_end),
-    #        (eq,":continue",1),
+            (agent_get_wielded_item,":item_id",":agent_no",0),
+            (assign,":continue",0),
+            (try_begin),
+              (eq,":instrument","itm_drumstick_right"),
+              (this_or_next|eq,":item_id","itm_drumstick_right"),
+              (eq,":item_id","itm_flute"),
+              (assign,":continue",1),
+            (else_try),
+              (eq,":instrument","itm_drumstick_right"),
+              (try_begin),
+                (eq,":item_id","itm_drumstick_right"),
+                (assign,":continue",1),
+              (else_try),
+                (eq,":item_id","itm_bagpipe"),
+                (assign,":continue",1),
+              (try_end),
+            (else_try),
+              (eq,":instrument","itm_flute"),
+              (this_or_next|eq,":item_id","itm_drumstick_right"),
+              (eq,":item_id","itm_flute"),
+              (assign,":continue",1),
+            (else_try),
+              (is_between,":instrument","itm_horn","itm_bagpipe"),
+              (is_between,":item_id","itm_horn","itm_bagpipe"),
+              (assign,":continue",1),
+            (else_try),
+              (eq,":instrument","itm_bagpipe"),
+              (try_begin),
+                (neq,":has_secondary",2), #Don't play bagpipe-only tunes with drums
+                (eq,":item_id","itm_drumstick_right"),
+                (assign,":continue",1),
+              (else_try),
+                (eq,":item_id","itm_bagpipe"),
+                (assign,":continue",1),
+              (try_end),
+            (try_end),
+            (eq,":continue",1),
           
-    #        (assign,":continue",1),
-    #        (try_begin),
-    #          (call_script,"script_cf_agent_is_playing_music",":agent_no"),
-    #          (assign,":continue",0),
-    #        (try_end),
-    #        (eq,":continue",1),
+            (assign,":continue",1),
+            (try_begin),
+              (call_script,"script_cf_agent_is_playing_music",":agent_no"),
+              (assign,":continue",0),
+            (try_end),
+            (eq,":continue",1),
           
-    #        (call_script, "script_multiplayer_server_agent_play_music",
-    #        ":agent_no", ":track_index", 1),
-    #      (try_end),
-    #    (try_end),
-    #  (else_try),
-    #    (agent_set_animation, ":agent_id", ":animation", 0),
-    #    (agent_set_slot, ":agent_id", slot_agent_used_prop_instance,
-    #    ":instance_id"),
+            (call_script, "script_multiplayer_server_agent_play_music", ":agent_no", ":track_index", 1),
+          (try_end),
+        (try_end),
+      (else_try),
+        (agent_set_animation, ":agent_id", ":animation", 0),
+        (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
         
-    #    (agent_set_wielded_item,":agent_id",-1),
+        (agent_set_wielded_item,":agent_id",-1),
         
-    #    # put player on stool.
-    #    (try_begin),
-    #      (eq,":instrument","spr_mm_piano"),
-    #      (position_move_y,pos5,-74),
-    #    (else_try),
-    #      (eq,":instrument","spr_mm_organ"),
-    #      (position_move_y,pos5,-142),
-    #    (try_end),
-    #    (agent_set_position,":agent_id",pos5),
-    #  (try_end),
-    #(try_end),
+        # put player on stool.
+        (try_begin),
+          (eq,":instrument","spr_mm_piano"),
+          (position_move_y,pos5,-74),
+        (else_try),
+          (eq,":instrument","spr_mm_organ"),
+          (position_move_y,pos5,-142),
+        (try_end),
+        (agent_set_position,":agent_id",pos5),
+      (try_end),
+    (try_end)
   ]),
 
   ("multiplayer_server_agent_stop_music",
-  [(store_script_param, ":agent_id", 1),
+  [
+    (store_script_param, ":agent_id", 1),
   
     (try_begin),
-      (this_or_next | multiplayer_is_server),
-      (neg | game_in_multiplayer_mode),
+      (multiplayer_is_server),
       
       (agent_is_active,":agent_id"),
       
@@ -1125,21 +924,24 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (agent_get_animation,":cur_anim",":agent_id",0),
       (try_begin),
-        (this_or_next | eq,":cur_anim","anim_piano"),
+        (this_or_next|eq,":cur_anim","anim_piano"),
         (eq,":cur_anim","anim_shitting"),
         (agent_set_animation,":agent_id","anim_drum_end",0),
       (try_end),
       (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, -1),
-      
+
       (call_script, "script_multiplayer_server_play_sound_at_agent", -1, ":agent_id"),
-      
+
       (set_fixed_point_multiplier,100),
       (agent_get_slot,":base_speed",":agent_id",slot_agent_base_speed_mod),
-	  (lt, ":base_speed", 100),
-	  (assign, ":base_speed", 100),
-	  (agent_set_slot,":agent_id",slot_agent_base_speed_mod, 100),
+		(try_begin),
+			(lt, ":base_speed", 100),
+			(assign, ":base_speed", 100),
+			(agent_set_slot,":agent_id",slot_agent_base_speed_mod, 100), #":base_speed"),
+		(try_end),
       (agent_set_speed_modifier, ":agent_id", ":base_speed"), # value is in percentage, 100 is default, value can be between [0..1000]
-    (try_end),]),
+    (try_end)
+  ]),
   
   
   # script_multiplayer_server_agent_use_spyglass
@@ -1172,20 +974,19 @@ scripts.extend([("game_start", []), # single player only, not used
   ]),
 
   ("multiplayer_server_play_sound_at_agent",
-   [(store_script_param, ":sound_id", 1),
+  [
+    (store_script_param, ":sound_id", 1),
     (store_script_param, ":agent_id", 2),
-    
+
     (try_begin),
-      (this_or_next | eq, ":sound_id", -1),
+      (this_or_next|eq, ":sound_id", -1),
       (is_between,":sound_id","snd_click","snd_sounds_end"), # valid sound
       (agent_is_active,":agent_id"),
 
       (try_begin),
         (multiplayer_is_server),
-        
         (try_begin),
           (eq, ":sound_id", -1), # Stop sound
-          
           (try_for_players, ":cur_player", "$g_ignore_server"),
             (player_is_active,":cur_player"),
             (multiplayer_send_int_to_player, ":cur_player", multiplayer_event_return_agent_stop_sound, ":agent_id"),
@@ -1195,7 +996,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (agent_play_sound,":agent_id",":sound_id"),
         (try_end),
       (else_try),
-        (neg | game_in_multiplayer_mode),
+        (neg|game_in_multiplayer_mode),
         (try_begin),
           (eq,":sound_id",-1),
           (agent_stop_sound,":agent_id"),
@@ -1203,7 +1004,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (agent_play_sound,":agent_id",":sound_id"),
         (try_end),
       (try_end),
-    (try_end),]),
+    (try_end),
+  ]),
 
    # script_multiplayer_agent_drinking_get_animation
   # Input1: item_id
@@ -1300,6 +1102,1189 @@ scripts.extend([("game_start", []), # single player only, not used
     
     (agent_get_animation,":cur_anim",":agent_id",1),
     (eq,":cur_anim","anim_surrender"),]),
+
+# script_find_or_create_scene_prop_instance
+  # Input: arg1 = prop_kind_id
+  # Input: arg2 = always_spawn_new
+  # Input: arg3 = align_to_ground
+  # input: arg4 = non_default_scale
+  # input: arg5 = scale_x
+  # input: arg6 = scale_y
+  # input: arg7 = scale_z
+  # Input: pos49 = pos of prop.
+  # Output: reg0 = prop_instance_id
+  ("find_or_create_scene_prop_instance",
+   [
+    (store_script_param, ":prop_kind_id", 1),
+    (store_script_param, ":always_spawn_new", 2),
+    (store_script_param, ":align_to_ground", 3),
+    (store_script_param, ":non_default_scale", 4),
+     
+    (assign,":instance_id",-1),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (try_begin),
+        (eq,":align_to_ground",1),
+        (init_position,pos37),
+        (position_copy_origin,pos37,pos49),
+        (position_get_rotation_around_z,":z_rot",pos49),
+        
+        (position_set_z_to_ground_level,pos37),
+        (call_script,"script_get_angle_of_ground_at_pos", 0, ":prop_kind_id"),
+        (assign,":x_rot",reg0),
+        (assign,":y_rot",reg1),
+        (position_rotate_y,pos37,":y_rot"),
+        (position_rotate_x,pos37,":x_rot"),
+        (position_rotate_z,pos37,":z_rot"),
+        
+        (copy_position,pos49,pos37),
+      (try_end),
+      
+      (assign,":spawn_new",1),
+      (try_begin),
+        (neq,":always_spawn_new",1),
+        
+        (assign,":keep_looping",1),
+        (try_for_prop_instances, ":loop_instance_id", ":prop_kind_id", somt_temporary_object),
+          (eq,":keep_looping",1),
+          (scene_prop_slot_eq,":loop_instance_id",scene_prop_slot_is_spawned,1),
+          (scene_prop_slot_eq,":loop_instance_id",scene_prop_slot_in_use,0),
+          
+          (assign,":instance_id",":loop_instance_id"),
+          
+          # First set position then animate, needed for bumping agent problems if moved from the side.
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":instance_id"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":instance_id"),
+          (try_end),
+          (prop_instance_set_position,":instance_id",pos49),
+          
+          # Scale found prop to default (will be auto ignored if prop already correct size.)
+          (try_begin),
+            (eq,":non_default_scale",0),
+            (call_script, "script_multiplayer_server_scale_prop_instance", ":instance_id",1000,1000,1000),
+          (else_try),
+            (store_script_param, ":scale_x", 5),
+            (store_script_param, ":scale_y", 6),
+            (store_script_param, ":scale_z", 7),
+            (call_script, "script_multiplayer_server_scale_prop_instance", ":instance_id",":scale_x",":scale_y",":scale_z"),
+          (try_end),
+          
+          (assign,":spawn_new",0),
+          (assign,":keep_looping",0),
+        (try_end),
+      (try_end),
+      
+      (try_begin),
+        (eq,":spawn_new",1),
+        (set_spawn_position,pos49),
+        (spawn_scene_prop,":prop_kind_id"),
+        (assign,":instance_id",reg0),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_is_spawned,1),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_x_scale,1000),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_y_scale,1000),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_z_scale,1000),
+        
+        (neq,":non_default_scale",0),
+        
+        (store_script_param, ":scale_x", 5),
+        (store_script_param, ":scale_y", 6),
+        (store_script_param, ":scale_z", 7),
+        (call_script, "script_multiplayer_server_scale_prop_instance", ":instance_id",":scale_x",":scale_y",":scale_z"),
+      (try_end),
+      
+      #(gt,":instance_id",-1),
+      (prop_instance_is_valid,":instance_id"), #patch1115 18/11
+      # Init the slots.
+      (call_script,"script_reset_prop_slots",":instance_id"),
+      
+      (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),
+      
+      (store_mission_timer_a,":cur_time"),
+      (scene_prop_set_slot,":instance_id",scene_prop_slot_spawned_at,":cur_time"),
+      
+      # Set prop healths
+      (try_begin),
+        (this_or_next|is_between, ":prop_kind_id", mm_destructible_props_begin, mm_destructible_props_end),
+        (this_or_next|is_between,":prop_kind_id","spr_mm_window1_poor","spr_mm_window1d_poor"),
+        (this_or_next|is_between,":prop_kind_id","spr_mm_window3_poor","spr_mm_window3d_poor"),
+        (is_between,":prop_kind_id","spr_mm_palisadedd","spr_crate_explosive"), # a construction object
+        
+        (call_script,"script_get_default_health_for_prop_kind",":prop_kind_id"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        
+        (gt,":max_health",0),
+        
+        (scene_prop_get_hit_points, ":cur_hit_points", ":instance_id"),
+        (scene_prop_get_slot,":cur_health",":instance_id",scene_prop_slot_health),
+        
+        (this_or_next|neq,":cur_hit_points",":health"),  # this prop needs some health updates :3
+        (neq,":cur_health",":health"),  
+        
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_health,":health"),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_max_health,":max_health"),
+        (prop_instance_enable_physics, ":instance_id", 1), # this is needed to reset the colision mesh on the prop if it is destroyed.
+        (scene_prop_set_hit_points, ":instance_id", ":max_health"),
+        (scene_prop_set_cur_hit_points, ":instance_id", ":health"),
+        
+        # On prop spawn set the health for clients
+        (try_begin),
+          (game_in_multiplayer_mode),
+          
+          #store destroyed yes no in a bit.
+          (assign,":packed_value",":instance_id"),
+          (val_lshift,":packed_value",1),
+          
+          (try_for_players, ":player_no", 1),
+            (player_is_active, ":player_no"),
+            (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_destructible_prop_spawn_or_destroy, ":packed_value"),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+    
+    (assign, reg0, ":instance_id"),
+  ]),
+
+   # script_get_default_health_for_prop_kind
+  # Input: prop_kind_id
+  #
+  # Output: reg1 = max health
+  # Output: reg2 = health
+  ("get_default_health_for_prop_kind",
+  [
+    (store_script_param, ":prop_kind_id", 1),
+    
+    (assign,":max_health",0),
+    (assign,":health",0),
+    (try_begin),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"),
+
+      (try_begin),
+        (this_or_next|is_between,":prop_kind_id","spr_mm_palisadedd","spr_crate_explosive"), # a construction object
+        (eq,":prop_kind_id","spr_earthwork1_destructible"),
+        (try_begin),
+          (eq,":prop_kind_id","spr_chevaux_de_frise_tri_construct"),
+          (assign,":max_health",100),
+        (else_try),
+          (eq,":prop_kind_id","spr_mm_stakes2_construct"),
+          (assign,":max_health",160),
+        (else_try),
+          (eq,":prop_kind_id","spr_mm_constr_pontoon_short"),
+          (assign,":max_health",300),
+        (else_try),
+          (eq,":prop_kind_id","spr_mm_constr_pontoon_med"),
+          (assign,":max_health",450),
+        (else_try),
+          (this_or_next|eq,":prop_kind_id","spr_mm_constr_pontoon_long"),
+          (eq,":prop_kind_id","spr_mm_constr_watchtower"),
+          (assign,":max_health",600),
+        (else_try),
+          (assign,":max_health",200),
+        (try_end),
+        (assign,":health",1),
+      (else_try),
+        (this_or_next|is_between,":prop_kind_id","spr_mm_window1_poor","spr_mm_window1d_poor"),
+        (this_or_next|is_between,":prop_kind_id","spr_mm_window3_poor","spr_mm_window3d_poor"),
+        (eq,":prop_kind_id","spr_mm_bird"),
+        (assign,":max_health",1),
+        (assign,":health",1),
+      (else_try), 
+        (is_between,":prop_kind_id","spr_mm_pontoon_bridge_short","spr_mm_dummy"),
+        (assign,":max_health",400),
+        (assign,":health",400),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_dummy"),
+        (assign,":max_health",70),
+        (assign,":health",70),
+      (else_try), # override for the is_between 2 elses later.
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_wall3", "spr_mm_palisade"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_sp_poor_bridge1"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_pontoon_bridge1"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_pontoon_bridge2"),
+        (eq,":prop_kind_id","spr_mm_palisaded"),
+        (assign,":max_health",400),
+        (assign,":health",400),
+      (else_try), # override for the next is_between.
+        (this_or_next|eq,":prop_kind_id","spr_mm_sp_rich_bridge2"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_sp_rich_bridge3"),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge4"),
+        (assign,":max_health",800),
+        (assign,":health",800),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_fortnew", "spr_mm_new_wall_1_1"),
+        (assign,":max_health",400),
+        (assign,":health",400),
+      (else_try),
+        (eq,":prop_kind_id","spr_plank_destructible2"),
+        (assign,":max_health",100),
+        (assign,":health",100),
+      (else_try),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_house_wall_1", "spr_mm_wall1"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_1_1", "spr_mm_stakes"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_wall1", "spr_mm_wall3"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_stakes", "spr_mm_house_wall_2dd"),#normal planks are in here
+        (eq,":prop_kind_id","spr_mm_fence1"),
+        (assign,":max_health",200),
+        (assign,":health",200),     
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_palisade"),
+        (assign,":max_health",600),
+        (assign,":health",600),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge1"),
+        (eq,":prop_kind_id","spr_mm_earthwork1"),
+        (assign,":max_health",99999999),
+        (assign,":health",99999999),
+      (try_end),
+    (try_end),
+    
+    (assign,reg1,":max_health"),
+    (assign,reg2,":health"),
+  ]),
+
+  # script_get_next_destruction_stage_prop_kind
+  # Input: prop_instance_id
+  #        damage
+  #
+  # Output: reg1 = next_kind
+  ("get_next_destruction_stage_prop_kind",
+  [
+    (store_script_param, ":prop_kind_id", 1),
+    
+    (assign,":next_kind",-1),
+    (try_begin),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (try_begin),
+        (eq,":prop_kind_id","spr_mm_wall1"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 1, "spr_mm_wall1d"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 2, "spr_mm_wall1dd"),
+        (store_random_in_range, ":slot", 1, 3),
+        (troop_get_slot, ":next_kind", "trp_destroyed_props_dummy", ":slot"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_walldesert1"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 1, "spr_mm_walldesert1d"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 2, "spr_mm_walldesert1dd"),
+        (store_random_in_range, ":slot", 1, 3),
+        (troop_get_slot, ":next_kind", "trp_destroyed_props_dummy", ":slot"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_wallwood1"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 1, "spr_mm_wallwood1d"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 2, "spr_mm_wallwood1dd"),
+        (store_random_in_range, ":slot", 1, 3),
+        (troop_get_slot, ":next_kind", "trp_destroyed_props_dummy", ":slot"),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_wall1d"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_wall1dd"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_wall3"),
+        (this_or_next|eq,":prop_kind_id","spr_mm_wall4"),
+        (eq,":prop_kind_id","spr_mm_wall5"),
+        (assign,":next_kind","spr_mm_wall2"),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_walldesert1d"),
+        (eq,":prop_kind_id","spr_mm_walldesert1dd"),
+        (assign,":next_kind","spr_mm_walldesert2"),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_wallwood1d"),
+        (eq,":prop_kind_id","spr_mm_wallwood1dd"),
+        (assign,":next_kind","spr_mm_wallwood2"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stakes"),
+        (assign,":next_kind","spr_mm_stakes_destroyed"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stakes_destructible"),
+        (assign,":next_kind","spr_mm_stakes_construct"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stakes2_destructible"),
+        (assign,":next_kind","spr_mm_stakes2_construct"),
+      (else_try),
+        (eq,":prop_kind_id","spr_sandbags_destructible"),
+        (assign,":next_kind","spr_sandbags_construct"),
+      (else_try),
+        (eq,":prop_kind_id","spr_chevaux_de_frise_tri_destructible"),
+        (assign,":next_kind","spr_chevaux_de_frise_tri_construct"),
+      (else_try),
+        (eq,":prop_kind_id","spr_gabiondeploy_destructible"),
+        (assign,":next_kind","spr_gabiondeploy_construct"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_fence1"),
+        (assign,":next_kind","spr_mm_fence1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_short"),
+        (assign,":next_kind","spr_mm_constr_pontoon_short"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_med"),
+        (assign,":next_kind","spr_mm_constr_pontoon_med"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_long"),
+        (assign,":next_kind","spr_mm_constr_pontoon_long"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_watchtower"),
+        (assign,":next_kind","spr_mm_constr_watchtower"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_dummy"),
+        (assign,":next_kind","spr_mm_dummy_destroyed"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stockade"),
+        (assign,":next_kind","spr_mm_stockade_destroyed"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stockade_cannon"),
+        (assign,":next_kind","spr_mm_stockade_cannon_destroyed"),
+      (else_try), # New walls
+        (eq,":prop_kind_id","spr_mm_house_wall_1"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 1, "spr_mm_house_wall_1d"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 2, "spr_mm_house_wall_7d"),
+        (store_random_in_range, ":slot", 1, 3),
+        (troop_get_slot, ":next_kind", "trp_destroyed_props_dummy", ":slot"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_1d"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 1, "spr_mm_house_wall_2dd"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 2, "spr_mm_house_wall_2ddd"),
+        (troop_set_slot, "trp_destroyed_props_dummy", 3, "spr_mm_house_wall_7ddd"),
+        (store_random_in_range, ":slot", 1, 4),
+        (troop_get_slot, ":next_kind", "trp_destroyed_props_dummy", ":slot"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_2"),
+        (assign,":next_kind","spr_mm_house_wall_2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_2d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_2dd", "spr_mm_house_wall_3dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_3"),
+        (assign,":next_kind","spr_mm_house_wall_3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_3d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_3dd", "spr_mm_house_wall_4dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_4"),
+        (assign,":next_kind","spr_mm_house_wall_4d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_4d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_4dd", "spr_mm_house_wall_5dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_5"),
+        (assign,":next_kind","spr_mm_house_wall_5d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_5d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_5dd", "spr_mm_house_wall_6dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_6"),
+        (assign,":next_kind","spr_mm_house_wall_6d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_6d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_6dd", "spr_mm_house_wall_7dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_7"),
+        (assign,":next_kind","spr_mm_house_wall_7d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_7d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_7dd", "spr_mm_house_wall_11dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_11"),
+        (assign,":next_kind","spr_mm_house_wall_11d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_11d"),
+        (assign,":next_kind","spr_mm_house_wall_11ddd"), # fix to not spawn broken mesh with invisible hole #patch1115 fix 36/1
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_21"),
+        (assign,":next_kind","spr_mm_house_wall_21d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_21d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_21dd", "spr_mm_house_wall_31dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_31"),
+        (assign,":next_kind","spr_mm_house_wall_31d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_31d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_31dd", "spr_mm_house_wall_41dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_41"),
+        (assign,":next_kind","spr_mm_house_wall_41d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_41d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_41dd", "spr_mm_house_wall_51dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_51"),
+        (assign,":next_kind","spr_mm_house_wall_51d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_51d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_51dd", "spr_mm_house_wall_61dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_61"),
+        (assign,":next_kind","spr_mm_house_wall_61d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_61d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_61dd", "spr_mm_house_wall_71dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_71"),
+        (assign,":next_kind","spr_mm_house_wall_71d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_house_wall_71d"),
+        (store_random_in_range, ":next_kind", "spr_mm_house_wall_71dd", "spr_mm_wall2"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew"),
+        (assign,":next_kind","spr_fortnew1"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew1"),
+        (assign,":next_kind","spr_fortnew2"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew2"),
+        (assign,":next_kind","spr_fortnew3"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew3"),
+        (assign,":next_kind","spr_fortnew4"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew4"),
+        (assign,":next_kind","spr_fortnew5"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew5"),
+        (assign,":next_kind","spr_fortnew6"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew6"),
+        (assign,":next_kind","spr_fortnew7"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew7"),
+        (assign,":next_kind","spr_fortnew8"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew8"),
+        (assign,":next_kind","spr_fortnew9"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_1"),
+        (assign,":next_kind","spr_fortnew_12"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_12"),
+        (assign,":next_kind","spr_fortnew_13"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_13"),
+        (assign,":next_kind","spr_fortnew_14"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_14"),
+        (assign,":next_kind","spr_fortnew_15"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_15"),
+        (assign,":next_kind","spr_fortnew_16"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_16"),
+        (assign,":next_kind","spr_fortnew_17"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_17"),
+        (assign,":next_kind","spr_fortnew_18"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_18"),
+        (assign,":next_kind","spr_fortnew_19"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_19"),
+        (assign,":next_kind","spr_fortnew_110"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_110"),
+        (assign,":next_kind","spr_fortnew_111"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_2"),
+        (assign,":next_kind","spr_fortnew_21"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_21"),
+        (assign,":next_kind","spr_fortnew_22"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_22"),
+        (assign,":next_kind","spr_fortnew_23"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_23"),
+        (assign,":next_kind","spr_fortnew_24"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_24"),
+        (assign,":next_kind","spr_fortnew_25"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_25"),
+        (assign,":next_kind","spr_fortnew_26"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_26"),
+        (assign,":next_kind","spr_fortnew_27"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_27"),
+        (assign,":next_kind","spr_fortnew_28"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_28"),
+        (assign,":next_kind","spr_fortnew_29"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_3"),
+        (assign,":next_kind","spr_fortnew_31"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_31"),
+        (assign,":next_kind","spr_fortnew_32"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_32"),
+        (assign,":next_kind","spr_fortnew_33"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_33"),
+        (assign,":next_kind","spr_fortnew_34"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_34"),
+        (assign,":next_kind","spr_fortnew_35"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_35"),
+        (assign,":next_kind","spr_fortnew_36"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_36"),
+        (assign,":next_kind","spr_fortnew_37"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_37"),
+        (assign,":next_kind","spr_fortnew_38"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_38"),
+        (assign,":next_kind","spr_fortnew_39"),
+      (else_try),
+        (eq,":prop_kind_id","spr_fortnew_4"),
+        (assign,":next_kind","spr_fortnew_41"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_1"),
+        (assign,":next_kind","spr_mm_new_wall_1_1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_1d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_1dd", "spr_mm_new_wall_1_2dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_2"),
+        (assign,":next_kind","spr_mm_new_wall_1_2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_2d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_2dd", "spr_mm_new_wall_1_3dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_3"),
+        (assign,":next_kind","spr_mm_new_wall_1_3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_3d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_3dd", "spr_mm_new_wall_1_4dd"),
+	    (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_4"),
+        (assign,":next_kind","spr_mm_new_wall_1_4d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_4d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_4dd", "spr_mm_new_wall_1_5dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_5"),
+        (assign,":next_kind","spr_mm_new_wall_1_5d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_5d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_5dd", "spr_mm_new_wall_1_6dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_6"),
+        (assign,":next_kind","spr_mm_new_wall_1_6d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_6d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_6dd", "spr_mm_new_wall_1_7dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_7"),
+        (assign,":next_kind","spr_mm_new_wall_1_7d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_7d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_7dd", "spr_mm_new_wall_1_8dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_8"),
+        (assign,":next_kind","spr_mm_new_wall_1_8d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_8d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_8dd", "spr_mm_new_wall_1_9dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_9"),
+        (assign,":next_kind","spr_mm_new_wall_1_9d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_9d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_9dd", "spr_mm_new_wall_1_10dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_10"),
+        (assign,":next_kind","spr_mm_new_wall_1_10d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_10d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_10dd", "spr_mm_new_wall_1_11dd"),
+        (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_11"),
+        (assign,":next_kind","spr_mm_new_wall_1_11d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_1_11d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_1_11dd", "spr_mm_new_wall_2_1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_1"),
+        (assign,":next_kind","spr_mm_new_wall_2_1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_1d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_1dd", "spr_mm_new_wall_2_2dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_2"),
+        (assign,":next_kind","spr_mm_new_wall_2_2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_2d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_2dd", "spr_mm_new_wall_2_3dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_3"),
+        (assign,":next_kind","spr_mm_new_wall_2_3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_3d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_3dd", "spr_mm_new_wall_2_4dd"),
+	    (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_4"),
+        (assign,":next_kind","spr_mm_new_wall_2_4d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_4d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_4dd", "spr_mm_new_wall_2_5dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_5"),
+        (assign,":next_kind","spr_mm_new_wall_2_5d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_5d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_5dd", "spr_mm_new_wall_2_6dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_6"),
+        (assign,":next_kind","spr_mm_new_wall_2_6d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_6d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_6dd", "spr_mm_new_wall_2_7dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_7"),
+        (assign,":next_kind","spr_mm_new_wall_2_7d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_7d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_7dd", "spr_mm_new_wall_2_8dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_8"),
+        (assign,":next_kind","spr_mm_new_wall_2_8d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_8d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_8dd", "spr_mm_new_wall_2_9dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_9"),
+        (assign,":next_kind","spr_mm_new_wall_2_9d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_9d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_9dd", "spr_mm_new_wall_2_10dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_10"),
+        (assign,":next_kind","spr_mm_new_wall_2_10d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_10d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_10dd", "spr_mm_new_wall_2_11dd"),
+        (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_11"),
+        (assign,":next_kind","spr_mm_new_wall_2_11d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_2_11d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_2_11dd", "spr_mm_new_wall_3_1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_1"),
+        (assign,":next_kind","spr_mm_new_wall_3_1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_1d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_1dd", "spr_mm_new_wall_3_2dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_2"),
+        (assign,":next_kind","spr_mm_new_wall_3_2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_2d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_2dd", "spr_mm_new_wall_3_3dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_3"),
+        (assign,":next_kind","spr_mm_new_wall_3_3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_3d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_3dd", "spr_mm_new_wall_3_4dd"),
+	    (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_4"),
+        (assign,":next_kind","spr_mm_new_wall_3_4d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_4d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_4dd", "spr_mm_new_wall_3_5dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_5"),
+        (assign,":next_kind","spr_mm_new_wall_3_5d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_5d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_5dd", "spr_mm_new_wall_3_6dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_6"),
+        (assign,":next_kind","spr_mm_new_wall_3_6d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_6d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_6dd", "spr_mm_new_wall_3_7dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_7"),
+        (assign,":next_kind","spr_mm_new_wall_3_7d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_7d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_7dd", "spr_mm_new_wall_3_8dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_8"),
+        (assign,":next_kind","spr_mm_new_wall_3_8d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_8d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_8dd", "spr_mm_new_wall_3_9dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_9"),
+        (assign,":next_kind","spr_mm_new_wall_3_9d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_9d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_9dd", "spr_mm_new_wall_3_10dd"),
+		  (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_10"),
+        (assign,":next_kind","spr_mm_new_wall_3_10d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_10d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_10dd", "spr_mm_new_wall_3_11dd"),
+        (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_11"),
+        (assign,":next_kind","spr_mm_new_wall_3_11d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_new_wall_3_11d"),
+        (store_random_in_range, ":next_kind", "spr_mm_new_wall_3_11dd", "spr_mm_woodenwall1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall1"),
+        (assign,":next_kind","spr_mm_woodenwall1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall1d"),
+        (assign,":next_kind","spr_mm_woodenwall1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall2"),
+        (assign,":next_kind","spr_mm_woodenwall2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall2d"),
+        (assign,":next_kind","spr_mm_woodenwall1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall3"),
+        (assign,":next_kind","spr_mm_woodenwall3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwall3d"),
+        (assign,":next_kind","spr_mm_woodenwall1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy1"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy1d"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy2"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy2d"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy3"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_woodenwallsnowy3d"),
+        (assign,":next_kind","spr_mm_woodenwallsnowy1dd"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_poor_bridge1"),
+        (assign,":next_kind","spr_mm_sp_poor_bridge1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge2"),
+        (assign,":next_kind","spr_mm_sp_rich_bridge2d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge3"),
+        (assign,":next_kind","spr_mm_sp_rich_bridge3d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge4"),
+        (assign,":next_kind","spr_mm_sp_rich_bridge4d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_fence1"),
+        (assign,":next_kind","spr_mm_fence1d"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_palisade"),
+        (assign,":next_kind","spr_mm_palisaded"),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_palisaded"),
+        (assign,":next_kind","spr_mm_palisadedd"),
+      (try_end),
+    (try_end),
+    
+    (assign,reg1,":next_kind"),
+  ]),
+
+  # script_get_prop_scaled_size
+  # Input: prop_instance_id
+  #  
+  #        input
+  #      
+  #        wall_height
+  #        wall_width
+  #        wall_length
+  #        move_height_to_center
+  #        move_width_to_center
+  #        move_length_to_center
+  #        rotate_z_90
+
+  #         reg1 = is_ok
+  #         reg2 = wall_height
+  #         reg3 = wall_width
+  #         reg4 = wall_length
+  #         reg5 = max_wall_length
+  ("get_prop_scaled_size",
+  [
+    (store_script_param, ":prop_instance_id", 1),
+    (store_script_param, ":wall_height", 2),
+    
+    (assign,":is_ok",0),
+    (assign,":wall_width",0),
+    (assign,":wall_length",0),
+    (assign,":max_wall_length",0),
+    (assign,":wall_height_offset",0),
+    (assign,":wall_width_offset",0),
+    (assign,":wall_length_offset",0),
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (try_begin),
+        (gt,":wall_height",0),
+        (store_script_param,":wall_width",3),
+        (store_script_param,":wall_length",4),
+        (store_script_param,":wall_height_offset",5),
+        (store_script_param,":wall_width_offset",6),
+        (store_script_param,":wall_length_offset",7),
+      (else_try),
+        (prop_instance_get_scene_prop_kind, ":scene_prop_kind_id", ":prop_instance_id"),
+        (call_script,"script_get_prop_kind_size_and_shift",":scene_prop_kind_id"),
+        (eq,reg0,1), # is_ok :)
+        (assign,":wall_height",reg1),
+        (assign,":wall_width",reg2),
+        (assign,":wall_length",reg3),
+        (assign,":wall_height_offset",reg8),
+        (assign,":wall_width_offset",reg9),
+        (assign,":wall_length_offset",reg10),
+      (try_end),
+      
+      # We have values assigned now?
+      (gt,":wall_height",0),
+
+      (set_fixed_point_multiplier, 1000),
+      
+      # Resize wall to scale
+      (prop_instance_get_scale, pos5, ":prop_instance_id"),
+      (position_get_scale_x, ":width_scale", pos5),#x scale in meters * fixed point multiplier is returned
+      (position_get_scale_y, ":length_scale", pos5),
+      (position_get_scale_z, ":height_scale", pos5),  
+      (val_abs,":width_scale"), # make positive so we can still hit a inverted wall.
+      (val_abs,":length_scale"),
+      (val_abs,":height_scale"),
+      (val_mul, ":wall_width", ":width_scale"),
+      (val_mul, ":wall_length", ":length_scale"),
+      (val_mul, ":wall_height", ":height_scale"),
+      (val_mul, ":wall_height_offset", ":height_scale"),
+      (val_mul, ":wall_width_offset", ":width_scale"),
+      (val_mul, ":wall_length_offset", ":length_scale"),
+      (val_div, ":wall_width", 1000),
+      (val_div, ":wall_length", 1000),
+      (val_div, ":wall_height", 1000),
+      (val_div, ":wall_height_offset", 1000),
+      (val_div, ":wall_width_offset", 1000),
+      (val_div, ":wall_length_offset", 1000),
+      
+      (assign,":max_wall_length",":wall_length"),
+      (val_max,":max_wall_length",":wall_width"),
+      (val_max,":max_wall_length",":wall_height"),
+      
+      (set_fixed_point_multiplier, 100),
+
+      (assign,":is_ok",1),
+    (try_end),
+    
+    (assign,reg1,":is_ok"),
+    (assign,reg2,":wall_height"),
+    (assign,reg3,":wall_width"),
+    (assign,reg4,":wall_length"),
+    (assign,reg5,":max_wall_length"),
+    (assign,reg6,":wall_height_offset"),
+    (assign,reg7,":wall_width_offset"), 
+    (assign,reg8,":wall_length_offset"),
+  ]),
+
+  # script_get_destruction_properties_of_object
+  # Input: prop_kind_id
+  # Output: reg1 = is_ok
+  #         reg0 = smoke_type
+  #         reg1 = smoke_type2
+  #         reg2 = particles_type
+  #         reg3 = smoke_strength
+  #         reg4 = sound_id
+  #         reg5 = pile_prop_begin
+  #         reg6 = pile_prop_end
+  ("get_destruction_properties_of_object",
+  [
+    (store_script_param, ":prop_kind_id", 1),
+    
+    (assign,":smoke_type",-1),
+    (assign,":smoke_type2",-1),
+    (assign,":particles_type",-1),
+    (assign,":smoke_strength", 80),
+    (assign,":sound_id", -1),
+    (assign,":pile_prop_begin",-1),
+    (assign,":pile_prop_end",-1),
+    (try_begin),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (try_begin),  
+        (this_or_next|eq,":prop_kind_id","spr_mm_stockade"),
+        (eq,":prop_kind_id","spr_mm_stockade_cannon"),
+        (assign,":smoke_type","psys_dummy_smoke_big"),
+        (assign,":sound_id","snd_dummy_destroyed"),
+      (else_try),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_wall1", "spr_mm_walldesert1"),
+        (is_between, ":prop_kind_id", "spr_mm_wall3", "spr_mm_stockade"),
+        
+        (assign,":smoke_type", "psys_wallhit_smoke"),
+        (assign,":smoke_type2","psys_wallhit_smoke2"),
+        (assign,":particles_type","psys_wallhit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+        (assign,":pile_prop_begin","spr_mm_wall_stones1"),
+        (assign,":pile_prop_end","spr_mm_wall_stonesdesert1"),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_mm_walldesert1", "spr_mm_wallwood1"),
+        
+        (assign,":smoke_type", "psys_wallhit_smoke"),
+        (assign,":smoke_type2","psys_wallhit_smoke2"),
+        (assign,":particles_type","psys_walldeserthit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+        (assign,":pile_prop_begin","spr_mm_wall_stonesdesert1"),
+        (assign,":pile_prop_end","spr_mm_wallgate"),
+      (else_try), 
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_house_wall_1", "spr_mm_house_wall_11"),
+        (is_between, ":prop_kind_id", "spr_mm_new_wall_1_1", "spr_mm_woodenwall1"),
+        (assign,":smoke_type", "psys_wallhit_smoke"),
+        (assign,":smoke_type2","psys_wallhit_smoke2"),
+        (assign,":particles_type","psys_wallhit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+        (assign,":pile_prop_begin","spr_mm_wall_stones1"),
+        (assign,":pile_prop_end","spr_mm_wall_stonesdesert1"),
+      (else_try), 
+        (is_between, ":prop_kind_id", "spr_mm_house_wall_11", "spr_mm_wall1"),
+        (assign,":smoke_type", "psys_wallhit_smoke"),
+        (assign,":smoke_type2","psys_wallhit_smoke2"),
+        (assign,":particles_type","psys_wallhit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+        (assign,":pile_prop_begin","spr_mm_wall_stones1"),
+        (assign,":pile_prop_end","spr_mm_wall_stonesdesert1"),
+      (else_try), 
+        # The stage before end destruction of cannon has difirent particles.
+        (this_or_next|eq,":prop_kind_id","spr_fortnew8"),
+        (this_or_next|eq,":prop_kind_id","spr_fortnew_110"),
+        (this_or_next|eq,":prop_kind_id","spr_fortnew_28"),
+        (this_or_next|eq,":prop_kind_id","spr_fortnew_38"),
+        (eq,":prop_kind_id","spr_fortnew_4"),
+        
+        (assign,":smoke_type", "psys_fort_complete_wallhit_smoke"),
+        (assign,":smoke_type2","psys_fort_complete_wallhit_smoke2"),
+        (assign,":particles_type","psys_fort_complete_wallhit_particles"),
+        (assign,":smoke_strength", 80),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_fortnew", "spr_mm_new_wall_1_1"),
+        (assign,":smoke_type", "psys_fort_wallhit_smoke"),
+        (assign,":smoke_type2","psys_fort_wallhit_smoke2"),
+        (assign,":particles_type","psys_fort_wallhit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+      (else_try), 
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_wallwood1", "spr_mm_wall3"),
+        (is_between, ":prop_kind_id", "spr_mm_woodenwall1", "spr_mm_sp_rich_bridge4"),
+        (assign,":smoke_type", "psys_wallhit_smoke"),
+        (assign,":smoke_type2","psys_wallhit_smoke2"),
+        (assign,":particles_type","psys_woodwallhit_particles"),
+        (assign,":smoke_strength", 100),
+        (assign,":sound_id","snd_cannon_hit_wood_wall"),
+        (assign,":pile_prop_begin","spr_mm_wall_wood_planks1"),
+        (assign,":pile_prop_end","spr_mm_wall_stones1"),
+      (else_try), 
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_sp_rich_bridge4", "spr_mm_stakes"),
+        (eq, ":prop_kind_id", "spr_fortnew"),
+        (assign,":smoke_type", "psys_fort_wallhit_smoke"),
+        (assign,":smoke_type2","psys_fort_wallhit_smoke2"),
+        (assign,":particles_type","psys_fort_wallhit_particles"),
+        (assign,":smoke_strength", 60),
+        (assign,":sound_id","snd_cannon_hit_wall"),
+      (else_try),
+        (this_or_next|eq, ":prop_kind_id", "spr_mm_restroom_door"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_stakes", "spr_mm_dummy"),
+        (eq,":prop_kind_id","spr_mm_dummy"),
+        (assign,":smoke_type","psys_dummy_smoke"),
+        (assign,":smoke_strength",100),
+        (assign,":sound_id", "snd_dummy_destroyed"),
+      (try_end),
+    (try_end),
+    
+    (assign,reg0,":smoke_type"),
+    (assign,reg1,":smoke_type2"),
+    (assign,reg2,":particles_type"),
+    (assign,reg3,":smoke_strength"),
+    (assign,reg4,":sound_id"),
+    (assign,reg5,":pile_prop_begin"),
+    (assign,reg6,":pile_prop_end"),
+  ]),
+
+# script_reset_prop_slots
+  # Input: instance_id of the prop to reset
+  ("reset_prop_slots",
+  [
+    (store_script_param, ":instance_id", 1),
+    
+    (try_begin),
+      (prop_instance_is_valid,":instance_id"),
+      
+      (try_for_range, ":cur_prop_slot", 0, scene_prop_slots_defmin_begin),
+        (neq, ":cur_prop_slot", scene_prop_slot_is_spawned), # Never want to reset this.
+        (neg|is_between, ":cur_prop_slot", scene_prop_slot_x_scale, scene_prop_slot_x_extra), # Never want to reset the scale
+        
+        (scene_prop_set_slot, ":instance_id", ":cur_prop_slot", 0),
+      (try_end),
+      (try_for_range, ":cur_prop_slot", scene_prop_slots_defmin_begin, scene_prop_slots_end),
+        (scene_prop_set_slot, ":instance_id", ":cur_prop_slot", -1),
+      (try_end),
+    (try_end),
+  ]),
+
+# script_get_angle_of_ground_at_pos
+  # Input: pos37
+  #        z_rot
+  #        prop_kind
+  # Output: reg0 = x_rot
+  #         reg1 = y_rot
+  ("get_angle_of_ground_at_pos",
+  [
+    (store_script_param, ":z_rot", 1),
+    (store_script_param, ":prop_kind", 2),
+  
+    (assign, ":x_rot", 0),
+    (assign, ":y_rot", 0),    
+    (try_begin),
+      (init_position,pos38),
+      (position_copy_origin,pos38,pos37),
+      (position_rotate_z,pos38,":z_rot"),
+      (position_set_z_to_ground_level,pos38),
+
+      # Getting rotation around X
+      (set_fixed_point_multiplier,100000),
+      (position_move_y,pos38,15), # 15 cm forwards
+      (try_begin),
+        (eq, ":prop_kind", "spr_earthwork1_destructible"),
+        (position_get_distance_to_terrain, ":height_to_terrain_front", pos38),
+      (else_try),
+        (position_get_distance_to_ground_level, ":height_to_terrain_front", pos38),
+      (try_end),
+      (position_move_y,pos38,-30), # 30 cm back
+      (try_begin),
+        (eq, ":prop_kind", "spr_earthwork1_destructible"),
+        (position_get_distance_to_terrain, ":height_to_terrain_back", pos38),
+      (else_try),
+        (position_get_distance_to_ground_level, ":height_to_terrain_back", pos38),
+      (try_end),
+      (store_sub,":height_difference",":height_to_terrain_front",":height_to_terrain_back"),
+      (store_div,":x_rot",":height_difference",30), # 30 cm
+      (set_fixed_point_multiplier,1000),
+      (store_atan,":x_rot",":x_rot"), # get the angle
+      (val_div,":x_rot",1000),
+      (val_mul,":x_rot",-1),
+      (position_move_y,pos38,15), # 15 cm forward
+       
+      (set_fixed_point_multiplier,100000),
+      (position_move_x,pos38,15), # 15 cm right
+      (try_begin),
+        (eq, ":prop_kind", "spr_earthwork1_destructible"),
+        (position_get_distance_to_terrain, ":height_to_terrain_right", pos38),
+      (else_try),
+        (position_get_distance_to_ground_level, ":height_to_terrain_right", pos38),
+      (try_end),
+      (position_move_x,pos38,-30), # 30 cm
+      (try_begin),
+        (eq, ":prop_kind", "spr_earthwork1_destructible"),
+        (position_get_distance_to_terrain, ":height_to_terrain_left", pos38),
+      (else_try),
+        (position_get_distance_to_ground_level, ":height_to_terrain_left", pos38),
+      (try_end),
+      (store_sub,":height_difference",":height_to_terrain_right",":height_to_terrain_left"),
+      (store_div,":y_rot",":height_difference",30), # 30 cm
+      (set_fixed_point_multiplier,1000),
+      (store_atan,":y_rot",":y_rot"), # get the angle
+      (val_div,":y_rot",1000),
+      (position_move_x,pos38,15), # 15 cm left
+    (try_end),
+    
+    (set_fixed_point_multiplier,100),
+    
+    (assign,reg0,":x_rot"),
+    (assign,reg1,":y_rot"),
+  ]),
+
+   # script_multiplayer_server_scale_prop_instance
+  # Input: arg1 = prop_instance
+  #        arg2 = x_scale
+  #        arg3 = y_scale
+  #        arg4 = z_scale
+  ("multiplayer_server_scale_prop_instance",
+   [
+     (store_script_param, ":prop_instance", 1),
+     (store_script_param, ":x_scale", 2),
+     (store_script_param, ":y_scale", 3),
+     (store_script_param, ":z_scale", 4),
+    
+     (try_begin),
+       (this_or_next|multiplayer_is_server),
+       (neg|game_in_multiplayer_mode),
+       
+	     (prop_instance_is_valid, ":prop_instance"),
+       # at least 1 above 0?
+       (this_or_next|gt,":x_scale",0),
+       (this_or_next|gt,":y_scale",0),
+       (gt,":z_scale",0),
+	   
+       (scene_prop_get_slot,":cur_x_scale",":prop_instance",scene_prop_slot_x_scale),
+       (scene_prop_get_slot,":cur_y_scale",":prop_instance",scene_prop_slot_y_scale),
+       (scene_prop_get_slot,":cur_z_scale",":prop_instance",scene_prop_slot_z_scale),
+       
+       (this_or_next|neq,":cur_x_scale",":x_scale"),
+       (this_or_next|neq,":cur_y_scale",":y_scale"),
+       (neq,":cur_z_scale",":z_scale"),
+       
+       (set_fixed_point_multiplier,1000),
+       (prop_instance_set_scale, ":prop_instance", ":x_scale", ":y_scale", ":z_scale"),
+       (set_fixed_point_multiplier,100),
+       (scene_prop_set_slot,":prop_instance",scene_prop_slot_x_scale,":x_scale"),
+       (scene_prop_set_slot,":prop_instance",scene_prop_slot_y_scale,":y_scale"),
+       (scene_prop_set_slot,":prop_instance",scene_prop_slot_z_scale,":z_scale"),
+       (scene_prop_set_slot,":prop_instance",scene_prop_slot_is_scaled,1),
+       
+       (try_begin),
+         (game_in_multiplayer_mode),
+         
+         (val_add,":x_scale",5000),
+         (val_add,":y_scale",5000),
+         (val_add,":z_scale",5000),
+         
+         #define max value for the scales...
+         (val_clamp,":x_scale",0,65535),
+         (val_clamp,":y_scale",0,65535),
+         (val_clamp,":z_scale",0,32767),
+        
+         # pack the shit.
+         (assign,":sendvar1",":prop_instance"),
+         (val_lshift, ":sendvar1", 16), 
+         (val_add,":sendvar1",":x_scale"),
+         (assign,":sendvar2",":z_scale"),
+         (val_lshift, ":sendvar2", 16), 
+         (val_add,":sendvar2",":y_scale"),
+         
+         # and send it off.
+         (try_for_players, ":cur_player", 1),
+           (player_is_active,":cur_player"),
+           (multiplayer_send_2_int_to_player, ":cur_player", multiplayer_event_return_scale_object,":sendvar1",":sendvar2"),
+         (try_end),
+       (try_end),
+     (try_end),
+  ]),
 
   # PN END
   # ********************************************************************************************************
@@ -1571,6 +2556,7 @@ scripts.extend([("game_start", []), # single player only, not used
   ("game_quick_start", # called by the game when starting multiplayer mode, before connecting to a
                        # server; used to setup static module data
    [(call_script, "script_initialize_troop_equipment_slots"),
+    (call_script, "script_initialize_pn_global_variables"),
     (call_script, "script_initialize_item_slots"),
     (call_script, "script_initialize_banner_info"),
     (call_script, "script_initialize_game_rules"),
@@ -1719,10 +2705,8 @@ scripts.extend([("game_start", []), # single player only, not used
 
   ("game_get_cheat_mode", []),
 
-  ("game_receive_network_message", # called by the game whenever a custom network message is received, both
-                                   # clients and servers
+  ("game_receive_network_message", # todo = trazer todas as verificacoes de network do nw para ca
    [(store_script_param, ":sender_player_id", 1),
-    (store_script_param, ":player_no", 1),
     (store_script_param, ":event_type", 2),
 
     (try_begin), # section of events received by clients from the server
@@ -1734,6 +2718,13 @@ scripts.extend([("game_start", []), # single player only, not used
         (store_script_param, ":value_1", 5),
         (store_script_param, ":value_2", 6),
         (call_script, "script_preset_message", ":string_id", ":flags", ":value_1", ":value_2"),
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_agent_stop_sound),
+        (store_script_param, ":value", 3),
+        (try_begin),
+          (agent_is_active,":value"),
+          (agent_stop_sound,":value"),
+        (try_end),
       (else_try), # play a non 3D interface sound
         (eq, ":event_type", server_event_play_sound),
         (store_script_param, ":sound_id", 3),
@@ -2679,132 +3670,308 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script, "script_cf_try_execute_animation", ":sender_player_id", ":string_id", 0),
         (try_end),
 
-        (else_try),
-          (eq, ":event_type", multiplayer_event_send_player_action),
+    # PN NETWORK COMM BELOW *********************************************************************
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_sound_at_pos),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (call_script,"script_multiplayer_client_play_sound_at_pos",":value",":value_2"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_prop_effects),
+        (store_script_param, ":value", 3),
+        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_send_player_action),
+        (try_begin),
+          (store_script_param, ":action_type", 3),
+          (is_between,":action_type",player_actions_begin,player_actions_end),
+
           (try_begin),
-            (store_script_param, ":action_type", 3),
-            (is_between,":action_type",player_actions_begin,player_actions_end),
+            (eq,":action_type",player_action_has_cheat),
+            (kick_player,":sender_player_id"),
+          (try_end),
 
+          (player_get_agent_id, ":player_agent", ":sender_player_id"),
+          (agent_is_active,":player_agent"),
+
+          (try_begin),
+            (eq,":action_type",player_action_voice),
+            (store_script_param, ":action", 4),
+            (is_between,":action",voice_types_begin,voice_types_end),
+            (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
+
+          (else_try),
+            (eq,":action_type",player_action_change_lang),
+            (store_script_param, ":action", 4),
+            (call_script,"script_set_character_language", ":action"),
+
+          (else_try),
+            (eq,":action_type",player_action_music),
+            (store_script_param, ":action", 4),
+            (is_between,":action",music_types_begin,music_types_end),
             (try_begin),
-              (eq,":action_type",player_action_has_cheat),
-              (kick_player,":player_no"),
+              (eq,":action",music_type_start),
+              (store_script_param, ":track_index", 5),
+              (try_begin),
+                (store_mission_timer_a,":cur_time"),
+                (agent_get_slot,":started_playing_music_at",":player_agent",slot_agent_started_playing_music_at),
+                (store_sub, ":elapsed_time", ":cur_time", ":started_playing_music_at"),
+                (ge,":elapsed_time",1),
+                (call_script,"script_multiplayer_server_agent_play_music", ":player_agent", ":track_index", 0),
+              (try_end),
+            (else_try),
+              (eq,":action",music_type_stop),
+              (call_script,"script_multiplayer_server_agent_stop_music", ":player_agent"),
+            (else_try),
+              (eq,":action",music_type_toggle_together),
+              (store_script_param, ":value", 5),
+              (is_between,":value",0,2),
+              (agent_set_slot,":player_agent",slot_agent_music_play_together,":value"),
+            (try_end),
+          (else_try),
+            (eq,":action_type",player_action_spyglass),
+            (store_script_param, ":action", 4),
+            (this_or_next | eq,":action",spyglass_type_start),
+            (eq,":action",spyglass_type_stop),
+            (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
+
+          (else_try),
+            (eq, ":action_type", player_action_misc_item_drinking),
+            (store_script_param, ":action", 4),
+            (this_or_next | eq, ":action", drinking_type_start),
+            (eq, ":action", drinking_type_stop),
+            (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
+
+          (else_try),
+            (eq, ":action_type", player_action_custom_order_menu_interact),
+
+          (else_try),
+            (eq,":action_type",player_action_place_rocket),
+            (call_script,"script_multiplayer_server_place_rocket", ":player_agent"),
+
+          (else_try),
+            (eq,":action_type",player_action_toggle_walk),
+            (agent_is_alive,":player_agent"),
+            (assign,":contine",1),
+            (try_begin),
+              (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
+              (assign,":contine",0),
+            (try_end),
+            (eq,":contine",1),
+            (try_begin),
+              (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
+              (agent_set_animation,":player_agent","anim_surrender_end",1),
             (try_end),
 
-            (player_get_agent_id, ":player_agent", ":player_no"),
-            (agent_is_active,":player_agent"),
-           
+            (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+
             (try_begin),
-              (eq,":action_type",player_action_voice),
-              (store_script_param, ":action", 4),
-              (is_between,":action",voice_types_begin,voice_types_end),
-              (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
-
+              (this_or_next | eq,":value",350),
+              (eq,":value",100),
+              (assign,":value",55),
             (else_try),
-              (eq,":action_type",player_action_change_lang),
-              (store_script_param, ":action", 4),
-              (call_script,"script_set_character_language", ":action"),
-
-            (else_try),
-              (eq,":action_type",player_action_music),
-              (store_script_param, ":action", 4),
-              (is_between,":action",music_types_begin,music_types_end),
-
-              (try_begin),
-                (eq,":action",music_type_start),
-                (store_script_param, ":track_index", 5),
-
-                (try_begin),
-                  (store_mission_timer_a,":cur_time"),
-                  (agent_get_slot,":started_playing_music_at",":player_agent",slot_agent_started_playing_music_at),
-                  (store_sub, ":elapsed_time", ":cur_time", ":started_playing_music_at"),
-                  (ge,":elapsed_time",1),
-                  (call_script,"script_multiplayer_server_agent_play_music", ":player_agent", ":track_index", 0),
-                (try_end),
-
-              (else_try),
-                (eq,":action",music_type_stop),
-                (call_script,"script_multiplayer_server_agent_stop_music", ":player_agent"),
-
-              (else_try),
-                (eq,":action",music_type_toggle_together),
-                (store_script_param, ":value", 5),
-                (is_between,":value",0,2),
-                (agent_set_slot,":player_agent",slot_agent_music_play_together,":value"),
-              (try_end),
-
-            (else_try),
-              (eq,":action_type",player_action_spyglass),
-              (store_script_param, ":action", 4),
-              (this_or_next | eq,":action",spyglass_type_start),
-              (eq,":action",spyglass_type_stop),
-              (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
-
-            (else_try),
-              (eq, ":action_type", player_action_misc_item_drinking),
-              (store_script_param, ":action", 4),
-              (this_or_next | eq, ":action", drinking_type_start),
-              (eq, ":action", drinking_type_stop),
-              (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
-
-            (else_try),
-              (eq, ":action_type", player_action_custom_order_menu_interact),
-
-            (else_try),
-              (eq,":action_type",player_action_toggle_walk),
-              (agent_is_alive,":player_agent"),
-              (assign,":contine",1),
-              (try_begin),
-                (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
-                (assign,":contine",0),
-              (try_end),
-
-              (eq,":contine",1),
-
-              (try_begin),
-                (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
-                (agent_set_animation,":player_agent","anim_surrender_end",1),
-              (try_end),
-
-              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-
-              (try_begin),
-                (this_or_next | eq,":value",350),
-                (eq,":value",100),
-                (assign,":value",55),
-              (else_try),
-                (assign,":value",100),
-                (agent_set_horse_speed_factor, ":player_agent", 100),
-              (try_end),
-
-              (set_fixed_point_multiplier,100),
-              (agent_set_speed_modifier,":player_agent", ":value"),
-              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
-
-            (else_try),
-              (eq,":action_type",player_action_surrender),
-              (agent_is_alive,":player_agent"),
-              (store_script_param, ":action", 4),
-              (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-              (try_begin),
-                (eq,":action",music_type_start),
-                (agent_set_wielded_item,":player_agent",-1),  
-                (agent_set_animation,":player_agent","anim_surrender",1),
-                (assign,":value",55),
-                (agent_set_horse_speed_factor, ":player_agent", 55),
-
-              (else_try),
-                (eq,":action",music_type_stop),
-                (agent_set_animation,":player_agent","anim_surrender_end",1),
-                (assign,":value",100),
-                (agent_set_horse_speed_factor, ":player_agent", 100),
-              (try_end),
-
-              (set_fixed_point_multiplier,100),
-              (agent_set_speed_modifier,":player_agent", ":value"),
-              (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+              (assign,":value",100),
+              (agent_set_horse_speed_factor, ":player_agent", 100),
             (try_end),
-         (try_end),
-      (try_end),
+
+            (set_fixed_point_multiplier,100),
+            (agent_set_speed_modifier,":player_agent", ":value"),
+            (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+
+          (else_try),
+            (eq,":action_type",player_action_surrender),
+            (agent_is_alive,":player_agent"),
+            (store_script_param, ":action", 4),
+            (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+            (try_begin),
+              (eq,":action",music_type_start),
+              (agent_set_wielded_item,":player_agent",-1),  
+              (agent_set_animation,":player_agent","anim_surrender",1),
+              (assign,":value",55),
+              (agent_set_horse_speed_factor, ":player_agent", 55),
+            (else_try),
+              (eq,":action",music_type_stop),
+              (agent_set_animation,":player_agent","anim_surrender_end",1),
+              (assign,":value",100),
+              (agent_set_horse_speed_factor, ":player_agent", 100),
+            (try_end),
+            (set_fixed_point_multiplier,100),
+            (agent_set_speed_modifier,":player_agent", ":value"),
+            (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+          (try_end),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_send_control_command),
+        (try_begin), 
+        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
+          (store_script_param, ":type", 3),
+          (store_script_param, ":value", 4),
+          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_particle_at_pos),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (store_script_param, ":value_3", 5),
+        (store_script_param, ":value_4", 6),
+        (try_begin),
+          # First lets unpack...     
+          (store_div, ":x_value", ":value", 1000),
+          (store_mod, ":x_rot", ":value", 1000),
+          (store_div, ":y_value", ":value_2", 1000),
+          (store_mod, ":y_rot", ":value_2", 1000),
+          (store_div, ":z_value", ":value_3", 1000),
+          (store_mod, ":z_rot", ":value_3", 1000),
+          (store_div, ":particle_effect_id", ":value_4", 1000),
+          (store_mod, ":burst_strength", ":value_4", 1000),
+          (is_between,":particle_effect_id","psys_pistol_smoke","psys_dynamic_snow"), # hoorah we have a effect! :)
+          # remove 100 meters to support minus values.
+          (val_sub,":z_value",10000),
+          (set_fixed_point_multiplier, 100),
+          (init_position, pos25),
+          (position_set_x,pos25,":x_value"),
+          (position_set_y,pos25,":y_value"),
+          (position_set_z,pos25,":z_value"),
+          (position_rotate_z,pos25,":z_rot"),
+          (position_rotate_y,pos25,":y_rot"),
+          (position_rotate_x,pos25,":x_rot"),
+          (particle_system_burst,":particle_effect_id",pos25,":burst_strength"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_player_build_prop),
+        (try_begin),
+          (store_script_param, ":prop_type", 3),
+          (is_between,":prop_type",mm_construct_props_begin, mm_construct_props_end),
+          (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
+          (agent_get_troop_id,":troop_id",":player_no_agent_id"),
+          (eq,":troop_id","trp_sapper"),
+
+          (assign,":spawn_is_ok",-1),
+          (try_begin),
+            (try_begin),
+              (eq,":prop_type","spr_plank_construct_dummy"),
+              (assign,":prop_type","spr_plank_destructible2"),
+            (else_try),
+              (eq,":prop_type","spr_earthwork1_construct_dummy"),
+              (assign,":prop_type","spr_earthwork1_destructible"),
+            (try_end),
+            (call_script, "script_multiplayer_server_construct_prop",":player_no_agent_id",":prop_type"),
+            (assign,":spawn_is_ok",reg0),
+            (assign,":flu_sucks",reg1),
+            (eq,":spawn_is_ok",1), # is ok to build here.
+            (eq,":flu_sucks",1),
+            (multiplayer_send_message_to_player, ":sender_player_id", multiplayer_event_return_confirmation),
+          (else_try),
+            (try_begin),
+              (eq,":flu_sucks",0),
+              (eq,":spawn_is_ok",1),
+              (assign,":error_message","str_invalid_prop_place_2"),
+            (else_try),
+              (eq,":spawn_is_ok",0),
+              (eq,":flu_sucks",1),
+              (assign,":error_message","str_invalid_prop_place"), 
+            (else_try),
+              (eq,":spawn_is_ok",0),
+              (eq,":flu_sucks",0),
+              (assign,":error_message","str_invalid_prop_place_3"),
+            (else_try),
+              (assign,":error_message","str_invalid_prop_select"),
+            (try_end),
+            (multiplayer_send_2_int_to_player, ":sender_player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, ":error_message"),
+            (multiplayer_send_message_to_player, ":sender_player_id", multiplayer_event_return_rejection),
+          (try_end),
+        (try_end),
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_prop_effects),
+        (store_script_param, ":value", 3),
+        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_show_server_message),
+        (display_message, "str_server_s0", 0xFFFF6666),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_server_action),
+        (try_begin),
+          (store_script_param, ":action_type", 3),
+          (is_between,":action_type",server_actions_begin,server_actions_end),
+          (store_script_param, ":action", 4),
+          (try_begin),
+            (eq,":action_type",server_action_force_music_selection),
+            (try_begin),
+              (neg|is_presentation_active,"prsnt_multiplayer_music"),
+              (assign,"$g_used_piano_type",":action"),
+              (start_presentation,"prsnt_multiplayer_music"),
+            (try_end),
+          (try_end),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_show_multiplayer_message),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (try_begin),
+          (eq, ":value", multiplayer_message_type_message_custom_color),
+          (store_script_param, ":custom_color", 5),
+          (call_script, "script_show_multiplayer_message_custom_color", ":value_2", ":custom_color"),
+        (else_try),
+          (store_script_param, reg5, 5),
+          (call_script, "script_show_multiplayer_message", ":value", ":value_2"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_scale_object),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (call_script,"script_multiplayer_client_apply_prop_scale",":value",":value_2"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_destructible_prop_spawn_or_destroy),
+        (store_script_param, ":value", 3),
+        (call_script, "script_multiplayer_client_apply_destructible_prop_spawn_or_destroy", ":value"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_currently_controlling_object),
+        (store_script_param, ":prop_instance", 3),
+        (store_script_param, ":value", 4),
+        (call_script,"script_client_process_set_prop_control",":prop_instance",":value"),
+
+    (else_try),
+        (eq, ":event_type", multiplayer_event_return_cannon_hit_effect_event),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (store_script_param, ":value_3", 5),
+        (store_script_param, ":value_4", 6),
+        (store_div,":extra_value",":value_4",100),
+        (store_mod,":effect_type",":value_4",100),
+        (try_begin),
+          (is_between,":effect_type",cannon_hit_effect_event_types_begin,cannon_hit_effect_event_types_end),
+          (set_fixed_point_multiplier, 100),
+          (init_position, pos60),
+          (position_set_x,pos60,":value"),
+          (position_set_y,pos60,":value_2"),
+          (position_set_z,pos60,":value_3"),
+          (call_script,"script_handle_cannon_hit_effect_event",":effect_type",":extra_value"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_confirmation),
+        (assign, "$g_confirmation_result", 1),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_rejection),
+        (assign, "$g_confirmation_result", -1),
+
+      (try_end),# this is the end of eventtype block
     (try_end),
   ]),
 
@@ -2812,6 +3979,5251 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":new", 1),
     (assign, "$g_pn_character_language", ":new"),
   ]),
+
+  # script_get_hightest_pos_and_angle_from_pos
+  # Input: pos37  
+  #        object_length
+  #        z_rot_addition
+  #        limit_height
+  # Output: pos37 origion position for move/spawn of prop.
+  ####         reg0 = x_rot
+  ####         reg1 = y_rot
+  ("get_hightest_pos_and_angle_from_pos",
+  [
+    (store_script_param, ":object_length", 1),
+    (store_script_param, ":z_rot_addition", 2),
+    (store_script_param, ":limit_height", 3),
+  
+    (set_fixed_point_multiplier,100),
+
+    (assign,":can_place_here",1),
+    (assign, ":x_rot", 0),
+    (try_begin),
+      (position_get_rotation_around_z,":z_rot",pos37),
+      (val_add,":z_rot",":z_rot_addition",),
+      (init_position,pos38),
+      (position_copy_origin,pos38,pos37),
+      (position_rotate_z,pos38,":z_rot"),
+      
+      # reset origional pos for perfect spawn.
+      (copy_position,pos37,pos38),
+      
+      (assign,":max_rotation_height",160),
+      (try_begin),
+        (eq,":limit_height",1),
+        (val_min,":max_rotation_height",":object_length"), # take either max or the value of length
+      (else_try),
+        # no limit, just assign the length then.
+        (assign,":max_rotation_height",":object_length"),
+      (try_end),
+      
+      (position_set_z_to_ground_level,pos38),
+      (position_get_z,":orig_ground_z_val",pos38),
+      (position_move_z,pos38,":object_length"), 
+      (position_get_z,":orig_z_val",pos38),
+      
+      (assign,":step_count",40),# 40 steps.
+      (store_div,":stepsize",":object_length",":step_count"),
+      (val_add,":step_count",1),
+      #(store_mul,":hightest_z",":object_length",-1), 
+      (store_sub,":hightest_z",":orig_ground_z_val",":object_length"), # lowest is - length
+      
+      (assign,":point_distance",":stepsize"),
+      
+      (assign,":step_ignore_count",0),
+      (store_mul,":ignore_size",":stepsize",":step_ignore_count"),
+      (position_move_y,pos38,":ignore_size"),
+      
+      #(assign,":dist_to_max",0),
+      (try_for_range,":cur_step",":step_ignore_count",":step_count"),
+        (position_move_y,pos38,":stepsize"),
+        (copy_position,pos39,pos38),
+        (position_set_z_to_ground_level,pos39),
+        (position_move_z,pos39,":object_length"), # 1 meter up
+        (position_get_z,":cur_z",pos39),
+        (gt,":cur_z",":hightest_z"),
+        (assign,":hightest_z",":cur_z"),
+        (store_mul,":point_distance",":cur_step",":stepsize"),
+      (try_end),
+      
+      
+      # again from the other side now.
+      (store_sub,":hightest_z_2",":orig_ground_z_val",":object_length"), # lowest is - length
+      #(store_mul,":hightest_z_2",":object_length",-1), # lowest is - length
+      (assign,":point_distance_2",":stepsize"),
+      
+      (position_rotate_z,pos38,180),
+      
+      (position_move_y,pos38,":ignore_size"),
+      
+      (assign,":first_back_dist",0),
+      
+      (try_for_range,":cur_step",":step_ignore_count",":step_count"),
+        (position_move_y,pos38,":stepsize"),
+        (copy_position,pos39,pos38),
+        (position_set_z_to_ground_level,pos39),
+        
+        # if floor is miles away go to the next point (end of plank is on a gap)
+        (try_begin),
+          (eq,":first_back_dist",0),
+
+          (position_get_z,":cur_z",pos39),
+          (gt, ":cur_z", ":hightest_z_2"),
+          (store_mul,":first_back_dist",":cur_step",":stepsize"),
+          (store_add,":orig_z_val_2",":cur_z",":object_length"),
+          
+          (try_begin),
+            (store_div,":half_stepcount",":step_count",2),
+            (gt,":cur_step",":half_stepcount"),
+            
+            (assign,":can_place_here",0),
+          (try_end),
+        (try_end),
+
+        (position_move_z,pos39,":object_length"), # 1 meter up
+        (position_get_z,":cur_z",pos39),
+        (gt,":cur_z",":hightest_z_2"),
+        (assign,":hightest_z_2",":cur_z"),
+        (store_mul,":point_distance_2",":cur_step",":stepsize"),
+        (val_sub,":point_distance_2",":first_back_dist"),
+      (try_end),
+      
+      (assign,":reversed_pos_as_base",0),
+      (assign,":height_difference",0),      
+      (try_begin), # if distance from origional pos is larger as from back to forwards take that as the base point, otherwise we do crazy stuff.
+        (gt,":point_distance",":point_distance_2"),
+        (store_sub,":height_difference",":hightest_z",":orig_z_val"),
+      (else_try),
+        (store_sub,":height_difference",":hightest_z_2",":orig_z_val_2"),
+        (assign,":point_distance",":point_distance_2"),
+        (assign,":reversed_pos_as_base",1),
+      (try_end),
+      
+      (val_max,":point_distance",1),
+      
+      (val_mul,":height_difference",1000),# make fixed point
+      (store_div,":x_rot",":height_difference",":point_distance"), # diference / distance
+      (set_fixed_point_multiplier,1000),
+      (store_atan,":x_rot",":x_rot"), # get the angle
+      (val_div,":x_rot",1000),
+      #(val_mul,":x_rot",-1),
+      
+      (set_fixed_point_multiplier,100),
+      
+      (try_begin), # normal pos.
+        (eq,":reversed_pos_as_base",0),
+        (position_rotate_x,pos37,":x_rot"),
+        
+        (try_begin),
+         # (position_get_z,":object_z",pos37),
+          (store_sub,":object_z",":hightest_z",":orig_z_val"),
+          (gt,":object_z",":max_rotation_height"),
+          (assign,":can_place_here",0),
+        (else_try),
+          (copy_position,pos38,pos37),
+          (position_move_y,pos38,":object_length"),
+          (position_get_distance_to_ground_level,":distance",pos38),
+          (store_mul,":allowed_height",":object_length",100),
+          (val_div,":allowed_height",150),
+          (gt,":distance",":allowed_height"),
+          (assign,":can_place_here",0),
+        (try_end),
+      (else_try),
+        # else, move to the desired start position and start moving object length away from it
+        # in the right angle, Then as we reach the perfect point there, we set this as the place to spawn/move to
+        # this way we get the angle perfect and the start of plank/tree sticking out how it should be.
+        
+        (store_sub,":move_dist",":object_length",":first_back_dist"),
+        (position_move_y,pos37,":move_dist"),
+        (position_set_z_to_ground_level,pos37),
+        
+        # turn around
+        (position_rotate_z,pos37,180),
+        
+        # rotate the object upwards
+       # (val_mul,":x_rot",-1),
+        (position_rotate_x,pos37,":x_rot"),
+        
+        # move objectlength forward.
+        (position_move_y,pos37,":object_length"),
+        
+        # turn around again
+        (position_rotate_z,pos37,180),
+
+        (store_sub,":object_z",":hightest_z_2",":orig_z_val_2"),
+        (gt,":object_z",":max_rotation_height"),
+        (assign,":can_place_here",0),
+      (try_end),
+      
+    (try_end),
+    
+    (set_fixed_point_multiplier,100),
+    
+    (assign,reg0,":can_place_here"),
+  ]),
+
+  # script_multiplayer_server_construct_prop
+  # Input: arg1 = user_agent
+  # Input: arg2 = prop_id
+  # Output: reg0 = is_ok
+  ("multiplayer_server_construct_prop",
+  [
+    (store_script_param_1, ":user_agent"),
+    (store_script_param_2, ":prop_kind_id"),
+    
+    (assign,":is_ok",0),
+    (assign, ":screw_the_flu", 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":user_agent"),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      (store_mission_timer_a_msec, ":current_time"),
+	  (agent_get_slot, ":last_build_at", ":user_agent", slot_agent_last_build_at),
+	  (store_sub, ":elapsed_time", ":current_time", ":last_build_at"),
+	  (try_begin),
+	    (ge, ":elapsed_time", 500), # must wait 1s to place next object
+        (assign, ":screw_the_flu", 1),
+	  (try_end),
+
+      (set_fixed_point_multiplier, 100),
+
+      (assign,":rotate_90",0),
+      (assign,":rotate_180",0),
+      (assign,":ground_offset",0),
+      (assign,":only_spawn_on_terrain",0),
+      (assign,":is_plank",0),
+      (try_begin),
+        (eq,":prop_kind_id","spr_mm_stakes_construct"),
+        (assign,":rotate_90",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stakes2_construct"),
+        (assign,":rotate_90",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_earthwork1_destructible"),
+        (assign,":ground_offset",-100),
+        (assign,":only_spawn_on_terrain",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_plank_destructible2"),#patch1115 55/5
+        (assign,":rotate_90",1),
+        (assign,":is_plank",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_fence1d"),
+        (assign,":rotate_180",1),
+      (try_end),
+
+      (agent_get_position, pos49, ":user_agent"),
+      (assign, ":instance_no",-1),
+      (try_begin),
+        (eq,":is_plank",0),
+        (try_begin),
+          (position_move_y, pos49, 110),
+          (position_move_z, pos49, 90),
+          (position_set_z_to_ground_level,pos49),
+          
+          (try_begin),
+            (eq,":only_spawn_on_terrain",1),
+            (position_get_distance_to_terrain,":distance",pos49),
+            (gt,":distance",1),
+            (assign,":is_ok",0),
+          (else_try),
+            (assign,":is_ok",1),
+          (try_end),
+          
+          (eq,":is_ok",1),
+          
+          (try_begin),
+            (eq,":rotate_90",1),
+            (position_rotate_z, pos49, 90),
+          (else_try),
+            (eq,":rotate_180",1),
+            (position_rotate_z, pos49, 180),
+          (try_end),
+          
+          (init_position,pos37),
+          (position_copy_origin,pos37,pos49),
+          
+          (position_set_z_to_ground_level,pos37),
+          (call_script,"script_get_angle_of_ground_at_pos",0, ":prop_kind_id"),
+          (assign,":x_rot",reg0),
+          (assign,":y_rot",reg1),
+          (try_begin), # if not too steep angle.
+            (is_between,":x_rot",-45,46),
+            (is_between,":y_rot",-45,46),
+            (assign,":is_ok",1),
+			(eq, ":screw_the_flu", 1),
+			(agent_set_slot, ":user_agent", slot_agent_last_build_at, ":current_time"),
+            (call_script, "script_find_or_create_scene_prop_instance", ":prop_kind_id", 0, 1, 0), # Auto rotate to ground
+            (assign, ":instance_no", reg0),
+            
+            (try_begin),
+              (neq,":ground_offset",0),
+              
+              (scene_prop_set_slot, ":instance_no", scene_prop_slot_ground_offset, ":ground_offset"),
+              (prop_instance_get_position,pos49,":instance_no"),
+              (position_move_z,pos49,":ground_offset"),
+              (try_begin),
+                (prop_instance_is_animating, ":animating", ":instance_no"),
+                (eq,":animating",1),
+                (prop_instance_stop_animating, ":instance_no"),
+              (try_end),
+              (prop_instance_set_position,":instance_no",pos49),
+            (try_end),
+          (else_try),
+            (assign,":is_ok",0),
+          (try_end),
+        (try_end),
+        
+      (else_try),# is plank.
+        (position_set_z_to_ground_level,pos49),
+        (call_script,"script_get_prop_kind_size_and_shift",":prop_kind_id"),		
+        (eq,reg0,1), # is_ok :)
+        (assign,":wall_length",reg3),
+        (assign,":is_ok",1),
+        
+        (copy_position,pos37,pos49),
+        (try_begin),
+          (eq,":rotate_90",1),
+          (position_rotate_z, pos49, 90),
+        (try_end),
+
+        (call_script,"script_get_hightest_pos_and_angle_from_pos",":wall_length",0,1),
+        (assign,":is_ok",reg0),
+
+        (eq,":is_ok",1),
+		(eq, ":screw_the_flu", 1),
+		(agent_set_slot, ":user_agent", slot_agent_last_build_at, ":current_time"),
+        (copy_position,pos49,pos37),
+        
+        (try_begin),
+          (eq,":rotate_90",1),
+          (position_rotate_z, pos49, 90),
+        (try_end),
+        
+        (store_div,":move",":wall_length",2),
+        (position_move_x,pos49,":move"),
+      
+        # Pos49 is where we move this shit.
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_kind_id", 0, 0, 0), # dont auto rotate to position.
+        (assign, ":instance_no", reg0),
+      (try_end),
+      
+      (eq,":is_ok",1),
+      
+      (try_begin),
+        (prop_instance_is_valid,":instance_no"),
+      (try_end),
+      (try_begin),
+        (eq,":prop_kind_id","spr_earthwork1_destructible"),
+        (agent_has_item_equipped,":user_agent","itm_shovel"),
+        (agent_set_wielded_item,":user_agent","itm_shovel"),     
+      (else_try),
+        (agent_get_wielded_item,":wielded_item",":user_agent",0), # Sapper...
+        (is_between,":wielded_item","itm_construction_hammer","itm_shovel"), #Hammer
+      (else_try),
+        (assign,":end_cond","itm_invisible_sword"),
+        (try_for_range,":cur_item","itm_french_cav_pistol",":end_cond"),
+          (agent_has_item_equipped,":user_agent",":cur_item"),
+          (agent_set_wielded_item,":user_agent",":cur_item"),
+          (assign,":end_cond",0),
+        (try_end),
+      (try_end),
+    (try_end),
+    (assign,reg0,":is_ok"),
+    (assign,reg1,":screw_the_flu"),
+  ]),
+
+  #script_multiplayer_client_apply_destructible_prop_spawn_or_destroy
+  # INPUT: arg1 = value (packed)
+  # OUTPUT: none 
+  ("multiplayer_client_apply_destructible_prop_spawn_or_destroy",
+   [
+    (store_script_param, ":value", 1),
+    
+    (store_and,":destroy",":value",1),
+    (val_rshift, ":value", 1), 
+    (assign,":instance_id",":value"),
+    
+    (try_begin),
+      (prop_instance_is_valid,":instance_id"),
+      (prop_instance_get_scene_prop_kind, ":prop_kind_id", ":instance_id"),
+      (this_or_next|is_between, ":prop_kind_id", mm_destructible_props_begin, mm_destructible_props_end),
+      (this_or_next|is_between,":prop_kind_id","spr_mm_window1_poor","spr_mm_window1d_poor"),
+      (this_or_next|is_between,":prop_kind_id","spr_mm_window3_poor","spr_mm_window3d_poor"),
+      (is_between,":prop_kind_id","spr_mm_palisadedd","spr_crate_explosive"), # a construction object
+      (try_begin),
+        (eq,":destroy",1),
+        (scene_prop_set_cur_hit_points, ":instance_id", 0),
+        (scene_prop_set_hit_points, ":instance_id", 0),
+        (scene_prop_set_slot, ":instance_id", scene_prop_slot_health, 0),
+        (prop_instance_enable_physics, ":instance_id", 0),# this is needed to reset the colision mesh on the prop if it is destroyed.
+      (else_try),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_kind_id"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        (gt,":max_health",0),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_health,":health"),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_max_health,":max_health"),
+        (prop_instance_enable_physics, ":instance_id", 1), # this is needed to reset the colision mesh on the prop if it is destroyed.
+        (scene_prop_set_hit_points, ":instance_id", ":max_health"),
+        (scene_prop_set_cur_hit_points, ":instance_id", ":health"),
+      (try_end),
+    (try_end), 
+  ]),
+
+  #script_multiplayer_client_apply_prop_scale
+  # INPUT: arg1 = value packed arg2 value2 packed.
+  # OUTPUT: none
+  ("multiplayer_client_apply_prop_scale",
+   [
+    (store_script_param, ":value", 1),
+    (store_script_param, ":value_2", 2),
+     
+    (store_and,":new_x_scale",":value",65535),
+    (val_rshift, ":value", 16), 
+    (assign,":new_instance",":value"),
+    (store_and,":new_y_scale",":value_2",65535),
+    (val_rshift, ":value_2", 16), 
+    (assign,":new_z_scale",":value_2"),
+    
+    (try_begin),
+      (prop_instance_is_valid, ":new_instance"),
+      (val_sub,":new_x_scale",5000), 
+      (val_sub,":new_y_scale",5000), 
+      (val_sub,":new_z_scale",5000), 
+      
+      (set_fixed_point_multiplier, 1000),
+      (prop_instance_set_scale, ":new_instance", ":new_x_scale", ":new_y_scale", ":new_z_scale"),
+      (set_fixed_point_multiplier, 100),
+      (scene_prop_set_slot,":new_instance",scene_prop_slot_x_scale,":new_x_scale"),
+      (scene_prop_set_slot,":new_instance",scene_prop_slot_y_scale,":new_y_scale"),
+      (scene_prop_set_slot,":new_instance",scene_prop_slot_z_scale,":new_z_scale"),
+      (scene_prop_set_slot,":new_instance",scene_prop_slot_is_scaled,1),
+    (try_end),
+   ]),
+
+  #script_show_multiplayer_message_custom_color
+  # INPUT: arg1 = custom string troop id arg2 = message color
+  # OUTPUT: none
+  ("show_multiplayer_message_custom_color",
+   [
+    (store_script_param, ":value", 1),
+    (store_script_param, ":custom_color", 2),
+
+    (try_begin),
+      (neg|multiplayer_is_dedicated_server),
+      (str_store_troop_name, s1, ":value"),
+      (display_message, s1, ":custom_color"),
+    (try_end),
+  ]), 
+  
+  #script_multiplayer_client_apply_prop_effect
+  # INPUT: arg1 =  value (packed)
+  # OUTPUT: none
+  ("multiplayer_client_apply_prop_effect",
+   [
+    (store_script_param, ":value", 1),
+    (store_and,":new_handle",":value",1),
+    (val_rshift, ":value", 1), 
+    (store_and,":new_effect_type",":value",3),
+    (val_rshift, ":value", 2), 
+    (store_and,":new_effect_id",":value",1023),
+    (val_rshift, ":value", 10), 
+    (assign,":new_prop_instance_id",":value"),
+    
+    (call_script,"script_multiplayer_handle_prop_effect",":new_prop_instance_id",":new_effect_type",":new_effect_id",":new_handle"),
+   ]),
+
+   # script_clean_up_prop_instance
+  # Input: arg1 = prop_instance_id
+  # Output: reg0 = 1 means ok.
+  ("clean_up_prop_instance",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    
+    (assign, reg0, 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (try_begin),
+        (prop_instance_get_position,pos27,":prop_instance_id"),
+        (position_get_rotation_around_z,":z_rot",pos27),
+        (init_position,pos29),
+        (position_copy_origin,pos29,pos27),
+        (position_rotate_z,pos29,":z_rot"),
+        
+        (position_set_z,pos29,-3000),
+        
+        (get_distance_between_positions,":dist",pos27,pos29),
+        (gt,":dist",0),
+        
+        (try_begin),
+          (prop_instance_is_animating, ":animating", ":prop_instance_id"),
+          (eq,":animating",1),
+          (prop_instance_stop_animating, ":prop_instance_id"),
+        (try_end),
+        (prop_instance_set_position,":prop_instance_id",pos29),
+      (try_end),
+      
+      (call_script,"script_multiplayer_handle_prop_effect",":prop_instance_id",prop_effect_type_stop_all, 0, prop_effect_handle_stop),
+      
+      
+      (call_script,"script_reset_prop_slots",":prop_instance_id"),
+      
+      (assign, reg0, 1),
+    (try_end),
+  ]),
+
+  # script_multiplayer_handle_prop_effect
+  # Input: prop_instance_id
+  #        effect_type
+  #        effect_id
+  #        handle
+  ("multiplayer_handle_prop_effect",
+  [
+    (store_script_param, ":prop_instance_id", 1),
+    (store_script_param, ":effect_type", 2),
+    (store_script_param, ":effect_id", 3), # 0 = all 
+    (store_script_param, ":handle", 4),
+
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      (is_between,":effect_type",prop_effect_types_begin,prop_effect_types_end),
+      (gt,":effect_id",-1), 
+      (is_between,":handle",prop_effect_handles_begin,prop_effect_handles_end),
+      
+      # (display_message,"@params are fine."),
+      
+      (assign,":need_to_update",0),
+      (try_begin),
+        (eq,":effect_type",prop_effect_type_stop_all),
+        (try_begin),
+          (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_sound_effect, 0),
+          (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect1, 0),
+          (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect2, 0),
+          (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect3, 0),
+          (scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect4, 0),
+          
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_sound_effect, -1),
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect1, -1),
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect2, -1),
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect3, -1),
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect4, -1),
+          
+          (assign,":need_to_update",1),
+          
+          (neg|multiplayer_is_dedicated_server),
+          
+          (prop_instance_stop_sound, ":prop_instance_id"),
+          (prop_instance_stop_all_particle_systems, ":prop_instance_id"),
+        (try_end),
+      (else_try),
+        (eq,":effect_type",prop_effect_type_sound),
+        (try_begin),
+          (eq,":handle",prop_effect_handle_start),
+          (gt,":effect_id",0), # start only a value above 0
+          
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_sound_effect, ":effect_id"),
+          
+          (assign,":need_to_update",1),
+          
+          (neg|multiplayer_is_dedicated_server), # play only for clients
+          (prop_instance_play_sound, ":prop_instance_id", ":effect_id"),
+        (else_try),
+          (eq,":handle",prop_effect_handle_stop),
+          (scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_sound_effect, 0),
+
+          (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_sound_effect, -1),
+          
+          (assign,":need_to_update",1),
+          
+          (neg|multiplayer_is_dedicated_server), # stop only for clients
+          (prop_instance_stop_sound, ":prop_instance_id"),
+        (try_end),
+      (else_try),
+        (eq,":effect_type",prop_effect_type_particle),
+        (init_position,pos33),
+        (try_begin),
+          (eq,":handle",prop_effect_handle_start),
+          (gt,":effect_id",0), # start only a value above 0
+          
+          (assign,":end_cond",scene_prop_slot_parent_prop),
+          (try_for_range,":cur_slot",scene_prop_slot_particle_effect1,":end_cond"),
+            (scene_prop_slot_eq, ":prop_instance_id",":cur_slot", -1),
+            (scene_prop_set_slot,":prop_instance_id", ":cur_slot", ":effect_id"),
+            (assign,":end_cond",0),
+          (try_end),
+          
+          (assign,":need_to_update",1),
+          
+          (neg|multiplayer_is_dedicated_server), # play only for clients
+          
+          (prop_instance_add_particle_system, ":prop_instance_id", ":effect_id", pos33),
+        (else_try),
+          (eq,":handle",prop_effect_handle_stop),
+          (try_begin),
+            (neg|multiplayer_is_dedicated_server), # stop only for clients
+            (prop_instance_stop_all_particle_systems, ":prop_instance_id"),
+          (try_end),
+          
+          (try_begin),
+            (eq,":effect_id",0), # 0 = all!
+            (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect1, 0),
+            (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect2, 0),
+            (this_or_next|scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect3, 0),
+            (scene_prop_slot_ge, ":prop_instance_id", scene_prop_slot_particle_effect4, 0),
+
+            (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect1, -1),
+            (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect2, -1),
+            (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect3, -1),
+            (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_particle_effect4, -1),
+            
+            (assign,":need_to_update",1),
+          (else_try),
+            (try_for_range,":cur_slot",scene_prop_slot_particle_effect1,scene_prop_slot_parent_prop),
+              (neg|scene_prop_slot_eq, ":prop_instance_id",":cur_slot", -1),
+              (try_begin),
+                (scene_prop_slot_eq, ":prop_instance_id",":cur_slot", ":effect_id"),
+                (scene_prop_set_slot,":prop_instance_id", ":cur_slot", -1),
+                (assign,":need_to_update",1),
+              (else_try),
+                (neg|multiplayer_is_dedicated_server), # start the other particles again only for clients
+                (prop_instance_add_particle_system, ":prop_instance_id", ":effect_id", pos33),
+              (try_end),
+            (try_end),
+          (try_end),
+        (try_end),
+      (try_end),
+      
+      (try_begin),
+        (multiplayer_is_server),
+        (eq,":need_to_update",1),
+        
+        (assign,":packed_value", ":prop_instance_id"),
+        (val_lshift,":packed_value",10), # free up space for effect id.
+        (val_add,":packed_value",":effect_id"),
+        (val_lshift,":packed_value",2), # free up space for effect type.
+        (val_add,":packed_value",":effect_type"),
+        (val_lshift,":packed_value",1), # free up space for handle
+        (val_add,":packed_value",":handle"), 
+        
+        (try_for_players, ":player_no", 1),
+          (player_is_active, ":player_no"),
+          (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_prop_effects, ":packed_value"),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+  #script_multiplayer_client_play_sound_at_pos
+  # INPUT: arg1 = value packed arg2 value2 packed.
+  # OUTPUT: none
+  ("multiplayer_client_play_sound_at_pos",
+   [
+    (store_script_param, ":value", 1),
+    (store_script_param, ":value_2", 2),
+    (store_and,":xvalue",":value", 131071),
+    (val_rshift, ":value", 17), 
+    (assign,":sound_id",":value"),
+    (store_and,":yvalue",":value_2",131071),
+    (val_rshift, ":value_2", 17), 
+    (assign,":zvalue",":value_2"),
+
+    (try_begin),
+      (gt,":sound_id",-1),
+      (val_sub,":zvalue",2500),
+      (set_fixed_point_multiplier, 100),
+      (init_position, pos25),
+      (position_set_x,pos25,":xvalue"),
+      (position_set_y,pos25,":yvalue"),
+      (position_set_z,pos25,":zvalue"),
+      
+      (play_sound_at_position, ":sound_id", pos25),
+    (try_end),
+  ]),
+
+  # script_multiplayer_server_place_rocket
+  # Input1: agent_id of agent
+  # Input2: start or stop
+  ("multiplayer_server_place_rocket",
+  [
+    (store_script_param, ":player_agent", 1),
+  
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":player_agent"),
+      (agent_is_alive, ":player_agent"), # Still alive?
+      (agent_get_troop_id,":player_troop",":player_agent"),
+
+      (this_or_next|eq,":player_troop","trp_artillerist"),
+      (this_or_next|eq,":player_troop","trp_artillerist_officer"),
+      (player_is_admin, ":player_agent"),
+
+      (agent_get_wielded_item,":item_id",":player_agent",0),
+      (eq,":item_id", "itm_rocket_placement"),
+      (agent_unequip_item,":player_agent","itm_rocket_placement"),
+      (agent_has_item_equipped,":player_agent","itm_rockets"), # Ranker
+      (agent_set_wielded_item,":player_agent","itm_rockets"),
+      (agent_get_position,pos49,":player_agent"),
+      (position_move_y,pos49,100), # 1 meter forwards for spawning the prop.
+      (position_rotate_z,pos49,90), # turn 90 degrees for proper facing.
+      (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_rocket", 0, 1, 0),
+      (assign,":new_rocket",reg0),
+      (call_script, "script_generate_bits_for_cannon_instance",":new_rocket",0,1),
+      (scene_prop_set_slot,":new_rocket",scene_prop_slot_in_use,1),
+    (try_end),
+  ]),
+
+# script_cannon_instance_get_barrel
+  # Input: arg1 = cannon_instance
+  # Output: reg0 = barrel_instance
+  ("cannon_instance_get_barrel",
+   [
+    (store_script_param, ":cannon_instance", 1),
+    
+    (assign,reg0,-1),
+    (try_begin),
+      (prop_instance_is_valid, ":cannon_instance"),
+      
+      (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
+      
+      (assign,":barrel_type",-1), 
+      (try_begin),
+        (eq,":cannon_kind","spr_mm_cannon_12pdr_wood"),
+        (assign,":barrel_type","spr_mm_cannon_12pdr_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+        (assign,":barrel_type","spr_mm_cannon_howitzer_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+        (assign,":barrel_type","spr_mm_cannon_mortar_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+        (assign,":barrel_type","spr_mm_cannon_fort_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+        (assign,":barrel_type","spr_mm_cannon_naval_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+        (assign,":barrel_type","spr_mm_cannon_carronade_barrel"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+        (assign,":barrel_type","spr_mm_cannon_swievel_barrel"),
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+        (assign,":barrel_type","spr_mm_cannon_rocket_barrel"),
+      (try_end),
+
+      (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", ":barrel_type"),
+    (try_end),
+   ]),
+
+# script_prop_instance_find_first_child_of_type
+  # Input: arg1 = prop_instance_id
+  # Input: arg2 = prop_kind_id
+  # Output: reg0 = prop_instance_id
+  ("prop_instance_find_first_child_of_type",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    (store_script_param, ":prop_kind_id", 2),
+    
+    (assign, reg0, -1),
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (assign, ":end_cond", scene_prop_slots_end),
+      (try_for_range,":cur_slot",scene_prop_slot_child_prop1,":end_cond"),
+        (scene_prop_get_slot,":cur_child",":prop_instance_id",":cur_slot"),
+        (prop_instance_is_valid,":cur_child"),
+        
+        (prop_instance_get_scene_prop_kind, ":child_kind", ":cur_child"),
+        (eq, ":child_kind", ":prop_kind_id"),
+        (assign, reg0, ":cur_child"), 
+        (assign, ":end_cond", 0),
+      (try_end),
+    (try_end),
+   ]),
+
+# script_set_prop_child_active
+  # Input: instance_id
+  ("set_prop_child_active",
+  [
+    (store_script_param, ":instance_id", 1),
+    
+    (set_fixed_point_multiplier,100),
+    (init_position,pos9),
+    (try_begin),
+      (prop_instance_is_valid,":instance_id"),
+      
+      (scene_prop_get_slot,":parent_instance_id",":instance_id",scene_prop_slot_parent_prop),
+      (prop_instance_is_valid,":parent_instance_id"),
+      
+      (prop_instance_get_position,pos9,":parent_instance_id"),
+
+      (scene_prop_set_slot,":instance_id", scene_prop_slot_is_active, 1),
+      (scene_prop_get_slot,":x_value",":instance_id",scene_prop_slot_x_value),
+      (scene_prop_get_slot,":y_value",":instance_id",scene_prop_slot_y_value),
+      (scene_prop_get_slot,":z_value",":instance_id",scene_prop_slot_z_value),
+      (scene_prop_get_slot,":x_rot",":instance_id",scene_prop_slot_x_rot),
+      (scene_prop_get_slot,":y_rot",":instance_id",scene_prop_slot_y_rot),
+      (scene_prop_get_slot,":z_rot",":instance_id",scene_prop_slot_z_rot),
+      (scene_prop_get_slot,":float_ground",":instance_id",scene_prop_slot_float_ground),
+      
+      (try_begin),
+        (eq,":float_ground",1),
+        
+        (init_position,pos10),
+        (position_get_rotation_around_z,":parent_z_rot",pos9),
+        (position_copy_origin,pos10,pos9),
+        (position_rotate_z,pos10,":parent_z_rot"),
+        (copy_position,pos9,pos10),
+        
+        (position_move_x, pos9,":x_value"),
+        (position_move_y, pos9,":y_value"),
+        (position_set_z_to_ground_level,pos9),
+      (else_try),
+        (position_move_x, pos9,":x_value"),
+        (position_move_y, pos9,":y_value"),
+        (position_move_z, pos9,":z_value"),
+      (try_end),
+      
+      
+      (position_rotate_x,pos9,":x_rot"),
+      (position_rotate_y,pos9,":y_rot"),
+      (position_rotate_z,pos9,":z_rot"),
+      
+      (prop_instance_get_position,pos10,":instance_id"),
+      (get_distance_between_positions,":dist",pos9,pos10),
+      (gt,":dist",0),
+      
+      (try_begin),
+         (prop_instance_is_animating, ":animating", ":instance_id"),
+         (eq,":animating",1),
+         (prop_instance_stop_animating, ":instance_id"),
+       (try_end),
+      (prop_instance_set_position,":instance_id",pos9),
+    (try_end),
+  ]),
+
+# script_multiplayer_server_check_if_can_use_button
+  # Input: arg1 = agent_id
+  # Input: arg2 = prop_instance_id
+  # Output: reg0 = 1 if it is,
+  ("multiplayer_server_check_if_can_use_button",
+   [
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":instance_id", 2),
+
+    (agent_get_player_id, ":player_id", ":agent_id"),
+
+    (assign,":is_ok",0),
+    (assign,":error_message",-1),
+    (try_begin),
+      (agent_is_active,":agent_id"), # we have a agent.
+      (prop_instance_is_valid, ":instance_id"),
+      
+      (agent_get_troop_id, ":agent_troop", ":agent_id"),
+
+      (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
+      (is_between, ":scene_prop_id", mm_button_types_begin, mm_button_types_end),
+      
+      (assign, ":ok_parent", 1),
+      (assign, ":cannon_instance", 0),
+      (try_begin),
+        (is_between, ":scene_prop_id", mm_cannon_button_types_begin, mm_cannon_button_types_end),
+        
+        (assign, ":ok_parent", 0),
+        
+        (call_script,"script_cannon_child_find_cannon_instance",":instance_id"),
+        (assign,":cannon_instance",reg0),
+        
+        (prop_instance_is_valid,":cannon_instance"),
+        (assign, ":ok_parent", 1),
+        
+        (prop_instance_get_scene_prop_kind, ":cannon_kind", ":cannon_instance"),
+        (try_begin),
+          (is_between,":cannon_kind","spr_mm_cannon_12pdr_wood","spr_mm_cannon_rocket_wood"),
+          
+          (neq, ":agent_troop", "trp_artillerist"),
+          (neq, ":agent_troop", "trp_artillerist_officer"),
+          (neg|player_is_admin, ":player_id"),
+          (assign,":error_message", "str_cannot_use_cannon"),
+        (else_try),
+          (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+          
+          (neq, ":agent_troop", "trp_artillerist"),
+          (neq, ":agent_troop", "trp_artillerist_officer"),
+          (neg|player_is_admin, ":player_id"),
+          (assign,":error_message", "str_cannot_use_rocket"),
+        (try_end),
+      (try_end),
+      (eq, ":ok_parent", 1),
+      
+      (try_begin),
+        (this_or_next|is_between,"spr_mm_cannon_12pdr_limber","spr_mm_pickup_rocket_button"),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_round_button"),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_shell_button"),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_canister_button"),
+        (eq, ":scene_prop_id", "spr_mm_bomb_button"),
+        
+        (neq, ":agent_troop", "trp_artillerist"),
+        (neq, ":agent_troop", "trp_artillerist_officer"),
+        (neg|player_is_admin, ":player_id"),
+        (assign,":error_message", "str_cannot_use_cannon"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_mm_pickup_rocket_button"),
+        
+        (neq, ":agent_troop", "trp_artillerist"),
+        (neq, ":agent_troop", "trp_artillerist_officer"),
+        (neg|player_is_admin, ":agent_id"),
+        (assign,":error_message", "str_cannot_use_rocket"),
+      (try_end),
+      
+      (eq,":error_message", -1), # break now already!
+      
+      (try_begin),
+        (eq, ":scene_prop_id", "spr_mm_limber_button"),
+        (try_begin),
+          (prop_instance_get_position, pos4, ":instance_id"), # button pos
+          
+          (assign,":found_limber",0),
+          (try_for_prop_instances, ":cur_instance_id", "spr_mm_limber_wood", somt_temporary_object),
+            (eq,":found_limber",0),
+           
+            (prop_instance_get_position, pos5, ":cur_instance_id"),
+            (position_move_y,pos5,-220),
+            (get_distance_between_positions, ":distance_cannon_agent", pos4, pos5),
+            (le, ":distance_cannon_agent", 200),
+            
+            (scene_prop_get_slot,":found_cannon_instance",":cur_instance_id",scene_prop_slot_child_prop2),
+            (try_begin),
+              (prop_instance_is_valid,":found_cannon_instance"),
+              (assign,":error_message", "str_horse_already_has_cannon"),
+            (else_try),
+              (assign,":error_message",-1),
+            (try_end),
+            
+            (assign,":found_limber",1),
+          (try_end),
+          
+          (eq,":found_limber",0),
+          (assign,":error_message", "str_need_to_have_a_horse"),
+        (try_end),
+      (else_try),
+        (is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"), 
+        (try_begin),
+          (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_has_ball, 1),
+          (assign,":error_message", "str_cannon_already_has_ball"),
+        (else_try),
+          (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
+          (try_begin),
+            (neq, ":wielded_item", "itm_cannon_cartridge_round"),
+            (neq, ":wielded_item", "itm_cannon_cartridge_shell"),
+            (neq, ":wielded_item", "itm_cannon_cartridge_canister"),
+            (neq, ":wielded_item", "itm_cannon_cartridge_bomb"),
+            (neq, ":wielded_item", "itm_rockets"),
+            (try_begin),
+              (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_round"),
+              (agent_set_wielded_item,":agent_id","itm_cannon_cartridge_round"),
+              (assign,":wielded_item","itm_cannon_cartridge_round"),
+            (else_try),
+              (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_shell"),
+              (agent_set_wielded_item,":agent_id","itm_cannon_cartridge_shell"),
+              (assign,":wielded_item","itm_cannon_cartridge_shell"),
+            (else_try),
+              (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_canister"),
+              (agent_set_wielded_item,":agent_id","itm_cannon_cartridge_canister"),
+              (assign,":wielded_item","itm_cannon_cartridge_canister"),
+            (else_try),
+              (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_bomb"),
+              (agent_set_wielded_item,":agent_id","itm_cannon_cartridge_bomb"),
+              (assign,":wielded_item","itm_cannon_cartridge_bomb"),
+            (else_try),
+              (agent_has_item_equipped,":agent_id","itm_rockets"),
+              (agent_set_wielded_item,":agent_id","itm_rockets"),
+              (assign,":wielded_item","itm_rockets"),
+            (else_try),
+              (assign,":error_message", "str_need_to_have_a_ball"),
+            (try_end),
+          (try_end),
+          (eq,":error_message",-1),
+          
+          (assign,":ok_combination",1),
+          (try_begin),
+            (eq, ":wielded_item", "itm_cannon_cartridge_round"),
+            
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+            (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+            
+            (assign,":ok_combination",0),
+          (else_try),
+            (eq, ":wielded_item", "itm_cannon_cartridge_shell"),
+            
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_12pdr_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+            (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+            
+            (assign,":ok_combination",0),
+          (else_try),
+            (eq, ":wielded_item", "itm_cannon_cartridge_canister"),
+            
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+            (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+            
+            (assign,":ok_combination",0),
+          (else_try),
+            (eq, ":wielded_item", "itm_cannon_cartridge_bomb"),
+            
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_12pdr_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+            (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+            
+            (assign,":ok_combination",0),
+          (else_try),
+            (eq, ":wielded_item", "itm_rockets"),
+            
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_12pdr_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+            (this_or_next|eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+            (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+            
+            (assign,":ok_combination",0),
+          (try_end),
+
+          (eq,":ok_combination",0),
+          
+          (assign,":error_message", "str_cannon_cannot_load_type"),
+        (try_end),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_mm_reload_button"),
+        (try_begin),
+          (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_loaded, 1),
+          (assign,":error_message", "str_cannon_already_loaded"),
+        (else_try),
+          (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
+          (neq, ":wielded_item", "itm_ramrod"),
+          (try_begin),
+            (agent_has_item_equipped,":agent_id","itm_ramrod"),
+            (agent_set_wielded_item,":agent_id","itm_ramrod"),
+          (else_try),
+            (assign,":error_message", "str_need_to_have_a_ramrod"),
+          (try_end),
+        (try_end),
+      (else_try),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_round_button"),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_shell_button"),
+        (this_or_next|eq, ":scene_prop_id", "spr_mm_canister_button"),
+        (eq, ":scene_prop_id", "spr_mm_bomb_button"),
+        
+        (assign,":empty_slot_found",0),
+        (try_for_range,":equipment_slot",ek_item_0,ek_head),
+          (eq,":empty_slot_found",0),
+          (agent_get_item_slot, ":item_id", ":agent_id", ":equipment_slot"),
+          
+          (try_begin),
+            (eq,":item_id",-1),
+            (assign,":empty_slot_found",1),
+          (else_try),
+            (item_get_slot, ":item_class", ":item_id", slot_item_multiplayer_item_class),
+            (this_or_next|eq,":item_class",multi_item_class_type_bullet),
+            (eq,":item_class",multi_item_class_type_misc),
+            
+            (agent_get_ammo_for_slot, ":ammo_count", ":agent_id", ":equipment_slot"),
+            (eq,":ammo_count",0),
+            (val_add,":equipment_slot",1),
+            (assign,":empty_slot_found",1),
+          (try_end),
+        (try_end),
+          
+        (eq,":empty_slot_found",0),
+        (assign,":error_message", "str_cannot_carry_more_cannon_ammo"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_mm_aim_button"),
+        (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
+        (neq, ":wielded_item", "itm_cannon_lighter"),
+        (try_begin),
+          (agent_has_item_equipped,":agent_id","itm_cannon_lighter"),
+          (agent_set_wielded_item,":agent_id","itm_cannon_lighter"),
+        (else_try),
+          (game_in_multiplayer_mode),
+          (assign,":error_message", "str_need_to_have_a_lighter"),
+        (try_end),
+      (try_end),
+
+      (eq,":error_message", -1),
+      (assign, ":is_ok", 1),
+    (try_end),
+    
+    (try_begin),
+      (neq,":error_message", -1), # we have a error
+      (try_begin),
+        (game_in_multiplayer_mode),
+        (player_is_active,":player_id"), # we have a player.
+        (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, ":error_message"),
+      (else_try),
+        (str_store_string,s4,":error_message"),
+        (display_message,s4),
+      (try_end),
+    (try_end),
+    
+    (assign, reg0, ":is_ok"),
+  ]),
+
+ # script_cannon_child_find_cannon_instance
+  # Input: arg1 = cannon_instance
+  # Output: reg0 = barrel_instance
+  ("cannon_child_find_cannon_instance",
+   [
+    (store_script_param, ":child_instance", 1),
+    
+    (assign,reg0,-1),
+    (try_begin),
+      (prop_instance_is_valid, ":child_instance"),
+      
+      (assign,":cannon_instance",-1),
+      (scene_prop_get_slot,":cannon_instance",":child_instance",scene_prop_slot_parent_prop),
+      (prop_instance_is_valid,":cannon_instance"),
+      (prop_instance_get_scene_prop_kind, ":cannon_kind", ":cannon_instance"),
+      (assign,":is_ok_cannon",0),
+      (try_begin),
+        (is_between, ":cannon_kind", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
+        (assign,":is_ok_cannon",1),
+      (else_try),
+        (scene_prop_get_slot,":cannon_instance",":cannon_instance",scene_prop_slot_parent_prop),
+        (prop_instance_is_valid,":cannon_instance"),
+        (prop_instance_get_scene_prop_kind, ":cannon_kind", ":cannon_instance"),
+        (is_between, ":cannon_kind", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
+        (assign,":is_ok_cannon",1),
+      (try_end),
+      (eq,":is_ok_cannon",1),
+      (assign,reg0,":cannon_instance"),
+    (try_end),
+  ]),
+
+# script_get_prop_kind_for_constr_kind
+  # Input: prop_kind
+  # Output: reg0: prop_to_spawn
+  #         reg1: x_offset
+  #         reg2: y_offset
+  #         reg3: z_offset
+  #         reg4: dont_rotate_to_ground
+  ("get_prop_kind_for_constr_kind",
+  [
+    (store_script_param, ":prop_kind", 1),
+    
+    (assign,":prop_to_spawn",-1),
+    (assign,":x_offset",0),
+    (assign,":y_offset",0),
+    (assign,":z_offset",0),
+    (assign,":dont_rotate_to_ground",0),
+    (try_begin),
+      (is_between,":prop_kind","spr_invalid_object","spr_code_freeze_agent"),
+      
+      (try_begin),
+        (eq,":prop_kind","spr_mm_palisadedd"),
+        (assign,":prop_to_spawn","spr_mm_palisade"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_constr_pontoon_short"),
+        (assign,":prop_to_spawn","spr_mm_pontoon_bridge_short"),
+        (assign,":y_offset",500),
+        (assign,":dont_rotate_to_ground",1),
+      (else_try),
+        (eq,":prop_kind","spr_mm_constr_pontoon_med"),
+        (assign,":prop_to_spawn","spr_mm_pontoon_bridge_med"),
+        (assign,":y_offset",750),
+        (assign,":dont_rotate_to_ground",1),
+      (else_try),
+        (eq,":prop_kind","spr_mm_constr_pontoon_long"),
+        (assign,":prop_to_spawn","spr_mm_pontoon_bridge_long"),
+        (assign,":y_offset",1000),
+        (assign,":dont_rotate_to_ground",1),
+      (else_try),
+        (eq,":prop_kind","spr_mm_constr_watchtower"),
+        (assign,":prop_to_spawn","spr_mm_watchtower"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_stakes_construct"),
+        (assign,":prop_to_spawn","spr_mm_stakes_destructible"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_stakes2_construct"),
+        (assign,":prop_to_spawn","spr_mm_stakes2_destructible"),
+      (else_try),
+        (eq,":prop_kind","spr_sandbags_construct"),
+        (assign,":prop_to_spawn","spr_sandbags_destructible"),
+      (else_try),
+        (eq,":prop_kind","spr_chevaux_de_frise_tri_construct"),
+        (assign,":prop_to_spawn","spr_chevaux_de_frise_tri_destructible"),
+      (else_try),
+        (eq,":prop_kind","spr_gabiondeploy_construct"),
+        (assign,":prop_to_spawn","spr_gabiondeploy_destructible"),
+      (else_try),
+        (eq,":prop_kind","spr_mm_fence1d"),
+        (assign,":prop_to_spawn","spr_mm_fence1"),
+      (try_end),
+    (try_end),
+    
+    (assign,reg0,":prop_to_spawn"),
+    (assign,reg1,":x_offset"),
+    (assign,reg2,":y_offset"),
+    (assign,reg3,":z_offset"),
+    (assign,reg4,":dont_rotate_to_ground"),
+  ]),
+
+ # script_multiplayer_server_initialise_destructable_prop_slots
+  # Input: arg1 = agent arg2 = bomb_type
+  # Output: none
+  ("multiplayer_server_initialise_destructable_prop_slots",
+  [
+    (store_script_param_1, ":prop_instance_id"),
+    (store_script_param_2, ":prop_kind_id"),
+    
+    (try_begin),
+      (call_script,"script_get_prop_kind_size_and_shift",":prop_kind_id"),
+      (eq,reg0,1),
+      (assign,":wall_height",reg1),
+      (assign,":wall_width",reg2),
+      (assign,":wall_length",reg3),
+      (assign,":move_height_to_center",reg4),
+      (assign,":move_width_to_center",reg5),
+      (assign,":move_length_to_center",reg6),
+      (assign,":rotate_z_90",reg7),
+      (assign,":wall_height_offset",reg8),
+      (assign,":wall_width_offset",reg9),
+      (assign,":wall_length_offset",reg10),
+      (assign,":inverse_width_movement",reg11),
+      
+      (call_script,"script_get_destruction_properties_of_object",":prop_kind_id"),
+      (assign,":smoke_type",reg0),
+      (assign,":smoke_type2",reg1),
+      (assign,":particles_type",reg2),
+      (assign,":smoke_strength",reg3),
+      (assign,":sound_id",reg4),
+      (assign,":pile_prop_begin",reg5),
+      (assign,":pile_prop_end",reg6),
+      
+      (try_begin), # set size sluts.
+        (call_script,"script_get_prop_scaled_size",":prop_instance_id"
+          ,":wall_height", ":wall_width", ":wall_length"
+          ,":wall_height_offset",":wall_width_offset",":wall_length_offset"),
+        (eq,reg1,1), # is ok :)
+        (assign,":cur_wall_height",reg2),
+        (assign,":cur_wall_width",reg3),
+        (assign,":cur_wall_length",reg4),
+        (assign,":cur_max_wall_length",reg5),
+        (assign,":cur_wall_height_offset",reg6),
+        (assign,":cur_wall_width_offset",reg7),
+        (assign,":cur_wall_length_offset",reg8),
+        
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_height,":cur_wall_height"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_width,":cur_wall_width"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_length,":cur_wall_length"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_height_to_center,":move_height_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_width_to_center,":move_width_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_length_to_center,":move_length_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_rotate_z_90,":rotate_z_90"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_height_offset,":cur_wall_height_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_width_offset,":cur_wall_width_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_length_offset,":cur_wall_length_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_inverse_width_movement,":inverse_width_movement"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_max_length,":cur_max_wall_length"),
+      (try_end),
+      
+      (try_begin), # store the hit effect properties.
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_smoke_type,":smoke_type"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_smoke_type2,":smoke_type2"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_particles_type,":particles_type"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_smoke_strength,":smoke_strength"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_sound_id,":sound_id"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_pile_prop_begin,":pile_prop_begin"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_pile_prop_end,":pile_prop_end"),
+      (try_end),
+      
+      # predefine the future replacement props.
+      (assign,":next_kind",":prop_kind_id"),
+      (try_for_range,":cur_index",0,10), # 10 loops
+        (try_begin),
+          (gt,":next_kind",-1),
+          (call_script,"script_get_next_destruction_stage_prop_kind",":next_kind"),
+          (assign,":next_kind",reg1),
+        (try_end),
+        #(gt,":next_kind",-1),
+        
+        (store_add,":slot_index",":cur_index",scene_prop_slot_destruct_next_stage_1),
+        (scene_prop_set_slot,":prop_instance_id",":slot_index",":next_kind"),
+      (try_end),
+    (try_end),
+  
+  ]),
+
+  # script_get_prop_kind_size_and_shift
+  # Input: prop_kind_id
+  # Output: reg0 = is_ok
+  #         reg1 = wall_height
+  #         reg2 = wall_width
+  #         reg3 = wall_length
+  #         reg4 = move_height_to_center
+  #         reg5 = move_width_to_center
+  #         reg6 = move_length_to_center
+  #         reg7 = rotate_z_90
+  #         reg8 = wall_height_offset
+  #         reg9 = wall_width_offset
+  #         reg10= wall_length_offset
+  #         reg11= inverse_width_movement
+  #         reg12= max_length
+  ("get_prop_kind_size_and_shift",
+  [
+    (store_script_param, ":prop_kind_id", 1),
+    (assign,":is_ok",0),
+    (assign,":wall_height",0),
+    (assign,":wall_width",0),
+    (assign,":wall_length",0),
+    (assign,":wall_height_offset",0),
+    (assign,":wall_width_offset",0),
+    (assign,":wall_length_offset",0),
+    (assign,":move_height_to_center",1),
+    (assign,":move_width_to_center",0),
+    (assign,":move_length_to_center",0),
+    (assign,":rotate_z_90",0),
+    (assign,":inverse_width_movement",0),
+    (assign,":max_length",0),
+    (try_begin),
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (try_begin),
+        (eq,":prop_kind_id","spr_door_destructible"),
+        (assign,":wall_height",346),
+        (assign,":wall_width",209),
+        (assign,":wall_length",15),
+        (assign,":move_height_to_center",0),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_castle_f_door_a"),
+        (assign,":wall_height",328),
+        (assign,":wall_width",137),
+        (assign,":wall_length",20),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_castle_f_sally_door_a"),
+        (assign,":wall_height",255),
+        (assign,":wall_width",156),
+        (assign,":wall_length",20),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_castle_e_sally_door_a"),
+        (assign,":wall_height",247),
+        (assign,":wall_width",150),
+        (assign,":wall_length",16),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_earth_sally_gate_left"),
+        (assign,":wall_height",602),
+        (assign,":wall_width",304),
+        (assign,":wall_length",40),
+        (assign,":move_width_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_earth_sally_gate_right"),
+        (assign,":wall_height",602),
+        (assign,":wall_width",304),
+        (assign,":wall_length",40),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_viking_keep_destroy_sally_door_right"),
+        (assign,":wall_height",452),
+        (assign,":wall_width",163),
+        (assign,":wall_length",22),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_viking_keep_destroy_sally_door_left"),
+        (assign,":wall_height",452),
+        (assign,":wall_width",163),
+        (assign,":wall_length",22),
+        (assign,":move_width_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_castle_f_door_b"),
+        (assign,":wall_height",248),
+        (assign,":wall_width",150),
+        (assign,":wall_length",16),
+        (assign,":move_width_to_center",1),
+        (assign,":inverse_width_movement",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_restroom_door"),
+        (assign,":wall_height",218),
+        (assign,":wall_width",16),
+        (assign,":wall_length",111),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_stockade"),
+        (eq,":prop_kind_id","spr_mm_stockade_cannon"),
+        (assign,":wall_height",240),
+        (assign,":wall_width",20),
+        (assign,":wall_length",740),
+        (assign,":move_width_to_center",1),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_mm_wall1", "spr_mm_stockade"),
+        (assign,":wall_height",206),
+        (assign,":wall_width",10),
+        (assign,":wall_length",352),
+        (assign,":move_width_to_center",1),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_mm_house_wall_1", "spr_mm_house_wall_11"),
+        (assign,":wall_height",280),
+        (assign,":wall_width",21),
+        (assign,":wall_length",350),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_mm_house_wall_11", "spr_mm_wall1"),
+        (assign,":wall_height",280),
+        (assign,":wall_width",21),
+        (assign,":wall_length",120),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_fortnew", "spr_fortnew_3"),
+        (assign,":wall_height",980),
+        (assign,":wall_width",1412),
+        (assign,":wall_length",2841),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between, ":prop_kind_id", "spr_fortnew_3", "spr_fortnew_4"),
+        (assign,":wall_height",980),
+        (assign,":wall_width",3735),
+        (assign,":wall_length",2559),
+        (assign,":is_ok",1),
+      (else_try), 
+        (eq,":prop_kind_id","spr_fortnew_4"),
+        (assign,":wall_height",720),
+        (assign,":wall_width",2312),
+        (assign,":wall_length",1770),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_1_1", "spr_mm_new_wall_1_7"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_2_1", "spr_mm_new_wall_2_7"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_3_1", "spr_mm_new_wall_3_7"),
+        (is_between, ":prop_kind_id", "spr_mm_woodenwall1", "spr_mm_stakes"),
+        (assign,":wall_height",315),
+        (assign,":wall_width",22),
+        (assign,":wall_length",364),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_1_7", "spr_mm_new_wall_2_1"),
+        (this_or_next|is_between, ":prop_kind_id", "spr_mm_new_wall_2_7", "spr_mm_new_wall_3_1"),
+        (is_between, ":prop_kind_id", "spr_mm_new_wall_3_7", "spr_mm_woodenwall1"),
+        (assign,":wall_height",315),
+        (assign,":wall_width",22),
+        (assign,":wall_length",182),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_stakes"),
+        (eq,":prop_kind_id","spr_mm_stakes_destructible"),
+        (assign,":wall_height",192),
+        (assign,":wall_width",192),
+        (assign,":wall_length",300),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_stakes2_destructible"),
+        (assign,":wall_height",123),
+        (assign,":wall_width",190),
+        (assign,":wall_length",200),
+        (assign,":move_width_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_sandbags_destructible"),
+        (assign,":wall_height",83),
+        (assign,":wall_width",40),
+        (assign,":wall_length",320),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_chevaux_de_frise_tri_destructible"),
+        (assign,":wall_height",150),
+        (assign,":wall_width",40),
+        (assign,":wall_length",40),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_earthwork1_destructible"),
+        (assign,":wall_height",200),
+        (assign,":wall_width",300),
+        (assign,":wall_length",600),
+        (assign,":move_height_to_center",0),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_gabiondeploy_destructible"),
+        (assign,":wall_height",100),
+        (assign,":wall_width",30),
+        (assign,":wall_length",30),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_fence1"),
+        (assign,":wall_height",250),
+        (assign,":wall_width",164),
+        (assign,":wall_length",670),
+        (assign,":move_width_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_plank_destructible"),
+        (eq,":prop_kind_id","spr_plank_destructible2"),
+        (assign,":wall_height",4),
+        (assign,":wall_width",40),
+        (assign,":wall_length",400),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_short"),
+        (assign,":wall_height",30),
+        (assign,":wall_width",150),
+        (assign,":wall_length",1000),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_med"),
+        (assign,":wall_height",30),
+        (assign,":wall_width",150),
+        (assign,":wall_length",1500),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge_long"),
+        (assign,":wall_height",30),
+        (assign,":wall_width",150),
+        (assign,":wall_length",2000),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_watchtower"),
+        (assign,":wall_height",670),
+        (assign,":wall_width",300),
+        (assign,":wall_length",300),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_dummy"),
+        (assign,":wall_height",180),
+        (assign,":wall_width",80),
+        (assign,":wall_length",80),
+        (assign,":is_ok",1),
+      (else_try),
+        (is_between,":prop_kind_id","spr_crate_explosive_fra","spr_mm_bird"),
+        (assign,":wall_height",74),
+        (assign,":wall_width",78),
+        (assign,":wall_length",78),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_poor_bridge1"),
+        (assign,":wall_height",150),
+        (assign,":wall_width",540),
+        (assign,":wall_length",661),
+        (assign,":move_height_to_center",0),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge2"),
+        (assign,":wall_height",360),
+        (assign,":wall_width",680),
+        (assign,":wall_length",511),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge3"),
+        (assign,":wall_height",360),
+        (assign,":wall_width",680),
+        (assign,":wall_length",440),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_sp_rich_bridge4"),
+        (assign,":wall_height",720),
+        (assign,":wall_width",680),
+        (assign,":wall_length",1320),
+        (assign,":move_length_to_center",1),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_pontoon_bridge1"),
+        (eq,":prop_kind_id","spr_mm_pontoon_bridge2"),
+        (assign,":wall_height",39),
+        (assign,":wall_width",316),
+        (assign,":wall_length",506),
+        (assign,":is_ok",1),
+      (else_try),
+        (eq,":prop_kind_id","spr_mm_fence1"),
+        (assign,":wall_height",115),
+        (assign,":wall_width",35),
+        (assign,":wall_length",661),
+        (assign,":is_ok",1),
+      (else_try),
+        (this_or_next|eq,":prop_kind_id","spr_mm_palisade"),
+        (eq,":prop_kind_id","spr_mm_palisaded"),
+        (assign,":wall_height",239),
+        (assign,":wall_width",19),
+        (assign,":wall_length",197),
+        (assign,":is_ok",1),
+      (try_end),
+
+      (try_begin),
+        (eq,":is_ok",1),
+        (assign,":max_length",0),
+        (val_max,":max_length",":wall_height"),
+        (val_max,":max_length",":wall_width"),
+        (val_max,":max_length",":wall_length"),
+      (try_end),
+    (try_end),
+    
+    (assign,reg0,":is_ok"),
+    (assign,reg1,":wall_height"),
+    (assign,reg2,":wall_width"),
+    (assign,reg3,":wall_length"),
+    (assign,reg4,":move_height_to_center"),
+    (assign,reg5,":move_width_to_center"),
+    (assign,reg6,":move_length_to_center"),
+    (assign,reg7,":rotate_z_90"),
+    (assign,reg8,":wall_height_offset"),
+    (assign,reg9,":wall_width_offset"),
+    (assign,reg10,":wall_length_offset"),
+    (assign,reg11,":inverse_width_movement"),
+    (assign,reg12,":max_length"),
+  ]),
+
+  # script_move_pioneer_ground
+  # Input: instance_no, item_id, health, max_health
+  # Output: health
+  ("move_pioneer_ground",
+  [
+    (store_script_param, ":instance_no", 1),
+    (store_script_param, ":item_id", 2),
+    (store_script_param, ":health", 3),
+    (store_script_param, ":max_health", 4),
+    
+	  (try_begin),
+      (this_or_next|multiplayer_is_server), # only on servers.
+      (neg|game_in_multiplayer_mode),
+      
+      (scene_prop_get_slot,":ground_offset",":instance_no", scene_prop_slot_ground_offset),
+      
+      (assign,":z_change",0),
+      (assign,":is_ok",0),
+      (try_begin),
+        (eq,":item_id","itm_shovel"),
+        (neq,":ground_offset",0), # it is not 0 yet so raise it.
+        
+        (assign,":is_ok",1),
+
+        (val_add,":ground_offset",6), # Raise by 6 cm. 17 hits to full bar.  102 total..?
+        (val_min,":ground_offset",0),
+        
+        (val_add,":health",12), # 25 hitpoints per hit with hammer.   204?
+        (val_min,":health",":max_health"),
+
+        (assign,":z_change",6),
+      (else_try),
+        (eq,":item_id","itm_shovel_undig"),
+        (neq,":ground_offset",-100), # it is not below 1 meter underground then lower it.
+        
+        (assign,":is_ok",1),
+        (assign,":z_change",-12),  ##patch1115 16/1 change begin
+        
+        (val_add,":ground_offset",":z_change"), # lower it by that value
+        (assign,":old_ground_offset",":ground_offset"),
+        (val_max,":ground_offset",-100), # not below -100 centimeters.
+        
+        (val_sub,":old_ground_offset",":ground_offset"),# change z_change due to val_max
+        (val_sub,":z_change",":old_ground_offset"),
+        
+        (val_sub,":health",24), # 25 hitpoints per hit with hammer. ##patch1115 16/1 change end
+        (val_max,":health",1),
+      (try_end),
+      
+      (eq,":is_ok",1),
+      
+      (scene_prop_set_slot,":instance_no", scene_prop_slot_ground_offset, ":ground_offset"),
+      
+      (prop_instance_get_position, pos49, ":instance_no"),
+      (position_move_z,pos49,":z_change"),
+      
+      (prop_instance_animate_to_position,":instance_no",pos49,6),
+    (try_end),
+    
+	  (assign,reg0,":health"),
+  ]),
+
+  #script_use_item
+  # INPUT: arg1 = agent_id, arg2 = instance_id
+  # OUTPUT: none
+  ("use_item",
+   [
+     (store_script_param, ":instance_id", 1),
+     (store_script_param, ":user_id", 2),
+
+     (try_begin),
+       (prop_instance_is_valid,":instance_id"),
+       (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
+       (is_between, ":scene_prop_id", mm_button_types_begin, mm_button_types_end),
+
+       (try_begin),
+         (this_or_next|multiplayer_is_server),
+         (neg|game_in_multiplayer_mode),
+         (set_fixed_point_multiplier, 100),
+         
+         (agent_is_active, ":user_id"),
+         (agent_is_alive, ":user_id"),
+         (assign, ":using_agent", ":user_id"),
+         (assign, ":ok_parent", 1),
+         (assign, ":cannon_instance", -1),
+
+         (agent_get_player_id, ":player_id", ":user_id"),
+         
+         (try_begin),
+           (is_between, ":scene_prop_id", mm_cannon_button_types_begin, mm_cannon_button_types_end),
+           (assign, ":ok_parent", 0),
+           
+           (call_script,"script_cannon_child_find_cannon_instance",":instance_id"),
+           (assign,":cannon_instance",reg0),
+           
+           (prop_instance_is_valid,":cannon_instance"),
+           (prop_instance_get_position, pos7, ":cannon_instance"),
+           (copy_position, pos1, pos7),
+           (copy_position, pos3, pos7),
+           (assign, ":ok_parent", 1),
+         (try_end),
+         (eq, ":ok_parent", 1),
+         
+         (call_script,"script_cannon_instance_get_barrel",":cannon_instance"),
+         (assign,":barrel_instance",reg0),
+         
+         (try_begin),
+           (prop_instance_is_valid,":barrel_instance"),
+           (prop_instance_get_position, pos7, ":barrel_instance"),
+           (copy_position, pos1, pos7),
+         (else_try),
+           (assign,":barrel_instance",":cannon_instance"),
+         (try_end),
+
+         (try_begin),
+           (is_between, ":scene_prop_id", "spr_mm_12pdr_push_button", "spr_mm_round_button"), # push object found.
+           
+           (call_script,"script_set_prop_child_inactive",":instance_id"),
+           
+           (call_script,"script_recoil_cannon",":cannon_instance",2,0),
+         (else_try),
+           (is_between, ":scene_prop_id", mm_unlimber_button_types_begin, mm_unlimber_button_types_end),  # Unlimber
+           
+           (try_begin),
+             (agent_get_troop_id,":troop_no",":using_agent"),
+             (this_or_next|eq, ":troop_no", "trp_artillerist"),
+             (this_or_next|eq, ":troop_no", "trp_artillerist_officer"),
+             (player_is_admin, ":player_id"),
+
+             (call_script,"script_unlimber_cannon_from_horse",":instance_id"),
+           (try_end),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_limber_button"),
+           
+           (prop_instance_get_position, pos4, ":instance_id"), # button pos
+           
+           (assign,":keep_looping",1),
+           (try_for_prop_instances, ":cur_instance_id", "spr_mm_limber_wood", somt_temporary_object),
+             (eq,":keep_looping",1),
+             
+             (scene_prop_get_slot,":attached_cannon",":cur_instance_id", scene_prop_slot_child_prop2),
+             (lt,":attached_cannon",0), # no other cannon attached?
+             
+             (prop_instance_get_position, pos5, ":cur_instance_id"),
+             (position_move_y,pos5,-220),
+             (get_distance_between_positions, ":distance_cannon_agent", pos4, pos5),
+             (le, ":distance_cannon_agent", 200),
+
+             (call_script,"script_limber_cannon_to_horse",":cur_instance_id",":cannon_instance"),
+             (eq,reg0,1),
+             
+             (try_begin),
+               (scene_prop_get_slot,":orig_cannon",":cannon_instance",scene_prop_slot_replacing),
+               (prop_instance_is_valid,":orig_cannon"),
+               (scene_prop_set_slot,":orig_cannon",scene_prop_slot_replaced_by,-1),
+             (try_end),
+
+             (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_instance"),
+
+             (assign,":keep_looping",0),
+           (try_end),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_aim_button"),
+           (scene_prop_get_slot,":old_control_agent",":cannon_instance",scene_prop_slot_controller_agent),
+           
+           (try_begin),
+             (agent_is_active,":old_control_agent"),
+             (agent_is_alive,":old_control_agent"),
+             (neq, ":old_control_agent", ":using_agent"), # not the same agent..
+
+             (try_begin),
+               (game_in_multiplayer_mode),
+               (agent_get_player_id, ":player_id", ":using_agent"),
+               (player_is_active,":player_id"), # we have a player.
+               (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannon_is_already_in_use"),
+             (else_try),
+               (str_store_string,s4,"str_cannon_is_already_in_use"),
+               (display_message,s4),
+             (try_end),
+
+           (else_try), 
+
+             (try_begin),
+               (eq, ":old_control_agent", ":using_agent"),
+
+             (else_try),
+               (call_script,"script_set_agent_controlling_prop",":cannon_instance",":using_agent",1),
+               
+               (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", "spr_mm_cannon_aim_platform"),
+               (assign,":platform_instance",reg0),
+               (prop_instance_is_valid,":platform_instance"),
+               
+               (scene_prop_get_slot,":x_value",":platform_instance",scene_prop_slot_x_value),
+               (scene_prop_get_slot,":y_value",":platform_instance",scene_prop_slot_y_value),
+               (copy_position,pos49,pos3),
+               (position_move_x,pos49,":x_value"),
+               (position_move_y,pos49,":y_value"),
+               
+               (agent_set_position,":using_agent",pos49),
+               (agent_set_animation,":using_agent","anim_kneeling"),
+               
+               (call_script,"script_set_prop_child_active",":platform_instance"),
+
+             (try_end),
+           (try_end),
+         (else_try),
+           (is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"), 
+           
+           (call_script,"script_agent_take_cannonball",":using_agent"),
+           (assign,":ammo_type",reg0),
+           (is_between,":ammo_type",cannon_ammo_types_begin,cannon_ammo_types_end),
+           
+           (try_begin),
+             (agent_has_item_equipped,":using_agent","itm_ramrod"),
+             (agent_set_wielded_item,":using_agent","itm_ramrod"),
+           (else_try),
+             (agent_has_item_equipped,":using_agent","itm_cannon_cartridge_round"),
+             (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_round"),
+           (else_try),
+             (agent_has_item_equipped,":using_agent","itm_cannon_cartridge_shell"),
+             (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_shell"),
+           (else_try),
+             (agent_has_item_equipped,":using_agent","itm_cannon_cartridge_canister"),
+             (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_canister"),
+           (else_try),
+             (agent_has_item_equipped,":using_agent","itm_cannon_cartridge_bomb"),
+             (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_bomb"),
+           (else_try),
+             (agent_has_item_equipped,":using_agent","itm_rockets"),
+             (agent_set_wielded_item,":using_agent","itm_rockets"),
+           (try_end),
+           
+           (scene_prop_set_slot,":cannon_instance", scene_prop_slot_has_ball, 1),
+           (scene_prop_set_slot,":cannon_instance", scene_prop_slot_ammo_type, ":ammo_type"),
+           
+           (call_script,"script_set_prop_child_inactive",":instance_id"), # Clean it up temporary.
+
+           (try_for_range,":cur_ammotype","spr_mm_cannon_mortar_loaded_ammo","spr_mm_cannonball_code_only_6pd"),
+             (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_ammotype"),
+             (call_script,"script_set_prop_child_active",reg0),
+           (try_end),
+           
+           (try_begin),
+             (eq,":ammo_type",cannon_ammo_type_rocket), # We have a rocket system so we dont have a reload button...
+             (scene_prop_set_slot,":cannon_instance", scene_prop_slot_is_loaded, 1),
+             (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
+             (call_script,"script_set_prop_child_active",reg0),
+           (else_try), 
+             (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_reload_button"),
+             (call_script,"script_set_prop_child_active",reg0),
+             (scene_prop_enable_after_time, reg0, 100),
+           (try_end),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_reload_button"),
+           (scene_prop_set_slot,":cannon_instance", scene_prop_slot_is_loaded, 1),
+          
+           (call_script,"script_set_prop_child_inactive",":instance_id"), # Clean it up temporary.
+           
+           (assign,":push_found",0),
+           (try_begin),
+             (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_not_pushed_back, 1), # Not pushed back then skip the push button.
+             (scene_prop_set_slot,":cannon_instance",scene_prop_slot_is_not_pushed_back,0),
+           (else_try),
+             (try_for_range,":cur_pushtype","spr_mm_12pdr_push_button","spr_mm_round_button"),
+               (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", ":cur_pushtype"),
+               (gt,reg0,-1),
+               (assign,":push_found",1),
+               (call_script,"script_set_prop_child_active",reg0), # enable push button
+             (try_end),
+           (try_end),
+           
+           (try_begin),
+             (eq,":push_found",0),
+             (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
+             (call_script,"script_set_prop_child_active",reg0),
+           (try_end),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_round_button"),
+           
+           (agent_equip_item,":using_agent","itm_cannon_cartridge_round"),
+           (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_round"),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_shell_button"),
+           
+           (agent_equip_item,":using_agent","itm_cannon_cartridge_shell"),
+           (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_shell"),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_canister_button"),
+
+           (agent_equip_item,":using_agent","itm_cannon_cartridge_canister"),
+           (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_canister"),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_bomb_button"),
+           (agent_equip_item,":using_agent","itm_cannon_cartridge_bomb"),
+           (agent_set_wielded_item,":using_agent","itm_cannon_cartridge_bomb"),
+         (else_try),
+           (eq, ":scene_prop_id", "spr_mm_pickup_rocket_button"),
+           
+           (scene_prop_get_slot,":cur_control_agent",":cannon_instance",scene_prop_slot_controller_agent),
+           (try_begin),
+             (agent_is_active, ":cur_control_agent"),
+             (agent_is_alive, ":cur_control_agent"),
+
+             (call_script,"script_stop_agent_controlling_cannon",":cannon_instance",":cur_control_agent"),
+           (try_end),
+
+           (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_instance"),
+
+           (agent_equip_item,":using_agent","itm_rocket_placement"),
+           (agent_set_wielded_item,":using_agent","itm_rocket_placement"),
+    
+           (try_for_prop_instances, ":cur_instance_id_2", "spr_mm_cannon_rocket"),
+             (assign,":cur_instance_id_2",":cur_instance_id_2"),
+             (scene_prop_slot_eq, ":cur_instance_id_2", scene_prop_slot_replaced_by, ":cannon_instance"), 
+             (scene_prop_set_slot,":cur_instance_id_2",scene_prop_slot_replaced_by,-1),
+           (try_end),
+         (try_end),
+       (try_end),
+     (try_end),
+  ]),
+
+   # script_stop_agent_controlling_cannon
+  # Input: prop_instance of cannon
+  #        agent_id of agent
+  ("stop_agent_controlling_cannon",
+  [
+    (store_script_param, ":prop_instance", 1),
+    (store_script_param, ":agent_id", 2),
+    
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (prop_instance_is_valid,":prop_instance"),
+      (agent_is_active,":agent_id"),
+      
+      (call_script,"script_set_agent_controlling_prop",":prop_instance",":agent_id",0),
+      
+      (call_script, "script_prop_instance_find_first_child_of_type", ":prop_instance", "spr_mm_cannon_aim_platform"),
+      (prop_instance_is_valid,reg0),
+
+      (call_script,"script_set_prop_child_inactive",reg0),
+
+      (agent_set_animation,":agent_id","anim_kneeling_end"),
+
+    (try_end),
+  ]),
+
+  # script_copy_prop_slot
+  # Input: arg1 = to_prop_instance_id
+  # Input: arg2 = from_prop_instance_id
+  # Input: arg3 = slot_number
+  # Output: none.
+  ("copy_prop_slot",
+   [
+    (store_script_param, ":to_prop_instance_id", 1),
+    (store_script_param, ":from_prop_instance_id", 2),
+    (store_script_param, ":slot_number", 3),
+    
+    (try_begin),
+      (prop_instance_is_valid,":to_prop_instance_id"),
+      (prop_instance_is_valid,":from_prop_instance_id"),
+      
+      (scene_prop_get_slot,":value",":from_prop_instance_id", ":slot_number"),
+      (scene_prop_set_slot,":to_prop_instance_id",":slot_number",":value"),
+    (try_end),
+  ]),
+
+  # script_limber_cannon_to_horse
+  # Input: arg1 = wood_limber_instance
+  # Input: arg2 = cannon_instance_id
+  # Output: reg0 = ok?
+  ("limber_cannon_to_horse",
+   [
+    (store_script_param, ":wood_limber_instance", 1),
+    (store_script_param, ":cannon_instance_id", 2),
+    
+    (assign, reg0, 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (prop_instance_is_valid, ":wood_limber_instance"),
+      (prop_instance_is_valid, ":cannon_instance_id"),
+      
+      (scene_prop_get_slot,":attached_cannon",":wood_limber_instance", scene_prop_slot_child_prop2),
+      (le,":attached_cannon",0), # no other cannon attached?
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (prop_instance_get_scene_prop_kind, ":cannon_kind_id", ":cannon_instance_id"),
+      
+      (call_script,"script_get_prop_instance_scale",":cannon_instance_id"),
+      (assign, ":x_scale",reg0),
+      (assign, ":y_scale",reg1),
+      (assign, ":z_scale",reg2),
+      (assign, ":has_scale",reg3),
+      
+      (assign,":cannon_limber_kind_id",-1),
+      (assign,":cannon_wheels_kind_id",-1),
+      (assign,":cannon_wheel_y",-222),
+      (try_begin),
+        (eq,":cannon_kind_id","spr_mm_cannon_12pdr_wood"),
+        (assign,":cannon_limber_kind_id","spr_mm_cannon_12pdr_limber"),
+        (assign,":cannon_wheels_kind_id","spr_mm_cannon_12pdr_limber_wheels"),
+      (else_try),
+        (eq,":cannon_kind_id","spr_mm_cannon_howitzer_wood"),
+        (assign,":cannon_limber_kind_id","spr_mm_cannon_howitzer_limber"),
+        (assign,":cannon_wheels_kind_id","spr_mm_cannon_howitzer_limber_wheels"),
+      (try_end),
+      
+      (gt,":cannon_limber_kind_id",-1),
+      
+      (prop_instance_get_position, pos49, ":wood_limber_instance"),
+      (position_get_rotation_around_z,":cur_z_rot",pos49),
+
+      (position_move_y,pos49,-220),
+      (position_move_z,pos49,34),
+      (call_script,"script_find_or_create_scene_prop_instance",":cannon_limber_kind_id",0,0,0),
+      (assign, ":cannon_limber_instance", reg0),
+      (try_begin),
+        (gt,":cannon_wheels_kind_id",-1),
+        
+        (position_move_y,pos49,":cannon_wheel_y"),
+        (call_script,"script_find_or_create_scene_prop_instance",":cannon_wheels_kind_id",0,0,0),
+        (assign, ":cannon_wheels_instance", reg0),
+      (try_end),
+     
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_parent_prop, ":wood_limber_instance"),
+      (scene_prop_set_slot,":wood_limber_instance", scene_prop_slot_child_prop2, ":cannon_limber_instance"),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_y_value,-220),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_z_value,34),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_z_extra,":cur_z_rot"),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_x_scale,":x_scale"),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_y_scale,":y_scale"),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_z_scale,":z_scale"),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_is_scaled,":has_scale"),
+      (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_has_ball),
+      (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_is_loaded),
+      (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_ammo_type),
+      (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_just_fired),
+      (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_is_active,1),
+      (try_begin),
+        (gt,":cannon_wheels_instance",-1),
+        (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_parent_prop, ":cannon_limber_instance"),
+        (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_child_prop1, ":cannon_wheels_instance"),
+        (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_y_value, ":cannon_wheel_y"),
+        (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_is_active,1),
+      (try_end),
+      (assign, reg0, 1),
+    (try_end),
+  ]),
+
+  # script_recoil_cannon
+  # Input: cannon_instance
+  #        direction  1 = backwards (fired)  2 = forwards (pushing back)
+  ("recoil_cannon",
+  [
+    (store_script_param, ":cannon_instance", 1),
+    (store_script_param, ":direction", 2),
+    (store_script_param, ":use_given_position", 3),
+    
+    (assign,":has_recoil",0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      (prop_instance_is_valid,":cannon_instance"),
+      
+      (assign,":continue",0),
+      (try_begin),
+        (eq,":direction",1),
+        (scene_prop_set_slot,":cannon_instance", scene_prop_slot_just_fired, 1),
+        (assign,":continue",1),
+      (else_try),
+        (eq,":direction",2),
+        (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_just_fired, 1),
+        (scene_prop_set_slot,":cannon_instance", scene_prop_slot_just_fired, 0), 
+        (assign,":continue",1),
+      (try_end),
+      (eq,":continue",1),
+      
+      (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
+      
+      (assign,":rotate_wheels",1),
+      (assign,":rotation_change",-104),
+      (assign,":move_wood",1),
+      (assign,":recoil_x",0),
+      (assign,":recoil_y",0),
+      (assign,":recoil_z",0),
+      (assign,":speed",50), # speed in ms
+      (try_begin),
+        (this_or_next|eq, ":cannon_kind", "spr_mm_cannon_12pdr_wood"),
+        (this_or_next|eq, ":cannon_kind", "spr_mm_cannon_howitzer_wood"),
+        (eq, ":cannon_kind", "spr_mm_cannon_naval_wood"),
+        (assign,":recoil_x",-130),
+        (assign,":has_recoil",1),
+        (try_begin),
+          (eq, ":cannon_kind", "spr_mm_cannon_naval_wood"),
+          (assign,":rotate_wheels",0),
+        (try_end),
+      (else_try),
+        (eq, ":cannon_kind", "spr_mm_cannon_fort_wood"),
+        (assign,":recoil_x",-112),
+        (assign,":recoil_z",10),
+        (assign,":has_recoil",1),
+        (assign,":rotate_wheels",0),
+        (assign,":move_wood",0),
+        (assign,":speed",40),
+      (try_end),
+      
+      (try_begin),
+        (eq,":rotate_wheels",0),
+        (assign,":rotation_change",0),
+      (try_end),
+      
+      (try_begin), # if pushing that thing back reverse everything
+        (eq,":direction",2),
+        (val_mul,":rotation_change",-1),
+        (val_mul,":recoil_x",-1),
+        (val_mul,":recoil_y",-1),
+        (val_mul,":recoil_z",-1),
+        (assign,":speed",200), 
+      (try_end),
+
+      (set_fixed_point_multiplier, 100),
+
+      (try_begin),
+
+        (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_scaled, 1), 
+        (scene_prop_get_slot,":x_scale",":cannon_instance",scene_prop_slot_x_scale),
+        (scene_prop_get_slot,":y_scale",":cannon_instance",scene_prop_slot_y_scale),
+        (scene_prop_get_slot,":z_scale",":cannon_instance",scene_prop_slot_z_scale),
+
+        (this_or_next|gt,":x_scale",0), # c
+        (this_or_next|gt,":y_scale",0),
+        (gt,":z_scale",0),
+        
+        (val_mul, ":recoil_x", ":x_scale"),
+        (val_mul, ":recoil_y", ":y_scale"),
+        (val_mul, ":recoil_z", ":z_scale"),
+        (val_div, ":recoil_x", 1000),
+        (val_div, ":recoil_y", 1000),
+        (val_div, ":recoil_z", 1000),
+      (try_end),
+      
+      (try_begin),
+        (eq,":has_recoil",1),
+        
+        (try_begin),
+          (eq,":use_given_position",0),
+          (prop_instance_get_position, pos57, ":cannon_instance"), # pos57 = cannon location
+        (try_end),
+        (assign,":move_pos",1),
+        (try_begin),
+          (eq,":direction",2),
+          (eq,":move_wood",0),
+          (assign,":move_pos",0),
+        (try_end),
+        (try_begin),
+          (eq,":move_pos",1),
+          (position_move_x,pos57,":recoil_x",0),
+          (position_move_y,pos57,":recoil_y",0),
+          (position_move_z,pos57,":recoil_z",0),
+        (try_end),
+        (copy_position,pos31,pos57),
+         
+        (call_script,"script_cannon_instance_get_wheels",":cannon_instance"),
+        (assign,":wheels_instance",reg0),
+         
+        (try_begin),
+          (prop_instance_is_valid,":wheels_instance"),
+          (try_begin),
+            (eq,":move_wood",1),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",0),
+            (try_begin),
+              (eq,":direction",2),
+              (scene_prop_set_slot,":cannon_instance",scene_prop_slot_just_pushed_back,1),
+            (try_end),
+          (else_try),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",":cannon_instance"),
+            (try_begin),
+              (eq,":direction",2),
+              (scene_prop_set_slot,":wheels_instance",scene_prop_slot_just_pushed_back,1),
+            (try_end),
+          (try_end),
+          
+          (try_begin),
+            (eq,":rotate_wheels",1),
+            
+            (try_begin),
+              (eq,":direction",1),
+              (position_rotate_y,pos31,":rotation_change"),
+            (try_end),
+
+            (scene_prop_get_slot,":y_rot_value",":wheels_instance",scene_prop_slot_y_rot),
+            
+            (neq,":y_rot_value",":rotation_change"),
+            
+            (val_add,":y_rot_value",":rotation_change"),
+            (scene_prop_set_slot,":wheels_instance", scene_prop_slot_y_rot, ":y_rot_value"),
+          (try_end),
+
+          (prop_instance_animate_to_position, ":wheels_instance", pos31, ":speed"),
+        (else_try),
+          (try_begin),
+            (eq,":move_wood",1),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",0,0),
+          (else_try),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":cannon_instance",0),
+          (try_end),
+          
+          (try_begin),
+            (eq,":direction",2),
+            (scene_prop_set_slot,":cannon_instance",scene_prop_slot_just_pushed_back,1),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+    
+    (assign,reg0,":has_recoil"),
+  ]),
+
+  # script_prop_instance_animate_to_position_with_childs
+  # Input: arg1 = prop_instance_id
+  # Input: arg2 = duration in ms
+  # Input: arg3 = ignore_prop_instance
+  # Input: arg4 = ignore_prop_instance2
+  # Input: pos57 = position to animate to.
+  # Output: 
+  ("prop_instance_animate_to_position_with_childs",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    (store_script_param, ":duration", 2),
+    (store_script_param, ":ignored_prop_instance", 3),
+    (store_script_param, ":ignored_prop_instance2", 4),
+    
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (try_begin),
+        (neq,":prop_instance_id",":ignored_prop_instance"),
+        (neq,":prop_instance_id",":ignored_prop_instance2"),
+        (neg|scene_prop_slot_eq,":prop_instance_id",scene_prop_slot_ignore_inherit_movement,1),
+
+        (try_begin),
+          (eq,":duration",0),
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":prop_instance_id"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":prop_instance_id"),
+          (try_end),
+          (prop_instance_set_position,":prop_instance_id", pos57),
+        (else_try),
+          (prop_instance_animate_to_position, ":prop_instance_id", pos57, ":duration"),
+        (try_end),
+      (try_end),
+    
+      (try_for_range,":cur_slot",scene_prop_slot_child_prop1,scene_prop_slots_end),
+        (scene_prop_get_slot,":cur_child",":prop_instance_id",":cur_slot"),
+        (prop_instance_is_valid,":cur_child"),
+        (scene_prop_slot_eq,":cur_child",scene_prop_slot_is_active,1),
+        
+        (copy_position,pos58,pos57),
+        (scene_prop_get_slot,":x_value",":cur_child",scene_prop_slot_x_value),
+        (scene_prop_get_slot,":y_value",":cur_child",scene_prop_slot_y_value),
+        (scene_prop_get_slot,":z_value",":cur_child",scene_prop_slot_z_value),
+        (scene_prop_get_slot,":x_rot_value",":cur_child",scene_prop_slot_x_rot),
+        (scene_prop_get_slot,":y_rot_value",":cur_child",scene_prop_slot_y_rot),
+        (scene_prop_get_slot,":z_rot_value",":cur_child",scene_prop_slot_z_rot),
+        (scene_prop_get_slot,":float_ground",":cur_child",scene_prop_slot_float_ground),
+        (try_begin),
+          (eq,":float_ground",1),
+          (init_position,pos58),
+          (position_get_rotation_around_z,":parent_z_rot",pos57),
+          (position_copy_origin,pos58,pos57),
+          (position_rotate_z,pos58,":parent_z_rot"),
+          
+          (position_move_x, pos58,":x_value"),
+          (position_move_y, pos58,":y_value"),
+          
+          (position_set_z_to_ground_level,pos58),
+
+        (else_try),
+          (position_move_x, pos58,":x_value"),
+          (position_move_y, pos58,":y_value"),
+          (position_move_z, pos58,":z_value"),
+        (try_end),
+
+        (position_rotate_x,pos58,":x_rot_value"),
+        (position_rotate_y,pos58,":y_rot_value"),
+        (position_rotate_z,pos58,":z_rot_value"),
+        
+        (call_script, "script_prop_child_animate_to_position_with_childs", ":cur_child", ":duration",":ignored_prop_instance",":ignored_prop_instance2"),
+      (try_end),
+    (try_end),
+   ]),
+
+  # script_prop_child_animate_to_position_with_childs
+  # Input: arg1 = prop_instance_id
+  # Input: arg2 = duration in ms
+  # Input: pos58 = position to animate to.
+  # Output: 
+  ("prop_child_animate_to_position_with_childs",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    (store_script_param, ":duration", 2),
+    (store_script_param, ":ignored_prop_instance", 3),
+    (store_script_param, ":ignored_prop_instance2", 4),
+    
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (try_begin),
+        (neq,":prop_instance_id",":ignored_prop_instance"),
+        (neq,":prop_instance_id",":ignored_prop_instance2"),
+        (neg|scene_prop_slot_eq,":prop_instance_id",scene_prop_slot_ignore_inherit_movement,1),
+
+        (try_begin),
+          (eq,":duration",0),
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":prop_instance_id"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":prop_instance_id"),
+          (try_end),
+          (prop_instance_set_position,":prop_instance_id", pos58),
+        (else_try),
+          (prop_instance_animate_to_position, ":prop_instance_id", pos58, ":duration"),
+        (try_end),
+      (try_end),
+
+      (neg|scene_prop_slot_eq,":prop_instance_id",scene_prop_slot_ignore_inherit_movement,1),
+      (try_for_range,":cur_slot",scene_prop_slot_child_prop1,scene_prop_slots_end),
+        (scene_prop_get_slot,":cur_child",":prop_instance_id",":cur_slot"),
+        (prop_instance_is_valid,":cur_child"),
+        (neq,":cur_child",":ignored_prop_instance"),
+        (neq,":cur_child",":ignored_prop_instance2"),
+        (neg|scene_prop_slot_eq,":cur_child",scene_prop_slot_ignore_inherit_movement,1),
+        (scene_prop_slot_eq,":cur_child",scene_prop_slot_is_active,1),
+        
+        (copy_position,pos59,pos58),
+        (scene_prop_get_slot,":x_value",":cur_child",scene_prop_slot_x_value),
+        (scene_prop_get_slot,":y_value",":cur_child",scene_prop_slot_y_value),
+        (scene_prop_get_slot,":z_value",":cur_child",scene_prop_slot_z_value),
+        (scene_prop_get_slot,":x_rot_value",":cur_child",scene_prop_slot_x_rot),
+        (scene_prop_get_slot,":y_rot_value",":cur_child",scene_prop_slot_y_rot),
+        (scene_prop_get_slot,":z_rot_value",":cur_child",scene_prop_slot_z_rot),
+        (scene_prop_get_slot,":float_ground",":cur_child",scene_prop_slot_float_ground),
+        (try_begin),
+          (eq,":float_ground",1),
+          (init_position,pos59),
+          (position_get_rotation_around_z,":parent_z_rot",pos58),
+          (position_copy_origin,pos59,pos58),
+          (position_rotate_z,pos59,":parent_z_rot"),
+          
+          (position_move_x, pos59,":x_value"),
+          (position_move_y, pos59,":y_value"),
+          
+          (position_set_z_to_ground_level,pos59),
+
+        (else_try),
+          (position_move_x, pos59,":x_value"),
+          (position_move_y, pos59,":y_value"),
+          (position_move_z, pos59,":z_value"),
+        (try_end),
+        
+        (position_rotate_x,pos59,":x_rot_value"),
+        (position_rotate_y,pos59,":y_rot_value"),
+        (position_rotate_z,pos59,":z_rot_value"),
+
+        (try_begin),
+          (eq,":duration",0),
+          (prop_instance_set_position,":cur_child", pos59),
+        (try_end),
+        (prop_instance_animate_to_position, ":cur_child", pos59, ":duration"),
+      (try_end),
+    (try_end),
+   ]),
+
+  # script_cf_agent_is_taking_a_shit
+  # Input: agent_id
+  # Output: reg0 > yes/no 1/0
+  ("cf_agent_is_taking_a_shit",
+  [
+    (store_script_param, ":agent_id", 1),
+    (agent_is_active,":agent_id"),
+    (agent_get_animation,":cur_anim",":agent_id",0),
+    (eq,":cur_anim","anim_shitting"), 
+  ]),
+
+  # script_unlimber_cannon_from_horse
+  # Input: arg1 = cannon_instance_id   # ":using_agent"
+  # Output: reg0 = ok?
+  ("unlimber_cannon_from_horse",
+   [
+    (store_script_param, ":instance_id", 1),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      (prop_instance_is_valid, ":instance_id"),
+      (prop_instance_get_scene_prop_kind,":scene_prop_id",":instance_id"),
+       
+      (is_between, ":scene_prop_id", mm_unlimber_button_types_begin, mm_unlimber_button_types_end),  # Unlimber
+       
+      (prop_instance_get_position, pos49, ":instance_id"),
+      (scene_prop_get_slot,":y_movement",":instance_id",scene_prop_slot_y_value),
+      (position_move_y, pos49,":y_movement"),
+      (position_rotate_z,pos49,-90),
+
+      (try_begin),
+        (scene_prop_get_slot,":limber_wood",":instance_id",scene_prop_slot_parent_prop),
+        (prop_instance_is_valid, ":limber_wood"),
+        
+        (scene_prop_set_slot,":limber_wood", scene_prop_slot_child_prop2, -1),
+      (try_end),
+    
+      (assign,":prop_to_spawn",-1),
+      (try_begin),
+        (eq,":scene_prop_id","spr_mm_cannon_12pdr_limber"),
+        (assign,":prop_to_spawn","spr_mm_cannon_12pdr"),
+      (else_try),
+        (eq,":scene_prop_id","spr_mm_cannon_howitzer_limber"),
+        (assign,":prop_to_spawn","spr_mm_cannon_howitzer"),
+      (try_end),
+       
+      (try_begin),
+        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+        (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+        (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
+        (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 1, 1,":x_scale",":y_scale",":z_scale"),
+      (else_try),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 1, 0),
+      (try_end),
+      (assign,":new_cannon",reg0),
+       
+      (call_script,"script_generate_bits_for_cannon_instance",":new_cannon", 0, 1),
+      (assign,":cannon_wood",reg1),
+      
+      (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_has_ball),
+      (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_is_loaded),
+      (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_ammo_type),
+      (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_just_fired),
+      
+      (scene_prop_set_slot,":cannon_wood",scene_prop_slot_is_not_pushed_back,1),
+      
+      (scene_prop_get_slot,":has_ball",":cannon_wood", scene_prop_slot_has_ball),
+      (scene_prop_get_slot,":is_loaded",":cannon_wood", scene_prop_slot_is_loaded),
+      
+      (call_script,"script_cannon_instance_get_barrel",":cannon_wood"),
+      (assign,":barrel_instance",reg0),
+       
+      (try_begin),
+        (eq,":barrel_instance",-1),
+        (assign,":barrel_instance",":cannon_wood"),
+      (try_end),
+      
+      (try_begin),
+        (eq,":is_loaded",1),
+        (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
+        (call_script,"script_set_prop_child_active",reg0),
+
+        (assign, ":end_cond", "spr_mm_reload_button"),
+        (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
+          (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+          (gt,reg0,-1),
+          (call_script,"script_set_prop_child_inactive",reg0),
+          
+          (assign, ":end_cond", 0),
+        (try_end),
+      (else_try),
+        (eq,":has_ball",1),
+        (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_reload_button"),
+        (call_script,"script_set_prop_child_active",reg0),
+        (assign, ":end_cond", "spr_mm_reload_button"),
+        (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
+          (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+          (gt,reg0,-1),
+          (call_script,"script_set_prop_child_inactive",reg0),
+          (assign, ":end_cond", 0),
+        (try_end),
+      (try_end),
+
+      (try_begin),
+        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_is_scaled,0),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_x_scale,1000),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_y_scale,1000),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_z_scale,1000),
+      (try_end),
+
+      (call_script, "script_clean_up_prop_instance_with_childs", ":instance_id"),
+
+      (scene_prop_set_slot,":new_cannon",scene_prop_slot_in_use,1),
+    (try_end),
+  ]),
+
+  # script_handle_cannon_hit_effect_event
+  # Input: pos60  pos of event.
+  #        event_type  type Explosion/ground  
+  #        extra_value In case of cannonball is strenght, in case of wall its walltype.
+  ("handle_cannon_hit_effect_event",
+  [
+    (store_script_param, ":event_type", 1),
+    (store_script_param, ":extra_value", 2),
+    
+    (try_begin),    
+      (is_between,":event_type",cannon_hit_effect_event_types_begin,cannon_hit_effect_event_types_end),
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (assign,":play_close_particles",0),
+      (try_begin),
+        (mission_cam_get_position, pos17),
+        (get_distance_between_positions,":dist",pos17,pos60),
+        (lt,":dist",2000), # less then 20 meters
+        (assign,":play_close_particles",1),
+      (try_end),
+      
+      (try_begin),
+        (eq,":event_type",cannon_hit_effect_event_type_explosion),
+        
+        (play_sound_at_position, "snd_explosion", pos60),
+        
+        (particle_system_burst_no_sync,"psys_war_smoke_tall",pos60,150),
+        (particle_system_burst_no_sync,"psys_explosion_smoke",pos60,100),
+        (particle_system_burst_no_sync,"psys_explosion_smoke2",pos60,100),
+        (particle_system_burst_no_sync,"psys_explosion_flash",pos60,100),
+        
+        (try_begin),
+          (eq,":play_close_particles",1),
+          
+          (particle_system_burst_no_sync,"psys_explosion_particles",pos60,100),
+          (particle_system_burst_no_sync,"psys_fire_sparks_1",pos60,100),
+          (particle_system_burst_no_sync,"psys_brazier_fire_1",pos60,100),
+        (try_end),
+      (else_try),
+        (eq,":event_type",cannon_hit_effect_event_type_ground), # the extra value is the loss strenght in this case.
+        
+        (play_sound_at_position, "snd_cannon_hit_ground",pos60),
+        
+        (particle_system_burst_no_sync,"psys_cooking_smoke",pos60,":extra_value"),
+        (try_begin),
+          (eq,"$g_scene_has_snowy_ground",0),
+          (particle_system_burst_no_sync,"psys_cannonball_ground_smoke",pos60,":extra_value"),
+          (particle_system_burst_no_sync,"psys_cannonball_ground_smoke2",pos60,":extra_value"),
+          (try_begin),
+            (eq,":play_close_particles",1),
+            (particle_system_burst_no_sync,"psys_cannon_ball_hit_particles",pos60,":extra_value"),
+          (try_end),
+        (else_try),
+          (particle_system_burst_no_sync,"psys_cannonball_ground_smoke_snow",pos60,":extra_value"),
+          (particle_system_burst_no_sync,"psys_cannonball_ground_smoke2_snow",pos60,":extra_value"),
+          
+          (eq,":play_close_particles",1),
+          (particle_system_burst_no_sync,"psys_cannon_ball_hit_particles_snow",pos60,":extra_value"),
+        (try_end),
+      (else_try),
+        (eq,":event_type",cannon_hit_effect_event_type_water_ball),
+        
+        (play_sound_at_position, "snd_cannon_hit_ground",pos60),
+        
+        (particle_system_burst_no_sync,"psys_cannonball_water_hit_a",pos60,8),
+        (position_move_z, pos60, 5),
+        (particle_system_burst_no_sync,"psys_cannonball_water_hit_b",pos60,4),
+        
+      (else_try),
+        (eq,":event_type",cannon_hit_effect_event_type_wall), # extra value is wall type.
+       
+        (call_script,"script_get_destruction_properties_of_object",":extra_value"),
+        (assign,":smoke_type",reg0),
+        (assign,":smoke_type2",reg1),
+        (assign,":particles_type",reg2),
+        (assign,":smoke_strength",reg3),
+        (assign,":sound_id",reg4),
+        
+        (try_begin),
+          (gt,":smoke_type",-1),
+          (particle_system_burst_no_sync,":smoke_type",":smoke_strength"),
+        (try_end),
+        (try_begin),
+          (gt,":smoke_type2",-1),
+          (particle_system_burst_no_sync,":smoke_type2",":smoke_strength"),
+        (try_end),
+        (try_begin),
+          (gt,":particles_type",-1),
+          (eq,":play_close_particles",1),
+          (particle_system_burst_no_sync,":particles_type",pos60,40),
+        (try_end),
+        
+        (try_begin),
+          (gt,":sound_id", -1),
+          (play_sound_at_position,":sound_id",pos60), 
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+  # script_multiplayer_server_play_hit_effect
+  # Input: pos60  pos of event.
+  #        event_type  type Explosion/ground  
+  #        extra_value  In case of cannonball is strenght, in case of wall its walltype.
+  ("multiplayer_server_play_hit_effect",
+  [
+    (store_script_param, ":event_type", 1),
+    (store_script_param, ":extra_value", 2),
+    
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (is_between,":event_type",cannon_hit_effect_event_types_begin,cannon_hit_effect_event_types_end),
+      
+      # play on server if not dedicatd
+      (try_begin),
+        (neg|multiplayer_is_dedicated_server),
+        (call_script,"script_handle_cannon_hit_effect_event",":event_type",":extra_value"),
+      (try_end),
+      
+      # then send on.
+      (try_begin),
+        (game_in_multiplayer_mode),
+        
+        (set_fixed_point_multiplier, 100),        
+        (position_get_x,":xvalue", pos60),
+        (position_get_y,":yvalue", pos60),
+        (position_get_z,":zvalue", pos60),
+        
+        (val_mul,":extra_value",100), # free up 2 digits for type.
+        (val_add,":extra_value",":event_type"), # add the type to it.
+         
+        (try_for_players, ":cur_player", 1),
+          (player_is_active,":cur_player"),
+
+          (multiplayer_send_4_int_to_player, ":cur_player", multiplayer_event_return_cannon_hit_effect_event,":xvalue",":yvalue",":zvalue",":extra_value"),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+  # script_explosion_at_position
+  # Input: shooter_agent_no
+  #        max_damage points
+  #        range  in cm
+  #        pos47 = position
+  # Output: none
+  ("explosion_at_position", 
+  [
+    (store_script_param, ":shooter_agent_no", 1),
+    (store_script_param, ":max_damage", 2),
+    (store_script_param, ":range", 3),
+
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),		
+
+      (copy_position,pos60,pos47),
+      (call_script,"script_multiplayer_server_play_hit_effect",cannon_hit_effect_event_type_explosion, 0),
+      
+      (set_fixed_point_multiplier,100),
+      (store_add,":search_range",":range",90),
+      (try_for_agents, ":agent_no",pos47,":search_range"), 
+        (agent_is_active,":agent_no"),
+        (agent_is_alive,":agent_no"),
+        (agent_get_position,pos46,":agent_no"),
+        (position_move_z,pos46,90), # Move 90 centimeter up (center of body) for better hit detection
+        (get_distance_between_positions,":cur_dist",pos46,pos47),
+
+        (lt, ":cur_dist", ":range"), # We are in range. lets calculate damage.. see here: for example.
+
+        (store_mul,":damage",":cur_dist",750),
+        (val_div,":damage",":range"),
+        (store_sub,":damage",1000,":damage"),
+        (val_mul,":damage",":max_damage"),
+        (val_div,":damage",1000),
+
+        (try_begin), # If we have no shooter killed himself then.
+          (neg|agent_is_active,":shooter_agent_no"),
+          (assign,":shooter_agent_no",":agent_no"),
+        (try_end),
+        
+        (agent_deliver_damage_to_agent_advanced, ":unused", ":shooter_agent_no", ":agent_no", ":damage","itm_cannon_explosion_dummy"),
+
+        (agent_is_alive,":agent_no"), # still alive? if not then do all this animation and sounds; otherwise the death will trigger those.
+        
+        # 56 is sound pos.
+        (copy_position,pos56,pos46),
+        (try_begin),
+          (agent_is_human,":agent_no"),
+          (call_script,"script_multiplayer_server_play_sound_at_position","snd_man_hit"),
+          (agent_get_horse, ":horse", ":agent_no"),
+          (try_begin),
+            (le, ":horse", 0), # No horse so play the fall animation
+            (agent_set_animation, ":agent_no", "anim_strike_fall_back_rise"),
+          (try_end),
+        (else_try),
+          (call_script,"script_multiplayer_server_play_sound_at_position","snd_neigh"),
+          (agent_set_animation, ":agent_no", "anim_horse_rear"),
+        (try_end),
+      (try_end), 	
+
+      (assign,":end_wall_cond",mm_destructible_props_end),
+      (try_for_range_backwards,":wall_type",mm_destructible_props_begin,":end_wall_cond"),
+        (neg|is_between,":wall_type",mm_explosive_props_begin, mm_explosive_props_end),
+        
+        (try_for_prop_instances, ":wall_id", ":wall_type", somt_object),
+          # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
+          (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
+          (try_begin),
+            (gt,":range_adition",0),
+            
+            # make range adition 75 % for balance/tweaking.
+            (val_mul, ":range_adition", 75), 
+            (val_div, ":range_adition", 100),
+            
+            # devide the longest dimension by 2 since were calculating from center of prop.
+            (store_div,":divved_range_adition",":range_adition",2),
+          (try_end),
+          
+          (store_add,":range_awall", ":range",":range_adition"),
+          
+          # only get shit that is close to this ball
+          (prop_instance_get_position, pos46, ":wall_id"),
+          (get_distance_between_positions, ":distance_explosion_wall", pos46, pos47),
+          (le, ":distance_explosion_wall", ":range_awall"),
+          
+          (call_script,"script_get_prop_center",":wall_id"),
+          (eq,reg1,1), # is ok :)
+          
+          # pos42 is the center pos.
+          (get_distance_between_positions, ":cur_dist", pos47, pos42),
+          # substract the wall size from the distance to get the "real" distance to the prop.
+          (val_sub,":cur_dist",":divved_range_adition"), 
+          
+          (le, ":cur_dist", ":range"),
+          
+          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage
+          (store_mul,":damage",":cur_dist",750),
+          (val_div,":damage",":range"),
+          (store_sub,":damage",1000,":damage"),
+          (val_mul,":damage",":max_damage"),
+          (val_div,":damage",1000),
+         
+          (call_script,"script_deliver_damage_to_prop",":wall_id",":damage", 0, ":shooter_agent_no"),
+          (try_end),
+
+          (try_for_prop_instances, ":wall_id", ":wall_type", somt_temporary_object),
+          # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
+          (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
+          (try_begin),
+            (gt,":range_adition",0),
+            
+            # make range adition 75 % for balance/tweaking.
+            (val_mul, ":range_adition", 75), 
+            (val_div, ":range_adition", 100),
+            
+            # devide the longest dimension by 2 since were calculating from center of prop.
+            (store_div,":divved_range_adition",":range_adition",2),
+          (try_end),
+          
+          (store_add,":range_awall", ":range",":range_adition"),
+          
+          # only get shit that is close to this ball
+          (prop_instance_get_position, pos46, ":wall_id"),
+          (get_distance_between_positions, ":distance_explosion_wall", pos46, pos47),
+          (le, ":distance_explosion_wall", ":range_awall"),
+          
+          (call_script,"script_get_prop_center",":wall_id"),
+          (eq,reg1,1), # is ok :)
+          
+          # pos42 is the center pos.
+          (get_distance_between_positions, ":cur_dist", pos47, pos42),
+          # substract the wall size from the distance to get the "real" distance to the prop.
+          (val_sub,":cur_dist",":divved_range_adition"), 
+          
+          (le, ":cur_dist", ":range"),
+          
+          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage          
+          (store_mul,":damage",":cur_dist",750),
+          (val_div,":damage",":range"),
+          (store_sub,":damage",1000,":damage"),
+          (val_mul,":damage",":max_damage"),
+          (val_div,":damage",1000),
+         
+          (call_script,"script_deliver_damage_to_prop",":wall_id",":damage", 0, ":shooter_agent_no"),
+        (try_end),  			
+      (try_end),  
+       
+			
+      #destroyed pioneer props can disapear completely and give build points.
+      (try_for_range,":pioneer_build_type","spr_mm_stakes_construct","spr_plank_construct_dummy"),
+        (try_for_prop_instances, ":pioneer_prop_id", ":pioneer_build_type"),
+          (prop_instance_get_position, pos46, ":pioneer_prop_id"),
+          (get_distance_between_positions, ":cur_dist", pos47, pos46),
+          
+          (le, ":cur_dist", ":range"),
+                   
+          (particle_system_burst, "psys_dummy_straw", pos46, 20),
+          (particle_system_burst, "psys_dummy_smoke", pos46, 50),
+
+          (call_script, "script_clean_up_prop_instance", ":pioneer_prop_id"),
+        (try_end),
+      (try_end),
+      
+      (try_for_range,":explosive_type", mm_explosive_props_begin, mm_explosive_props_end),
+        (try_for_prop_instances, ":instance_id", ":explosive_type", somt_object),
+          #(scene_prop_slot_eq, ":instance_id", scene_prop_slot_in_use, 1),
+          
+          (prop_instance_get_position,pos7,":instance_id"),
+          (get_distance_between_positions,":cur_dist",pos7,pos47),
+          
+          # add 50 cm to range due to box size.
+          (val_sub,":cur_dist",50), 
+          
+          (lt, ":cur_dist", ":range"),
+
+          (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
+          (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
+        (try_end),
+		(try_for_prop_instances, ":instance_id", ":explosive_type", somt_temporary_object),
+          
+          (prop_instance_get_position,pos7,":instance_id"),
+          (get_distance_between_positions,":cur_dist",pos7,pos47),
+
+          (val_sub,":cur_dist",50), 
+          
+          (lt, ":cur_dist", ":range"),
+
+          (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
+          (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
+        (try_end),
+      (try_end),
+
+      # make a crator at the explosion position
+      (try_begin),
+        (position_get_distance_to_terrain, ":height_to_terrain", pos47),
+        (lt,":height_to_terrain",200),
+        (copy_position,pos49,pos47), # pos49 is prop pos.
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_explosion"),
+      (try_end),
+    (try_end),
+  ]),
+
+  # script_spawn_crator_on_pos
+  # Input: arg1 = prop_kind_id
+  # Input: pos49 = pos of crator.
+  # Output: reg0 = prop_instance_id
+  ("spawn_crator_on_pos",
+   [
+    (store_script_param, ":prop_kind_id", 1),
+    
+    (set_fixed_point_multiplier,100),
+    
+    (assign,":instance_id",-1),
+    (init_position,pos36),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (is_between,":prop_kind_id","spr_invalid_object","spr_code_freeze_agent"), # valid prop type.
+      
+      (position_copy_origin,pos36,pos49),
+      (position_set_z_to_ground_level,pos36),
+      (position_get_distance_to_terrain,":dist",pos36),
+
+      (le,":dist",2),
+      
+      (call_script, "script_find_or_create_scene_prop_instance", ":prop_kind_id", 0, 1, 0),
+      (assign,":instance_id",reg0),
+    (try_end),
+    
+    (assign,reg0,":instance_id"),
+  ]),
+
+  # script_get_prop_center
+  ("get_prop_center",
+  [
+    (store_script_param, ":prop_instance_id", 1),
+    
+    (assign,":is_ok",0),
+    (assign,":wall_height",0),
+    (assign,":wall_width",0),
+    (assign,":wall_length",0),
+    (assign,":wall_height_offset",0),
+    (assign,":wall_width_offset",0),
+    (assign,":wall_length_offset",0),
+    (assign,":inverse_width_movement",0),
+    (assign,":move_height_to_center",1),
+    (assign,":move_width_to_center",0),
+    (assign,":move_length_to_center",0),
+    (assign,":rotate_z_90",0),
+    
+    (init_position,pos42),
+    (init_position,pos43),
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (scene_prop_get_slot,":cur_max_wall_length",":prop_instance_id",scene_prop_slot_destruct_max_length),
+      
+      (try_begin), # are the slots assigned yet?
+        (gt,":cur_max_wall_length",0),
+        (scene_prop_get_slot,":wall_height",":prop_instance_id",scene_prop_slot_destruct_wall_height),
+        (scene_prop_get_slot,":wall_width",":prop_instance_id",scene_prop_slot_destruct_wall_width),
+        (scene_prop_get_slot,":wall_length",":prop_instance_id",scene_prop_slot_destruct_wall_length),
+        (scene_prop_get_slot,":move_height_to_center",":prop_instance_id",scene_prop_slot_destruct_move_height_to_center),
+        (scene_prop_get_slot,":move_width_to_center",":prop_instance_id",scene_prop_slot_destruct_move_width_to_center),
+        (scene_prop_get_slot,":move_length_to_center",":prop_instance_id",scene_prop_slot_destruct_move_length_to_center),
+        (scene_prop_get_slot,":rotate_z_90",":prop_instance_id",scene_prop_slot_destruct_rotate_z_90),
+        (scene_prop_get_slot,":wall_height_offset",":prop_instance_id",scene_prop_slot_destruct_wall_height_offset),
+        (scene_prop_get_slot,":wall_width_offset",":prop_instance_id",scene_prop_slot_destruct_wall_width_offset),
+        (scene_prop_get_slot,":wall_length_offset",":prop_instance_id",scene_prop_slot_destruct_wall_length_offset),
+        (scene_prop_get_slot,":inverse_width_movement",":prop_instance_id",scene_prop_slot_destruct_inverse_width_movement),
+      (else_try),
+        # if not, then assign them.
+        (prop_instance_get_scene_prop_kind, ":scene_prop_kind_id", ":prop_instance_id"),
+        (call_script,"script_get_prop_kind_size_and_shift",":scene_prop_kind_id"),
+        (eq,reg0,1), # is_ok :)
+        (assign,":wall_height",reg1),
+        (assign,":wall_width",reg2),
+        (assign,":wall_length",reg3),
+        (assign,":move_height_to_center",reg4),
+        (assign,":move_width_to_center",reg5),
+        (assign,":move_length_to_center",reg6),
+        (assign,":rotate_z_90",reg7),
+        (assign,":wall_height_offset",reg8),
+        (assign,":wall_width_offset",reg9),
+        (assign,":wall_length_offset",reg10),
+        (assign,":inverse_width_movement",reg11),
+       
+        (call_script,"script_get_prop_scaled_size",":prop_instance_id" ,":wall_height", ":wall_width", ":wall_length", ":wall_height_offset",":wall_width_offset",":wall_length_offset"),
+        (eq,reg1,1), # is ok :)
+        (assign,":wall_height",reg2),
+        (assign,":wall_width",reg3),
+        (assign,":wall_length",reg4),
+        (assign,":cur_max_wall_length",reg5),
+        (assign,":wall_height_offset",reg6),
+        (assign,":wall_width_offset",reg7),
+        (assign,":wall_length_offset",reg8),
+         
+        # assign the slots for next time.
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_height,":wall_height"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_width,":wall_width"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_length,":wall_length"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_height_to_center,":move_height_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_width_to_center,":move_width_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_move_length_to_center,":move_length_to_center"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_rotate_z_90,":rotate_z_90"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_height_offset,":wall_height_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_width_offset,":wall_width_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_length_offset,":wall_length_offset"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_inverse_width_movement,":inverse_width_movement"),
+        (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_max_length,":cur_max_wall_length"),
+      (try_end),
+      
+      # We have values assigned now?
+      (gt,":cur_max_wall_length",0),
+
+      (prop_instance_get_position, pos42, ":prop_instance_id"),
+      (copy_position,pos43,pos42), # copy to the orig pos
+      # If needed rotate the position to fit in our hit detection system for the length/width on the right direction :)
+      (try_begin), 
+        (eq,":rotate_z_90",1),
+        (position_rotate_z,pos42,90),
+      (try_end),
+      
+      # move pos to center
+      (try_begin),
+        (this_or_next|eq,":move_length_to_center",1),
+        (this_or_next|eq,":move_width_to_center",1),
+        (eq,":move_height_to_center",1),
+        
+        (set_fixed_point_multiplier, 100),
+        
+        (try_begin),
+          (neq,":wall_length_offset",0),
+          (position_move_y,pos42,":wall_length_offset"),
+        (try_end),
+        (try_begin),
+          (neq,":wall_width_offset",0),
+          (position_move_x,pos42,":wall_width_offset"),
+        (try_end),
+        (try_begin),
+          (neq,":wall_height_offset",0),
+          (position_move_z,pos42,":wall_height_offset"),
+        (try_end),
+        
+        (try_begin),
+          (eq,":move_length_to_center",1),
+          (store_div, ":actual_length_div2", ":wall_length", 2),
+          (position_move_y,pos42,":actual_length_div2"),
+        (try_end),
+        (try_begin),
+          (eq,":move_width_to_center",1),
+          (store_div, ":actual_width_div2", ":wall_width", 2),
+          (try_begin),
+            (eq,":inverse_width_movement",1),
+            (store_mul, ":actual_width_div2_min", ":actual_width_div2", -1), 
+            (position_move_x,pos42,":actual_width_div2_min"),
+          (else_try),
+            (position_move_x,pos42,":actual_width_div2"),
+          (try_end),
+        (try_end),
+        (try_begin),
+          (eq,":move_height_to_center",1),
+          (store_div, ":actual_height_div2", ":wall_height", 2),
+          (position_move_z,pos42,":actual_height_div2"),
+        (try_end),
+      (try_end),
+      
+      (assign,":is_ok",1),
+    (try_end),
+    
+    (assign,reg1,":is_ok"),
+  ]),
+
+  # script_cannon_instance_get_wheels
+  # Input: arg1 = cannon_instance
+  # Output: reg0 = barrel_instance
+  ("cannon_instance_get_wheels",
+   [
+    (store_script_param, ":cannon_instance", 1),
+    
+    (assign,reg0,-1),
+    (try_begin),
+      (prop_instance_is_valid, ":cannon_instance"),
+      
+      (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
+      
+      (assign,":wheel_type",-1), 
+      (try_begin),
+        (eq,":cannon_kind","spr_mm_cannon_12pdr_wood"),
+        (assign,":wheel_type","spr_mm_cannon_12pdr_wheels"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+        (assign,":wheel_type","spr_mm_cannon_howitzer_wheels"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+        (assign,":wheel_type","spr_mm_cannon_fort_wheels"), 
+      (else_try),
+        (eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+        (assign,":wheel_type","spr_mm_cannon_naval_wheels"), 
+      (try_end),
+      
+      (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", ":wheel_type"),
+    (try_end),
+   ]),
+
+  # script_get_prop_instance_scale
+  # Input: prop_instance_id
+  #
+  # Output: reg0 = x_scale
+  #         reg1 = y_scale
+  #         reg2 = z_scale
+  #         reg3 = is_scaled
+  ("get_prop_instance_scale",
+  [
+    (store_script_param, ":prop_instance_id", 1),
+    
+    (set_fixed_point_multiplier, 1000),
+    
+    (assign, ":x_scale", 1000),
+    (assign, ":y_scale", 1000),
+    (assign, ":z_scale", 1000),
+    (assign, ":is_scaled",0),
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (prop_instance_get_scale, pos59, ":prop_instance_id"),
+      (position_get_scale_x, ":x_scale", pos59),#x scale in meters * fixed point multiplier is returned
+      (position_get_scale_y, ":y_scale", pos59),
+      (position_get_scale_z, ":z_scale", pos59),  
+      
+      (this_or_next|neq,":x_scale",1000),
+      (this_or_next|neq,":y_scale",1000),
+                   (neq,":z_scale",1000),
+      (assign, ":is_scaled",1),
+    (try_end),
+    
+    (set_fixed_point_multiplier, 100),
+    
+    (assign,reg0,":x_scale"),
+    (assign,reg1,":y_scale"),
+    (assign,reg2,":z_scale"),
+    (assign,reg3,":is_scaled"),
+  ]),
+
+  # todo = Damage to prop, implement
+  # script_deliver_damage_to_prop
+  # Input: prop_instance_id
+  #        damage
+  #        use_pos47_particle (particle from pos47)
+  #
+  # Output: reg1 = is_ok
+  ("deliver_damage_to_prop",
+  [
+  #  (store_script_param, ":prop_instance_id", 1),
+  #  (store_script_param, ":damage", 2),
+  #  (store_script_param, ":use_pos47_particle", 3),
+  #(store_script_param, ":attacking_agent", 4),
+    
+  #  (assign,":is_ok",0),
+  #  (try_begin),
+  #    (this_or_next|multiplayer_is_server),
+  #    (neg|game_in_multiplayer_mode),
+      
+  #    (prop_instance_is_valid,":prop_instance_id"),
+      
+  #    (scene_prop_get_slot,":health",":prop_instance_id",scene_prop_slot_health),
+  #    (store_sub,":remaining_health",":health",":damage"),
+  #    (val_max,":remaining_health",0),
+
+  #    (prop_instance_get_scene_prop_kind, ":scene_prop_kind", ":prop_instance_id"),
+  #    (try_begin),
+		#		(eq, ":remaining_health", 0),
+		#	  (this_or_next|eq, ":scene_prop_kind", "spr_plank_destructible2"),
+		#		(eq, ":scene_prop_kind", "spr_plank_destructible"),
+		#		(agent_is_active,":attacking_agent"),
+		#		(agent_get_team,":team_no",":attacking_agent"),
+		#		# planks are always 1, cost 2 to build.
+				
+		#		(try_begin),
+		#			(eq,":team_no",0),
+		#			(val_add,"$g_team_1_build_points",1),
+		#		(else_try),
+		#			(val_add,"$g_team_2_build_points",1),
+		#		(try_end),     
+				
+		#		(call_script,"script_multiplayer_server_send_build_points"),
+		#	(try_end),
+      
+  #    (try_begin),
+  #      (neq,":scene_prop_kind","spr_earthwork1_destructible"), # not earthwork
+        
+  #      (assign,":run_else_clause",1),
+  #      (assign,":limit_else",0),
+  #      (try_begin),
+  #        (is_between, ":scene_prop_kind", "spr_door_destructible", "spr_mm_barrier_20m"),
+  #        (neg|scene_prop_slot_ge,":prop_instance_id",scene_prop_slot_health,1),
+  #        (assign,":run_else_clause",0),
+  #      (try_end),
+        
+  #      (try_begin),
+  #        (gt, ":remaining_health", 0), # still health left
+  #        (scene_prop_set_cur_hit_points, ":prop_instance_id", ":remaining_health"),
+  #        (scene_prop_set_slot, ":prop_instance_id", scene_prop_slot_health, ":remaining_health"), # then write it back.
+          
+  #        (assign,":run_else_clause",0),
+          
+  #        (this_or_next|is_between, ":scene_prop_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), # a fort
+  #        (this_or_next|is_between, ":scene_prop_kind", "spr_mm_wall3", "spr_mm_palisade"), # old mm walls  #patch1115 fix 38/2
+  #        (eq, ":scene_prop_kind", "spr_mm_ship_schooner"),
+
+          
+  #        (assign,":run_else_clause",1),
+  #        (assign,":limit_else",1),
+  #      (try_end),
+        
+  #      (try_begin),
+  #        (eq,":run_else_clause",1),
+
+  #        (val_sub,":damage",":health"), # take the remaining health of this object from the damage.
+          
+  #        (prop_instance_get_position, pos48, ":prop_instance_id"),
+          
+  #        # pos60 is particle pos
+  #        (try_begin),
+  #          (eq,":use_pos47_particle",1),
+  #          (copy_position,pos60,pos47), 
+  #        (else_try),
+  #          (copy_position,pos60,pos48), 
+  #        (try_end),
+          
+  #        (call_script,"script_multiplayer_server_play_hit_effect",cannon_hit_effect_event_type_wall, ":scene_prop_kind"),
+
+  #        (eq,":limit_else",0),
+          
+  #        (try_begin),
+  #          (is_between,":scene_prop_kind", "spr_mm_ship", "spr_door_destructible"),
+            
+  #          (try_begin),
+  #            (prop_instance_get_variation_id,":usable_boat",":prop_instance_id"),
+  #            (eq,":usable_boat",1),
+              
+  #            (scene_prop_get_slot, ":bounce", ":prop_instance_id", scene_prop_slot_bounces),
+  #            (neq, ":bounce", 1),  #patch1115 fix 39/1
+              
+  #            (set_fixed_point_multiplier,100),
+  #            (copy_position,pos57,pos48),
+  #            (position_get_distance_to_terrain,":dist",pos57),
+  #            (val_mul,":dist",-1),
+  #            (position_move_z,pos57,":dist"),
+  #            (position_rotate_y,pos57,45),
+              
+  #            (call_script, "script_prop_instance_animate_to_position_with_childs", ":prop_instance_id", 1500,0,0),
+              
+  #            (store_mission_timer_a,":cur_time"),
+  #            (scene_prop_set_slot, ":prop_instance_id", scene_prop_slot_time_left, ":cur_time"),
+  #            (scene_prop_set_slot, ":prop_instance_id", scene_prop_slot_bounces, 1), # abuse bounces for destroyed
+              
+  #            (copy_position,pos56,pos48), # pos56 is sound pos.
+  #            (call_script, "script_multiplayer_server_play_sound_at_position", "snd_boat_sinking"),
+  #          (try_end),
+  #        (else_try),  
+  #          (is_between, ":scene_prop_kind", "spr_door_destructible", "spr_mm_barrier_20m"),
+            
+  #          (try_begin),
+  #            (scene_prop_slot_ge,":prop_instance_id",scene_prop_slot_health,1),
+              
+  #            (prop_instance_get_position, pos8, ":prop_instance_id"),
+
+  #            (assign,":rotation_change", 90),
+              
+  #            (prop_instance_get_variation_id,":combined_val",":prop_instance_id"),
+  #            (store_div, ":reversed_rotation", ":combined_val", 10),
+              
+  #            (try_begin),
+  #              (eq, ":reversed_rotation", 1),
+  #              (val_mul,":rotation_change",-1),
+  #            (try_end),
+              
+  #            (position_rotate_x, pos8, ":rotation_change"),
+  #            (prop_instance_animate_to_position, ":prop_instance_id", pos8, 70), #animate to position 1 in 0.7 second
+              
+  #            (scene_prop_set_cur_hit_points, ":prop_instance_id", 0),
+  #            (scene_prop_set_hit_points, ":prop_instance_id", 0),
+  #            (scene_prop_set_slot, ":prop_instance_id", scene_prop_slot_health, 0),
+  #            (prop_instance_enable_physics, ":prop_instance_id", 0),
+              
+  #            # On prop destruction set the health for clients
+  #            (try_begin),
+  #              (game_in_multiplayer_mode),
+                
+  #              (assign,":packed_value",":prop_instance_id"),
+  #              (val_lshift,":packed_value",1),
+  #              (val_add,":packed_value",1),
+                
+  #              (try_for_players, ":player_no3", 1),
+  #                (player_is_active, ":player_no3"),
+  #                (multiplayer_send_int_to_player, ":player_no3", multiplayer_event_return_destructible_prop_spawn_or_destroy, ":packed_value"),
+  #              (try_end),
+  #            (try_end),
+  #          (try_end),
+  #        (else_try),
+  #          #fetch next kind
+  #          (call_script,"script_get_next_stage_acording_to_damage",":prop_instance_id",":damage",scene_prop_slot_destruct_next_stage_1),
+  #          (assign,":next_kind",reg1),
+  #          (assign,":damage",reg2), # remaining damage for new object.
+            
+  #          (copy_position,pos49,pos48), # pos49 is prop pos.
+            
+  #          (set_fixed_point_multiplier, 100),
+  #          (try_begin),
+  #            (is_between,":next_kind","spr_mm_palisadedd","spr_crate_explosive"), # a construction object
+              
+  #            (call_script, "script_get_prop_kind_for_constr_kind", ":next_kind"),
+  #            (store_mul,":x_offset",reg1,-1),
+  #            (store_mul,":y_offset",reg2,-1),
+  #            (store_mul,":z_offset",reg3,-1),
+              
+  #            (position_move_x,pos49,":x_offset"),
+  #            (position_move_y,pos49,":y_offset"),
+  #            (position_move_z,pos49,":z_offset"),
+  #          (try_end),
+
+  #          (try_begin),
+  #            (scene_prop_slot_eq, ":prop_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+  #            (scene_prop_get_slot,":width_scale",":prop_instance_id",scene_prop_slot_x_scale),
+  #            (scene_prop_get_slot,":length_scale",":prop_instance_id",scene_prop_slot_y_scale),
+  #            (scene_prop_get_slot,":height_scale",":prop_instance_id",scene_prop_slot_z_scale),
+              
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":next_kind", 0, 0, 1, ":width_scale",":length_scale",":height_scale"),
+  #          (else_try),
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":next_kind", 0, 0, 0),
+  #          (try_end),
+  #          (assign,":new_prop_instance_id",reg0),
+
+  #          (scene_prop_get_slot,":pile_prop_begin",":prop_instance_id",scene_prop_slot_destruct_pile_prop_begin),
+  #          (scene_prop_get_slot,":pile_prop_end",":prop_instance_id",scene_prop_slot_destruct_pile_prop_end),
+  #          (scene_prop_get_slot,":linked_cannons_index",":prop_instance_id",scene_prop_slot_linked_prop),
+            
+  #          (try_begin),
+  #            (this_or_next|is_between,":next_kind",mm_destroyed_props_begin,mm_destroyed_props_end), # This is the final stage.
+  #            (eq,":next_kind","spr_fortnew8"),
+              
+  #            (try_begin),
+  #              (neq,":linked_cannons_index",0), # not zero.
+                
+  #              (try_for_range,":cannon_type", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
+  #                (try_for_prop_instances, ":cur_instance_id", ":cannon_type", somt_temporary_object),
+  #                  (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1), # only spawned ones obviously want to be checked.
+                    
+  #                  (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_linked_prop,":linked_cannons_index"),  # This cannon has a link with this wall!
+                    
+  #                  (scene_prop_get_slot,":cannon_maper_placed",":cur_instance_id", scene_prop_slot_replacing), # get orig cannon its replacing
+  #                  (try_begin),
+  #                    (prop_instance_is_valid,":cannon_maper_placed"),
+                      
+  #                    (scene_prop_set_slot,":cannon_maper_placed", scene_prop_slot_replaced_by, -1), # set to not replaced for respawn next round
+  #                  (try_end),
+                    
+  #                  (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"), # Then clean that bitch up.
+  #                (try_end), 
+  #              (try_end),
+                
+  #              (try_for_range,":door_type", "spr_door_destructible", "spr_mm_barrier_20m"),
+  #                (try_for_prop_instances, ":cur_instance_id", ":door_type", somt_object),
+
+  #                  (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_linked_prop,":linked_cannons_index"),  # This cannon has a link with this wall!
+                    
+  #                  (scene_prop_slot_ge,":cur_instance_id",scene_prop_slot_health,1),
+                    
+  #                  (prop_instance_get_position, pos8, ":cur_instance_id"),
+
+  #                  (assign,":rotation_change", 90),
+                    
+  #                  (prop_instance_get_variation_id,":combined_val",":cur_instance_id"),
+  #                  (store_div, ":reversed_rotation", ":combined_val", 10),
+                    
+  #                  (try_begin),
+  #                    (eq, ":reversed_rotation", 1),
+  #                    (val_mul,":rotation_change",-1),
+  #                  (try_end),
+                    
+  #                  (position_rotate_x, pos8, ":rotation_change"),
+  #                  (prop_instance_animate_to_position, ":cur_instance_id", pos8, 70), #animate to position 1 in 0.7 second
+                    
+  #                  (scene_prop_set_cur_hit_points, ":cur_instance_id", 0),
+  #                  (scene_prop_set_hit_points, ":cur_instance_id", 0),
+  #                  (scene_prop_set_slot, ":cur_instance_id", scene_prop_slot_health, 0),
+  #                  (prop_instance_enable_physics, ":cur_instance_id", 0),
+  #                  # On prop destruction set the health for clients
+  #                  (try_begin),
+  #                    (game_in_multiplayer_mode),
+                      
+  #                    (assign,":packed_value",":cur_instance_id"),
+  #                    (val_lshift,":packed_value",1),
+  #                    (val_add,":packed_value",1),
+                      
+  #                    (try_for_players, ":player_no6", 1),
+  #                      (player_is_active, ":player_no6"),
+  #                      (multiplayer_send_2_int_to_player, ":player_no6", multiplayer_event_return_destructible_prop_spawn_or_destroy, ":packed_value"),
+  #                    (try_end),
+  #                  (try_end),
+  #                (try_end),
+  #              (try_end),      
+  #            (try_end),
+              
+  #          (else_try),
+  #            (prop_instance_is_valid,":new_prop_instance_id"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_linked_prop,":linked_cannons_index"),
+              
+  #            # assign destructable prop slots to this new one.
+  #            (scene_prop_get_slot,":cur_wall_height",":prop_instance_id",scene_prop_slot_destruct_wall_height),
+  #            (scene_prop_get_slot,":cur_wall_width",":prop_instance_id",scene_prop_slot_destruct_wall_width),
+  #            (scene_prop_get_slot,":cur_wall_length",":prop_instance_id",scene_prop_slot_destruct_wall_length),
+  #            (scene_prop_get_slot,":move_height_to_center",":prop_instance_id",scene_prop_slot_destruct_move_height_to_center),
+  #            (scene_prop_get_slot,":move_width_to_center",":prop_instance_id",scene_prop_slot_destruct_move_width_to_center),
+  #            (scene_prop_get_slot,":move_length_to_center",":prop_instance_id",scene_prop_slot_destruct_move_length_to_center),
+  #            (scene_prop_get_slot,":rotate_z_90",":prop_instance_id",scene_prop_slot_destruct_rotate_z_90),
+  #            (scene_prop_get_slot,":cur_wall_height_offset",":prop_instance_id",scene_prop_slot_destruct_wall_height_offset),
+  #            (scene_prop_get_slot,":cur_wall_width_offset",":prop_instance_id",scene_prop_slot_destruct_wall_width_offset),
+  #            (scene_prop_get_slot,":cur_wall_length_offset",":prop_instance_id",scene_prop_slot_destruct_wall_length_offset),
+  #            (scene_prop_get_slot,":inverse_width_movement",":prop_instance_id",scene_prop_slot_destruct_inverse_width_movement),
+  #            (scene_prop_get_slot,":cur_max_wall_length",":prop_instance_id",scene_prop_slot_destruct_max_length),
+              
+  #            (scene_prop_get_slot,":width_scale",":prop_instance_id",scene_prop_slot_x_scale),
+  #            (scene_prop_get_slot,":length_scale",":prop_instance_id",scene_prop_slot_y_scale),
+  #            (scene_prop_get_slot,":height_scale",":prop_instance_id",scene_prop_slot_z_scale),
+  #            (scene_prop_get_slot,":has_scale",":prop_instance_id", scene_prop_slot_is_scaled),
+              
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_height,":cur_wall_height"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_width,":cur_wall_width"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_length,":cur_wall_length"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_move_height_to_center,":move_height_to_center"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_move_width_to_center,":move_width_to_center"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_move_length_to_center,":move_length_to_center"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_rotate_z_90,":rotate_z_90"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_height_offset,":cur_wall_height_offset"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_width_offset,":cur_wall_width_offset"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_wall_length_offset,":cur_wall_length_offset"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_inverse_width_movement,":inverse_width_movement"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_max_length,":cur_max_wall_length"),
+              
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_x_scale,":width_scale"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_y_scale,":length_scale"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_z_scale,":height_scale"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_is_scaled,":has_scale"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_pile_prop_begin,":pile_prop_begin"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_destruct_pile_prop_end,":pile_prop_end"),
+              
+  #            #Shift the values for next stage.
+  #            (assign,":next_kind2",":next_kind"),
+  #            (try_for_range,":cur_index",1,10), # 9 loops
+  #              (gt,":next_kind2",-1),
+  #              (store_add,":slot_index",":cur_index",scene_prop_slot_destruct_next_stage_1),
+  #              (scene_prop_get_slot,":next_kind2",":prop_instance_id",":slot_index"),
+  #              (gt,":next_kind2",-1),
+                
+  #              (val_sub,":slot_index",1), # sub one from the index.
+  #              (scene_prop_set_slot,":new_prop_instance_id",":slot_index",":next_kind2"),
+  #            (try_end),
+              
+  #            (gt, ":damage", 0), # still damage left?
+  #            (scene_prop_get_slot, ":health", ":new_prop_instance_id", scene_prop_slot_health),
+  #            (store_sub,":remaining_health",":health",":damage"),
+  #            (scene_prop_set_cur_hit_points, ":new_prop_instance_id", ":remaining_health"),
+  #            (scene_prop_set_slot,":new_prop_instance_id",scene_prop_slot_health, ":remaining_health"), # then add to the new prop.
+  #          (try_end),  
+            
+  #          (try_begin),
+  #            (gt,":pile_prop_begin",-1),
+  #            (gt,":pile_prop_end",-1),
+              
+  #            (store_random_in_range, ":pile_ammount", 2, 4), # between 2 and 3 piles.
+              
+  #            (try_for_range,":unused",0,":pile_ammount"),
+  #              (store_random_in_range, ":pile_prop_type", ":pile_prop_begin", ":pile_prop_end"),
+  #              (copy_position,pos8,pos48),
+                
+  #              (try_begin), # move a bit for this walls since their not centered :))
+  #                (is_between,":scene_prop_kind","spr_mm_wall1","spr_mm_stockade"),
+                 
+  #                (position_move_x,pos8,5),
+  #                (position_move_y,pos8,176),
+  #              (try_end),
+
+  #              (store_random_in_range, ":front", 0, 2),
+                
+  #              (assign,":x_position",0),
+  #              (try_begin),
+  #                (eq,":front",1),
+  #                (store_random_in_range, ":x_position", 37, 101),
+  #              (else_try),
+  #                (store_random_in_range, ":x_position", -101, -37),
+  #              (try_end),
+  #              (store_random_in_range, ":y_position", -121, 121),
+                
+                
+  #              (position_move_x,pos8,":x_position"),
+  #              (position_move_y,pos8,":y_position"),
+  #              (position_move_z,pos8,-20),
+  #              (position_set_z_to_ground_level,pos8),
+                
+  #              (init_position,pos37),
+  #              (position_copy_origin,pos37,pos8),
+                
+  #              (call_script,"script_get_angle_of_ground_at_pos",0, ":scene_prop_kind"),
+  #              (assign,":x_rot",reg0),
+  #              (assign,":y_rot",reg1),
+  #              (store_random_in_range, ":z_rot", 0, 360),
+  #              (val_min,":x_rot",45),
+  #              (val_max,":x_rot",-45),
+  #              (val_min,":y_rot",45),
+  #              (val_max,":y_rot",-45),
+                
+  #              (position_rotate_y,pos37,":y_rot"),
+  #              (position_rotate_x,pos37,":x_rot"),
+  #              (position_rotate_z,pos37,":z_rot"),
+                
+  #              (copy_position,pos49,pos37),
+  #              (call_script, "script_find_or_create_scene_prop_instance", ":pile_prop_type", 0, 0, 0),
+  #            (try_end),
+  #          (try_end),
+
+  #          (position_set_z,pos48,-3000),
+  #          (try_begin),
+  #            (prop_instance_is_animating, ":animating", ":prop_instance_id"),
+  #            (eq,":animating",1),
+  #            (prop_instance_stop_animating, ":prop_instance_id"),
+  #          (try_end),
+
+  #          (prop_instance_set_position,":prop_instance_id",pos48),
+            
+  #          (scene_prop_get_slot, ":window_instance", ":prop_instance_id", scene_prop_slot_child_prop1),
+  #          (try_begin),
+  #            (prop_instance_is_valid,":window_instance"),
+  #            (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_child_prop1,-1),
+  #            (call_script, "script_clean_up_prop_instance", ":window_instance"),
+  #          (try_end),
+            
+  #        (try_end),
+  #      (try_end),
+        
+  #    (else_try),
+  #      # for earthworks we do something totally difirent :)
+  #      (scene_prop_get_slot,":ground_offset",":prop_instance_id", scene_prop_slot_ground_offset),
+        
+  #      (neq,":ground_offset",-100), # it is not below 1 meter underground then lower it.
+
+  #      (val_max,":remaining_health",1),
+        
+  #      (scene_prop_set_slot, ":prop_instance_id", scene_prop_slot_health, ":remaining_health"), # then write it back.
+  #      (scene_prop_set_cur_hit_points, ":prop_instance_id", ":remaining_health"),
+        
+  #      (store_div,":z_change",":damage",-2),
+  #      # (assign,":z_change",-2),
+        
+  #      (val_add,":ground_offset",":z_change"), # lower it by that value
+  #      (assign,":old_ground_offset",":ground_offset"),
+  #      (val_max,":ground_offset",-100), # not below -100 centimeters.
+        
+  #      (val_sub,":old_ground_offset",":ground_offset"),# change z_change due to val_max
+  #      (val_sub,":z_change",":old_ground_offset"),
+        
+  #      (scene_prop_set_slot,":prop_instance_id", scene_prop_slot_ground_offset, ":ground_offset"),
+        
+  #      (prop_instance_get_position,pos48,":prop_instance_id"),
+  #      (position_move_z,pos48,":z_change"),
+  #      (prop_instance_animate_to_position, ":prop_instance_id", pos48, 10),
+  #    (try_end),
+      
+  #    (assign,":is_ok",1),
+  #  (try_end),
+     (assign,":is_ok",1), # delete this line when implementing the method
+     (assign,reg1,":is_ok"),
+  ]),
+
+  # script_search_for_first_ground_from_direction_to_angle
+  # Input: pos23
+  #        pos10
+  # Output: deg_value 
+  ("search_for_first_ground_from_direction_to_angle",
+  [    
+    (assign,":deg_value",0),
+    (try_begin),
+      (set_fixed_point_multiplier,1000),
+         
+      # Determine position the agent is looking at and store it in pos23.
+      (assign,":end_cond_2",1),
+      (position_move_z,pos23,180,1), # move to agent height.
+      (try_for_range,":unused",0,":end_cond_2"),
+        (position_move_y,pos23,5,0),
+        (position_get_distance_to_ground_level,":dist",pos23),
+        (gt,":dist",10),
+        (val_add,":end_cond_2",1),
+        (gt,":end_cond_2",10000),
+        (assign,":end_cond_2",0),
+      (try_end),
+      
+      # DEBUGDEBUGDEBUG
+      #(prop_instance_animate_to_position,"$g_test_prop",pos23,52),
+
+      (get_distance_between_positions,":dist",pos23,pos10), # Distance in decimeters (10 = 1 meter)
+      (val_div,":dist",10),
+
+      # We have distance, lets calculate perfect angle for fire.
+      # angle = (arcsin((gravity*distance)/(velocity*velocity)))/2
+      # angle = 315 - angle
+      
+      # example for a aim at 80 meters away;
+      # 800 dm * 49 dm/s = 39200
+      # Default mortar speed is 32 m/s
+      # 32 * 32 = 1024 so lets round it to 102 (m > dm is 2 fixed points for the square calc.
+      #    rounding off is another one this we reach fixed point 1000)
+      # 39200 / 102 = 382.8125
+      # asin(0.382) = 22.4576224010383 Degrees
+      # 22457 / 2000 = 11 degrees.
+      (store_mul,":deg_value",49,":dist"), # 49 dm/s (gravity) * distance
+    #  (store_mul,":vel_calc",32,32), # sqr(max vel )# max vel = m/s
+      (val_div,":deg_value",102), # devide it through the velocity calulation
+      (val_min,":deg_value",1000),
+      # with all these steps we created a fixed point already :) (0.576) or 576 fixed.
+      (store_asin,":deg_value",":deg_value"), # store its asin.
+      (val_div,":deg_value",2000), # make degrees + devide /2
+      (val_add,":deg_value",1), # fix
+      (store_add,":deg_value",315,":deg_value"), # 90 degrees - value = perfect angle :)
+      
+
+      (set_fixed_point_multiplier,100),
+    (try_end),
+    
+    (assign,reg0,":deg_value"),
+  ]),
+
+  # script_cannon_explosion_on_position
+  # Input: pos47
+  #        spawn_particles
+  #        ammo_type
+  #        shooter_agent
+  # Output: 
+  ("cannon_explosion_on_position",
+  [
+    (store_script_param, ":spawn_particles", 1),
+    (store_script_param, ":ammo_type", 2),
+    (store_script_param, ":shooter_agent", 3),
+    
+    (try_begin),
+      (assign,":max_damage",0),
+      (assign,":range",0),
+      
+      (set_fixed_point_multiplier,100),
+      
+      (try_begin),
+        (eq,":ammo_type",cannon_ammo_type_shell),
+        (assign,":max_damage",200),
+        (assign,":range",330),
+      (else_try),
+        (eq,":ammo_type",cannon_ammo_type_bomb),
+        (assign,":max_damage",300),
+        (assign,":range",420),
+      (else_try),
+        (eq,":ammo_type",cannon_ammo_type_rocket),
+        (assign,":max_damage",200),
+        (assign,":range",310),
+      (try_end),
+      
+      (call_script,"script_explosion_at_position",":shooter_agent",":max_damage",":range"), # Input: shooter_agent_no, max_damage points, range in cm
+      
+      (try_begin),
+        (eq,":spawn_particles",1),
+        
+        (try_begin),
+          (neg|agent_is_active,":shooter_agent"),
+          (assign,":shooter_agent",-1),
+        (try_end),
+        
+        #Added fragmentation:
+        (store_random_in_range,":num_fragments",15,26),
+        (try_for_range,":unused",0,":num_fragments"),
+          (copy_position,pos23,pos47),
+          (position_move_z,pos23,30),
+          (store_random_in_range,":x_change",0,76),
+          (store_random_in_range,":z_change",0,361),
+          (position_rotate_x, pos23, ":x_change"),
+          (position_rotate_z, pos23, ":z_change"),
+          (store_random_in_range,":fragment_speed",1500,3000),
+          (add_missile, ":shooter_agent", pos23, ":fragment_speed", "itm_cannon_canister_dummy", 0, "itm_shell_fragment", 0),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+  # script_cannon_ball_hit_ground
+  # Input: pos34 #ballpos with Z on ground level
+  #        ball_instance_id
+  #        cur_x_vel
+  #        cur_z_vel
+  # Output: 
+  #        pos33  ### OVERWRITES POS33!!!
+  #        pos35  ### OVERWRITES POS35!!!
+  ("cannon_ball_hit_ground",
+  [
+    (store_script_param, ":ball_instance_id", 1),
+    (store_script_param, ":cur_x_vel", 2),
+    (store_script_param, ":cur_z_vel", 3),
+    
+    (assign,":clean_it_up",0),
+    (try_begin),
+      # calculating ball angle
+      (set_fixed_point_multiplier, 1000),
+      
+      (try_begin), # fix div by 0 error
+        (eq,":cur_z_vel",0),
+        (assign,":cur_z_vel",1),
+      (try_end),
+      
+      (store_mul,":calc_x",":cur_x_vel",1000),
+      (store_div,":div_value",":calc_x", ":cur_z_vel"),
+      (store_atan, ":ball_angle", ":div_value"),
+      (val_div,":ball_angle",1000),
+      
+      (try_begin),
+        (gt,":ball_angle",0), 
+        (val_add,":ball_angle",-90),
+      (else_try),
+        (lt,":ball_angle",0),
+        (val_add,":ball_angle",90),
+      (try_end),
+      
+      (set_fixed_point_multiplier, 100),
+      (init_position,pos37),
+      (position_copy_origin,pos37,pos34),
+      
+      (position_set_z_to_ground_level,pos37),
+      (position_get_rotation_around_z, ":z_rot", pos34),
+      (call_script,"script_get_angle_of_ground_at_pos",":z_rot",-1),
+      (assign,":y_rot",reg1),
+      (store_add,":angle_difirence",":ball_angle",":y_rot"),
+      (val_abs,":angle_difirence"),
+      
+      (copy_position,pos49,pos34), # pos49 is prop pos.
+      (position_rotate_z,pos49,-90),
+      (try_begin),
+        (lt,":angle_difirence",12),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_big"),
+      (else_try),
+        (lt,":angle_difirence",24),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_big_medium"),
+      (else_try),
+        (lt,":angle_difirence",36),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_medium"),
+      (else_try),
+        (lt,":angle_difirence",48),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_medium_small"),
+      (else_try),
+        (lt,":angle_difirence",60),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_crator_medium_very_small"),
+      (else_try),
+        (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_small"),
+      (try_end),
+
+      (val_mul,":angle_difirence",-1), # reverse angle.
+      
+      # calc current speed.
+      # speed = sqrt(x^2 + z^2)
+      (set_fixed_point_multiplier, 1),
+      
+      (store_mul, ":cur_x_calc_val", ":cur_x_vel", ":cur_x_vel"), 
+      (store_mul, ":cur_z_calc_val", ":cur_z_vel", ":cur_z_vel"), 
+      (store_add,":cur_speed",":cur_x_calc_val",":cur_z_calc_val"),
+      (store_sqrt,":cur_speed",":cur_speed"),
+       
+      # calc speed loss in a range between 10% loss and 100% loss depending on 0-90 degrees range
+      (assign,":loss",":angle_difirence"),
+      (val_abs,":loss"),
+      (val_add,":loss",20), # add 20 to make 0-90 > 10-110
+      (val_min,":loss",100), # make sure not more then 100. soo it will be loosing vel fast.
+      (store_sub,":loss",100,":loss"), # 100 - loss(30) = 70
+      (val_mul, ":cur_speed", ":loss"), 
+      (val_div, ":cur_speed", 100), # value * 70 / 100 = - 70% speed left after hit.
+      
+      # calculated loss, lets use that value as a base for the particle_system_burst
+      
+      (try_begin),
+        (position_get_z, ":ball_z",pos34),
+        (gt,":ball_z", "$g_scene_water_level"),
+        (copy_position,pos60,pos34), # pos60 is particle pos
+        (call_script,"script_multiplayer_server_play_hit_effect",cannon_hit_effect_event_type_ground, ":loss"),
+      (try_end),
+      
+      (try_begin),
+        (lt,":cur_speed",550), # lower then 12 m/s then just remove this ball.
+        
+        (assign,":clean_it_up",1),
+      (else_try),
+        (position_set_z_to_ground_level,pos33),
+        (position_move_z,pos33,10),
+        (prop_instance_stop_animating,":ball_instance_id"),
+        (prop_instance_set_position,":ball_instance_id",pos33),
+        (copy_position,pos35,pos33),
+      
+        (set_fixed_point_multiplier, 1000),
+         
+        # make rotation fixed point.
+        (val_mul,":angle_difirence",1000),
+        
+        # x += Speed * Math.Cos(angle);
+        (store_cos, ":cos_of_angle", ":angle_difirence"),
+        (store_mul,":cur_x_vel",":cos_of_angle",":cur_speed"),
+        (val_div,":cur_x_vel",1000),
+        
+        # z += speed * Math.Sin(angle);
+        (store_sin, ":sin_of_angle", ":angle_difirence"),
+        (store_mul,":cur_z_vel",":sin_of_angle",":cur_speed"),
+        (val_div,":cur_z_vel",1000),
+        (val_mul,":cur_z_vel",-1),
+        
+        # apply extra loss to z bounce.
+        (val_mul, ":cur_z_vel", 70),
+        (val_div, ":cur_z_vel", 100), # value * 70 / 100 = - 70% speed left after hit.
+      (try_end),
+      
+      (set_fixed_point_multiplier, 100),
+      (assign,reg0,":cur_x_vel"),
+      (assign,reg1,":cur_z_vel"),
+      (assign,reg2,":clean_it_up"),
+     # (display_message,"@after  cur_x_vel: {reg0}  cur_z_vel: {reg1}"),
+   (try_end),
+  ]),
+
+  #script_show_multiplayer_message
+  # INPUT: arg1 = multiplayer_message_type
+  # OUTPUT: none
+  ("show_multiplayer_message",
+   [
+    (store_script_param, ":multiplayer_message_type", 1),
+    (store_script_param, ":value", 2),
+
+    (assign, "$g_multiplayer_message_type", ":multiplayer_message_type"),
+
+    (try_begin),
+      (is_between,":multiplayer_message_type", multiplayer_message_type_error, multiplayer_message_types_end),
+      (try_begin),
+        (assign,":color",-1),
+        (try_begin),
+          (eq, ":multiplayer_message_type", multiplayer_message_type_error),
+          (assign,":color",colour_red),
+          (play_sound,"snd_tutorial_fail"),
+        (else_try),
+          (eq, ":multiplayer_message_type", multiplayer_message_type_warning),
+          (assign,":color",colour_yellow),
+        (else_try),
+          (eq, ":multiplayer_message_type", multiplayer_message_type_message),
+          (assign,":color",colour_white),
+        (try_end),
+        
+        (gt,":color",-1),
+        (assign,"$g_presentation_server_notice_colour",":color"),
+        (try_begin),
+          (is_between,":multiplayer_message_type", multiplayer_message_type_error, multiplayer_message_type_message_custom_color),
+          (str_store_string,s60,":value"), # String ID is pushed from server.
+        (try_end),
+        (neg|multiplayer_is_dedicated_server),
+        (start_presentation, "prsnt_display_server_notice"),
+      (try_end),
+    (try_end),
+    ]),
+
+   # script_handle_agent_control_command
+  # Input: agent_id
+  #        command_type
+  #        command
+  # Output: 
+  ("handle_agent_control_command",
+  [
+    (store_script_param, ":agent_id", 1),
+    (store_script_param, ":command_type", 2),
+    (store_script_param, ":command", 3),
+          
+    (assign,":is_ok",0),
+    (try_begin),
+      (agent_is_active, ":agent_id"),
+      (agent_is_alive, ":agent_id"),
+      
+      (try_begin),
+        (eq, ":command_type", command_type_cannon),
+        (is_between, ":command", cannon_commands_begin, cannon_commands_end),
+        
+        (try_begin),
+          (is_between, ":command", cannon_command_fire, cannon_commands_end), # these are immediate commands and need to execute something :)
+
+          (agent_get_slot,":instance_id",":agent_id",slot_agent_current_control_prop),
+          (prop_instance_is_valid,":instance_id"),
+          (prop_instance_get_scene_prop_kind, ":cannon_kind", ":instance_id"),
+          (is_between,":cannon_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+          
+          (try_begin),
+            (eq,":command",cannon_command_fire),
+            
+            (agent_get_slot,":old_command",":agent_id",slot_agent_current_command),
+            (try_begin),
+              (neq,":old_command",cannon_command_fire), # only once!
+          
+              (try_begin), # dont do frizzle sound and smoke for rockets.
+                (neq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+                
+                #(call_script, "script_multiplayer_server_play_sound_at_agent", "snd_cannon_fuse", ":agent_id"),
+                (agent_get_position,pos56,":agent_id"),
+                (call_script,"script_multiplayer_server_play_sound_at_position","snd_cannon_fuse"),
+                
+                (call_script,"script_cannon_instance_get_barrel",":instance_id"),
+                (assign,":barrel_instance",reg0),
+                
+                (assign,":x_fire_pos",0),
+                (assign,":y_fire_pos",0),
+                (assign,":z_fire_pos",0),
+                (try_begin),
+                  (prop_instance_is_valid,":barrel_instance"),
+                  (scene_prop_get_slot,":x_fire_pos",":barrel_instance",scene_prop_slot_x_extra),
+                  (scene_prop_get_slot,":y_fire_pos",":barrel_instance",scene_prop_slot_y_extra),
+                  (scene_prop_get_slot,":z_fire_pos",":barrel_instance",scene_prop_slot_z_extra),
+                  (prop_instance_get_position, pos5, ":barrel_instance"),
+                (else_try),
+                  (scene_prop_get_slot,":x_fire_pos",":instance_id",scene_prop_slot_x_extra),
+                  (scene_prop_get_slot,":y_fire_pos",":instance_id",scene_prop_slot_y_extra),
+                  (scene_prop_get_slot,":z_fire_pos",":instance_id",scene_prop_slot_z_extra),
+                  (prop_instance_get_position, pos5, ":instance_id"),
+                (try_end),
+                (position_move_x,pos5,":x_fire_pos"),
+                (position_move_y,pos5,":y_fire_pos"),
+                (position_move_z,pos5,":z_fire_pos"),
+                (position_rotate_y,pos5,90),
+                (particle_system_burst,"psys_cannon_frizzle_smoke",pos5,20),
+              (try_end),
+              
+              (assign,":is_ok",1), # we are going to do the actual firing in the aiming MT. this to give a 50 ms - 100 ms pause before actually firing the cannon for realism ^.^
+            (try_end),
+          (else_try),
+            (eq,":command",cannon_command_stop_aim),
+            
+            (call_script,"script_stop_agent_controlling_cannon",":instance_id",":agent_id"),
+            
+            (agent_set_slot,":agent_id",slot_agent_current_command,0),
+          (try_end),
+        (try_end),
+      (try_end),
+      
+      (eq,":is_ok",1),
+      (agent_set_slot,":agent_id",slot_agent_current_command,":command"),
+    (try_end),
+  ]),
+
+  # script_fire_cannon
+  # Input: cannon_instance of cannon
+  #        agent_id of agent
+  ("fire_cannon",
+  [
+   (store_script_param, ":cannon_instance", 1),
+   (store_script_param, ":using_agent", 2),
+    
+   (try_begin),
+     (this_or_next|multiplayer_is_server),
+     (neg|game_in_multiplayer_mode),
+     
+     (prop_instance_is_valid,":cannon_instance"),
+     (agent_is_active,":using_agent"),
+     
+     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_has_ball, 1),
+     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_loaded, 1),
+     (scene_prop_get_slot,":ammo_type",":cannon_instance",scene_prop_slot_ammo_type),
+     (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
+     (set_fixed_point_multiplier,100),
+     
+     (call_script,"script_cannon_instance_get_barrel",":cannon_instance"),
+     (assign,":barrel_instance",reg0),
+     
+     (prop_instance_get_position, pos11, ":cannon_instance"),
+     (try_begin),        
+       #(gt,":barrel_instance",-1),
+       (prop_instance_is_valid,":barrel_instance"), #patch1115 fix 18/4
+       (prop_instance_get_position, pos10, ":barrel_instance"),
+       (copy_position, pos11, pos10),
+     (else_try),
+       (assign,":barrel_instance",":cannon_instance"),
+     (try_end),
+     
+     # Get the origin position of ball/canister. Based on the relative position of the load button.
+     (assign,":load_button_instance",-1),
+     (copy_position,pos12,pos11),
+     (assign, ":load_found", 0),
+     (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+       (eq, ":load_found", 0),
+       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+       (assign,":load_button_instance",reg0),
+       #(gt,":load_button_instance",-1),
+       (prop_instance_is_valid,":load_button_instance"), #patch1115 18/3
+       
+       (assign, ":load_found", 1),
+       
+       (scene_prop_get_slot,":xvalue",":load_button_instance",scene_prop_slot_x_value),
+       (scene_prop_get_slot,":yvalue",":load_button_instance",scene_prop_slot_y_value),
+       (scene_prop_get_slot,":zvalue",":load_button_instance",scene_prop_slot_z_value),
+       # add extra cm to be out of barrel.    HERE
+       (try_begin),
+         (eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+         (val_add,":xvalue",66), 
+		 
+		 (assign, ":UpY", 5), #patch1115 fix 8/1
+		 (assign, ":lowY", -4),
+		 
+		 (assign, ":lowz", -10),
+		 (assign, ":upZ", 10), # fix 8/1 end
+		 
+       (else_try),
+		  (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
+		  (val_add,":xvalue",30), # fix 8/2
+		 #(val_add,":yvalue",30),
+		# (val_add,":zvalue",30), # moved below
+		 
+		  (assign, ":UpY", 3),
+		  (assign, ":lowY", -2),
+		 
+		  (assign, ":lowz", -10),
+		  (assign, ":upZ", 10), # fix 8/2 end
+		 
+    (else_try),
+      (val_add,":xvalue",46), # changed from 46 to 56 for tests
+		 
+		  (assign, ":UpY", 5), # fix 8/3
+		  (assign, ":lowY", -2),
+		 
+		  (assign, ":lowz", -10),
+		  (assign, ":upZ", 10), # fix 8/3 end
+		 
+       (try_end),
+       
+       (position_move_x, pos12,":xvalue"),
+       (position_move_y, pos12,":yvalue"),
+       (position_move_z, pos12,":zvalue"),
+     (try_end),
+     
+     (try_begin),
+       (eq,":load_found",0),
+       
+       (position_move_x,pos12,180), # if no load ball button for whatevaahh reason just set it to some average barel end position.
+     (try_end),
+     
+     (try_begin),
+       (eq,":ammo_type",cannon_ammo_type_canister),
+	   
+	    (try_begin), # fix 8/5
+		    (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
+		    (val_add,":zvalue",20), #20
+		    (position_move_z, pos12,":zvalue"),
+		    (position_get_rotation_around_y,":y_rot_howi",pos12),
+
+			  (val_add,":y_rot_howi",-15), # howitzer has extra angle.   was -15, lets try other #s for fun!
+         (try_begin),
+           (lt,":y_rot_howi",0),
+           (val_add,":y_rot_howi",360),
+		     (try_end),
+		 
+		  (position_rotate_y,pos12,":y_rot_howi"), # fix 8/5 end
+	  (try_end),
+
+       # Do some canister crap here.
+       
+       (try_for_range,":unused",0,40), #40 bullets in one shot :D    cani work HERE
+         (copy_position,pos22,pos12),
+         (store_random_in_range,":y_change",":lowY",":UpY"), #patch1115  fix 8/6          make cani shoot higher?   -4, 5    -2, 7 
+         (store_random_in_range,":z_change",":lowz",":upZ"),  # -8, 9
+         (val_add,":z_change",-90), # add extra rotation due to cannon pos.
+         (position_rotate_y, pos22, ":y_change"),
+         (position_rotate_z, pos22, ":z_change"),
+         (store_random_in_range,":bullet_speed",12000,19000),
+         (add_missile, ":using_agent", pos22, ":bullet_speed", "itm_cannon_canister_dummy", 0, "itm_canister_ammo", 0),		
+		 #(set_spawn_position,pos22),
+		 #(spawn_item,"itm_flag_france_45e",0,60),
+		 #(try_begin),
+		# (set_spawn_position,pos22),
+		# (spawn_item,"itm_flag_france_45e",0,30),       #to find position.
+		 #(try_end),
+		 
+       (try_end),
+       
+     (else_try),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_round),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
+       (eq,":ammo_type",cannon_ammo_type_rocket),
+       
+       (init_position,pos9), # pos9 holds new pos for cannonball
+       (position_copy_origin,pos9,pos12),
+       (position_get_rotation_around_y,":y_rot",pos10),
+       (position_get_rotation_around_z,":z_rot",pos10),
+       (position_rotate_z,pos9,":z_rot"),
+       
+       (assign,":init_vel",45), # 45 meters per 0.5 seconds = 90m/s
+       (assign,":ammo_size","spr_mm_cannonball_code_only_12pd"),
+       (assign,":particle",-1),
+       (assign,":flight_sound_id","snd_cannonball_loop"),
+       (assign,":ball_x",0),
+       (assign,":ball_y",0),
+       (assign,":ball_z",0),
+       (assign,":random_offset",25),
+       (try_begin),
+         (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+         (assign,":init_vel",20),
+         (val_add,":y_rot",-15), # howitzer has extra angle.
+         (try_begin),
+           (lt,":y_rot",0),
+           (val_add,":y_rot",360),
+         (try_end),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+         (val_add,":y_rot",-45), # mortar has extra angle.
+         (try_begin),
+           (lt,":y_rot",0),
+           (val_add,":y_rot",360),
+         (try_end),
+         (assign,":init_vel",16),
+         (assign,":random_offset",8),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_36pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+         (assign,":init_vel",40),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+         (assign,":init_vel",40),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+         (assign,":init_vel",30),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_6pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+         (assign,":init_vel",0),
+         (assign,":ammo_size","spr_mm_rocket_code_only"),
+         (assign,":particle","psys_rocket_smoke"),
+         (assign,":flight_sound_id","snd_rocket_loop"),
+       (try_end),
+
+      (store_mul,":random_offset_min",":random_offset",-1),
+      (val_add,":random_offset",1),
+      (store_random_in_range, ":rand_x_vel", ":random_offset_min",":random_offset"), # random for fire speed
+      (store_random_in_range, ":init_y_vel", ":random_offset_min",":random_offset"), # random for left and right so aim is not perfect
+      (store_random_in_range, ":rand_z_vel", ":random_offset_min",":random_offset"), # random for up and down so aim is not perfect
+       
+       # DEBUGDEBUGDEBUG
+       # (assign,":rand_x_vel",0),
+       # (assign,":init_y_vel",0),
+       # (assign,":rand_z_vel",0),
+       
+       (assign,":init_x_vel",0),
+       (assign,":init_z_vel",0),
+       (try_begin),
+         (eq,":init_vel",0),
+         (position_rotate_y,pos9,":y_rot"),
+         (val_add,":init_x_vel",200),
+       (else_try),
+         (set_fixed_point_multiplier, 1000),
+         # make rotation fixed point.
+         (val_mul,":y_rot",1000),
+         
+         # x += Speed * Math.Cos(angle);
+         (store_cos, ":cos_of_angle", ":y_rot"),
+         (store_mul,":init_x_vel",":cos_of_angle",":init_vel"),
+         (val_div,":init_x_vel",10),
+         
+         # z += speed * Math.Sin(angle);
+         (store_sin, ":sin_of_angle", ":y_rot"),
+         (store_mul,":init_z_vel",":sin_of_angle",":init_vel"),
+         (val_div,":init_z_vel",10),
+         (val_mul,":init_z_vel",-1),
+         
+         (set_fixed_point_multiplier, 100),
+       (try_end),
+       
+       (val_add,":init_x_vel",":rand_x_vel"),
+       (val_add,":init_z_vel",":rand_z_vel"),
+       
+       (position_move_x,pos9,":ball_x"),
+       (position_move_y,pos9,":ball_y"),
+       (position_move_z,pos9,":ball_z"),
+       
+       (copy_position,pos49,pos9), # pos49 is prop pos.
+       (call_script, "script_find_or_create_scene_prop_instance", ":ammo_size", 0, 0, 0),
+       (assign,":ball_instance_id",reg0),
+
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_in_use, 1),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_x_value, ":init_x_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_y_value, ":init_y_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_z_value, ":init_z_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_time, 0),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_bounces, 0),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_user_agent, ":using_agent"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_ammo_type, ":ammo_type"),
+       
+       (try_begin),
+         (gt,":flight_sound_id",-1),
+         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_sound,":flight_sound_id",prop_effect_handle_start),
+       (try_end),
+       
+       (try_begin),
+         (gt,":particle",-1),
+         #(particle_system_burst,":particle",pos49,40),
+         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_particle,":particle",prop_effect_handle_start),
+       (try_end),
+     (try_end),
+     
+     # remove the loaded_ammo display if applicable.
+     (try_for_range,":cur_ammotype","spr_mm_cannon_mortar_loaded_ammo","spr_mm_cannonball_code_only_6pd"),
+       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_ammotype"),
+       (call_script,"script_set_prop_child_inactive",reg0),
+     (try_end),
+     
+     (call_script,"script_set_prop_child_active",":load_button_instance"), # enable load button
+     
+     (try_begin), # mortar is angled 45 degrees up so need to do this for particles.
+       (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+       (position_rotate_y,pos12,-45),
+     (else_try),
+       (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+       (position_rotate_y,pos12,-15),
+     (try_end),
+     
+     (assign,":flash_type","psys_cannon_flash"),
+     (assign,":flash_strength",100),
+     (assign,":smoke_type","psys_cannon_smoke"),
+     (assign,":smoke_strength",90),
+     (assign,":sound_id","snd_cannon"),
+     (try_begin),
+       (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+       (assign,":flash_type",-1),
+       (assign,":smoke_type",-1),
+       (assign,":sound_id","snd_rocket_launch"),
+     (try_end),
+     
+     (copy_position,pos60,pos12), # pos60 is particle pos
+     (try_begin),
+       (gt,":smoke_type",-1),
+       (call_script,"script_multiplayer_server_spawn_particle_at_position",":smoke_type",":smoke_strength"),
+     (try_end),
+     (try_begin),
+       (gt,":flash_type",-1),
+       (call_script,"script_multiplayer_server_spawn_particle_at_position",":flash_type",":flash_strength"),
+     (try_end),
+     
+     (try_begin),
+       (gt,":sound_id",-1),
+       (copy_position,pos56,pos12),
+       (call_script,"script_multiplayer_server_play_sound_at_position",":sound_id"),
+     (try_end),
+     
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_has_ball, 0),
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_is_loaded, 0),
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_ammo_type, 0),
+     
+     (call_script,"script_stop_agent_controlling_cannon",":cannon_instance",":using_agent"),
+     
+     (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
+     (call_script,"script_set_prop_child_inactive",reg0),
+     
+     # lets do the animation. 
+     (call_script,"script_recoil_cannon",":cannon_instance",1,0),
+   (try_end),
+  ]),
+
+   # script_multiplayer_server_spawn_particle_at_position
+  # Input: arg1 = particle_effect_id
+  # Input: arg2 = burst_strength
+  # Input: pos60 = position with rotation for particle.
+  # Output: 
+  ("multiplayer_server_spawn_particle_at_position",
+   [
+    (store_script_param, ":particle_effect_id", 1),
+    (store_script_param, ":burst_strength", 2),
+  
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (is_between,":particle_effect_id","psys_pistol_smoke","psys_dynamic_snow"), # Valid particle?
+      
+      (try_begin),
+        (neg|multiplayer_is_dedicated_server),
+        (particle_system_burst_no_sync,":particle_effect_id",pos60,":burst_strength"),
+      (try_end),
+      
+      (try_begin),
+        (multiplayer_is_server),
+        
+        (set_fixed_point_multiplier, 100),
+        (position_get_x,":x_value",pos60),
+        (position_get_y,":y_value",pos60),
+        (position_get_z,":z_value",pos60),
+        
+        (position_get_rotation_around_z,":z_rot",pos60),
+        (position_get_rotation_around_x,":x_rot",pos60),
+        (position_get_rotation_around_y,":y_rot",pos60),
+        
+        # Make rotation positive for transfer if needed.
+        (try_begin),
+          (lt,":z_rot",0),
+          (val_add,":z_rot",360), 
+        (try_end),
+        (try_begin),
+          (lt,":x_rot",0),
+          (val_add,":x_rot",360), 
+        (try_end),
+        (try_begin),
+          (lt,":y_rot",0),
+          (val_add,":y_rot",360), 
+        (try_end),
+        
+        # add 100 meter to z so we support minus values.
+        (val_add,":z_value",10000),
+        (val_max,":z_value",0), # make sure its positive now.
+        
+        (val_clamp,":x_rot",0,361),
+        (val_clamp,":y_rot",0,361),
+        (val_clamp,":z_rot",0,361),
+        (val_clamp,":burst_strength",0,1000),
+        
+        # Lets pack this shit! :P
+        (store_mul, ":pack1", ":x_value", 1000),
+        (val_add, ":pack1", ":x_rot"),
+        (assign,":pack2", ":y_value"),
+        (store_mul, ":pack2", ":y_value", 1000),
+        (val_add, ":pack2", ":y_rot"),
+        (store_mul, ":pack3", ":z_value", 1000), 
+        (val_add, ":pack3", ":z_rot"),
+        (store_mul, ":pack4", ":particle_effect_id", 1000), 
+        (val_add, ":pack4", ":burst_strength"),
+        
+        # and send it...
+        (try_for_players, ":cur_player", 1),
+          (player_is_active,":cur_player"),
+
+          (multiplayer_send_4_int_to_player, ":cur_player", multiplayer_event_return_particle_at_pos,":pack1",":pack2",":pack3",":pack4"),
+        (try_end),
+      (try_end),
+    (try_end),
+   ]),
+
+  # script_generate_bits_for_cannon_instance
+  # Input: arg1 = instance_id
+  # Input: arg2 = use_given_position
+  # Input: arg3 = dont_recoil
+  # Output: reg0 = ok?
+  # Output: reg1 = cannon_wood_instance
+  ("generate_bits_for_cannon_instance",
+   [
+    (store_script_param, ":instance_id", 1),
+    (store_script_param, ":use_given_position", 2),
+    (store_script_param, ":dont_recoil", 3),
+    
+    (assign, reg0, 0),
+    (assign,":cannon_wood",-1),
+    (try_begin),
+      (prop_instance_is_valid, ":instance_id"),
+
+      (prop_instance_get_scene_prop_kind, ":cannon_type", ":instance_id"),
+      (try_begin),
+        (eq,":use_given_position",0),
+        (prop_instance_get_position, pos30, ":instance_id"),
+      (try_end),
+      (prop_instance_get_variation_id,":z_rotation_limit",":instance_id"),
+      (prop_instance_get_variation_id_2,":linked_wall_index",":instance_id"),
+      
+      (call_script, "script_clean_up_prop_instance", ":instance_id"),
+      
+      (assign,":wood_type",-1),
+      (assign,":wheel_type",-1),
+      (assign,":barrel_type",-1),
+      (assign,":static_type",-1),
+      (assign,":ball_type","spr_mm_load_cartridge_button"),
+      (assign,":push_type",-1),
+      (assign,":has_recoil",0),
+      (assign,":can_be_limbered",0),
+      (assign,":ammo_box_type","spr_mm_ammobox_cannon"),
+      (assign,":loaded_ammo_type",-1),
+      (assign,":barrel_x",0),
+      (assign,":barrel_y",0),
+      (assign,":barrel_z",0),
+      (assign,":limber_x",0),
+      (assign,":limber_y",0),
+      (assign,":limber_z",0),
+      (assign,":aim_x",0),
+      (assign,":aim_y",0),
+      (assign,":aim_z",0),
+      (assign,":fire_x",0),
+      (assign,":fire_y",0),
+      (assign,":fire_z",0),
+      (assign,":ball_x",0),
+      (assign,":ball_y",0),
+      (assign,":ball_z",0),
+      (assign,":reload_x",0),
+      (assign,":reload_y",0),
+      (assign,":reload_z",0),
+      (assign,":static_x",0),
+      (assign,":static_y",0),
+      (assign,":static_z",0),
+      (assign,":push_x",0),
+      (assign,":push_y",0),
+      (assign,":push_z",0),
+      (assign,":platform_x",-285),
+      (assign,":platform_y",0),
+      (assign,":ammobox_x",-8),
+      (assign,":ammobox_y",142),
+      (assign,":ammobox_z",0),
+      (assign,":loaded_ammo_x",0),
+      (assign,":loaded_ammo_y",0),
+      (assign,":loaded_ammo_z",0),      
+      (assign,":ground_dist",0),
+      (assign,":predefined_z_rotation_limit",0),
+      (try_begin),
+        (eq, ":cannon_type", "spr_mm_cannon_12pdr"),
+        (assign,":wood_type","spr_mm_cannon_12pdr_wood"),
+        (assign,":wheel_type","spr_mm_cannon_12pdr_wheels"),
+        (assign,":barrel_type","spr_mm_cannon_12pdr_barrel"),
+        (assign,":push_type","spr_mm_12pdr_push_button"),
+        (assign,":can_be_limbered",1),
+        (assign,":has_recoil",1),
+        (assign,":barrel_x",14),
+        (assign,":barrel_z",36),
+        (assign,":limber_x",-222),
+        (assign,":limber_z",-42),
+        (assign,":aim_x",-91), # -101
+        (assign,":fire_x",-78),
+        (assign,":fire_z",16),
+        (assign,":ball_x",92), # 102
+        (assign,":reload_x",92), # 102
+        (assign,":ground_dist",66),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_howitzer"),
+        (assign,":wood_type","spr_mm_cannon_howitzer_wood"),
+        (assign,":wheel_type","spr_mm_cannon_howitzer_wheels"),
+        (assign,":barrel_type","spr_mm_cannon_howitzer_barrel"),
+        (assign,":push_type","spr_mm_howitzer_push_button"),
+        (assign,":can_be_limbered",1),
+        (assign,":ammo_box_type","spr_mm_ammobox_howitzer"),
+        (assign,":has_recoil",1),
+        (assign,":barrel_x",16),
+        (assign,":barrel_z",38),
+        (assign,":limber_x",-229),
+        (assign,":limber_z",-42),
+        (assign,":aim_x",-46), #  -56
+        (assign,":fire_x",-35),
+        (assign,":fire_z",17),
+        (assign,":ball_x",30), # 40
+        (assign,":reload_x",30), # 40
+        (assign,":ground_dist",66),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_mortar"),
+        (assign,":wood_type","spr_mm_cannon_mortar_wood"),
+        (assign,":barrel_type","spr_mm_cannon_mortar_barrel"),
+        (assign,":static_type","spr_mm_cannon_mortar_static"),
+        (assign,":ball_type","spr_mm_load_bomb_button"),
+        (assign,":ammo_box_type","spr_mm_bomb_button"),
+        (assign,":loaded_ammo_type","spr_mm_cannon_mortar_loaded_ammo"),
+        (assign,":loaded_ammo_x",9),
+        (assign,":loaded_ammo_z",-9), 
+        (assign,":aim_x",-26),
+        (assign,":fire_x",-10),
+        (assign,":fire_z",20),
+        (assign,":ball_x",36), # 41
+        (assign,":ball_z",36), # 41
+        (assign,":reload_x",36),# 41
+        (assign,":reload_z",36),# 41
+        (assign,":ammobox_x",0),
+        (assign,":ammobox_y",154),
+        (assign,":platform_x",-120),
+        (assign,":ground_dist",50),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_fort"),
+        (assign,":wood_type","spr_mm_cannon_fort_wood"),
+        (assign,":wheel_type","spr_mm_cannon_fort_wheels"),
+        (assign,":barrel_type","spr_mm_cannon_fort_barrel"),
+        (assign,":static_type","spr_mm_cannon_fort_static"),
+        (assign,":push_type","spr_mm_fort_push_button"),
+        (assign,":has_recoil",1),
+        (assign,":barrel_z",78),
+        (assign,":aim_x",-88), # -98
+        (assign,":fire_x",-76),
+        (assign,":fire_z",17),
+        (assign,":ball_x",90), # 100
+        (assign,":reload_x",90), # 100
+        (assign,":platform_x",-50),
+        (assign,":platform_y",-64),
+        (assign,":push_x",-120),
+        (assign,":push_z",30),
+        (assign,":predefined_z_rotation_limit",28),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_naval"),
+        (assign,":wood_type","spr_mm_cannon_naval_wood"),
+        (assign,":wheel_type","spr_mm_cannon_naval_wheels"),
+        (assign,":barrel_type","spr_mm_cannon_naval_barrel"),
+        (assign,":push_type","spr_mm_naval_push_button"),
+        (assign,":has_recoil",1),
+        (assign,":aim_x",-121), # -131
+        (assign,":fire_x",-96),
+        (assign,":fire_z",23),
+        (assign,":ball_x",122), # 132
+        (assign,":reload_x",122), # 132
+        (assign,":platform_x",-200),
+        (assign,":ground_dist",68),
+        (assign,":predefined_z_rotation_limit",40),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_carronade"),
+        (assign,":wood_type","spr_mm_cannon_carronade_wood"),
+        (assign,":barrel_type","spr_mm_cannon_carronade_barrel"),
+        (assign,":barrel_x",-42),
+        (assign,":barrel_z",27),
+        (assign,":aim_x",-69), # -79
+        (assign,":aim_z",24),
+        (assign,":fire_x",-47),
+        (assign,":fire_z",48),
+        (assign,":ball_x",58), # 68
+        (assign,":ball_z",24),
+        (assign,":reload_x",58), # 68
+        (assign,":reload_z",24),
+        (assign,":platform_x",-240),
+        (assign,":predefined_z_rotation_limit",40),
+        #(assign,":ground_dist",0),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_swievel"),
+        (assign,":wood_type","spr_mm_cannon_swievel_wood"),
+        (assign,":barrel_type","spr_mm_cannon_swievel_barrel"),
+        (assign,":aim_x",-72), # -82
+        (assign,":aim_z",-10),
+        (assign,":fire_x",-48),
+        (assign,":fire_z",8),
+        (assign,":ball_x",55), # 65
+        (assign,":reload_x",55), # 65
+        (assign,":ammobox_x",-14),
+        (assign,":ammobox_y",144),
+        (assign,":platform_x",-160),
+        (assign,":ground_dist",50),
+      (else_try),
+        (eq, ":cannon_type", "spr_mm_cannon_rocket"),
+        (assign,":wood_type","spr_mm_cannon_rocket_wood"),
+        (assign,":barrel_type","spr_mm_cannon_rocket_barrel"),
+        (assign,":static_type","spr_mm_cannon_rocket_static"),
+        (assign,":ball_type","spr_mm_load_rocket_button"),
+        (assign,":can_be_limbered",2),
+        (assign,":ammo_box_type",0),  
+        (assign,":loaded_ammo_type","spr_mm_cannon_rocket_loaded_ammo"),
+        (assign,":loaded_ammo_x",4),
+        (assign,":loaded_ammo_z",14), 
+        (assign,":limber_z",-80),
+        (assign,":aim_x",-40), # -50
+        (assign,":aim_z",14),
+        (assign,":fire_z",8),
+        (assign,":ball_x",42), # 52
+        (assign,":ball_z",14),
+        (assign,":reload_x",42),# 52
+        (assign,":reload_z",14),
+        (assign,":platform_x",-130),
+        (assign,":ground_dist",175),
+      (try_end),
+
+      (set_fixed_point_multiplier, 100),
+      (scene_prop_get_slot,":is_scaled",":instance_id",scene_prop_slot_is_scaled),
+      (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+      (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
+      (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+      
+      (try_begin),
+        (eq,":is_scaled",1),
+        (eq,":x_scale",0),
+        (eq,":y_scale",0),
+        (eq,":z_scale",0),
+        (assign,":is_scaled",0),
+      (try_end),
+      
+      
+      (try_begin), # dont move swievel gun.
+        (neq, ":cannon_type", "spr_mm_cannon_swievel"),
+        (position_set_z_to_ground_level,pos30),
+      (try_end),
+      
+      (val_mul, ":ground_dist", ":z_scale"),
+      (val_div, ":ground_dist", 1000),
+      (position_move_z,pos30,":ground_dist"),
+      (copy_position,pos49,pos30),
+      (assign,":cannon_wood",-1),
+      (assign,":cannon_wheels",-1),
+      (assign,":cannon_barrel",-1),
+      (assign,":cannon_static",-1),
+      (try_for_range,":loop_num", 1, 5),
+        (try_begin),
+          (eq,":loop_num",1),
+          (assign,":cannon_part_type",":wood_type"),
+        (else_try),
+          (eq,":loop_num",2),
+          (assign,":cannon_part_type",":wheel_type"),
+        (else_try),
+          (eq,":loop_num",3),
+          (assign,":cannon_part_type",":barrel_type"),
+        (else_try),
+          (eq,":loop_num",4),
+          (assign,":cannon_part_type",":static_type"),
+        (try_end),
+        
+        (try_begin),
+          (eq,":is_scaled",1),
+          (call_script, "script_find_or_create_scene_prop_instance", ":cannon_part_type", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+        (else_try),
+          (call_script, "script_find_or_create_scene_prop_instance", ":cannon_part_type", 0, 0, 0),
+        (try_end),
+        (assign, ":cannon_part_instance", reg0),
+        
+        (try_begin),
+          (eq,":cannon_part_type",":wood_type"),
+          (assign,":cannon_wood",":cannon_part_instance"),
+        (else_try),
+          (eq,":cannon_part_type",":wheel_type"),
+          (assign,":cannon_wheels",":cannon_part_instance"),
+        (else_try),
+          (eq,":cannon_part_type",":barrel_type"),
+          (assign,":cannon_barrel",":cannon_part_instance"),
+        (else_try),
+          (eq,":cannon_part_type",":static_type"),
+          (assign,":cannon_static",":cannon_part_instance"),
+        (try_end),
+      (try_end),
+      
+      (try_begin),
+        (prop_instance_is_valid,":cannon_wood"),
+        
+        (try_begin),
+          (eq,":z_rotation_limit",0), 
+          (assign,":z_rotation_limit",":predefined_z_rotation_limit"),
+        (try_end),
+        
+        (scene_prop_set_slot,":instance_id", scene_prop_slot_replaced_by, ":cannon_wood"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_replacing, ":instance_id"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ground_offset, ":ground_dist"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rotation_limit, ":z_rotation_limit"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_linked_prop, ":linked_wall_index"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_x_extra, ":fire_x"), 
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_y_extra, ":fire_y"),
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_extra, ":fire_z"),
+        
+        (assign, ":cur_slot", scene_prop_slot_child_prop1),
+        
+        (try_begin),
+          (prop_instance_is_valid,":cannon_wheels"),
+          (scene_prop_set_slot,":cannon_wheels", scene_prop_slot_parent_prop, ":cannon_wood"),
+          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_wheels"),
+          (scene_prop_set_slot,":cannon_wheels", scene_prop_slot_is_active,1),
+          (val_add, ":cur_slot", 1),
+        (try_end),
+        
+        (assign,":button_main_piece",-1),
+        (try_begin),
+          (prop_instance_is_valid,":cannon_barrel"),
+          
+          (assign,":button_main_piece",":cannon_barrel"),
+          
+          (try_begin),
+            (eq,":is_scaled",1),
+            (val_mul, ":barrel_x", ":x_scale"),
+            (val_mul, ":barrel_y", ":y_scale"),
+            (val_mul, ":barrel_z", ":z_scale"),
+            (val_div, ":barrel_x", 1000),
+            (val_div, ":barrel_y", 1000),
+            (val_div, ":barrel_z", 1000),
+          (try_end),
+          
+          (copy_position,pos31,pos30),
+          (position_move_x, pos31,":barrel_x"),
+          (position_move_y, pos31,":barrel_y"),
+          (position_move_z, pos31,":barrel_z"),
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":cannon_barrel"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":cannon_barrel"),
+          (try_end),
+          (prop_instance_set_position,":cannon_barrel",pos31),
+
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_x_value, ":barrel_x"),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_y_value, ":barrel_y"),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_z_value, ":barrel_z"),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_parent_prop, ":cannon_wood"),
+          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_barrel"),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_is_active,1),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_x_extra, ":fire_x"), # extra values for smoke from frizzle.
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_y_extra, ":fire_y"),
+          (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_z_extra, ":fire_z"),
+
+          (val_add, ":cur_slot", 1),
+        (else_try),
+          (assign,":button_main_piece",":cannon_wood"),
+        (try_end),
+        (try_begin),
+          (prop_instance_is_valid,":cannon_static"),
+          
+          (try_begin),
+            (eq,":is_scaled",1),
+            (val_mul, ":static_x", ":x_scale"),
+            (val_mul, ":static_y", ":y_scale"),
+            (val_mul, ":static_z", ":z_scale"),
+            (val_div, ":static_x", 1000),
+            (val_div, ":static_y", 1000),
+            (val_div, ":static_z", 1000),
+          (try_end),
+          
+          (copy_position,pos49,pos30),
+          (position_move_x, pos49,":static_x"),
+          (position_move_y, pos49,":static_y"),
+          (position_move_z, pos49,":static_z"),
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":cannon_static"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":cannon_static"),
+          (try_end),
+          (prop_instance_set_position,":cannon_static",pos49),
+          
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_x_value, ":static_x"),
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_y_value, ":static_y"),
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_z_value, ":static_z"),
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_parent_prop, ":cannon_wood"),
+          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_static"),
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_is_active,1),
+          (scene_prop_set_slot,":cannon_static", scene_prop_slot_ignore_inherit_movement,1),
+          
+          (val_add, ":cur_slot", 1),
+        (try_end),
+        (assign,":loaded_ammo_instance",-1),
+        (try_begin),
+          (gt,":loaded_ammo_type",-1),
+          
+          (try_begin),
+            (eq,":is_scaled",1),
+            (val_mul, ":loaded_ammo_x", ":x_scale"),
+            (val_mul, ":loaded_ammo_y", ":y_scale"),
+            (val_mul, ":loaded_ammo_z", ":z_scale"),
+            (val_div, ":loaded_ammo_x", 1000),
+            (val_div, ":loaded_ammo_y", 1000),
+            (val_div, ":loaded_ammo_z", 1000),
+          (try_end),
+          
+          (copy_position,pos49,pos30),
+          (position_move_x, pos49,":loaded_ammo_x"),
+          (position_move_y, pos49,":loaded_ammo_y"),
+          (position_set_z, pos49,-3000),
+          (call_script, "script_find_or_create_scene_prop_instance", ":loaded_ammo_type", 0, 0, 0),
+          (assign, ":loaded_ammo_instance", reg0),
+          
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_x_value,":loaded_ammo_x"),
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_y_value,":loaded_ammo_y"),
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_z_value,":loaded_ammo_z"),
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_parent_prop,":button_main_piece"),
+          (scene_prop_set_slot,":button_main_piece",":cur_slot",":loaded_ammo_instance"),
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_is_active,0),
+          
+          (val_add, ":cur_slot", 1),
+        (try_end),
+
+        (assign,":platform_instance",-1),
+        (try_begin),
+          (try_begin),
+            (eq,":is_scaled",1),
+            (val_mul, ":platform_x", ":x_scale"),
+            (val_mul, ":platform_y", ":y_scale"),
+            (val_div, ":platform_x", 1000),
+            (val_div, ":platform_y", 1000),
+          (try_end),
+          
+          (init_position,pos49),
+          (position_get_rotation_around_z,":platform_z_rot",pos30),
+          (position_copy_origin,pos49,pos30),
+          (position_rotate_z,pos49,":platform_z_rot"),
+          
+          (position_move_x, pos49,":platform_x"),
+          (position_move_y, pos49,":platform_y"),
+          (position_set_z, pos49,-3000),
+          (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_aim_platform", 0, 0, 0),
+          (assign, ":platform_instance", reg0),
+
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_x_value,":platform_x"),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_y_value,":platform_y"),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_parent_prop,":cannon_wood"),
+          (scene_prop_set_slot,":cannon_wood",":cur_slot",":platform_instance"),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_z_value,1),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_is_active,0),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_float_ground, 1),
+           
+          (val_add, ":cur_slot", 1),
+        (try_end),
+
+        (assign,":ammobox_instance",-1),
+        (try_begin),
+          (gt,":ammo_box_type",0),
+          
+          (store_random_in_range,":random_rot",-4,5),
+          
+          (copy_position,pos49,pos30),
+          (position_rotate_z,pos49,":random_rot"),
+          (position_move_x, pos49,":ammobox_x"),
+          (position_move_y, pos49,":ammobox_y"),
+          (position_move_z, pos49,":ammobox_z"),
+          (call_script, "script_find_or_create_scene_prop_instance", ":ammo_box_type", 0, 1, 0),
+          (assign, ":ammobox_instance", reg0),
+
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_x_value, ":ammobox_x"),
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_y_value, ":ammobox_y"),
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_z_value, ":ammobox_z"),
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_z_rot, ":random_rot"),
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_parent_prop, ":cannon_wood"),
+          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":ammobox_instance"),
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_is_active,1),
+
+          (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_ignore_inherit_movement,1),          
+          
+          (val_add, ":cur_slot", 1),
+          
+          (try_begin),
+            (this_or_next|eq,":ammo_box_type","spr_mm_ammobox_cannon"),
+            (eq,":ammo_box_type","spr_mm_ammobox_howitzer"),
+
+            (assign, ":cur_box_slot", scene_prop_slot_child_prop1),
+            
+            (try_for_range,":cur_loop",0,2),
+              (assign,":cur_x",0),
+              (assign,":cur_y",0),
+              (assign,":cur_z",50),
+              (assign,":button_type",-1),
+              (try_begin),
+                (eq,":cur_loop",0),
+                (try_begin),
+                  (eq,":ammo_box_type","spr_mm_ammobox_cannon"),
+                  (assign,":button_type","spr_mm_round_button"),
+                (else_try),
+                  (assign,":button_type","spr_mm_shell_button"),
+                (try_end),
+                (assign,":cur_x",-22),
+              (else_try),
+                (assign,":button_type","spr_mm_canister_button"),
+                (assign,":cur_x",22),
+              (try_end),
+              
+              (prop_instance_get_position,pos49,":ammobox_instance"),
+              (position_move_x, pos49,":cur_x"),
+              (position_move_y, pos49,":cur_y"),
+              (position_move_z, pos49,":cur_z"),
+              
+              (call_script, "script_find_or_create_scene_prop_instance", ":button_type", 0, 0, 0),
+              (assign, ":button_instance", reg0),
+
+              (scene_prop_set_slot,":button_instance", scene_prop_slot_x_value, ":cur_x"),
+              (scene_prop_set_slot,":button_instance", scene_prop_slot_y_value, ":cur_y"),
+              (scene_prop_set_slot,":button_instance", scene_prop_slot_z_value, ":cur_z"),
+              (scene_prop_set_slot,":button_instance", scene_prop_slot_parent_prop, ":ammobox_instance"),
+              (scene_prop_set_slot,":ammobox_instance", ":cur_box_slot", ":button_instance"),
+              (scene_prop_set_slot,":button_instance", scene_prop_slot_is_active,1),
+              (val_add,":cur_box_slot",1),
+            (try_end),
+          (try_end),
+        (try_end),
+
+        (try_for_range,":button_type", mm_cannon_button_types_begin, mm_cannon_button_types_end),
+          (this_or_next|neq,":button_type","spr_mm_limber_button"),
+          (eq,":can_be_limbered",1),
+          (this_or_next|neq,":button_type","spr_mm_pickup_rocket_button"),
+          (eq,":can_be_limbered",2),
+          
+          (this_or_next|eq,":has_recoil",1),
+          (neg|is_between,":button_type","spr_mm_12pdr_push_button","spr_mm_round_button"),
+          
+          (assign,":continue",1),
+          (try_begin),
+            (eq,":has_recoil",1),
+            (is_between,":button_type","spr_mm_12pdr_push_button","spr_mm_round_button"),
+            (neq,":button_type",":push_type"),
+            (assign,":continue",0),
+          (try_end),
+          
+          (try_begin),
+            (is_between,":button_type","spr_mm_load_cartridge_button","spr_mm_reload_button"), 
+            (neq,":button_type",":ball_type"),
+            (assign,":continue",0),
+          (try_end),
+          (eq,":continue",1),
+          
+          (assign,":cur_x",0),
+          (assign,":cur_y",0),
+          (assign,":cur_z",0),
+          (assign,":parent_prop",-1),
+          (assign,":is_active",1),
+          (try_begin),
+            (eq,":button_type","spr_mm_limber_button"),
+            (assign,":cur_x",":limber_x"),
+            (assign,":cur_y",":limber_y"),
+            (assign,":cur_z",":limber_z"),
+            (assign,":parent_prop",":cannon_wood"),
+          (else_try),
+            (eq,":button_type","spr_mm_pickup_rocket_button"),
+            (assign,":cur_x",":limber_x"),
+            (assign,":cur_y",":limber_y"),
+            (assign,":cur_z",":limber_z"),
+            (assign,":parent_prop",":cannon_wood"),
+          (else_try),
+            (eq,":button_type","spr_mm_aim_button"),
+            (assign,":cur_x",":aim_x"),
+            (assign,":cur_y",":aim_y"),
+            (assign,":cur_z",":aim_z"),
+            (assign,":parent_prop",":button_main_piece"),
+            (assign,":is_active",0),
+          (else_try),
+            (is_between,":button_type","spr_mm_load_cartridge_button","spr_mm_reload_button"), 
+            (assign,":cur_x",":ball_x"),
+            (assign,":cur_y",":ball_y"),
+            (assign,":cur_z",":ball_z"),
+            (assign,":parent_prop",":button_main_piece"),
+          (else_try),
+            (eq,":button_type","spr_mm_reload_button"),
+            (assign,":cur_x",":reload_x"),
+            (assign,":cur_y",":reload_y"),
+            (assign,":cur_z",":reload_z"),
+            (assign,":parent_prop",":button_main_piece"),
+            (assign,":is_active",0),
+          (else_try),
+            (is_between,":button_type","spr_mm_12pdr_push_button","spr_mm_round_button"),
+            (assign,":cur_x",":push_x"),
+            (assign,":cur_y",":push_y"),
+            (assign,":cur_z",":push_z"),
+            (assign,":parent_prop",":cannon_wood"),
+            (assign,":is_active",0),
+          (try_end),
+          
+          (try_begin),
+            (eq,":is_scaled",1),
+            (val_mul, ":cur_x", ":x_scale"),
+            (val_mul, ":cur_y", ":y_scale"),
+            (val_mul, ":cur_z", ":z_scale"),
+            (val_div, ":cur_x", 1000),
+            (val_div, ":cur_y", 1000),
+            (val_div, ":cur_z", 1000),
+          (try_end),
+
+          (try_begin),
+            (eq,":parent_prop",":cannon_wood"),
+            (copy_position,pos32,pos30),
+          (else_try),
+            (eq,":parent_prop",":button_main_piece"),
+            (copy_position,pos32,pos31),
+          (try_end),
+          
+          (try_begin),
+            (eq,":is_active",1),
+            (position_move_x, pos32,":cur_x"),
+            (position_move_y, pos32,":cur_y"),
+            (position_move_z, pos32,":cur_z"),
+          (else_try),
+            (position_set_z, pos32,-3000),
+          (try_end),
+          
+          (copy_position,pos49,pos32),
+          (try_begin),
+            (eq,":button_type","spr_mm_bomb_button"),
+            (eq,":is_scaled",1),
+            (call_script, "script_find_or_create_scene_prop_instance", ":button_type", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+          (else_try),
+            (call_script, "script_find_or_create_scene_prop_instance", ":button_type", 0, 0, 0),
+          (try_end),
+          (assign, ":button_instance", reg0),
+
+          (scene_prop_set_slot,":button_instance", scene_prop_slot_x_value, ":cur_x"),
+          (scene_prop_set_slot,":button_instance", scene_prop_slot_y_value, ":cur_y"),
+          (scene_prop_set_slot,":button_instance", scene_prop_slot_z_value, ":cur_z"),
+          (scene_prop_set_slot,":button_instance", scene_prop_slot_parent_prop, ":parent_prop"),
+          (scene_prop_set_slot,":parent_prop", ":cur_slot", ":button_instance"),
+          (scene_prop_set_slot,":button_instance", scene_prop_slot_is_active,":is_active"),
+          
+          (val_add, ":cur_slot", 1),
+        (try_end),
+      (try_end),
+      (assign, reg0, 1),
+      
+      (try_begin),
+        (eq,":dont_recoil",0),
+        (copy_position,pos57,pos30),
+        (call_script,"script_recoil_cannon",":cannon_wood",1,1),
+      (try_end),
+    (try_end),
+    (assign,reg1,":cannon_wood"),
+  ]),
+
+  # script_set_prop_child_inactive
+  # Input: instance_id
+  ("set_prop_child_inactive",
+  [
+    (store_script_param, ":instance_id", 1),
+    
+    (set_fixed_point_multiplier,100),
+    (init_position,pos9),
+    (try_begin),
+      (prop_instance_is_valid,":instance_id"),
+      
+      (scene_prop_get_slot,":parent_instance_id",":instance_id",scene_prop_slot_parent_prop),
+      (prop_instance_is_valid,":parent_instance_id"),
+      
+      (scene_prop_set_slot,":instance_id", scene_prop_slot_is_active, 0),
+      (scene_prop_get_slot,":x_value",":instance_id",scene_prop_slot_x_value),
+      (scene_prop_get_slot,":y_value",":instance_id",scene_prop_slot_y_value),
+      
+      (prop_instance_get_position,pos10,":parent_instance_id"),
+      (position_get_rotation_around_z,":z_rot",pos10),
+      (position_copy_origin,pos9,pos10),
+      (position_rotate_z,pos9,":z_rot"),
+      (position_move_x,pos9,":x_value"),
+      (position_move_y,pos9,":y_value"),
+      (position_set_z,pos9,-3000),
+      
+      (prop_instance_get_position,pos11,":instance_id"),
+      
+      (get_distance_between_positions,":dist",pos9,pos11),
+      (gt,":dist",0),
+      (try_begin),
+         (prop_instance_is_animating, ":animating", ":instance_id"),
+         (eq,":animating",1),
+         (prop_instance_stop_animating, ":instance_id"),
+       (try_end),
+      (prop_instance_set_position,":instance_id",pos9),
+    (try_end),
+  ]),
+
+  # script_clean_up_prop_instance_with_childs
+  # Input: arg1 = prop_instance_id
+  # Output: reg0 = 1 means ok.
+  ("clean_up_prop_instance_with_childs",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    
+    (assign, reg0, 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (prop_instance_is_valid,":prop_instance_id"),
+      
+      (try_for_range,":cur_slot",scene_prop_slot_child_prop1,scene_prop_slots_end),
+        (scene_prop_get_slot,":cur_child",":prop_instance_id",":cur_slot"),
+        (prop_instance_is_valid,":cur_child"),
+        
+        (call_script, "script_clean_up_prop_child_with_childs", ":cur_child"),
+      (try_end),
+      
+      (call_script, "script_clean_up_prop_instance", ":prop_instance_id"),
+      (assign, reg0, 1),
+    (try_end),
+  ]),
+
+  # script_clean_up_prop_child_with_childs
+  # Input: arg1 = prop_instance_id
+  # Output: reg0 = 1 means ok.
+  ("clean_up_prop_child_with_childs",
+   [
+    (store_script_param, ":prop_instance_id", 1),
+    (assign, reg0, 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      (prop_instance_is_valid,":prop_instance_id"),
+      (try_for_range,":cur_slot",scene_prop_slot_child_prop1,scene_prop_slots_end),
+        (scene_prop_get_slot,":cur_child",":prop_instance_id",":cur_slot"),
+        (prop_instance_is_valid,":cur_child"),
+        (call_script, "script_clean_up_prop_instance", ":cur_child"),
+      (try_end),
+      (call_script, "script_clean_up_prop_instance", ":prop_instance_id"),
+      (assign, reg0, 1),
+    (try_end),
+   ]),
+
+   # script_set_agent_controlling_prop
+  # Input: prop_instance of prop under control
+  #        agent_id of controlling agent
+  #        value  1 = controlling  2 = stop controlling
+  ("set_agent_controlling_prop",
+  [
+    (store_script_param, ":prop_instance", 1),
+    (store_script_param, ":agent_id", 2),
+    (store_script_param, ":value", 3),
+    
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance"),
+      (agent_is_active,":agent_id"),
+      (assign,":error_message",-1),
+      (try_begin),
+        (prop_instance_get_scene_prop_kind, ":prop_kind", ":prop_instance"),
+        (try_begin),
+          (eq,":value",1),
+          (scene_prop_set_slot,":prop_instance",scene_prop_slot_controller_agent,":agent_id"),
+          (agent_set_slot,":agent_id",slot_agent_current_control_prop,":prop_instance"), # assign agent his current controlling prop.
+
+          (try_begin),
+            
+            (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+            
+            (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
+            (neq, ":wielded_item", "itm_cannon_lighter"),
+            (try_begin),
+              (agent_has_item_equipped,":agent_id","itm_cannon_lighter"),
+              (agent_set_wielded_item,":agent_id","itm_cannon_lighter"),
+            (else_try),
+              (game_in_multiplayer_mode),
+              (assign,":error_message", "str_need_to_have_a_lighter"),
+              (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
+            (try_end),
+          (try_end),
+        (try_end),
+        
+        (game_in_multiplayer_mode),
+        (try_begin),
+          (multiplayer_is_server),
+          (agent_get_player_id,":agent_player",":agent_id"),
+          (player_is_active,":agent_player"),
+          (try_begin),
+            (eq,":error_message",-1),
+            (multiplayer_send_2_int_to_player, ":agent_player", multiplayer_event_return_currently_controlling_object, ":prop_instance", ":value"),
+          (else_try),
+            (multiplayer_send_2_int_to_player, ":agent_player", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, ":error_message"),
+          (try_end),
+        (try_end),
+      (else_try),
+        (try_begin),
+          (eq,":error_message",-1),
+          (call_script,"script_client_process_set_prop_control",":prop_instance",":value"),
+        (else_try),
+          (call_script, "script_show_multiplayer_message", multiplayer_message_type_error, ":error_message"),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+  # script_client_process_set_prop_control
+  # Input: prop_instance of prop under control
+  #        value  1 = controlling  2 = stop controlling
+  ("client_process_set_prop_control",
+  [
+    (store_script_param, ":prop_instance", 1),
+    (store_script_param, ":value", 2),
+    
+    (try_begin),
+      (prop_instance_is_valid,":prop_instance"),
+      
+      (assign,":prop_kind",-1),
+      (try_begin),
+        (prop_instance_is_valid,":prop_instance"),
+        (prop_instance_get_scene_prop_kind, ":prop_kind", ":prop_instance"),
+      (try_end),
+      (try_begin),
+        (eq,":value",1), # 1 = controlling
+        (is_between,":prop_kind","spr_invalid_object","spr_code_freeze_agent"),
+        (assign, "$g_cur_control_prop_instance", ":prop_instance"),
+        (assign, "$g_cur_control_prop_kind", ":prop_kind"),
+        (assign, "$g_currently_controlling_object", 1),
+        
+        (try_begin),
+          (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+
+          (start_presentation,"prsnt_multiplayer_cannon_crosshair"),
+        (try_end),
+      (else_try), # else reset the instance
+        (assign, "$g_cur_control_prop_instance", 0),
+        (assign, "$g_cur_control_prop_kind", 0),
+        (assign, "$g_currently_controlling_object", 0),
+        (try_begin),
+          (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+          (is_presentation_active,"prsnt_multiplayer_cannon_crosshair"),
+          (assign,"$g_close_crosshair",1),
+        (try_end),
+      (try_end),
+    (try_end),
+  ]),
+
+   # script_agent_take_cannonball
+  # Input: arg1 = agent_id
+  # Output: reg0 = used_item
+  ("agent_take_cannonball",
+  [
+    (store_script_param, ":agent_id", 1),
+    
+    (assign,reg0,-1),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":agent_id"),
+      
+      (this_or_next|agent_has_item_equipped,":agent_id","itm_cannon_cartridge_round"),
+      (this_or_next|agent_has_item_equipped,":agent_id","itm_cannon_cartridge_shell"),
+      (this_or_next|agent_has_item_equipped,":agent_id","itm_cannon_cartridge_canister"),
+      (this_or_next|agent_has_item_equipped,":agent_id","itm_cannon_cartridge_bomb"),
+      (agent_has_item_equipped,":agent_id","itm_rockets"),
+      
+      (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
+      (try_begin),
+        (neq, ":wielded_item", "itm_cannon_cartridge_round"),
+        (neq, ":wielded_item", "itm_cannon_cartridge_shell"),
+        (neq, ":wielded_item", "itm_cannon_cartridge_canister"),
+        (neq, ":wielded_item", "itm_cannon_cartridge_bomb"),
+        (neq, ":wielded_item", "itm_rockets"),
+        (try_begin),
+          (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_round"),
+          (assign,":wielded_item","itm_cannon_cartridge_round"),
+        (else_try),
+          (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_shell"),
+          (assign,":wielded_item","itm_cannon_cartridge_shell"),
+        (else_try),
+          (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_canister"),
+          (assign,":wielded_item","itm_cannon_cartridge_canister"),
+        (else_try),
+          (agent_has_item_equipped,":agent_id","itm_cannon_cartridge_bomb"),
+          (assign,":wielded_item","itm_cannon_cartridge_bomb"),
+        (else_try),
+          (agent_has_item_equipped,":agent_id","itm_rockets"),
+          (assign,":wielded_item","itm_rockets"),
+        (try_end),
+        (agent_set_wielded_item,":agent_id",":wielded_item"),
+      (try_end),
+
+      (assign,":ammo_type",0),
+      (try_begin),
+        (eq,":wielded_item","itm_cannon_cartridge_round"),
+        (assign,":ammo_type",cannon_ammo_type_round),
+      (else_try),
+        (eq,":wielded_item","itm_cannon_cartridge_shell"),
+        (assign,":ammo_type",cannon_ammo_type_shell),
+      (else_try),
+        (eq,":wielded_item","itm_cannon_cartridge_canister"),
+        (assign,":ammo_type",cannon_ammo_type_canister),
+      (else_try),
+        (eq,":wielded_item","itm_cannon_cartridge_bomb"),
+        (assign,":ammo_type",cannon_ammo_type_bomb),
+      (else_try),
+        (eq,":wielded_item","itm_rockets"),
+        (assign,":ammo_type",cannon_ammo_type_rocket),
+      (try_end),
+
+      (agent_get_ammo,":ammo_count",":agent_id",1),
+      (try_begin),
+        (eq,":ammo_count",1), 
+        (agent_unequip_item,":agent_id",":wielded_item"),
+      (else_try),
+        (eq,":wielded_item","itm_rockets"),
+        (val_sub,":ammo_count",1),		
+        (agent_set_ammo,":agent_id",":wielded_item",":ammo_count"),
+      (else_try),
+        (neq,":wielded_item","itm_rockets"),
+        (agent_unequip_item,":agent_id",":wielded_item"),
+        (val_sub,":ammo_count",1),
+      (try_begin),
+        (agent_equip_item,":agent_id",":wielded_item"),
+        (eq, ":ammo_count", 2),
+        (agent_equip_item,":agent_id",":wielded_item"),
+        (eq, ":ammo_count", 3),
+        (agent_equip_item,":agent_id",":wielded_item"),
+      (try_end),
+    (try_end),
+      (assign,reg0,":ammo_type"),
+    (try_end),
+  ]),
+
  # PN END **************************************************************************************************************
 
   ("game_get_multiplayer_server_option_for_mission_template", # server option values in the popup over entries in the server list
@@ -3607,6 +10019,51 @@ scripts.extend([("game_start", []), # single player only, not used
         (multiplayer_send_int_to_player, ":player_id", server_event_return_game_rules, command_open_admin_panel),
       (try_end),
     (try_end),]),
+
+  ("initialize_pn_global_variables",
+    [
+      (assign,"$g_rain_type",0),
+      (assign,"$g_rain_amount",0),
+      (assign,"$g_scene_water_level",-40),
+      (assign,"$g_scene_has_snowy_ground",0),
+      (assign, "$g_hq_last_spawn_wave", 0),
+      (assign, "$g_original_selected_troop", 0),
+      (assign, "$g_cur_control_prop_kind", 0),
+      (assign, "$g_cur_control_prop_instance", 0),
+      (assign, "$g_currently_controlling_object", 0),
+      #(assign, "$g_time_between_voice_commands", 5),
+      #(assign, "$g_time_between_voice_commands_officer", 3),
+      (assign, "$g_client_drown_sound_channel", -1),
+      (assign,"$g_used_piano_type",-1),
+      (assign,"$g_started_playing_music_at",0),
+      (assign,"$g_artillery_available_on_map",1),
+      (assign,"$g_spawn_with_artillery",1),
+      (assign,"$g_infantry_available_on_map",1),
+      (assign,"$g_cavalry_available_on_map",1),
+      (assign,"$g_explosives_available_on_map",0),
+      (assign, "$g_allow_multiple_firearms", 1),
+      (assign, "$g_chance_of_falling_off_horse", 0),
+      (assign, "$g_damage_from_horse_dying", 100),
+      (assign, "$g_player_loops_begin", 1),
+      (assign, "$g_ignore_server", 1),
+      (try_for_range,":item", all_pn_items_begin, all_pn_items_end),
+        (ge,":item","itm_french_cav_pistol"),
+        (try_begin),
+          (is_between,":item", "itm_drumstick_right", "itm_bullets"), #Instruments aquii
+          (item_set_slot,":item",slot_item_multiplayer_item_class, multi_item_class_type_instrument),
+        (else_try),
+          (lt,":item","itm_cannon_lighter", "itm_sapper_axe"), #Misc
+          (item_set_slot,":item",slot_item_multiplayer_item_class, multi_item_class_type_misc),
+        (else_try),
+          (is_between,":item","itm_hussar_horse_french","itm_arty_horse_cannon_french"),  #Horse
+          (item_set_slot,":item",slot_item_multiplayer_item_class, multi_item_class_type_horse),
+        (else_try),
+          (is_between,":item","itm_arty_horse_cannon_french", "itm_admin_musket"),  #Artillery Horse for Cannon
+          (item_set_slot,":item",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon),
+        (try_end),
+      (try_end),
+    ]
+  ),
 
   ("initialize_game_rules", # set module default settings before loading the server configuration
    [
@@ -7176,7 +13633,7 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
         (scene_prop_set_slot, ":instance_id", slot_scene_prop_gold_value, reg0),
       (try_end),
     (else_try),
-      (is_between, ":item_id", "itm_pw_banner_pole_a01", "itm_pw_banner_castle_fac_1a"),
+      (is_between, ":item_id", "itm_pw_banner_pole_a01", "itm_wurttemberg_flag_infantry2"),
       (neq, ":agent_died", 1), # if not dropped because the agent died, plant the flag pole upright
       (prop_instance_get_position, pos1, ":instance_id"),
       (position_rotate_x, pos1, 90),

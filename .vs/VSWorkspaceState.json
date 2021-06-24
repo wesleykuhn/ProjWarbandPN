@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\shaders"
   ],
-  "SelectedNode": "\\module_presentations.py",
+  "SelectedNode": "\\module_scripts.py",
   "PreviewInSolutionExplorer": false
 }

@@ -243,12 +243,40 @@ item_picked_up = (ti_on_item_picked_up, 0, 0, [], # handle agents picking up an 
     ])
 
 item_dropped = (ti_on_item_dropped, 0, 0, [], # handle agents dropping an item
-   [(store_trigger_param_1, ":agent_id"),
+   [(store_trigger_param_1, ":agent_no"),
     (store_trigger_param_2, ":item_id"),
     (store_trigger_param_3, ":instance_id"),
-    (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 0, 1),
+    (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_no", ":item_id", 0, 1),
     (multiplayer_is_server),
-    (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", ":instance_id", 0),
+    (call_script, "script_check_on_item_dropped", ":agent_no", ":item_id", ":instance_id", 0),
+
+    (try_begin),
+      (item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
+      (store_trigger_param_3, ":dropped_prop"),
+      (prop_instance_get_position, pos25, ":dropped_prop"),
+      (agent_get_horse, ":agent_horse", ":agent_no"),
+      (try_begin),
+        (gt, ":agent_horse", -1),
+        (position_move_x,pos25,50),
+      (else_try),
+        (position_move_y,pos25,36),
+      (try_end),
+      (position_rotate_x, pos25, 90),
+      (prop_instance_set_position, ":dropped_prop", pos25),
+      (scene_prop_set_prune_time, ":dropped_prop", 300), # 5 minutes
+    (else_try),
+      (eq, ":item_id", "itm_cannon_lighter"),
+      (agent_slot_ge,":agent_no",slot_agent_current_control_prop,0), # we are controlling a prop.
+      (try_begin),
+        (agent_get_slot,":prop_instance",":agent_no",slot_agent_current_control_prop),
+        (prop_instance_is_valid,":prop_instance"),
+        (prop_instance_get_scene_prop_kind,":prop_kind",":prop_instance"),
+        (try_begin),
+          (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+          (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_no"),
+        (try_end),
+      (try_end),
+    (try_end),
     ])
 
 item_wielded = (ti_on_item_wielded, 0, 0, [], # handle agents wielding an item
@@ -867,7 +895,96 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
     (store_trigger_param_1,":hit_agent_no"),
     (assign,":item_id",reg0),
 
-    (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
+    (try_begin),
+       (try_begin), 
+        (agent_is_active,":hit_agent_no"),
+        (gt,"$g_chance_of_falling_off_horse",0),
+        (agent_get_horse,":horse",":hit_agent_no"),
+        (agent_is_active,":horse"),
+        (agent_is_alive,":hit_agent_no"),
+
+        (store_trigger_param_3,":damage"),
+        (ge,":damage",10),
+           
+        (neg|agent_is_non_player,":hit_agent_no"), #Only do this to players
+        (neg|agent_slot_eq,":hit_agent_no",slot_agent_has_fallen_off_horse,1), #Apparently there's some bug if you fall off twice
+
+        (store_random_in_range,":random",0,100),
+        (lt,":random","$g_chance_of_falling_off_horse"),
+           
+        (store_random_in_range,":anim",0,2),
+        (val_add,":anim","anim_rider_fall_right_2"),
+        (agent_set_animation,":hit_agent_no",":anim"),
+        (agent_set_slot,":hit_agent_no",slot_agent_has_fallen_off_horse,1), #Apparently there's some bug if you fall off twice
+        (agent_clear_scripted_mode,":horse"),
+        (agent_start_running_away,":horse"),
+        
+      (try_begin),
+        (gt,"$g_damage_from_horse_dying",0),
+        (neg|agent_is_human,":hit_agent_no"), #Horse
+        (agent_get_rider,":rider",":hit_agent_no"),
+          
+        (agent_is_active,":rider"),
+        (agent_is_alive,":rider"),
+          
+        (store_trigger_param_3,":damage"),
+        (store_agent_hit_points,":hit_points",":hit_agent_no",1),
+        (val_sub,":hit_points",":damage"),
+        (le,":hit_points",0),
+          
+        (store_trigger_param_2,":attacker_agent_no"),
+        (store_random_in_range,":damage_to_rider",10,20),
+        (val_mul,":damage_to_rider","$g_damage_from_horse_dying"),
+        (val_div,":damage_to_rider",100),
+          
+        (try_begin),
+          (eq,":item_id",-1),
+          (assign,":item_id","itm_russian_peasant_knife"),
+        (try_end),
+        (agent_deliver_damage_to_agent_advanced,":damage", ":attacker_agent_no", ":rider", ":damage_to_rider", ":item_id"),
+        (try_end),
+        
+        (try_begin),
+          (agent_slot_ge,":hit_agent_no",slot_agent_current_control_prop,0), # we are controlling a prop.
+          (try_begin),
+            (agent_get_slot,":prop_instance",":hit_agent_no",slot_agent_current_control_prop),
+            (prop_instance_is_valid,":prop_instance"),
+            (prop_instance_get_scene_prop_kind,":prop_kind",":prop_instance"),
+            (try_begin),
+              (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+              (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":hit_agent_no"),
+            (else_try),
+              (call_script,"script_set_agent_controlling_prop",":prop_instance",":hit_agent_no",0),
+            (try_end),
+          (try_end),
+        (else_try),
+          (agent_slot_ge,":hit_agent_no",slot_agent_used_prop_instance,0), #CONTINUAR
+          
+          (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
+        (else_try),
+          #(call_script, "script_cf_agent_is_playing_music", ":hit_agent_no"), # is playing
+          # if we have a musician just to be sure call stop music.
+          (agent_get_troop_id,":troop_no",":hit_agent_no"),
+          (this_or_next|eq,":troop_no", "trp_military_musician"),
+          (player_is_admin, ":hit_agent_no"),
+          (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
+        (try_end),
+
+        # horsies. clear their scripted mode.
+        (try_begin),
+          (neg|agent_is_human,":hit_agent_no"),
+          
+          (agent_get_rider, ":rider_agent_id", ":hit_agent_no"),
+          (lt, ":rider_agent_id", 0),
+          (agent_get_item_id,":horse_kind", ":hit_agent_no"),
+          
+          (neg|item_slot_eq,":horse_kind",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon),
+          (neg|item_slot_eq,":horse_kind",slot_item_multiplayer_item_class, multi_item_class_type_horse_howitzer),
+          
+          (agent_clear_scripted_mode,":hit_agent_no"),
+        (try_end),
+      (try_end),
+    (try_end),
 
     ##drinking bottle break script
     (try_begin),
@@ -906,10 +1023,7 @@ multiplayer_client_voice_warcry = (
       (call_script,"script_cf_agent_is_playing_music",":player_agent"), # when playing music dont do anything.
     (else_try),
       (call_script,"script_cf_agent_is_playing_piano",":player_agent"), # when playing music dont do anything.
-      
     (else_try),
-      #(agent_get_troop_id, ":player_troop_id", ":player_agent"),
-       
       (assign, ":wait_time", "$g_time_between_voice_commands"),
       
       (val_add,":wait_time",5), # add two due to lag...  changed to 5.
@@ -945,6 +1059,1427 @@ multiplayer_client_voice_orders = (
       (agent_is_active,":agent_id"),
       (agent_is_alive,":agent_id"),
       (start_presentation,"prsnt_orders_menu"),
+    (try_end),
+])
+
+multiplayer_client_music_and_sapper = (
+  0, 0, 0, [(neg|multiplayer_is_dedicated_server),(game_key_clicked, gk_defend),],
+  [
+    (try_begin),
+      (call_script, "script_client_get_my_agent"),
+      (assign, ":player_agent", reg0),
+      (agent_get_player_id, ":player_id", ":player_agent"),
+
+      (agent_is_active,":player_agent"),
+      (agent_is_alive, ":player_agent"), # Still alive?
+      (try_begin), # stop playing piano
+        (call_script,"script_cf_agent_is_playing_piano",":player_agent"),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_music, music_type_stop),
+
+      (else_try),
+        (call_script,"script_cf_agent_is_taking_a_shit",":player_agent"),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_music, music_type_stop),
+
+      (else_try),
+        (call_script,"script_cf_agent_is_surrendering",":player_agent"),
+        (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_surrender, music_type_stop),
+
+      (else_try),
+        (agent_get_troop_id,":player_troop",":player_agent"),
+        (agent_get_wielded_item,":item_id",":player_agent",0),
+        (ge, ":item_id", 0),
+        (try_begin),
+          (eq,":player_troop","trp_sapper"),
+          (is_between,":item_id","itm_construction_hammer","itm_shovel"), #Hammer
+          #(neg|is_presentation_active, "prsnt_multiplayer_construct"),
+          #(start_presentation,"prsnt_multiplayer_construct"),
+        (else_try),
+          (this_or_next|eq,":player_troop","trp_military_musician"),
+          (player_is_admin, ":player_id"),
+          (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"), # an instrument
+          (try_begin),
+            (call_script,"script_cf_agent_is_playing_music",":player_agent"),
+            (neg|is_presentation_active, "prsnt_multiplayer_music"),
+            (try_begin),
+              (store_mission_timer_a,":cur_time"),
+              (store_sub, ":elapsed_time", ":cur_time", "$g_started_playing_music_at"),
+              (lt,":elapsed_time",2),
+            (else_try),
+              (multiplayer_send_2_int_to_server, multiplayer_event_send_player_action, player_action_music, music_type_stop),
+            (try_end),
+          (else_try),
+            (neg|is_presentation_active, "prsnt_multiplayer_music"),
+            (start_presentation,"prsnt_multiplayer_music"),
+          (try_end),
+        (else_try),
+          (this_or_next|eq,":player_troop","trp_artillerist"),
+          (player_is_admin, ":player_id"),
+          (eq,":item_id", "itm_rocket_placement"),
+          (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_place_rocket),
+        (try_end),
+      (try_end),
+    (try_end)
+])
+
+multiplayer_agent_wield_item_common = (
+  ti_on_item_wielded, 0, 0, [
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode)],
+  [
+    (store_trigger_param_1,":agent_id"),
+    (store_trigger_param_2,":item_id"),
+    
+    (try_begin),
+      (gt,":item_id",-1),
+      (try_begin),
+        (call_script,"script_cf_agent_is_playing_piano",":agent_id"),
+        
+        (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
+      (else_try),
+        (call_script,"script_cf_agent_is_taking_a_shit",":agent_id"),
+        
+        (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
+      (else_try),
+        (call_script,"script_cf_agent_is_surrendering",":agent_id"),
+        
+        (set_fixed_point_multiplier,100),
+        (agent_set_speed_modifier,":agent_id", 100),
+        (agent_set_slot,":agent_id",slot_agent_base_speed_mod,100),
+        (agent_set_horse_speed_factor, ":agent_id", 100),
+      (try_end),
+    (try_end),
+])
+
+multiplayer_agent_unwield_item_common = (
+  ti_on_item_unwielded, 0.1, 0, [
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode)],
+  [
+    (store_trigger_param_1,":agent_no"),
+    (store_trigger_param_2,":item_id"),
+      
+    (try_begin),
+      (gt,":item_id",-1),
+      (this_or_next|item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
+      (eq,":item_id","itm_rocket_placement"),
+      
+      (agent_is_active,":agent_no"),
+      (neg|agent_is_non_player, ":agent_no"),  #patch1115 fix43/11
+      (agent_get_position,pos25,":agent_no"),
+      (position_move_y,pos25,30),
+      (try_begin),
+        (neq,":item_id","itm_rocket_placement"), # dont rotate up for the rocketplacement
+        
+        (agent_get_horse, ":agent_horse", ":agent_no"),
+        (try_begin),
+          (gt, ":agent_horse", -1),
+          (position_move_x,pos25,50),
+        (else_try),
+          (position_move_z,pos25,36),
+        (try_end),
+        
+        (position_rotate_x,pos25,90),
+      (try_end),
+      (set_spawn_position,pos25),
+      (spawn_item,":item_id",0,300), # remove after 5 minutes
+      
+      (assign, ":end_cond", ek_head),
+      (try_for_range,":equipment_slot",ek_item_0,":end_cond"),
+        (agent_get_item_slot, ":cur_item_id", ":agent_no", ":equipment_slot"),
+        (eq,":cur_item_id",":item_id"),
+        (val_add,":equipment_slot",1),
+        (agent_unequip_item, ":agent_no", ":item_id", ":equipment_slot"),
+        (assign,":end_cond",0),
+      (try_end),
+      
+      #(agent_unequip_item,":agent_no",":item_id"),
+    (else_try),
+      (call_script, "script_cf_agent_is_playing_music", ":agent_no"), # is playing
+      
+      (call_script,"script_multiplayer_server_agent_stop_music",":agent_no"),
+    (try_end),
+])
+
+multiplayer_server_bird_spawn_common = (
+  ti_after_mission_start, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
+  [
+    (store_random_in_range,":num_birds_to_spawn",0,4),
+    (try_for_range,":unused",0,":num_birds_to_spawn"),
+      (store_random_in_range,":entry",0,64),
+      (entry_point_get_position,pos49,":entry"),
+      (set_fixed_point_multiplier,100),
+      (position_set_z,pos49,9000),
+      
+      (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_bird", 0, 0, 0),
+    (try_end),
+])
+
+multiplayer_server_move_bird_common = (
+  5.55, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
+  [
+    (set_fixed_point_multiplier,100),
+    
+    (scene_prop_get_num_instances, ":num_instances", "spr_mm_bird"),
+    (try_for_range,":prop_no",0,":num_instances"),
+      (scene_prop_get_instance,":bird_id","spr_mm_bird",":prop_no"),
+      (scene_prop_slot_eq,":bird_id", scene_prop_slot_in_use, 1),
+      
+      (prop_instance_get_position, pos23, ":bird_id"),
+      
+      (try_begin),
+        (store_random_in_range,":play_sound",0,100),
+        (lt,":play_sound",5),
+        (copy_position,pos56,pos23),
+        (call_script, "script_multiplayer_server_play_sound_at_position", "snd_ambient_buzzard"),
+      (try_end),
+      
+      (store_random_in_range,":rotation_angle",-50,51),
+      (position_rotate_z,pos23,":rotation_angle"),
+      (position_move_y,pos23,500,0),#2500
+      (prop_instance_animate_to_position, ":bird_id", pos23, 560),#2000
+    (try_end),
+])
+
+multiplayer_server_drag_limber = (
+0.25, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
+  [  
+    (try_for_prop_instances, ":instance_id", "spr_mm_limber_wood", somt_temporary_object),
+      (scene_prop_get_slot,":cur_control_agent",":instance_id",scene_prop_slot_carrier_agent),
+      (ge, ":cur_control_agent", 0),
+      
+      (assign,":agent_is_ok",0),
+      (try_begin),
+        (agent_is_active, ":cur_control_agent"),
+        (agent_is_alive, ":cur_control_agent"),
+        (assign,":agent_is_ok",1),
+      (else_try), # The agent died... lets set some vars on this one.
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_carrier_agent,-1),
+        
+        (store_mission_timer_a,":cur_time"),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_spawned_at,":cur_time"),
+        
+        (prop_instance_get_animation_target_position,pos12,":instance_id"),
+        (position_set_z_to_ground_level,pos12),
+        (position_move_z,pos12,-30),
+        (position_move_y,pos12,-18),
+        (position_rotate_x,pos12,-22),
+        (prop_instance_animate_to_position,":instance_id",pos12,100),
+      (try_end),
+      (eq,":agent_is_ok",1),
+      
+      (scene_prop_get_slot,":wheels_instance",":instance_id",scene_prop_slot_child_prop1),
+      (scene_prop_get_slot,":cannon_instance",":instance_id",scene_prop_slot_child_prop2),
+      (try_begin),
+        (prop_instance_is_valid,":cannon_instance"),
+        (scene_prop_get_slot,":cannon_wheels_instance",":cannon_instance",scene_prop_slot_child_prop1),
+      (try_end),
+      
+      # if this limber has wheels
+      (prop_instance_is_valid,":wheels_instance"),
+      
+      (set_fixed_point_multiplier, 1000),
+      (agent_get_position, pos11, ":cur_control_agent"),
+      (position_get_rotation_around_z,":z_rot_temp",pos11),
+      
+      (agent_get_speed, pos14, ":cur_control_agent"),
+      (position_get_y,":agent_speed",pos14),
+      
+      (assign,":continue",1),
+      (try_begin),
+        (agent_get_slot,":old_zrot",":cur_control_agent",slot_agent_last_rotz),
+        
+        (try_begin),
+          (eq,":agent_speed",0), # same speed now
+          (eq,":z_rot_temp",":old_zrot"), # same rot.
+          (agent_get_slot,":samecount",":cur_control_agent",slot_agent_last_speed_same_count),
+          (try_begin),
+            (gt,":samecount",2), # 2 times same shit.
+            (assign,":continue",0),
+          (else_try),
+            (val_add,":samecount",1),
+            (agent_set_slot, ":cur_control_agent", slot_agent_last_speed_same_count, ":samecount"),
+          (try_end),
+        (else_try),
+          (agent_set_slot, ":cur_control_agent", slot_agent_last_speed_same_count, 0),
+        (try_end),
+        
+        (agent_set_slot, ":cur_control_agent", slot_agent_last_rotz, ":z_rot_temp"),
+      (try_end),
+      (eq,":continue",1),
+      
+      # (try_begin),
+        # (eq,":agent_speed",0), # no movement...
+        # (position_get_rotation_around_z,":z_rot_temp",pos11),
+        # (prop_instance_get_position, pos13, ":instance_id"),
+        # (position_get_rotation_around_z,":prop_z_rot_temp",pos13),
+        # (eq,":prop_z_rot_temp",":z_rot_temp"),
+        # (assign,":continue",0),
+      # (try_end),
+       
+      
+      # max speed 2907  old:  2766
+        # (assign, reg0, ":agent_speed"),
+        # (str_store_string, s4, "@agent_speed: {reg0}"),
+        # (call_script, "script_multiplayer_broadcast_message"),
+      
+      (store_mul,":agent_speed_wheel",":agent_speed",-1), # inverse
+      (store_div,":limber_wheel_speed",":agent_speed_wheel",64), # make it realistic for front wheels
+      (store_div,":cannon_wheel_speed",":agent_speed_wheel",76), # make it realistic for cannon wheels
+      
+      # From the agent position (flat on ground middle of horse) only save the Z rot and origin.
+      (position_get_rotation_around_z,":z_rot",pos11),
+      (init_position,pos12),
+      (position_copy_origin,pos12,pos11),
+      (position_rotate_z,pos12,":z_rot"),
+      
+      # move above ground. (for proper get_distance_to_ground checks)
+      (scene_prop_get_slot,":z_offset",":instance_id",scene_prop_slot_z_value),
+      (position_move_z,pos12,":z_offset"),
+      
+      # copy it over to 14 for later use, now just use 12 for getting rotations.
+      (copy_position,pos14,pos12),
+      
+      # move from middle of horse to center where wheels should be.
+      (scene_prop_get_slot,":y_offset",":wheels_instance",scene_prop_slot_y_value),
+      (position_move_y, pos12,":y_offset"),
+      
+      # march to left wheel and get height there.
+      (position_move_x,pos12,-60),
+      (position_get_distance_to_ground_level, ":left_height_to_terrain", pos12),
+      (val_div,":left_height_to_terrain",10), # due to fixed point at 1000
+      
+      # march to right wheel and get height there.
+      (position_move_x,pos12,120),
+      (position_get_distance_to_ground_level, ":right_height_to_terrain", pos12),
+      (val_div,":right_height_to_terrain",10), # due to fixed point at 1000
+      
+      # march back to center
+      # (position_rotate_z,pos12,180),
+      # (position_move_y,pos12,60),
+      # (position_rotate_z,pos12,-90),
+      
+      # calculate
+      (store_sub,":height_difference",":left_height_to_terrain",":right_height_to_terrain"),
+     
+      (store_div,":combined_height",":height_difference",2),
+      (try_begin),
+        (gt,":combined_height",0),
+        (val_mul,":combined_height",-1),
+      (try_end),      
+
+      (val_mul,":height_difference",1000), # make it fixed point
+      (store_div,":deg_value2",":height_difference",120),  # 120 is distance between the two wheels.
+      (store_atan,":deg_value2",":deg_value2"), # get the angle
+      (val_div,":deg_value2",1000),
+      (val_mul,":deg_value2",-1),
+
+      
+      # combine the two heights and get the angle between them combined and the horse position.
+      (store_add,":height_to_terrain",":left_height_to_terrain",":right_height_to_terrain"),
+      (val_div,":height_to_terrain",2), 
+      
+      # some weird fix i forgot why.      
+      (val_mul,":combined_height",46),
+      (val_div,":combined_height",100),
+      (val_add,":height_to_terrain",":combined_height"),
+      
+      (store_sub,":height_difference",":height_to_terrain",":z_offset"),
+      (val_mul,":height_difference",1000), # make it fixed point
+      (store_div,":deg_value",":height_difference",":y_offset"),
+      (store_atan,":deg_value",":deg_value"), # get the angle
+      (val_div,":deg_value",1000),
+      (val_mul,":deg_value",-1),
+      
+      # Tweaking for slope, (wheels are round so should "float" a bit when on angle so their not into ground)
+      (try_begin),
+        (lt,":deg_value",0),
+        (val_mul,":deg_value",108), # 108 %
+        (val_div,":deg_value",100),
+      (else_try),
+        (gt,":deg_value",0),
+        (val_mul,":deg_value",92), # 92 %
+        (val_div,":deg_value",100),
+      (try_end),
+      
+      # move it up, rotate it, move it down (or a bit sideways that is...)
+      # 50 cm is the bars height above the center of liberwood.
+      (position_move_z,pos14,50),
+      (position_rotate_y,pos14,":deg_value2"),
+      (position_move_z,pos14,-50),
+      
+      # Do a slight Z change due to the bars otherwise sticking into the horse.
+      # (try_begin),
+        # (neq,":deg_value2",0),
+
+        # (store_div,":deg_value2_div",":deg_value2",8),
+        # (position_rotate_z,pos14,":deg_value2_div"),
+        
+        # (val_add,":z_rot",":deg_value2_div"),
+      # (try_end),
+      (scene_prop_get_slot,":previous_z_rot",":instance_id",scene_prop_slot_z_extra),
+      (scene_prop_set_slot,":instance_id",scene_prop_slot_z_extra,":z_rot"),
+      
+      (position_rotate_x,pos14,":deg_value"),
+      
+      # And finally move the wood to this rotated position.
+      (prop_instance_animate_to_position, ":instance_id", pos14, 28),
+      
+      # move from middle of horse to center where wheels should be.
+      (position_move_y, pos14,":y_offset"),
+      
+      # overwrite the 12 we temporary used.
+      (copy_position,pos12,pos14),
+      
+      # reset pos14 its X rotation for the weels (they store their own rotation and rotate with it.)
+      (position_get_rotation_around_x,":parent_x_rot",pos14),
+      (val_mul,":parent_x_rot",-1),
+      (position_rotate_x,pos14,":parent_x_rot"),
+      
+      (scene_prop_get_slot,":x_rot",":wheels_instance",scene_prop_slot_x_extra),
+      (val_add,":x_rot",":limber_wheel_speed"),
+      (try_begin),
+        (gt,":x_rot",360),
+        (val_sub,":x_rot",360),
+      (try_end),
+      (scene_prop_set_slot,":wheels_instance",scene_prop_slot_x_extra,":x_rot"),
+      (position_rotate_x,pos14,":x_rot"),
+      
+      (prop_instance_animate_to_position, ":wheels_instance", pos14, 28),
+      
+      
+      # if we have a cannon and wheels, go on.
+      (prop_instance_is_valid,":cannon_instance"),
+      (prop_instance_is_valid,":cannon_wheels_instance"),
+      
+      (store_sub,":diffirence_z_old_new",":previous_z_rot",":z_rot"),
+      
+      (try_begin),
+        (gt,":diffirence_z_old_new",300),
+        (val_sub,":diffirence_z_old_new",360),
+      (else_try),
+        (lt,":diffirence_z_old_new",-300),
+        (val_add,":diffirence_z_old_new",360),
+      (try_end),
+      
+      # calculate percent speed
+      (val_mul,":agent_speed",100),
+      (val_div,":agent_speed",2907), # speed/max speed
+      
+      # calc difirence * percent speed
+      (val_mul,":diffirence_z_old_new",":agent_speed"),
+      (val_div,":diffirence_z_old_new",100),
+      
+      (scene_prop_get_slot,":previous_z_rot",":cannon_instance",scene_prop_slot_z_extra),
+      (store_sub,":diffirence_z_object",":previous_z_rot",":z_rot"),
+      
+      (try_begin),
+        (gt,":diffirence_z_object",300),
+        (val_sub,":diffirence_z_object",360),
+      (else_try),
+        (lt,":diffirence_z_object",-300),
+        (val_add,":diffirence_z_object",360),
+      (try_end),
+       
+      (try_begin),
+        (neq,":agent_speed",0),
+        (val_mul, ":agent_speed", 40), 
+        (val_div, ":agent_speed", 100), # value * 40 / 100 = - 40% of the speed
+        (store_mul,":sub_dif",":diffirence_z_object",":agent_speed"),
+
+        (try_begin),
+          (is_between, ":sub_dif", -100, 101),
+          (eq,":diffirence_z_old_new",0),
+          (assign,":diffirence_z_object",0),
+        (else_try),
+          (val_div,":sub_dif",100),
+          (val_sub,":diffirence_z_object",":sub_dif"),
+        (try_end),
+      (try_end),
+
+      (val_add,":diffirence_z_object",":diffirence_z_old_new"),
+       
+      (try_begin),
+        (gt,":diffirence_z_object",40),
+        (assign,":diffirence_z_object",40),
+      (else_try),
+        (lt,":diffirence_z_object",-40),
+        (assign,":diffirence_z_object",-40),
+      (try_end),
+      
+      # move a bit up so the wedge is on the spike of the limber.
+      (scene_prop_get_slot,":cannon_z_offset",":cannon_instance",scene_prop_slot_z_value),
+      (position_move_z,pos12,":cannon_z_offset"),
+      (store_add,":total_z_offset",":z_offset",6),
+      
+      # Reset pos12 rotations except Z, so we have a fresh pos12 to use.
+      (store_mul,":deg_value2_min",":deg_value2",-1),
+      (store_mul,":deg_value_min",":deg_value",-1),
+      (position_rotate_x,pos12,":deg_value_min"),
+      (position_rotate_y,pos12,":deg_value2_min"),
+      
+      # Rotate to the difirence calculated.
+      (position_rotate_z,pos12,":diffirence_z_object"),
+      (val_add,":diffirence_z_object",":z_rot"),
+      (scene_prop_set_slot,":cannon_instance",scene_prop_slot_z_extra,":diffirence_z_object"),
+      
+      (copy_position,pos14,pos12),
+      
+      # move to wheels position.
+      (scene_prop_get_slot,":y_offset",":cannon_wheels_instance",scene_prop_slot_y_value),
+      (position_move_y, pos12,":y_offset"),
+      
+      # march to left wheel and get height there.
+      (position_move_x,pos12,-72),
+      (position_get_distance_to_ground_level, ":left_height_to_terrain", pos12),
+      (val_div,":left_height_to_terrain",10), # due to fixed point at 1000
+      
+      # march to right wheel and get height there.
+      (position_move_x,pos12,144),
+      (position_get_distance_to_ground_level, ":right_height_to_terrain", pos12),
+      (val_div,":right_height_to_terrain",10), # due to fixed point at 1000
+      
+
+      # calculate
+      (store_sub,":height_difference",":left_height_to_terrain",":right_height_to_terrain"),
+     
+      (store_div,":combined_height",":height_difference",2),
+      (try_begin),
+        (gt,":combined_height",0),
+        (val_mul,":combined_height",-1),
+      (try_end),      
+
+      (val_mul,":height_difference",1000), # make it fixed point
+      (store_div,":deg_value2",":height_difference",120),  # 120 is distance between the two wheels.
+      (store_atan,":deg_value2",":deg_value2"), # get the angle
+      (val_div,":deg_value2",1000),
+      (val_mul,":deg_value2",-1),
+
+      
+      # combine the two heights and get the angle between them combined and the horse position.
+      (store_add,":height_to_terrain",":left_height_to_terrain",":right_height_to_terrain"),
+      (val_div,":height_to_terrain",2), 
+      
+      # some weird fix i forgot why.
+      (val_mul,":combined_height",44),
+      (val_div,":combined_height",100),
+      (val_add,":height_to_terrain",":combined_height"),
+      
+      (store_sub,":height_difference",":height_to_terrain",":total_z_offset"),
+      (val_mul,":height_difference",1000), # make it fixed point
+      (store_div,":deg_value",":height_difference",":y_offset"),
+      (store_atan,":deg_value",":deg_value"), # get the angle
+      (val_div,":deg_value",1000),
+      (val_mul,":deg_value",-1),
+      
+      # Tweaking for slope, (wheels are round so should "float" a bit when on angle so their not into ground)
+      (try_begin),
+        (lt,":deg_value",0),
+        (val_mul,":deg_value",108), # 108 %
+        (val_div,":deg_value",100),
+      (else_try),
+        (gt,":deg_value",0),
+        (val_mul,":deg_value",92), # 92 %
+        (val_div,":deg_value",100),
+      (try_end),
+      
+      (position_rotate_y,pos14,":deg_value2"),
+      (position_rotate_x,pos14,":deg_value"),
+
+      (prop_instance_animate_to_position, ":cannon_instance", pos14, 28),
+
+      # Wheels.
+      # move from middle of spike to the wheel position on limber.
+      (position_move_y, pos14,":y_offset"),
+      
+      # reset pos14 its X rotation for the weels (they store their own rotation and rotate with it.)
+      (position_get_rotation_around_x,":parent_x_rot",pos14),
+      (val_mul,":parent_x_rot",-1),
+      (position_rotate_x,pos14,":parent_x_rot"),
+
+      (scene_prop_get_slot,":x_rot",":cannon_wheels_instance",scene_prop_slot_x_extra),
+      (val_add,":x_rot",":cannon_wheel_speed"),
+      (try_begin),
+        (gt,":x_rot",360),
+        (val_sub,":x_rot",360),
+      (try_end),
+      (scene_prop_set_slot,":cannon_wheels_instance",scene_prop_slot_x_extra,":x_rot"),
+      (position_rotate_x,pos14,":x_rot"),
+      
+      (prop_instance_animate_to_position, ":cannon_wheels_instance", pos14, 28),
+    (try_end),
+])
+
+multiplayer_client_control_cannon = (
+  0, 0, 1, [
+             (neg|multiplayer_is_dedicated_server),
+             (eq, "$g_currently_controlling_object", 1),
+             (this_or_next|game_key_clicked, gk_attack),
+             (game_key_clicked, gk_defend),
+             (is_between,"$g_cur_control_prop_kind", mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+           ],
+  [
+    (assign,":command",-1),
+    (try_begin),
+      (game_key_clicked, gk_defend),
+      (assign,":command",cannon_command_stop_aim),
+    (else_try),
+      (game_key_clicked, gk_attack),
+      (assign,":command",cannon_command_fire),
+    (try_end),
+  
+    (gt,":command",-1),
+    (try_begin),
+      (game_in_multiplayer_mode),
+      (multiplayer_send_2_int_to_server,multiplayer_event_send_control_command,command_type_cannon,":command"),
+    (else_try),
+      (call_script,"script_client_get_my_agent"),
+      (call_script,"script_handle_agent_control_command",reg0,command_type_cannon,":command"),
+    (try_end),
+])
+
+multiplayer_server_aim_cannon  = (
+  0.5, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode)],
+  [  
+    (set_fixed_point_multiplier, 100),
+    (try_for_range,":cannon_type", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
+      (try_for_prop_instances, ":instance_id", ":cannon_type", somt_temporary_object),
+        (scene_prop_get_slot,":cur_control_agent",":instance_id",scene_prop_slot_controller_agent),
+        
+        (agent_is_active, ":cur_control_agent"),
+        
+        (prop_instance_get_position, pos10, ":instance_id"),
+        
+        (assign,":agent_is_ok",0),
+        (try_begin),
+          (agent_is_alive, ":cur_control_agent"),
+        
+          (agent_get_horse,":horse",":cur_control_agent"),
+          (eq,":horse",-1),          
+          
+          (agent_get_position, pos11, ":cur_control_agent"),
+          
+          (get_distance_between_positions,":dist",pos10,pos11),
+          (le, ":dist", 600),
+          
+          (assign,":agent_is_ok",1),
+        (else_try),
+          (call_script,"script_stop_agent_controlling_cannon",":instance_id",":cur_control_agent"),
+        (try_end),
+        
+        (eq,":agent_is_ok",1),
+        
+        (store_mission_timer_a,":cur_time"),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_spawned_at,":cur_time"),
+        
+        # (try_begin),
+          # (call_script, "script_prop_instance_find_first_child_of_type", ":instance_id", "spr_mm_cannon_aim_platform"),
+          # (prop_instance_is_valid,reg0),
+          # (neg|scene_prop_has_agent_on_it, reg0, ":cur_control_agent"),
+          ####(call_script,"script_stop_agent_controlling_cannon",":instance_id",":cur_control_agent"),
+          # (prop_instance_get_position,pos9,reg0),
+          # (agent_set_position,":cur_control_agent",pos9),
+        # (try_end),
+        
+        # Handle firing first, else handle aiming.
+        (agent_get_slot,":cur_command",":cur_control_agent",slot_agent_current_command),
+        (try_begin),
+          (eq,":cur_command",cannon_command_fire),
+          
+          (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+          (try_begin),
+            (eq,":cur_time",1), # already been once then fire it! :)
+            
+            (call_script,"script_fire_cannon",":instance_id",":cur_control_agent"),
+            
+            (agent_set_slot, ":cur_control_agent", slot_agent_current_command, 0),
+            (assign,":cur_time",0),
+          (else_try),
+            (val_add,":cur_time",1),
+          (try_end),
+          
+          (scene_prop_set_slot,":instance_id", scene_prop_slot_time, ":cur_time"),
+        (else_try),
+          
+          (copy_position,pos19,pos10),
+          (agent_get_look_position, pos11, ":cur_control_agent"),
+          (copy_position,pos23,pos11),
+          (position_rotate_z, pos11, 90),
+          
+          (try_begin),
+            (eq,":cannon_type","spr_mm_cannon_mortar_wood"),
+            
+            (call_script,"script_search_for_first_ground_from_direction_to_angle"),
+            (assign,":agent_y_rot",reg0),
+          (else_try),
+            (position_get_rotation_around_y,":agent_y_rot",pos11),
+          (try_end),
+          
+          #(get_distance_between_positions,":dist",pos10,pos11),
+          (try_begin),
+            # (gt, ":dist", 500),
+            
+            # (call_script,"script_stop_agent_controlling_cannon",":instance_id",":cur_control_agent"),
+          # (else_try),
+            (call_script,"script_cannon_instance_get_barrel",":instance_id"),
+            (assign,":barrel_instance",reg0),
+
+           # (position_rotate_z, pos11, 90), # Rotate because the agent front is Y axis but for cannons it is the X axis.. lol..
+           # 
+            (position_get_rotation_around_z,":agent_z_rot",pos11),
+          #   (position_get_rotation_around_y,":agent_y_rot",pos11),
+            (position_get_rotation_around_z,":prop_z_rot",pos10),
+            
+                        
+            (assign,":prop_y_rot",0),
+            (assign,":can_y_rot",0),
+            (try_begin),
+              (prop_instance_is_valid,":barrel_instance"), # patch1115 18/23
+              
+              (prop_instance_get_position,pos12,":barrel_instance"),
+              (position_get_rotation_around_y,":prop_y_rot",pos12),
+              
+              (position_get_rotation_around_y,":can_y_rot",pos10),
+            (else_try),
+              (position_get_rotation_around_y,":prop_y_rot",pos10),
+            (try_end),
+            
+            (store_sub,":diffirence_z",":agent_z_rot",":prop_z_rot"),
+            (store_sub,":diffirence_y",":agent_y_rot",":prop_y_rot"),
+            
+            (try_begin),
+              (gt,":diffirence_z",180),
+              (val_sub,":diffirence_z",360),
+            (else_try),
+              (lt,":diffirence_z",-180),
+              (val_add,":diffirence_z",360),
+            (try_end),
+            
+            (try_begin),
+              (gt,":diffirence_y",180),
+              (val_sub,":diffirence_y",360),
+            (else_try),
+              (lt,":diffirence_y",-180),
+              (val_add,":diffirence_y",360),
+            (try_end),
+            
+            (try_begin),
+              (gt,":diffirence_z",4),
+              (assign,":diffirence_z",4),
+            (else_try),
+              (lt,":diffirence_z",-4),
+              (assign,":diffirence_z",-4),
+            (try_end),
+            
+            (try_begin),
+              (gt,":diffirence_y",2),
+              (assign,":diffirence_y",2),
+            (else_try),
+              (lt,":diffirence_y",-2),
+              (assign,":diffirence_y",-2),
+            (try_end),
+            
+            # Limit cannon Z rot if applicable
+            (scene_prop_get_slot,":z_rotation_limit",":instance_id",scene_prop_slot_z_rotation_limit),
+            (try_begin),
+              (gt, ":z_rotation_limit", 0),
+
+              (scene_prop_get_slot,":prop_z_rot_offset",":instance_id",scene_prop_slot_z_rot),
+              
+              (store_add,":new_prop_z_rot_offset",":prop_z_rot_offset",":diffirence_z"),# Add the change towards the current rotation.
+              (store_mul,":z_rotation_limit_min",":z_rotation_limit",-1),
+              
+              (try_begin),
+                (gt,":new_prop_z_rot_offset",":z_rotation_limit"),
+                (assign,":prop_z_rot_offset",":z_rotation_limit"),
+                (store_sub,":res_diffirence_z",":new_prop_z_rot_offset",":prop_z_rot_offset"),
+                (val_sub,":diffirence_z",":res_diffirence_z"),
+              (else_try),
+                (lt,":new_prop_z_rot_offset",":z_rotation_limit_min"),
+                (assign,":prop_z_rot_offset",":z_rotation_limit_min"),
+                (store_sub,":res_diffirence_z",":new_prop_z_rot_offset",":prop_z_rot_offset"),
+                (val_sub,":diffirence_z",":res_diffirence_z"),
+              (else_try),
+                (assign,":prop_z_rot_offset",":new_prop_z_rot_offset"),
+              (try_end),
+              
+              (scene_prop_set_slot,":instance_id",scene_prop_slot_z_rot,":prop_z_rot_offset"), 
+            (try_end),
+
+            (position_rotate_z,pos10,":diffirence_z"),
+            (copy_position,pos57,pos10),
+
+            (try_begin),
+              (prop_instance_is_valid,":barrel_instance"), #patch1115 18/24
+              
+              (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,":barrel_instance",0),
+   
+              (scene_prop_get_slot,":xvalue",":barrel_instance",scene_prop_slot_x_value),
+              (scene_prop_get_slot,":yvalue",":barrel_instance",scene_prop_slot_y_value),
+              (scene_prop_get_slot,":zvalue",":barrel_instance",scene_prop_slot_z_value),
+              (position_move_x, pos57,":xvalue"),
+              (position_move_y, pos57,":yvalue"),
+              (position_move_z, pos57,":zvalue"),
+                           
+              (val_sub,":prop_y_rot",":can_y_rot"), 
+              (try_begin),
+                (lt,":prop_y_rot",0),
+                (val_add,":prop_y_rot",360),
+              (try_end),
+              (val_add,":prop_y_rot",":diffirence_y"),# Add the change towards the current rotation.
+
+              (try_begin),
+                (neq,":cannon_type","spr_mm_cannon_mortar_wood"),
+                (try_begin), # limit barrel rotations
+                  (is_between,":prop_y_rot",180,340), # upper limit
+                  (assign,":prop_y_rot",340),
+                (else_try),
+                  (is_between,":prop_y_rot",19,180), # down limit
+                  (assign,":prop_y_rot",18),
+                (try_end),
+              (try_end),
+              
+              (position_rotate_y,pos57,":prop_y_rot"),
+              
+              (scene_prop_set_slot,":barrel_instance",scene_prop_slot_y_rot,":prop_y_rot"), # store rotation to keep barrel in same direction :3
+              
+              (call_script, "script_prop_instance_animate_to_position_with_childs", ":barrel_instance", 53,0,0),
+            (else_try),
+              (position_rotate_y,pos57,":diffirence_y"),
+              (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,0,0),
+            (try_end),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+  ])
+
+multiplayer_server_cannonball_flight = (
+  0.125, 0, 0, [ (this_or_next|multiplayer_is_server),
+                (neg|game_in_multiplayer_mode),
+              ],
+  [
+    (set_fixed_point_multiplier, 100),
+    
+    (try_for_range,":cannonball_type", "spr_mm_cannonball_code_only_6pd", "spr_mm_cannon_12pdr_wood"),
+      (try_for_prop_instances, ":ball_instance_id", ":cannonball_type", somt_temporary_object),
+        (scene_prop_slot_eq, ":ball_instance_id", scene_prop_slot_in_use, 1), # ball is in use.
+
+        (scene_prop_get_slot,":cur_x_vel",":ball_instance_id", scene_prop_slot_x_value),
+        (scene_prop_get_slot,":cur_y_vel",":ball_instance_id", scene_prop_slot_y_value),
+        (scene_prop_get_slot,":cur_z_vel",":ball_instance_id", scene_prop_slot_z_value),
+        (scene_prop_get_slot,":time",":ball_instance_id", scene_prop_slot_time),
+        (scene_prop_get_slot,":ammo_type",":ball_instance_id", scene_prop_slot_ammo_type),
+        (scene_prop_get_slot,":user_agent",":ball_instance_id", scene_prop_slot_user_agent),
+        
+        (prop_instance_get_position, pos33, ":ball_instance_id"),
+        (position_get_z, ":ball_z",pos33),
+        
+        # (assign,reg22,":cur_x_vel"),
+        # (assign,reg23,":cur_y_vel"),
+        # (assign,reg24,":cur_z_vel"),
+        # (display_message,"@cur_x_vel: {reg22}  cur_y_vel: {reg23}  cur_z_vel: {reg24}"),
+        
+        (assign,":move",1),
+        (assign,":check_walls",1),
+        (assign,":check_agents",1),
+        (copy_position,pos35,pos33),
+        (copy_position,pos26,pos35),
+
+
+        (try_begin),
+          (gt,":time",0),
+          
+          (copy_position,pos34,pos33),
+          (position_set_z_to_ground_level,pos34),
+          (position_get_z,":ground_z",pos34),
+          (val_add, ":ground_z", 10), 
+          
+          (this_or_next|lt,":ball_z", "$g_scene_water_level"),
+          (lt,":ball_z", ":ground_z"),
+          
+          # Reset all rotations on pos34 except z
+          (position_get_rotation_around_z, ":z_rot", pos34),
+          (position_copy_origin,pos47,pos34),
+          (init_position,pos34),
+          (position_copy_origin,pos34,pos47),
+          (position_rotate_z,pos34,":z_rot"),
+          
+          (try_begin), # Hitting the water?
+            (lt,":ball_z", "$g_scene_water_level"), # we are underwater
+            
+            (gt,":ball_z", ":ground_z"), # we are undrerwater and not underground
+            
+            (scene_prop_slot_eq, ":ball_instance_id", scene_prop_slot_displayed_particle, 0), # shown the water effect already?
+            (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_displayed_particle, 1),
+            (copy_position,pos60,pos34), # pos60 is particle pos
+            (position_set_z,pos60,"$g_scene_water_level"), # 0 = water level.
+            
+            (call_script,"script_multiplayer_server_play_hit_effect",cannon_hit_effect_event_type_water_ball, 0),
+          (try_end),
+         
+          (lt,":ball_z", ":ground_z"),
+          
+          (assign,":clean_it_up",0),
+          (try_begin),
+            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+            (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
+            (eq,":ammo_type",cannon_ammo_type_rocket),
+            
+            (copy_position,pos47,pos34),
+            (call_script,"script_cannon_explosion_on_position",1,":ammo_type",":user_agent"),
+            
+            (assign,":clean_it_up",1),
+          (else_try),
+            (eq,":ammo_type",cannon_ammo_type_round),
+            
+            (call_script, "script_cannon_ball_hit_ground", ":ball_instance_id", ":cur_x_vel",":cur_z_vel"),
+            (assign, ":cur_x_vel", reg0),
+            (assign, ":cur_z_vel", reg1),
+            (assign, ":clean_it_up", reg2),
+          (try_end),
+          
+          (try_begin),
+            (eq,":clean_it_up",1),
+            
+            (call_script, "script_clean_up_prop_instance", ":ball_instance_id"),
+            
+            (assign,":time",-1),
+            (assign,":move",0),
+            (assign,":check_walls",0),
+            (assign,":check_agents",0),
+          (try_end),
+          
+        (else_try),
+          (assign, ":modulus", ":time"),
+          
+          (try_begin),
+            (eq,":ammo_type",cannon_ammo_type_rocket),
+            
+            (val_mod, ":modulus", 2), # move and check once in 2 times (0.25 seconds)
+          (else_try),
+            (val_mod, ":modulus", 4), # move and check once in 4 times (0.5 seconds)
+          (try_end),
+          
+          (gt, ":modulus", 0), # If not right mod result dont move. (1 == second value it will return so always move first pass :) )
+          (assign,":move",0), # Dont move/check stuff just for ground detection...
+        (try_end),
+
+        # Copy ball pos when needed
+        (store_mul,":z_offset_calc",":cur_z_vel",10000),
+        (try_begin),
+          (neq,":cur_x_vel",0),
+          (val_div,":z_offset_calc",":cur_x_vel"),       
+        (else_try),
+          (val_div,":z_offset_calc",10000),      
+        (try_end),
+        
+        (store_div,":x_movement",":cur_x_vel",2),
+        (store_div,":y_movement",":cur_y_vel",2),
+        (store_div,":z_movement",":cur_z_vel",2),
+        
+        (position_move_x,pos35,":x_movement"),
+        (position_move_y,pos35,":y_movement"),
+        (position_move_z,pos35,":z_movement"),
+        
+          
+        (try_begin),
+          (eq,":move",1),
+          (set_fixed_point_multiplier, 100),
+          
+          (position_get_x,":ball_x",pos33),
+          (position_get_y,":ball_y",pos33),
+          
+          (try_begin),
+            (this_or_next|lt,":ball_x","$g_scene_min_x"),
+            (this_or_next|gt,":ball_x","$g_scene_max_x"),
+            (this_or_next|lt,":ball_y","$g_scene_min_y"),
+            (gt,":ball_y","$g_scene_max_y"),
+            
+            (call_script, "script_clean_up_prop_instance", ":ball_instance_id"),
+            (assign,":time",-1),
+            (assign,":move",0),
+            (assign,":check_walls",0),
+            (assign,":check_agents",0),
+          (else_try),
+            # Animate first
+            
+            # (assign,reg29,":cur_x_vel"),
+            # (assign,reg30,":cur_z_vel"),
+            # (assign,reg31,":cur_y_vel"),
+            # (display_message,"@at move;  cur_x_vel: {reg29}  cur_z_vel: {reg30}  cur_y_vel: {reg31}"),
+            
+            (position_move_x,pos33,":cur_x_vel"),
+            (position_move_y,pos33,":cur_y_vel"),
+            (position_move_z,pos33,":cur_z_vel"),
+            
+            (try_begin),
+              (eq,":ammo_type",cannon_ammo_type_rocket),
+              (try_begin),
+                (ge,":time", 4),
+                (store_random_in_range,":rand_z",-4,4),
+                (position_rotate_z,pos33,":rand_z"),
+                (store_random_in_range,":rand_y",-4,4),
+                (position_rotate_y,pos33,":rand_y"),
+              (try_end),
+              (prop_instance_animate_to_position, ":ball_instance_id", pos33, 28),
+            (else_try),
+              (prop_instance_animate_to_position, ":ball_instance_id", pos33, 53),
+            (try_end),
+            
+            (try_begin),
+              (eq,":ammo_type",cannon_ammo_type_rocket),
+              (try_begin),
+                (le,":time", 28),
+                (val_add, ":cur_x_vel", 150),
+              (else_try),
+                (val_mul, ":cur_x_vel", 99), 
+                (val_div, ":cur_x_vel", 100), # value * 99 / 100 = - 99% of speed due to friction per 0.5 sec so 2% friction per second
+              (try_end),
+              (try_begin),
+                (gt,":time",4),
+                (val_sub,":cur_z_vel", 59), 
+              (try_end),
+            (else_try),
+              # Then apply gravity and friction
+              ## -196 cm per second so # 0.981 per half
+              (val_sub,":cur_z_vel", 118), 
+              (val_max,":cur_z_vel",-1700),
+              (val_mul, ":cur_x_vel", 99), 
+              (val_div, ":cur_x_vel", 100), # value * 99 / 100 = - 99% of speed due to friction per 0.5 sec so 2% friction per second
+            (try_end),
+            
+            (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_x_value, ":cur_x_vel"),
+            (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_y_value, ":cur_y_vel"),
+            (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_z_value, ":cur_z_vel"),
+          (try_end),
+        (try_end),
+        
+        (val_add,":time",1),
+        (scene_prop_set_slot, ":ball_instance_id", scene_prop_slot_time, ":time"),
+        
+        (eq,":move",1), # Only check stuff when just moved.
+        
+        
+        (assign,":hitted_wall_x_dist",":cur_x_vel"),
+                
+        (try_begin), # destroy those bloody walls bitch..
+          #(gt,":time",0),
+          (eq,":check_walls",1), # not the first time so dont destroy your defence walls..
+          (assign,":min_dist",9999999999),
+          (assign,":hitted_wall_instance",-1),
+          #(assign,":hitted_length_div2",0),
+          (assign,":hitted_wall_kind",-1),
+          (assign,":hitted_wall_power",3),
+          (assign,":hitted_distance_ball_wall",0),
+          (store_mul,":cur_x_vel_min",":cur_x_vel",-1),
+          (try_for_range,":wall_type",mm_destructible_props_begin,mm_destructible_props_end),
+            
+            (assign,":wall_power", 3),
+            #(try_begin),
+             # (this_or_next|is_between, ":wall_type", "spr_mm_stakes","spr_mm_destructible_pioneer_builds_end"), #patch1115 fix 35/1 removed
+             # (eq,":wall_type","spr_mm_dummy"),
+            #  (assign,":wall_power",1),
+           # (try_end),
+            
+            (try_for_prop_instances, ":wall_id", ":wall_type"),
+              (prop_instance_get_position, pos40, ":wall_id"),
+              
+              (scene_prop_get_slot,":max_length",":wall_id", scene_prop_slot_destruct_max_length),
+              (store_add,":cur_x_vel_awall", ":x_movement", ":max_length"),
+              
+              # only get shit that is close to this ball middle position.
+              (get_distance_between_positions, ":distance_ball_wall", pos35, pos40),
+              (le, ":distance_ball_wall", ":cur_x_vel_awall"),
+              
+              # We are close enough, optimization done, lets get the real stuff about this prop.
+              (call_script,"script_get_prop_center",":wall_id"),
+              (eq,reg1,1), # is ok :)
+              (scene_prop_get_slot,":cur_wall_height",":wall_id",scene_prop_slot_destruct_wall_height),
+              (scene_prop_get_slot,":cur_wall_width",":wall_id",scene_prop_slot_destruct_wall_width),
+              (scene_prop_get_slot,":cur_wall_length",":wall_id",scene_prop_slot_destruct_wall_length),
+
+              (assign,":cur_wall_width_usa",":cur_wall_width"),
+              
+              (copy_position,pos40,pos42), 
+              
+              (set_fixed_point_multiplier, 1000),
+              # resize for the angle of wall
+              (get_angle_between_positions, ":rotation", pos33, pos40),
+              # get length
+              (store_cos, ":cos_of_rotation", ":rotation"),
+              (try_begin), # make it positive if needed
+                (lt, ":cos_of_rotation", 0),
+                (val_mul, ":cos_of_rotation", -1),
+              (try_end),
+              (val_mul,":cur_wall_length",":cos_of_rotation"),
+              (val_div, ":cur_wall_length", 1000),
+              # get width
+              (store_sub, ":cos_of_rotation", 1000, ":cos_of_rotation"), # get remainder
+              (val_mul,":cur_wall_width",":cos_of_rotation"),
+              (val_div, ":cur_wall_width", 1000),
+              
+              # Put length + width together
+              (val_add, ":cur_wall_length", ":cur_wall_width"),
+              
+              
+              # prepare vars for compare against ball pos
+              (set_fixed_point_multiplier, 100),
+              (store_div, ":length_div2", ":cur_wall_length", 2),
+              (store_div, ":height_div2", ":cur_wall_height", 2),
+              (store_mul, ":length_div2_min", ":length_div2", -1),
+              (store_mul, ":height_div2_min", ":height_div2", -1),              
+              
+              (position_transform_position_to_local,pos45,pos26,pos40),
+              (position_get_x,":x_value",pos45),
+              (position_get_y,":y_value",pos45),
+              (position_get_z,":z_value",pos45),
+              
+              (is_between,":y_value",":length_div2_min",":length_div2"), # Length 
+              (is_between,":x_value",-50,":cur_x_vel"), #  50 cm before and speed after the path of the ball. (due to lag..)
+              
+              (store_mul,":z_offset",":z_offset_calc",":x_value"),
+              (val_div,":z_offset",10000), # zoffset is clear.
+              (val_add,":height_div2",":z_offset"),
+              (val_add,":height_div2_min",":z_offset"),
+              
+              (is_between,":z_value",":height_div2_min",":height_div2"), # height
+              
+              # is hit.
+              # then, check if its the closest one, using agent position due to you want to hit the first thing comming from x direction.
+              (try_begin),
+                (agent_is_active,":user_agent"),
+                (agent_get_position,pos56,":user_agent"),
+                (get_distance_between_positions, ":distance_ball_wall", pos56, pos40),
+              (try_end),
+              (this_or_next|eq,":hitted_wall_instance",-1),
+              (lt,":distance_ball_wall",":min_dist"),
+              (assign,":min_dist",":distance_ball_wall"),
+              (assign,":hitted_wall_instance",":wall_id"),
+              (assign,":hitted_wall_x_dist",":x_value"),
+              #(assign,":hitted_length_div2",":length_div2"),
+              (store_div,":hitted_width_div2", ":cur_wall_width_usa", 2),
+              (assign,":hitted_wall_kind",":wall_type"),
+              (assign,":hitted_wall_power",":wall_power"),
+              
+              (copy_position,pos45,pos33),
+              (position_move_x,pos45,":cur_x_vel_min"),
+              (get_distance_between_positions, ":hitted_distance_ball_wall", pos45, pos40),
+              (copy_position,pos47,pos40),
+            (try_end),
+          (try_end),
+          
+
+          (try_begin), # we have something hit.
+           # (gt,":hitted_wall_instance", -1),
+            (prop_instance_is_valid,":hitted_wall_instance"), #patch1115 18/25
+            
+            (copy_position,pos45,pos33),
+            (position_move_x,pos45,":cur_x_vel_min"),
+            
+            
+            # copy ball to a temp pos. (for its rotations.
+            
+            #            85%
+            # (val_mul,":hitted_length_div2",85),
+            # (val_div,":hitted_length_div2",100),
+            
+            (val_sub,":hitted_distance_ball_wall",":hitted_width_div2"),
+            (position_move_x,pos45,":hitted_distance_ball_wall"),
+            
+            (position_get_z,":wall_middle_z",pos47),
+            
+            (store_random_in_range,":random_z_add",-100,101),
+            (val_add,":wall_middle_z",":random_z_add"),
+            
+            (position_set_z,pos45,":wall_middle_z"),
+            #(position_rotate_y,pos45,90),
+            
+            
+            # place wall xyz into the rotation of ball.
+            #(position_copy_origin,pos45,pos47),
+            # flip the position
+            # (position_rotate_x,pos45,180),
+            # (position_move_x,pos45,":hitted_length_div2"),
+            (copy_position,pos47,pos45),
+            
+            (try_begin),
+              (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+              (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
+              (eq,":ammo_type",cannon_ammo_type_rocket),
+              
+              (call_script,"script_cannon_explosion_on_position",0,":ammo_type",":user_agent"),
+              
+              (call_script, "script_clean_up_prop_instance", ":ball_instance_id"), # clean up ball
+              (assign,":check_agents",0),
+            (else_try),
+              (eq,":ammo_type",cannon_ammo_type_round),
+              
+              (try_begin),
+                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"),
+                (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
+              (else_try),
+                (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
+              (try_end),
+              
+              (scene_prop_get_slot,":ball_times_hit",":ball_instance_id", scene_prop_slot_times_hit),
+              (val_add, ":ball_times_hit", ":hitted_wall_power"),
+              
+              (try_begin),
+                (ge, ":ball_times_hit", 3),
+                #Clean up ball
+                (call_script, "script_clean_up_prop_instance", ":ball_instance_id"),
+               # (assign,":check_agents",0),
+              (else_try),
+                # hit something, loosing speed.
+                (val_mul, ":cur_x_vel", 90), 
+                (val_div, ":cur_x_vel", 100), # value * 90 / 100 = - 90% speed left
+                (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_x_value, ":cur_x_vel"),
+                (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_times_hit, ":ball_times_hit"),
+              (try_end),
+            (try_end),
+          (try_end),
+        (try_end), 
+        #(gt,":time",1),
+        (eq, ":check_agents", 1),
+	    	(neq,":ammo_type",cannon_ammo_type_bomb),
+        (set_fixed_point_multiplier, 100),
+        
+        
+        # get the Z offset by knowing the Z mov per x mov. (fixed point * 10000)
+        
+        (assign,":myhorseid",-1),
+        (try_begin),
+          (agent_is_active, ":user_agent"),
+          (agent_get_horse,":myhorseid",":user_agent"),
+        (try_end),
+        
+        
+
+        (store_add,":check_range",":x_movement",120),
+        
+
+        
+        (try_for_agents, ":cur_agent",pos35,":check_range"),
+          (eq, ":check_agents", 1),
+          (agent_is_active, ":cur_agent"),
+          (agent_is_alive, ":cur_agent"),
+          (agent_get_position, pos40, ":cur_agent"),
+          
+          (assign,":z_mov",90),
+          (assign,":z_size",90),
+          (assign,":y_width",70),
+          (assign,":whores",-1),
+          (try_begin),
+            (agent_is_human,":cur_agent"),
+            (try_begin),
+              (agent_get_horse,":whores",":cur_agent"),
+              (gt,":whores",-1),
+              (assign,":z_mov",130),
+              (assign,":z_size",80),
+            (else_try),
+              (agent_get_animation,":cur_anim",":cur_agent",0),
+              (eq,":cur_anim","anim_stand_to_crouch"),
+              (assign,":z_mov",50),
+              (assign,":z_size",50),
+            (try_end),
+          (else_try), # horse.
+          
+            (assign,":y_width",150),
+            (assign,":cur_wall_width",70),
+            
+            # resize for the angle of horse
+            (set_fixed_point_multiplier, 1000),
+            (get_angle_between_positions, ":rotation", pos33, pos40),
+            (store_cos, ":cos_of_rotation", ":rotation"),
+            (try_begin), # make it positive if needed
+              (lt, ":cos_of_rotation", 0),
+              (val_mul, ":cos_of_rotation", -1),
+            (try_end),
+            (val_mul,":y_width",":cos_of_rotation"),
+            (val_div, ":y_width", 1000),
+            
+            (store_sub, ":sin_of_rotation", 1000, ":cos_of_rotation"), # get remainder
+            (val_mul,":cur_wall_width",":sin_of_rotation"),
+            (val_div, ":cur_wall_width", 1000),
+
+            # Put length + width together
+            (val_add, ":y_width", ":cur_wall_width"),
+            (set_fixed_point_multiplier, 100),
+            
+            (assign,":z_mov",110),
+            (assign,":z_size",110),
+          (try_end),
+          
+          (position_move_z,pos40,":z_mov"),
+          
+          (position_transform_position_to_local,pos45,pos26,pos40),
+          (position_get_x,":x_value",pos45),
+          (position_get_y,":y_value",pos45),
+          (position_get_z,":z_value",pos45),
+          
+          (assign,":x_min",-50),
+          (try_begin),
+            (le,":time",1),
+            (this_or_next|eq,":cur_agent",":user_agent"),
+            (eq,":myhorseid",":user_agent"),
+            (assign,":x_min",":hitted_wall_x_dist"),
+          (try_end),
+          
+          (is_between,":x_value",":x_min",":hitted_wall_x_dist"), # 0.5 meters after + speed before the path of the ball.
+          
+          (store_add,":y_test",":y_width",1),
+          (store_mul,":min_y_test",":y_test",-1),
+          
+          (is_between,":y_value",":min_y_test",":y_test"), # width 50 cm each side so a meter wide we hit him
+          
+         
+          
+          (store_add,":z_test",":z_size",15),
+          (store_mul,":min_z_test",":z_test",-1),
+          (val_add,":z_test",20),
+          (store_mul,":z_offset",":z_offset_calc",":x_value"),
+          (val_div,":z_offset",10000), # zoffset is clear.
+          (val_add,":z_test",":z_offset"),
+          (val_add,":min_z_test",":z_offset"),
+          
+          
+          # (assign,reg21,":cur_agent"),
+           # (assign,reg22,":x_value"),
+           # (assign,reg24,":z_value"),
+           # (assign,reg25,":cur_x_vel"),
+           # (assign,reg27,":cur_z_vel"),
+           # (assign,reg28,":z_offset"),
+           
+           # (display_message,"@cur_agent:{reg21}  x_value: {reg22}  z_value: {reg24}  ball_x_vel: {reg25}  ball_z_vel: {reg27}  z_offset: {reg28}"),
+          
+          
+          (is_between,":z_value",":min_z_test",":z_test"),#,-110,121), # height 2 meter man + 20 for correction
+          
+          
+          (try_begin),
+            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+            (eq,":ammo_type",cannon_ammo_type_rocket),
+            (copy_position,pos47,pos40),
+            
+            (call_script,"script_cannon_explosion_on_position",0,":ammo_type",":user_agent"),
+            
+            (call_script, "script_clean_up_prop_instance", ":ball_instance_id"), # clean up ball
+            (assign, ":check_agents", 0),
+          (else_try),
+            (eq,":ammo_type",cannon_ammo_type_round),
+          
+            (assign, ":killer_agent", 0),
+            (try_begin),
+              (agent_is_active,":user_agent"),
+              (assign, ":killer_agent", ":user_agent"),
+            (else_try),
+              (assign, ":killer_agent", ":cur_agent"),
+            (try_end),
+            #(agent_set_hit_points, ":cur_agent", 0, 1),
+            #(agent_deliver_damage_to_agent, ":killer_agent", ":cur_agent", 1),
+            (agent_deliver_damage_to_agent_advanced, ":unused", ":killer_agent", ":cur_agent", 200,"itm_cannon_ball_dummy"),
+            (particle_system_burst,"psys_cannon_blood",pos40,100),
+            (particle_system_burst,"psys_cannon_blood_2",pos40,100),
+                                 
+            # Play hitsound
+            (copy_position,pos56,pos40),
+            (call_script,"script_multiplayer_server_play_sound_at_position","snd_cannon_hit"),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+])
+
+multiplayer_server_explosives  = (
+  1, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
+  [
+    (try_for_range,":explosive_type", mm_explosive_props_begin, mm_explosive_props_end),
+      (try_for_prop_instances, ":instance_id", ":explosive_type"),
+        
+        (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+        (gt,":cur_time",0),
+        (val_sub,":cur_time",1),
+        
+        (prop_instance_get_position, pos47, ":instance_id"), 
+        (try_begin),
+          (le,":cur_time",0),
+          
+          (scene_prop_get_slot,":agent_id",":instance_id",scene_prop_slot_user_agent),
+          
+          (call_script, "script_clean_up_prop_instance", ":instance_id"),
+          
+          (call_script,"script_explosion_at_position",":agent_id",270,370), # Input: shooter_agent_no, max_damage points, range in cm
+        (else_try),
+          (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
+          (set_fixed_point_multiplier,100),
+          (position_move_z,pos47,80),
+          (particle_system_burst, "psys_explosives_fuse_smoke", pos47, 60),
+        (try_end),
+      (try_end),
+    (try_end),
+])
+
+multiplayer_play_sounds_and_particles  = (
+  1, 0, 0, [(neg|multiplayer_is_dedicated_server)],
+  [
+    (try_for_prop_instances, ":instance_id", "spr_mm_watersplash", somt_object), #Name of prop
+      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+      (val_sub,":cur_time",1),
+      (try_begin),
+        (le,":cur_time",0),
+        (prop_instance_get_position, pos47, ":instance_id"),
+        (particle_system_burst_no_sync, "psys_game_water_splash_2", pos47, 100), #particle name
+        (store_random_in_range,":cur_time",2,3), #Seconds until next particle
+      (try_end),
+      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
+    (try_end),
+    
+    (try_for_prop_instances, ":instance_id", "spr_mm_ambient_insects", somt_object),  #Name of prop
+      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+      (val_sub,":cur_time",1),
+      (try_begin),
+        (le,":cur_time",0),
+        (prop_instance_get_position, pos47, ":instance_id"),
+        (particle_system_burst_no_sync, "psys_mm_bug_fly_1", pos47, 100), #particle name
+        (store_random_in_range,":cur_time",8,14), #Seconds until next particle
+      (try_end),
+      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
+    (try_end),
+    
+    (try_for_prop_instances, ":instance_id", "spr_mm_ambient_insects1", somt_object),  #Name of prop
+      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+      (val_sub,":cur_time",1),
+      (try_begin),
+        (le,":cur_time",0),
+        (prop_instance_get_position, pos47, ":instance_id"),
+        (particle_system_burst_no_sync, "psys_mm_bug_fly_2", pos47, 100), #particle name
+        (store_random_in_range,":cur_time",8,14), #Seconds until next particle
+      (try_end),
+      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
+    (try_end),
+    
+    (try_for_prop_instances, ":instance_id", "spr_mm_ambient_insects2", somt_object),  #Name of prop
+      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+      (val_sub,":cur_time",1),
+      (try_begin),
+        (le,":cur_time",0),
+        (prop_instance_get_position, pos47, ":instance_id"),
+        (particle_system_burst_no_sync, "psys_mm_bug_fly_3", pos47, 100), #particle name
+        (store_random_in_range,":cur_time",8,14), #Seconds until next particle
+      (try_end),
+      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
+    (try_end),
+    #end
+    (try_for_prop_instances, ":instance_id", "spr_mm_ambience_sound_local_crow", somt_object),  #Name of prop
+      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
+      (val_sub,":cur_time",1),
+      (try_begin),
+        (le,":cur_time",0),
+        (prop_instance_get_position, pos56, ":instance_id"),
+        (play_sound_at_position, "snd_ambient_crow", pos56),#sound name
+        (store_random_in_range,":cur_time",10,61), #Seconds until next sound
+      (try_end),
+      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
     (try_end),
 ])
 
@@ -1101,6 +2636,17 @@ def common_triggers(self):
     multiplayer_server_agent_hit_common,
     multiplayer_client_voice_warcry,
     multiplayer_client_voice_orders,
+    multiplayer_client_music_and_sapper,
+    multiplayer_agent_unwield_item_common,
+    multiplayer_server_bird_spawn_common,
+    multiplayer_server_move_bird_common,
+    multiplayer_server_drag_limber,
+    multiplayer_client_control_cannon,
+    multiplayer_server_aim_cannon,
+    multiplayer_server_cannonball_flight,
+    multiplayer_agent_wield_item_common,
+    multiplayer_server_explosives,
+    multiplayer_play_sounds_and_particles,
 
     local_chat_pressed,
     faction_chat_pressed,

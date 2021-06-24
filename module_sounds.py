@@ -350,6 +350,13 @@ sounds = [
  ("ambient_stone",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["Rain_heavy_stone.wav"]),
  ("ambient_windmill",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["windmill_fan.wav"]),
 
+ ("global_ambient_night",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["night.ogg"]), 
+ ("global_ambient_beach",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["beach.ogg"]), 
+ ("global_ambient_farmland",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["farmland_sound_new.ogg"]), 
+ ("global_ambient_farmland_evening",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["farmland_sound_new_evening.ogg"]), 
+ ("global_ambient_farmland_empty",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["empty_farmland.ogg"]), 
+ ("global_ambient_city_empty",sf_2d|sf_vol_10|sf_priority_15|sf_looping|sf_stream_from_hd, ["empty_city.ogg"]), 
+
  ("ambient_buzzard",sf_vol_15|sf_priority_15, ["buzzard.wav"]),
  ("ambient_crow",sf_vol_15|sf_priority_15, ["crow.wav"]),
 
