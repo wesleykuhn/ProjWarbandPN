@@ -2459,8 +2459,8 @@ scene_props = [
   ("gatehouse_new_b",0,"gatehouse_new_b","bo_gatehouse_new_b_fixed", []),
   ("gatehouse_new_snowy_a",0,"gatehouse_new_snowy_a","bo_gatehouse_new_b_fixed", []),
 
-  ("winch",sokf_moveable,"winch","bo_winch", []),
-  ("winch_b",sokf_moveable|spr_use_time(5),"winch_b","bo_winch", []),
+  #("winch",sokf_moveable,"winch","bo_winch", []),
+  #("winch_b",sokf_moveable|spr_use_time(5),"winch_b","bo_winch", []),
 
   ("drawbridge",0,"drawbridge","bo_drawbridge", []),
   ("gatehouse_door_left",sokf_moveable,"gatehouse_door_left","bo_gatehouse_door_left", []),
@@ -5493,6 +5493,79 @@ scene_props = [
       (call_script,"script_explosion_at_position",":attacker_agent_no",300,500)
    ]),
   ]),
+
+  ("custom_button_instant",spr_use_time(0),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+        #   # Example: doing different things based on value of button's var2 as set in scene editor
+        #   # (store_trigger_param_2, ":instance_id"),
+        #   # (prop_instance_get_variation_id_2, ":button_type", ":instance_id"),
+        #   # (try_begin),
+        #   #   (eq, ":button_type", 1),
+        #   #       (do_stuff),
+        #   # (else_try),
+        #   #   (eq, ":button_type", 2),
+        #   #       (do_other_stuff),
+        #   # (try_end),
+    ]),
+  ]),
+  ("custom_button_1_second",spr_use_time(1),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+    ]),
+  ]),
+  ("custom_button_2_seconds",spr_use_time(2),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+    ]),
+  ]),
+  ("custom_button_4_seconds",spr_use_time(4),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+    ]),
+  ]),
+  ("custom_button_8_seconds",spr_use_time(8),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+    ]),
+  ]),
+  ("custom_button_16_seconds",spr_use_time(16),"0","cannon_button_collision", [
+    (ti_on_scene_prop_use,
+    [        #add custom server side code here.. 
+    ]),
+  ]),
+
+  ("custom_buttons_end", 0,"0" ,"0" , []),
+ 
+  ("mm_weather_fog_color_red", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in red color. (like html RGB)
+  ("mm_weather_fog_color_green", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in green color. (like html RGB)
+  ("mm_weather_fog_color_blue", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in blue color. (like html RGB)
+  
+  ("headquarters_base_flag_names",0,"0","0",[]), # custom name ids for the conquest flags that spawn on team base points (entries 64 and 65). var1 for team 1, var2 for team 2
+ 
+  ("ground_prop_stone_a",0,"mm_ground_prop_stone_a","bo_zaval", []),
+  ("ground_prop_patch_rock",0,"mm_ground_prop_patch_rock","bo_zaval", []),
+  ("ground_prop_grassy_ground",0,"mm_ground_prop_grassy_ground","bo_zaval", []),
+  ("ground_prop_snow",0,"mm_ground_prop_snow","bo_zaval", []),
+  ("ground_prop_ground_earth",0,"mm_ground_prop_ground_earth","bo_zaval", []),
+  ("ground_prop_ground_desert",0,"mm_ground_prop_ground_desert","bo_zaval", []),
+  ("ground_prop_ground_path",0,"mm_ground_prop_ground_path","bo_zaval", []),
+  ("ground_prop_stucco_5",0,"mm_ground_prop_stucco_5","bo_zaval", []),
+  ("ground_prop_roof3",0,"mm_ground_prop_roof3","bo_zaval", []),
+  ("ground_prop_bricks1",0,"mm_ground_prop_bricks1","bo_zaval", []),
+  ("ground_prop_stone_wall_5",0,"mm_ground_prop_stone_wall_5","bo_zaval", []),
+  ("ground_prop_wood1",0,"mm_ground_prop_wood1","bo_zaval", []),
+  ("ground_prop_wood4",0,"mm_ground_prop_wood4","bo_zaval", []),
+ 
+  ("triangle_wood1",0,"mm_triangle_wood1","bo_mm_triangle_wood1", []),
+  ("triangle_wood9",0,"mm_triangle_wood9","bo_mm_triangle_wood1", []),
+  ("triangle_bricks1",0,"mm_triangle_bricks1","bo_mm_triangle_wood1", []),
+  ("triangle_stucco_5",0,"mm_triangle_stucco_5","bo_mm_triangle_wood1", []),
+  ("triangle_mmstuco",0,"mm_triangle_mmstuco","bo_mm_triangle_wood1", []),
+  ("triangle_mmstuco4",0,"mm_triangle_mmstuco4","bo_mm_triangle_wood1", []),
+ 
+  ("pyramid",0,"pyramid","bo_pyramid", []),
+  ("mm_house_wall_1_sandstones2",0,"1wall_sandstones2","bo_1wall", []),
 
   #PN END ***************************************************************************************************************************
 

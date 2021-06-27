@@ -842,7 +842,7 @@ scripts.extend([("game_start", []), # single player only, not used
           
             (agent_get_troop_id,":agent_troop",":agent_no"),
             (this_or_next|eq,":agent_troop", "trp_military_musician"),
-            (player_is_admin, ":agent_no"),
+            (eq, ":agent_troop","trp_godlike_hero"),
             
             (agent_get_wielded_item,":item_id",":agent_no",0),
             (assign,":continue",0),
@@ -1254,7 +1254,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
     
     (assign, reg0, ":instance_id"),
-  ]),
+   ]),
 
    # script_get_default_health_for_prop_kind
   # Input: prop_kind_id
@@ -2297,6 +2297,8 @@ scripts.extend([("game_start", []), # single player only, not used
                           # scene prop
    [(store_script_param, ":instance_id", 1),
 
+    (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
+
     (try_begin),
       (multiplayer_is_server),
       (get_player_agent_no, ":my_agent_id"),
@@ -2515,7 +2517,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (str_store_string, s0, ":use_string"),
 
     (else_try), # for castle signs, calculate the name to display
-      (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
       (eq, ":scene_prop_id", "spr_pw_castle_sign"),
       (call_script, "script_scene_prop_get_owning_faction", ":instance_id"),
       (try_begin),
@@ -2528,6 +2529,130 @@ scripts.extend([("game_start", []), # single player only, not used
         (val_add, ":name_string_id", castle_names_begin),
         (val_min, ":name_string_id", castle_names_end),
         (str_store_string, s0, ":name_string_id"),
+      (try_end),
+
+    (else_try),
+      (is_between,":scene_prop_id","spr_mm_cannon_12pdr_limber","spr_mm_tunnel_wall"),
+      (try_begin),
+        (is_between, ":scene_prop_id", "spr_mm_12pdr_push_button", "spr_mm_round_button"),
+        (str_store_string, s0, "str_push_cannon"),
+      (else_try), # unlimber
+        (is_between, ":scene_prop_id", mm_unlimber_button_types_begin, mm_unlimber_button_types_end), 
+        (str_store_string, s0, "str_unlimber_cannon"),
+      (else_try), # limber
+        (eq, ":scene_prop_id", "spr_mm_limber_button"),
+        (str_store_string, s0, "str_limber_cannon"),
+      (else_try), # aim
+        (eq, ":scene_prop_id", "spr_mm_aim_button"),
+        (str_store_string, s0, "str_aim_cannon"),
+      (else_try), # load ball
+        (eq, ":scene_prop_id", "spr_mm_load_cartridge_button"),
+        (str_store_string, s0, "str_load_cartridge"),
+      (else_try), # load ball
+        (eq, ":scene_prop_id", "spr_mm_load_bomb_button"),
+        (str_store_string, s0, "str_load_bomb"),
+      (else_try), # reload
+        (eq, ":scene_prop_id", "spr_mm_reload_button"),
+        (str_store_string, s0, "str_reload_cannon"), 
+      (else_try), # pick up ball
+        (eq, ":scene_prop_id", "spr_mm_round_button"),
+        (str_store_string, s0, "str_pick_up_round"),
+      (else_try), # pick up ball
+        (eq, ":scene_prop_id", "spr_mm_shell_button"),
+        (str_store_string, s0, "str_pick_up_shell"),
+      (else_try), # pick up ball
+        (eq, ":scene_prop_id", "spr_mm_canister_button"),
+        (str_store_string, s0, "str_pick_up_canister"), 
+      (else_try), # pick up ball
+        (eq, ":scene_prop_id", "spr_mm_bomb_button"),
+        (str_store_string, s0, "str_pick_up_bomb"),
+      (else_try), # load ball
+        (eq, ":scene_prop_id", "spr_mm_load_rocket_button"),
+        (str_store_string, s0, "str_load_rocket"),
+      (else_try), # pick up rocket
+        (eq, ":scene_prop_id", "spr_mm_pickup_rocket_button"),
+        (str_store_string, s0, "str_pick_up_rocket"), 
+      (else_try), # aim
+        (eq, ":scene_prop_id", "spr_mm_aim_button"),
+        (str_store_string, s0, "str_aim_cannon"),
+      (try_end),
+
+    (else_try),
+      (call_script, "script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (this_or_next|is_between, ":scene_prop_id", "spr_mm_palisadedd",mm_construct_props_end),
+      (this_or_next|is_between, ":scene_prop_id", "spr_mm_stakes_destructible","spr_mm_destructible_pioneer_builds_end"),
+      (eq, ":scene_prop_id", "spr_plank_destructible"),
+      (neq,":scene_prop_id","spr_crate_explosive"),
+      (try_begin),
+        (is_between, ":scene_prop_id", "spr_mm_palisadedd",mm_construct_props_end),
+        (neq, ":scene_prop_id", "spr_earthwork1_destructible"),
+        (this_or_next|eq,":troop_id","trp_sapper"),
+        (eq, ":troop_id","trp_godlike_hero"),
+        (try_begin),
+          (agent_get_wielded_item,":item_id",":agent_id",0),
+          (eq,":item_id","itm_construction_hammer"),
+          (str_store_string, s0, "str_build_prop"),
+        (else_try),
+          (str_store_string, s0, "str_construct_deconstruct"),
+        (try_end),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_earthwork1_destructible"),
+        (try_begin),
+          (agent_get_wielded_item,":item_id",":agent_id",0),
+          (try_begin),
+            (eq,":item_id","itm_shovel"),
+            (str_store_string, s0, "str_dig_prop"),
+          (else_try),
+            (eq,":item_id","itm_shovel_undig"),
+            (str_store_string, s0, "str_undig_prop"), #FAZER AGORA: IMPOR LIMITES NO USO DO CANHAO APENAS GOLIKE E TROPAS AFIM PODEM SUAR ITEMS ESPECIAIS
+          (try_end),
+        (try_end),
+      (else_try),
+        (this_or_next|is_between, ":scene_prop_id", "spr_mm_stakes_destructible","spr_mm_destructible_pioneer_builds_end"),
+        (eq, ":scene_prop_id", "spr_plank_destructible"),
+        (try_begin),
+          (this_or_next|eq,":troop_id","trp_sapper"),
+          (eq, ":troop_id","trp_godlike_hero"),
+          (agent_get_wielded_item,":item_id",":agent_id",0),
+          (eq,":item_id","itm_construction_hammer"),
+          (str_store_string, s0, "str_repair_prop"),
+        (else_try),
+          (str_store_string, s0, "str_destructible_object"),
+        (try_end),
+      (try_end),
+
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_piano"),
+      (str_store_string, s0, "str_play_piano"),
+
+    (else_try), # organ
+      (eq, ":scene_prop_id", "spr_mm_organ"),
+      (str_store_string, s0, "str_play_organ"),
+
+    (else_try), # organ
+      (eq, ":scene_prop_id", "spr_mm_shithouse_button"),
+      (str_store_string, s0, "str_take_a_shit"),
+
+    (else_try),
+      (is_between,":scene_prop_id", mm_explosive_props_begin, mm_explosive_props_end),
+      (str_store_string, s0, "str_ignite"),
+
+    (else_try),
+      (eq,":scene_prop_id","spr_mm_build_church_rope"),
+      (str_store_string, s0, "str_play_bell"),
+
+    (else_try), #custom_buttons:
+      (is_between, ":scene_prop_id", "spr_custom_button_instant", "spr_custom_buttons_end"),
+      (prop_instance_get_variation_id,":var_1", ":instance_id"),
+      (try_begin),
+        (is_between, ":var_1", 1, 41),
+          (store_sub, ":start_index", "trp_custom_string_1", 1),  # because string indexing via var_1 will start with 1 and not 0
+          (store_add, ":custom_string_index", ":start_index", ":var_1"),
+          (str_store_troop_name,s0,":custom_string_index"),       # label will be corresponding troop's name
+      (else_try),
+        (str_store_string, s0, "@Use"), # default use label
       (try_end),
 
     (else_try), # -1 clears the use string
@@ -2551,7 +2676,8 @@ scripts.extend([("game_start", []), # single player only, not used
       (gt, "$g_scene_prop_hit_points", "$g_scene_prop_full_hit_points"),
       (assign, "$g_scene_prop_full_hit_points", "$g_scene_prop_hit_points"),
       (scene_prop_set_slot, "$g_show_hit_points_instance_id", slot_scene_prop_full_hit_points, "$g_scene_prop_hit_points"),
-    (try_end),]),
+    (try_end)
+]),
 
   ("store_troop_skills_description", []), # dynamically generate a string listing a troop's skills
   ("initialize_item_slots", []), # save or calculate item attributes into item slots, for use in calculations
@@ -2729,6 +2855,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (agent_is_active,":value"),
           (agent_stop_sound,":value"),
         (try_end),
+
       (else_try),
         (eq, ":event_type", multiplayer_event_return_server_action),
         (try_begin),
@@ -3703,6 +3830,17 @@ scripts.extend([("game_start", []), # single player only, not used
         (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
 
       (else_try),
+        (eq, ":event_type", multiplayer_event_send_control_command),
+        (try_begin), 
+        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
+          (store_script_param, ":type", 3),
+          (store_script_param, ":value", 4),
+          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
+        (try_end),
+
+      (else_try),
         (eq, ":event_type", multiplayer_event_send_player_action),
         (try_begin),
           (store_script_param, ":action_type", 3),
@@ -3721,11 +3859,6 @@ scripts.extend([("game_start", []), # single player only, not used
             (store_script_param, ":action", 4),
             (is_between,":action",voice_types_begin,voice_types_end),
             (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
-
-          #(else_try),
-          #  (eq,":action_type",player_action_change_lang),
-          #  (store_script_param, ":action", 4),
-          #  (call_script,"script_set_character_language", ":action"),
 
           (else_try),
             (eq,":action_type",player_action_music),
@@ -3757,82 +3890,71 @@ scripts.extend([("game_start", []), # single player only, not used
             (eq,":action",spyglass_type_stop),
             (call_script,"script_multiplayer_server_agent_use_spyglass", ":player_agent",":action"),
 
-          (else_try),
-            (eq, ":action_type", player_action_misc_item_drinking),
-            (store_script_param, ":action", 4),
-            (this_or_next | eq, ":action", drinking_type_start),
-            (eq, ":action", drinking_type_stop),
-            (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
+           (else_try),
+             (eq, ":action_type", player_action_misc_item_drinking),
+             (store_script_param, ":action", 4),
+             (this_or_next | eq, ":action", drinking_type_start),
+             (eq, ":action", drinking_type_stop),
+             (call_script, "script_multiplayer_agent_drinking", ":player_agent", ":action"),
 
-          (else_try),
-            (eq, ":action_type", player_action_custom_order_menu_interact),
+           (else_try),
+             (eq, ":action_type", player_action_custom_order_menu_interact),
 
-          (else_try),
-            (eq,":action_type",player_action_place_rocket),
-            (call_script,"script_multiplayer_server_place_rocket", ":player_agent"),
+           (else_try),
+             (eq,":action_type",player_action_place_rocket),
+             (call_script,"script_multiplayer_server_place_rocket", ":player_agent"),
 
-          (else_try),
-            (eq,":action_type",player_action_toggle_walk),
-            (agent_is_alive,":player_agent"),
-            (assign,":contine",1),
-            (try_begin),
-              (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
-              (assign,":contine",0),
-            (try_end),
-            (eq,":contine",1),
-            (try_begin),
-              (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
-              (agent_set_animation,":player_agent","anim_surrender_end",1),
-            (try_end),
+           (else_try),
+             (eq,":action_type",player_action_toggle_walk),
+             (agent_is_alive,":player_agent"),
+             (assign,":contine",1),
+             (try_begin),
+               (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
+               (assign,":contine",0),
+             (try_end),
+             (eq,":contine",1),
+             (try_begin),
+               (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
+               (agent_set_animation,":player_agent","anim_surrender_end",1),
+             (try_end),
 
-            (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+             (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
 
-            (try_begin),
-              (this_or_next | eq,":value",350),
-              (eq,":value",100),
-              (assign,":value",55),
-            (else_try),
-              (assign,":value",100),
-              (agent_set_horse_speed_factor, ":player_agent", 100),
-            (try_end),
+             (try_begin),
+               (this_or_next | eq,":value",350),
+               (eq,":value",100),
+               (assign,":value",55),
+             (else_try),
+               (assign,":value",100),
+               (agent_set_horse_speed_factor, ":player_agent", 100),
+             (try_end),
 
-            (set_fixed_point_multiplier,100),
-            (agent_set_speed_modifier,":player_agent", ":value"),
-            (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+             (set_fixed_point_multiplier,100),
+             (agent_set_speed_modifier,":player_agent", ":value"),
+             (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
 
-          (else_try),
-            (eq,":action_type",player_action_surrender),
-            (agent_is_alive,":player_agent"),
-            (store_script_param, ":action", 4),
-            (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-            (try_begin),
-              (eq,":action",music_type_start),
-              (agent_set_wielded_item,":player_agent",-1),  
-              (agent_set_animation,":player_agent","anim_surrender",1),
-              (assign,":value",55),
-              (agent_set_horse_speed_factor, ":player_agent", 55),
-            (else_try),
-              (eq,":action",music_type_stop),
-              (agent_set_animation,":player_agent","anim_surrender_end",1),
-              (assign,":value",100),
-              (agent_set_horse_speed_factor, ":player_agent", 100),
-            (try_end),
-            (set_fixed_point_multiplier,100),
-            (agent_set_speed_modifier,":player_agent", ":value"),
-            (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
-          (try_end),
-        (try_end),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_send_control_command),
-        (try_begin), 
-        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
-          (agent_is_active, ":player_no_agent_id"),
-          (agent_is_alive, ":player_no_agent_id"),
-          (store_script_param, ":type", 3),
-          (store_script_param, ":value", 4),
-          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
-        (try_end),
+           (else_try),
+             (eq,":action_type",player_action_surrender),
+             (agent_is_alive,":player_agent"),
+             (store_script_param, ":action", 4),
+             (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+             (try_begin),
+               (eq,":action",music_type_start),
+               (agent_set_wielded_item,":player_agent",-1),  
+               (agent_set_animation,":player_agent","anim_surrender",1),
+               (assign,":value",55),
+               (agent_set_horse_speed_factor, ":player_agent", 55),
+             (else_try),
+               (eq,":action",music_type_stop),
+               (agent_set_animation,":player_agent","anim_surrender_end",1),
+               (assign,":value",100),
+               (agent_set_horse_speed_factor, ":player_agent", 100),
+             (try_end),
+             (set_fixed_point_multiplier,100),
+             (agent_set_speed_modifier,":player_agent", ":value"),
+             (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
+           (try_end),
+         (try_end),
 
       (else_try),
         (eq, ":event_type", multiplayer_event_return_particle_at_pos),
@@ -4647,7 +4769,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
   ]),
 
-  # script_multiplayer_server_place_rocket
+   # script_multiplayer_server_place_rocket
   # Input1: agent_id of agent
   # Input2: start or stop
   ("multiplayer_server_place_rocket",
@@ -4661,22 +4783,29 @@ scripts.extend([("game_start", []), # single player only, not used
       (agent_is_active,":player_agent"),
       (agent_is_alive, ":player_agent"), # Still alive?
       (agent_get_troop_id,":player_troop",":player_agent"),
+      (agent_get_player_id, ":player_id", ":player_agent"),
 
-      (this_or_next|eq,":player_troop","trp_artillerist"),
-      (this_or_next|eq,":player_troop","trp_artillerist_officer"),
-      (player_is_admin, ":player_agent"),
-
+      (this_or_next|eq,":player_troop", "trp_artillerist"),
+      (this_or_next|eq,":player_troop", "trp_artillerist_officer"),
+      (eq, ":player_troop","trp_godlike_hero"),
+      
       (agent_get_wielded_item,":item_id",":player_agent",0),
       (eq,":item_id", "itm_rocket_placement"),
+      
       (agent_unequip_item,":player_agent","itm_rocket_placement"),
-      (agent_has_item_equipped,":player_agent","itm_rockets"), # Ranker
-      (agent_set_wielded_item,":player_agent","itm_rockets"),
+      (try_begin),
+        (agent_has_item_equipped,":player_agent","itm_rockets"), # Ranker
+        (agent_set_wielded_item,":player_agent","itm_rockets"),
+      (try_end),
+    
       (agent_get_position,pos49,":player_agent"),
       (position_move_y,pos49,100), # 1 meter forwards for spawning the prop.
       (position_rotate_z,pos49,90), # turn 90 degrees for proper facing.
       (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_rocket", 0, 1, 0),
       (assign,":new_rocket",reg0),
       (call_script, "script_generate_bits_for_cannon_instance",":new_rocket",0,1),
+     
+      # Set rocket launcher dummy to be in_use just for this round so he wont be re-used
       (scene_prop_set_slot,":new_rocket",scene_prop_slot_in_use,1),
     (try_end),
   ]),
@@ -4854,14 +4983,14 @@ scripts.extend([("game_start", []), # single player only, not used
           
           (neq, ":agent_troop", "trp_artillerist"),
           (neq, ":agent_troop", "trp_artillerist_officer"),
-          (neg|player_is_admin, ":player_id"),
+          (neq, ":agent_troop","trp_godlike_hero"),
           (assign,":error_message", "str_cannot_use_cannon"),
         (else_try),
           (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
           
           (neq, ":agent_troop", "trp_artillerist"),
           (neq, ":agent_troop", "trp_artillerist_officer"),
-          (neg|player_is_admin, ":player_id"),
+          (neq, ":agent_troop","trp_godlike_hero"),
           (assign,":error_message", "str_cannot_use_rocket"),
         (try_end),
       (try_end),
@@ -4876,14 +5005,14 @@ scripts.extend([("game_start", []), # single player only, not used
         
         (neq, ":agent_troop", "trp_artillerist"),
         (neq, ":agent_troop", "trp_artillerist_officer"),
-        (neg|player_is_admin, ":player_id"),
+        (neq, ":agent_troop","trp_godlike_hero"),
         (assign,":error_message", "str_cannot_use_cannon"),
       (else_try),
         (eq, ":scene_prop_id", "spr_mm_pickup_rocket_button"),
         
         (neq, ":agent_troop", "trp_artillerist"),
         (neq, ":agent_troop", "trp_artillerist_officer"),
-        (neg|player_is_admin, ":agent_id"),
+        (neq, ":agent_troop", "trp_godlike_hero"),
         (assign,":error_message", "str_cannot_use_rocket"),
       (try_end),
       
@@ -5739,7 +5868,7 @@ scripts.extend([("game_start", []), # single player only, not used
              (agent_get_troop_id,":troop_no",":using_agent"),
              (this_or_next|eq, ":troop_no", "trp_artillerist"),
              (this_or_next|eq, ":troop_no", "trp_artillerist_officer"),
-             (player_is_admin, ":player_id"),
+             (eq, ":troop_no","trp_godlike_hero"),
 
              (call_script,"script_unlimber_cannon_from_horse",":instance_id"),
            (try_end),
@@ -7553,9 +7682,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (gt,":end_cond_2",10000),
         (assign,":end_cond_2",0),
       (try_end),
-      
-      # DEBUGDEBUGDEBUG
-      #(prop_instance_animate_to_position,"$g_test_prop",pos23,52),
 
       (get_distance_between_positions,":dist",pos23,pos10), # Distance in decimeters (10 = 1 meter)
       (val_div,":dist",10),
@@ -8103,11 +8229,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_random_in_range, ":rand_x_vel", ":random_offset_min",":random_offset"), # random for fire speed
       (store_random_in_range, ":init_y_vel", ":random_offset_min",":random_offset"), # random for left and right so aim is not perfect
       (store_random_in_range, ":rand_z_vel", ":random_offset_min",":random_offset"), # random for up and down so aim is not perfect
-       
-       # DEBUGDEBUGDEBUG
-       # (assign,":rand_x_vel",0),
-       # (assign,":init_y_vel",0),
-       # (assign,":rand_z_vel",0),
        
        (assign,":init_x_vel",0),
        (assign,":init_z_vel",0),

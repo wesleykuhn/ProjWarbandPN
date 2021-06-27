@@ -752,6 +752,7 @@ static_presentations_setup = (ti_battle_window_opened, 0, 0, [], # clients: call
     (try_end),
     (start_presentation, "prsnt_food_bar"),
     (start_presentation, "prsnt_scene_prop_hit_points_bar"),
+    (start_presentation, "prsnt_multiplayer_artillery_icons"),
     (try_begin), # if an inventory was being accessed before the presentations were cleared, notify the server to stop sending updates
       (gt, "$g_show_inventory_instance_id", 0),
       (assign, "$g_show_inventory_instance_id", 0),
@@ -966,7 +967,7 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
           # if we have a musician just to be sure call stop music.
           (agent_get_troop_id,":troop_no",":hit_agent_no"),
           (this_or_next|eq,":troop_no", "trp_military_musician"),
-          (player_is_admin, ":hit_agent_no"),
+          (eq, ":troop_no", "trp_godlike_hero"),
           (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
         (try_end),
 
@@ -1068,7 +1069,6 @@ multiplayer_client_music_and_sapper = (
     (try_begin),
       (call_script, "script_client_get_my_agent"),
       (assign, ":player_agent", reg0),
-      (agent_get_player_id, ":player_id", ":player_agent"),
 
       (agent_is_active,":player_agent"),
       (agent_is_alive, ":player_agent"), # Still alive?
@@ -1095,7 +1095,7 @@ multiplayer_client_music_and_sapper = (
           #(start_presentation,"prsnt_multiplayer_construct"),
         (else_try),
           (this_or_next|eq,":player_troop","trp_military_musician"),
-          (player_is_admin, ":player_id"),
+          (eq, ":player_troop", "trp_godlike_hero"),
           (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"), # an instrument
           (try_begin),
             (call_script,"script_cf_agent_is_playing_music",":player_agent"),
@@ -1113,7 +1113,8 @@ multiplayer_client_music_and_sapper = (
           (try_end),
         (else_try),
           (this_or_next|eq,":player_troop","trp_artillerist"),
-          (player_is_admin, ":player_id"),
+          (this_or_next|eq,":player_troop","trp_artillerist_officer"),
+          (eq, ":player_troop", "trp_godlike_hero"),
           (eq,":item_id", "itm_rocket_placement"),
           (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_place_rocket),
         (try_end),
@@ -1158,7 +1159,7 @@ multiplayer_agent_unwield_item_common = (
       
     (try_begin),
       (gt,":item_id",-1),
-      (this_or_next|item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
+      #(this_or_next|item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
       (eq,":item_id","itm_rocket_placement"),
       
       (agent_is_active,":agent_no"),
@@ -2213,7 +2214,7 @@ multiplayer_server_cannonball_flight = (
               (eq,":ammo_type",cannon_ammo_type_round),
               
               (try_begin),
-                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"),
+                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
               (else_try),
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
@@ -2386,7 +2387,7 @@ multiplayer_server_cannonball_flight = (
         (try_end),
       (try_end),
     (try_end),
-])
+  ])
 
 multiplayer_server_explosives  = (
   1, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],

@@ -307,7 +307,7 @@ animations = [
 ],
 ["walk_forward_onehanded", acf_enforce_lowerbody, amf_use_cycle_period|amf_client_prediction,
  [1.0, "man_walk", 0, 32, arf_use_walk_progress|arf_cyclic|blend_in_walk|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.0],
-],
+], #Changed this to bayonet
 ["walk_forward_staff", acf_enforce_lowerbody, amf_use_cycle_period|amf_client_prediction,
  [1.0, "man_walk_staff", 0, 32, arf_use_walk_progress|arf_cyclic|blend_in_walk|arf_make_walk_sound,pack2f(0.4,0.9), (0, 0, 0), 0.0],
 ],

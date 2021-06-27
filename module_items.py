@@ -1742,7 +1742,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 
  
 # Cannon ammo (Don't add to buy!!! those will be buy with the arty train)
-["canister_ammo","Cartridges", [("cartridge_a",0),("bullet_projectile",ixmesh_flying_ammo)], itp_type_bolts|itp_can_penetrate_shield, 0, 64,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(100,pierce)|max_ammo(1),imodbits_missile,
+["canister_ammo","Canister Ammo", [("cartridge_a",0),("bullet_projectile",ixmesh_flying_ammo)], itp_type_bolts|itp_can_penetrate_shield, 0, 64,weight(2.0)|abundance(100)|weapon_length(1)|thrust_damage(100,pierce)|max_ammo(1),imodbits_missile,
  [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],
 ["shell_fragment","Shell Fragments", [("cartridge_a",0),("prtcl_dust_e",ixmesh_flying_ammo)], itp_type_bolts|itp_can_penetrate_shield, 0, 64,weight(2.0)|abundance(100)|weapon_length(3)|thrust_damage(500,pierce)|max_ammo(1),imodbits_missile,
  [(ti_on_missile_hit, [(copy_position,pos63,pos1),(store_trigger_param_2, ":collision_type"),(call_script, "script_mm_on_bullet_hit",":collision_type")])]],

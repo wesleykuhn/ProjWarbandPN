@@ -403,7 +403,43 @@ meshes = [
 
   # PN START ***********************************************************************
 
+  #Construct props stuff
+  ("construct_mesh_stakes", 0, "ui_construct_cdf", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_stakes2", 0, "ui_construct_stakes", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_sandbags", 0, "ui_construct_bags", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_cdf_tri", 0, "ui_construct_cdf_tri", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_gabion", 0, "ui_construct_gabion", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_fence", 0, "ui_construct_fence", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_plank", 0, "ui_construct_plank", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_earthwork", 0, "ui_construct_dig", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("construct_mesh_explosives", 0, "ui_construct_crate", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  
+  #Bonus icons
+  ("bonus_icon_melee", 0, "bonus_icon_melee", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("bonus_icon_accuracy", 0, "bonus_icon_accuracy", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("bonus_icon_speed", 0, "bonus_icon_speed", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("bonus_icon_reload", 0, "bonus_icon_reload", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("bonus_icon_artillery", 0, "bonus_icon_artillery", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("bonus_icon_commander", 0, "bonus_icon_commander", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  
+  #Artillery icons
+  ("arty_icon_take_ammo", 0, "arty_icon_take_ammo", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("arty_icon_put_ammo", 0, "arty_icon_put_ammo", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("arty_icon_ram", 0, "arty_icon_ram", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("arty_icon_move_up", 0, "arty_icon_move_up", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("arty_icon_take_control", 0, "arty_icon_take_control", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  
+  #Medic icons
+  ("medic_icon_heal", 0, "medic_icon_heal", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  ("medic_icon_medic", 0, "medic_icon_medic", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+  
+  #Stuff
+  ("item_select_no_select", 0, "cb_ui_title_panel", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mm_spyglass_ui", 0, "mm_spyglass_ui_mesh", 0, 0, 0, 0, 0, 0, 1, 1, 1),
+
+  ("custom_mp_ui_order_button", 0, "mp_ui_order_button", 0, 0, 0, 0, 0, 0, 0.8, 0.6, 0.6),
+
+  ("target_plate", 0, "target_plate", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
   # PN END *************************************************************************
 ]

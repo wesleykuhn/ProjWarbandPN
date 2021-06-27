@@ -5461,6 +5461,388 @@ presentations.extend([
       ]),
   ]),
 
+  ("multiplayer_artillery_icons", prsntf_read_only|prsntf_manual_end_only, 0, [ #this is for showing artillery icons.
+    (ti_on_presentation_load, [
+      (set_fixed_point_multiplier, 1000),
+
+      (create_mesh_overlay, "$g_presentation_obj_arty_icon_take_ammo", "mesh_arty_icon_take_ammo"),
+      (create_mesh_overlay, "$g_presentation_obj_arty_icon_put_ammo", "mesh_arty_icon_put_ammo"),
+      (create_mesh_overlay, "$g_presentation_obj_arty_icon_ram", "mesh_arty_icon_ram"),
+      (create_mesh_overlay, "$g_presentation_obj_arty_icon_move_up", "mesh_arty_icon_move_up"),
+      (create_mesh_overlay, "$g_presentation_obj_arty_icon_take_control", "mesh_arty_icon_take_control"),
+
+      (position_set_x, pos1, 250),
+      (position_set_y, pos1, 250),
+
+      (overlay_set_size, "$g_presentation_obj_arty_icon_take_ammo", pos1),
+      (overlay_set_size, "$g_presentation_obj_arty_icon_put_ammo", pos1),
+      (overlay_set_size, "$g_presentation_obj_arty_icon_ram", pos1),
+      (overlay_set_size, "$g_presentation_obj_arty_icon_move_up", pos1),
+      (overlay_set_size, "$g_presentation_obj_arty_icon_take_control", pos1),
+      (overlay_set_display, "$g_presentation_obj_arty_icon_take_ammo", 0),
+      (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+      (overlay_set_display, "$g_presentation_obj_arty_icon_ram", 0),
+      (overlay_set_display, "$g_presentation_obj_arty_icon_move_up", 0),
+      (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+      (presentation_set_duration, 999999),
+      ]),
+    (ti_on_presentation_run, [
+      (set_fixed_point_multiplier, 1000),
+      (try_begin),
+        (call_script, "script_client_get_my_agent"),
+        (assign,":my_agent",reg0),
+        (agent_is_active,":my_agent"),
+        (agent_is_alive,":my_agent"),
+        (agent_get_troop_id,":troop_id",":my_agent"),
+        (gt,":troop_id",-1),
+        
+        (this_or_next|eq,":troop_id", "trp_artillerist"),
+        (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
+        (eq, ":troop_id", "trp_godlike_hero"),
+        
+        (agent_get_position,pos17,":my_agent"), #pos17 hold agent position
+        
+        (try_begin), #For normal artillery
+          (this_or_next|eq,":troop_id", "trp_artillerist"),
+          (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
+          (eq, ":troop_id", "trp_godlike_hero"),
+      
+          ### TAKE AMMO ###
+          (try_begin),
+            (assign,":continue",1),
+            (try_for_range_backwards,":equipment_slot",ek_item_0,ek_head),
+              (agent_get_item_slot, ":item_id", ":my_agent", ":equipment_slot"),
+              (gt,":item_id",-1), # even have a item there?
+              (is_between,":item_id","itm_cannon_cartridge_round","itm_rockets"), #has ammo already
+              (assign,":continue",0), #don't point out the ammo box
+            (try_end),
+            (eq,":continue",1),
+        
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_round_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_shell_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_canister_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_bomb_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_take_ammo", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_ammo", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_ammo", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_take_ammo", 0),
+          (try_end),
+            
+          ### LOAD AMMO ###
+          (try_begin),
+            (assign,":continue",0),
+            (try_for_range_backwards,":equipment_slot",ek_item_0,ek_head),
+              (agent_get_item_slot, ":item_id", ":my_agent", ":equipment_slot"),
+              (gt,":item_id",-1), # even have a item there?
+              (is_between,":item_id","itm_cannon_cartridge_round","itm_rockets"), #has ammo
+              (assign,":continue",1), #show where to put it
+            (try_end),
+            (eq,":continue",1),
+            
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_load_cartridge_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_load_bomb_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_put_ammo", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+            (try_end),
+          (else_try),
+            (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+          (try_end),
+           
+          ### USE RAMROD ###
+          (try_begin),
+            (assign,":continue",0),
+            (try_for_range_backwards,":equipment_slot",ek_item_0,ek_head),
+              (agent_get_item_slot, ":item_id", ":my_agent", ":equipment_slot"),
+              (gt,":item_id",-1), # even have a item there?
+              (eq,":item_id","itm_ramrod"), #has a ramrod
+              (assign,":continue",1), #show where to put it
+            (try_end),
+            (eq,":continue",1),
+            
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_reload_button", somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_ram", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_ram", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_ram", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_ram", 0),
+          (try_end),
+              
+          ### PUSH CANNON ###
+          (try_begin),
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_12pdr_push_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_howitzer_push_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_fort_push_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_for_prop_instances, ":prop_no", "spr_mm_naval_push_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 50, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_move_up", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_move_up", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_move_up", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_move_up", 0),
+          (try_end),
+          
+          ### TAKE CONTROL ###
+          (try_begin),
+            (agent_get_animation,":anim",":my_agent",0),
+            (neq,":anim","anim_kneeling"), #Not using a cannon already
+            
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_aim_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_take_control", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+          (try_end),
+        (else_try), #For rocket artillery
+          (this_or_next|eq,":troop_id", "trp_artillerist"), #debug, se nao funcionar criar tropa de rocketeiros
+          (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
+          (eq, ":troop_id", "trp_godlike_hero"),
+            
+          ### LOAD AMMO ###
+          (try_begin),
+            (assign,":continue",0),
+            (try_for_range_backwards,":equipment_slot",ek_item_0,ek_head),
+              (agent_get_item_slot, ":item_id", ":my_agent", ":equipment_slot"),
+              (gt,":item_id",-1), # even have a item there?
+              (eq,"itm_rockets"), #has ammo
+              (assign,":continue",1), #show where to put it
+            (try_end),
+            (eq,":continue",1),
+            
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_load_rocket_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_put_ammo", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+          (try_end),
+          
+          ### TAKE CONTROL ###
+          (try_begin),
+            (agent_get_animation,":anim",":my_agent",0),
+            (neq,":anim","anim_kneeling"), #Not using a cannon already
+            
+            (assign,":cur_closest_instance",-1),
+            (assign,":min_distance",500), #in cm
+            (try_for_prop_instances, ":prop_no", "spr_mm_aim_button",somt_temporary_object),
+              (prop_instance_get_position, pos1, ":prop_no"),
+              (get_distance_between_positions,":dist",pos1,pos17),
+              (lt,":dist",":min_distance"),
+              (assign,":min_distance",":dist"),
+              (assign,":cur_closest_instance",":prop_no"),
+            (try_end),
+            (try_begin),
+              (gt,":cur_closest_instance",-1),
+              
+              (prop_instance_get_position, pos1, ":cur_closest_instance"), #holds position of closest prop
+              (position_move_z, pos1, 20, 1),
+              (position_get_screen_projection, pos5, pos1),
+              (position_get_x, ":x_pos", pos5),
+              (position_get_y, ":y_pos", pos5),
+              (position_set_y, pos5, ":y_pos"),
+            
+              (is_between, ":x_pos", -100, 1100),
+              (is_between, ":y_pos", -100, 850),
+
+              (overlay_set_position, "$g_presentation_obj_arty_icon_take_control", pos5),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 1),
+            (else_try),
+              (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+            (try_end),
+          (else_try), 
+            (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+          (try_end),
+        (try_end),
+      (else_try),
+        (overlay_set_display, "$g_presentation_obj_arty_icon_take_ammo", 0),
+        (overlay_set_display, "$g_presentation_obj_arty_icon_put_ammo", 0),
+        (overlay_set_display, "$g_presentation_obj_arty_icon_ram", 0),
+        (overlay_set_display, "$g_presentation_obj_arty_icon_move_up", 0),
+        (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
+      (try_end),
+      ]),
+    ]),
+
   # PN END ******************************************************************************************
 
   ("food_bar", prsntf_read_only|prsntf_manual_end_only, 0, # bar showing the player agent's current food amount, below the health bar
