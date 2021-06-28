@@ -243,40 +243,12 @@ item_picked_up = (ti_on_item_picked_up, 0, 0, [], # handle agents picking up an 
     ])
 
 item_dropped = (ti_on_item_dropped, 0, 0, [], # handle agents dropping an item
-   [(store_trigger_param_1, ":agent_no"),
+   [(store_trigger_param_1, ":agent_id"),
     (store_trigger_param_2, ":item_id"),
     (store_trigger_param_3, ":instance_id"),
-    (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_no", ":item_id", 0, 1),
+    (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 0, 1),
     (multiplayer_is_server),
-    (call_script, "script_check_on_item_dropped", ":agent_no", ":item_id", ":instance_id", 0),
-
-    (try_begin),
-      (item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
-      (store_trigger_param_3, ":dropped_prop"),
-      (prop_instance_get_position, pos25, ":dropped_prop"),
-      (agent_get_horse, ":agent_horse", ":agent_no"),
-      (try_begin),
-        (gt, ":agent_horse", -1),
-        (position_move_x,pos25,50),
-      (else_try),
-        (position_move_y,pos25,36),
-      (try_end),
-      (position_rotate_x, pos25, 90),
-      (prop_instance_set_position, ":dropped_prop", pos25),
-      (scene_prop_set_prune_time, ":dropped_prop", 300), # 5 minutes
-    (else_try),
-      (eq, ":item_id", "itm_cannon_lighter"),
-      (agent_slot_ge,":agent_no",slot_agent_current_control_prop,0), # we are controlling a prop.
-      (try_begin),
-        (agent_get_slot,":prop_instance",":agent_no",slot_agent_current_control_prop),
-        (prop_instance_is_valid,":prop_instance"),
-        (prop_instance_get_scene_prop_kind,":prop_kind",":prop_instance"),
-        (try_begin),
-          (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
-          (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_no"),
-        (try_end),
-      (try_end),
-    (try_end),
+    (call_script, "script_check_on_item_dropped", ":agent_id", ":item_id", ":instance_id", 0),
     ])
 
 item_wielded = (ti_on_item_wielded, 0, 0, [], # handle agents wielding an item
@@ -1608,8 +1580,50 @@ multiplayer_server_drag_limber = (
     (try_end),
 ])
 
+multiplayer_server_on_item_dropped = (
+  ti_on_item_dropped, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode)],
+  [
+    (store_trigger_param_2, ":item_id"),
+    
+    (try_begin),
+      (gt,":item_id",-1),
+      
+      (store_trigger_param_1, ":agent_no"),
+      (agent_is_active,":agent_no"),
+      
+      (try_begin),
+        (item_slot_eq,":item_id",slot_item_multiplayer_item_class, multi_item_class_type_flag), #always use item classes!!!
+        (store_trigger_param_3, ":dropped_prop"),
+        (prop_instance_get_position, pos25, ":dropped_prop"),
+        
+        (agent_get_horse, ":agent_horse", ":agent_no"),
+        (try_begin),
+          (gt, ":agent_horse", -1), #PATCH1115 fix 5/4
+          (position_move_x,pos25,50),
+        (else_try),
+          (position_move_y,pos25,36),
+        (try_end),
+        (position_rotate_x, pos25, 90),
+        (prop_instance_set_position, ":dropped_prop", pos25),
+        (scene_prop_set_prune_time, ":dropped_prop", 300), # 5 minutes
+      (else_try),
+        (eq, ":item_id", "itm_cannon_lighter"),
+        (agent_slot_ge,":agent_no",slot_agent_current_control_prop,0), # we are controlling a prop.
+        (try_begin),
+          (agent_get_slot,":prop_instance",":agent_no",slot_agent_current_control_prop),
+          (prop_instance_is_valid,":prop_instance"),
+          (prop_instance_get_scene_prop_kind,":prop_kind",":prop_instance"),
+          (try_begin),
+            (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+            (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_no"),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+  ])
+
 multiplayer_client_control_cannon = (
-  0, 0, 1, [
+  0, 0, 1, [ # Execute conditions.
              (neg|multiplayer_is_dedicated_server),
              (eq, "$g_currently_controlling_object", 1),
              (this_or_next|game_key_clicked, gk_attack),
@@ -1634,7 +1648,7 @@ multiplayer_client_control_cannon = (
       (call_script,"script_client_get_my_agent"),
       (call_script,"script_handle_agent_control_command",reg0,command_type_cannon,":command"),
     (try_end),
-])
+  ])
 
 multiplayer_server_aim_cannon  = (
   0.5, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode)],
@@ -2646,6 +2660,7 @@ def common_triggers(self):
     multiplayer_agent_wield_item_common,
     multiplayer_server_explosives,
     multiplayer_play_sounds_and_particles,
+    multiplayer_server_on_item_dropped,
 
     local_chat_pressed,
     faction_chat_pressed,

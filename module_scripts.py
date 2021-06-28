@@ -2848,6 +2848,13 @@ scripts.extend([("game_start", []), # single player only, not used
         (store_script_param, ":value_1", 5),
         (store_script_param, ":value_2", 6),
         (call_script, "script_preset_message", ":string_id", ":flags", ":value_1", ":value_2"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_use_item),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (call_script, "script_use_item", ":value", ":value_2"),
+
       (else_try),
         (eq, ":event_type", multiplayer_event_return_agent_stop_sound),
         (store_script_param, ":value", 3),
@@ -2871,6 +2878,18 @@ scripts.extend([("game_start", []), # single player only, not used
             (try_end),
           (try_end),
         (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_send_control_command),
+        (try_begin), 
+        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
+          (store_script_param, ":type", 3),
+          (store_script_param, ":value", 4),
+          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
+        (try_end),
+
       (else_try), # play a non 3D interface sound
         (eq, ":event_type", server_event_play_sound),
         (store_script_param, ":sound_id", 3),
@@ -3830,17 +3849,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
 
       (else_try),
-        (eq, ":event_type", multiplayer_event_send_control_command),
-        (try_begin), 
-        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
-          (agent_is_active, ":player_no_agent_id"),
-          (agent_is_alive, ":player_no_agent_id"),
-          (store_script_param, ":type", 3),
-          (store_script_param, ":value", 4),
-          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
-        (try_end),
-
-      (else_try),
         (eq, ":event_type", multiplayer_event_send_player_action),
         (try_begin),
           (store_script_param, ":action_type", 3),
@@ -4783,7 +4791,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (agent_is_active,":player_agent"),
       (agent_is_alive, ":player_agent"), # Still alive?
       (agent_get_troop_id,":player_troop",":player_agent"),
-      (agent_get_player_id, ":player_id", ":player_agent"),
 
       (this_or_next|eq,":player_troop", "trp_artillerist"),
       (this_or_next|eq,":player_troop", "trp_artillerist_officer"),
@@ -5868,7 +5875,7 @@ scripts.extend([("game_start", []), # single player only, not used
              (agent_get_troop_id,":troop_no",":using_agent"),
              (this_or_next|eq, ":troop_no", "trp_artillerist"),
              (this_or_next|eq, ":troop_no", "trp_artillerist_officer"),
-             (eq, ":troop_no","trp_godlike_hero"),
+             (eq, ":troop_no", "trp_godlike_hero"),
 
              (call_script,"script_unlimber_cannon_from_horse",":instance_id"),
            (try_end),
@@ -6060,33 +6067,6 @@ scripts.extend([("game_start", []), # single player only, not used
          (try_end),
        (try_end),
      (try_end),
-  ]),
-
-   # script_stop_agent_controlling_cannon
-  # Input: prop_instance of cannon
-  #        agent_id of agent
-  ("stop_agent_controlling_cannon",
-  [
-    (store_script_param, ":prop_instance", 1),
-    (store_script_param, ":agent_id", 2),
-    
-    (try_begin),
-      (this_or_next|multiplayer_is_server),
-      (neg|game_in_multiplayer_mode),
-      
-      (prop_instance_is_valid,":prop_instance"),
-      (agent_is_active,":agent_id"),
-      
-      (call_script,"script_set_agent_controlling_prop",":prop_instance",":agent_id",0),
-      
-      (call_script, "script_prop_instance_find_first_child_of_type", ":prop_instance", "spr_mm_cannon_aim_platform"),
-      (prop_instance_is_valid,reg0),
-
-      (call_script,"script_set_prop_child_inactive",reg0),
-
-      (agent_set_animation,":agent_id","anim_kneeling_end"),
-
-    (try_end),
   ]),
 
   # script_copy_prop_slot
@@ -7949,7 +7929,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
     ]),
 
-   # script_handle_agent_control_command
+  # script_handle_agent_control_command
   # Input: agent_id
   #        command_type
   #        command
@@ -8031,318 +8011,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (eq,":is_ok",1),
       (agent_set_slot,":agent_id",slot_agent_current_command,":command"),
     (try_end),
-  ]),
-
-  # script_fire_cannon
-  # Input: cannon_instance of cannon
-  #        agent_id of agent
-  ("fire_cannon",
-  [
-   (store_script_param, ":cannon_instance", 1),
-   (store_script_param, ":using_agent", 2),
-    
-   (try_begin),
-     (this_or_next|multiplayer_is_server),
-     (neg|game_in_multiplayer_mode),
-     
-     (prop_instance_is_valid,":cannon_instance"),
-     (agent_is_active,":using_agent"),
-     
-     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_has_ball, 1),
-     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_loaded, 1),
-     (scene_prop_get_slot,":ammo_type",":cannon_instance",scene_prop_slot_ammo_type),
-     (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
-     (set_fixed_point_multiplier,100),
-     
-     (call_script,"script_cannon_instance_get_barrel",":cannon_instance"),
-     (assign,":barrel_instance",reg0),
-     
-     (prop_instance_get_position, pos11, ":cannon_instance"),
-     (try_begin),        
-       #(gt,":barrel_instance",-1),
-       (prop_instance_is_valid,":barrel_instance"), #patch1115 fix 18/4
-       (prop_instance_get_position, pos10, ":barrel_instance"),
-       (copy_position, pos11, pos10),
-     (else_try),
-       (assign,":barrel_instance",":cannon_instance"),
-     (try_end),
-     
-     # Get the origin position of ball/canister. Based on the relative position of the load button.
-     (assign,":load_button_instance",-1),
-     (copy_position,pos12,pos11),
-     (assign, ":load_found", 0),
-     (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button","spr_mm_reload_button"),
-       (eq, ":load_found", 0),
-       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
-       (assign,":load_button_instance",reg0),
-       #(gt,":load_button_instance",-1),
-       (prop_instance_is_valid,":load_button_instance"), #patch1115 18/3
-       
-       (assign, ":load_found", 1),
-       
-       (scene_prop_get_slot,":xvalue",":load_button_instance",scene_prop_slot_x_value),
-       (scene_prop_get_slot,":yvalue",":load_button_instance",scene_prop_slot_y_value),
-       (scene_prop_get_slot,":zvalue",":load_button_instance",scene_prop_slot_z_value),
-       # add extra cm to be out of barrel.    HERE
-       (try_begin),
-         (eq,":cannon_kind","spr_mm_cannon_fort_wood"),
-         (val_add,":xvalue",66), 
-		 
-		 (assign, ":UpY", 5), #patch1115 fix 8/1
-		 (assign, ":lowY", -4),
-		 
-		 (assign, ":lowz", -10),
-		 (assign, ":upZ", 10), # fix 8/1 end
-		 
-       (else_try),
-		  (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
-		  (val_add,":xvalue",30), # fix 8/2
-		 #(val_add,":yvalue",30),
-		# (val_add,":zvalue",30), # moved below
-		 
-		  (assign, ":UpY", 3),
-		  (assign, ":lowY", -2),
-		 
-		  (assign, ":lowz", -10),
-		  (assign, ":upZ", 10), # fix 8/2 end
-		 
-    (else_try),
-      (val_add,":xvalue",46), # changed from 46 to 56 for tests
-		 
-		  (assign, ":UpY", 5), # fix 8/3
-		  (assign, ":lowY", -2),
-		 
-		  (assign, ":lowz", -10),
-		  (assign, ":upZ", 10), # fix 8/3 end
-		 
-       (try_end),
-       
-       (position_move_x, pos12,":xvalue"),
-       (position_move_y, pos12,":yvalue"),
-       (position_move_z, pos12,":zvalue"),
-     (try_end),
-     
-     (try_begin),
-       (eq,":load_found",0),
-       
-       (position_move_x,pos12,180), # if no load ball button for whatevaahh reason just set it to some average barel end position.
-     (try_end),
-     
-     (try_begin),
-       (eq,":ammo_type",cannon_ammo_type_canister),
-	   
-	    (try_begin), # fix 8/5
-		    (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
-		    (val_add,":zvalue",20), #20
-		    (position_move_z, pos12,":zvalue"),
-		    (position_get_rotation_around_y,":y_rot_howi",pos12),
-
-			  (val_add,":y_rot_howi",-15), # howitzer has extra angle.   was -15, lets try other #s for fun!
-         (try_begin),
-           (lt,":y_rot_howi",0),
-           (val_add,":y_rot_howi",360),
-		     (try_end),
-		 
-		  (position_rotate_y,pos12,":y_rot_howi"), # fix 8/5 end
-	  (try_end),
-
-       # Do some canister crap here.
-       
-       (try_for_range,":unused",0,40), #40 bullets in one shot :D    cani work HERE
-         (copy_position,pos22,pos12),
-         (store_random_in_range,":y_change",":lowY",":UpY"), #patch1115  fix 8/6          make cani shoot higher?   -4, 5    -2, 7 
-         (store_random_in_range,":z_change",":lowz",":upZ"),  # -8, 9
-         (val_add,":z_change",-90), # add extra rotation due to cannon pos.
-         (position_rotate_y, pos22, ":y_change"),
-         (position_rotate_z, pos22, ":z_change"),
-         (store_random_in_range,":bullet_speed",12000,19000),
-         (add_missile, ":using_agent", pos22, ":bullet_speed", "itm_cannon_canister_dummy", 0, "itm_canister_ammo", 0),		
-		 #(set_spawn_position,pos22),
-		 #(spawn_item,"itm_flag_france_45e",0,60),
-		 #(try_begin),
-		# (set_spawn_position,pos22),
-		# (spawn_item,"itm_flag_france_45e",0,30),       #to find position.
-		 #(try_end),
-		 
-       (try_end),
-       
-     (else_try),
-       (this_or_next|eq,":ammo_type",cannon_ammo_type_round),
-       (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
-       (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
-       (eq,":ammo_type",cannon_ammo_type_rocket),
-       
-       (init_position,pos9), # pos9 holds new pos for cannonball
-       (position_copy_origin,pos9,pos12),
-       (position_get_rotation_around_y,":y_rot",pos10),
-       (position_get_rotation_around_z,":z_rot",pos10),
-       (position_rotate_z,pos9,":z_rot"),
-       
-       (assign,":init_vel",45), # 45 meters per 0.5 seconds = 90m/s
-       (assign,":ammo_size","spr_mm_cannonball_code_only_12pd"),
-       (assign,":particle",-1),
-       (assign,":flight_sound_id","snd_cannonball_loop"),
-       (assign,":ball_x",0),
-       (assign,":ball_y",0),
-       (assign,":ball_z",0),
-       (assign,":random_offset",25),
-       (try_begin),
-         (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
-         (assign,":init_vel",20),
-         (val_add,":y_rot",-15), # howitzer has extra angle.
-         (try_begin),
-           (lt,":y_rot",0),
-           (val_add,":y_rot",360),
-         (try_end),
-         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
-       (else_try),
-         (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
-         (val_add,":y_rot",-45), # mortar has extra angle.
-         (try_begin),
-           (lt,":y_rot",0),
-           (val_add,":y_rot",360),
-         (try_end),
-         (assign,":init_vel",16),
-         (assign,":random_offset",8),
-         (assign,":ammo_size","spr_mm_cannonball_code_only_36pd"),
-       (else_try),
-         (eq,":cannon_kind","spr_mm_cannon_naval_wood"),
-         (assign,":init_vel",40),
-       (else_try),
-         (eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
-         (assign,":init_vel",40),
-         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
-       (else_try),
-         (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
-         (assign,":init_vel",30),
-         (assign,":ammo_size","spr_mm_cannonball_code_only_6pd"),
-       (else_try),
-         (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
-         (assign,":init_vel",0),
-         (assign,":ammo_size","spr_mm_rocket_code_only"),
-         (assign,":particle","psys_rocket_smoke"),
-         (assign,":flight_sound_id","snd_rocket_loop"),
-       (try_end),
-
-      (store_mul,":random_offset_min",":random_offset",-1),
-      (val_add,":random_offset",1),
-      (store_random_in_range, ":rand_x_vel", ":random_offset_min",":random_offset"), # random for fire speed
-      (store_random_in_range, ":init_y_vel", ":random_offset_min",":random_offset"), # random for left and right so aim is not perfect
-      (store_random_in_range, ":rand_z_vel", ":random_offset_min",":random_offset"), # random for up and down so aim is not perfect
-       
-       (assign,":init_x_vel",0),
-       (assign,":init_z_vel",0),
-       (try_begin),
-         (eq,":init_vel",0),
-         (position_rotate_y,pos9,":y_rot"),
-         (val_add,":init_x_vel",200),
-       (else_try),
-         (set_fixed_point_multiplier, 1000),
-         # make rotation fixed point.
-         (val_mul,":y_rot",1000),
-         
-         # x += Speed * Math.Cos(angle);
-         (store_cos, ":cos_of_angle", ":y_rot"),
-         (store_mul,":init_x_vel",":cos_of_angle",":init_vel"),
-         (val_div,":init_x_vel",10),
-         
-         # z += speed * Math.Sin(angle);
-         (store_sin, ":sin_of_angle", ":y_rot"),
-         (store_mul,":init_z_vel",":sin_of_angle",":init_vel"),
-         (val_div,":init_z_vel",10),
-         (val_mul,":init_z_vel",-1),
-         
-         (set_fixed_point_multiplier, 100),
-       (try_end),
-       
-       (val_add,":init_x_vel",":rand_x_vel"),
-       (val_add,":init_z_vel",":rand_z_vel"),
-       
-       (position_move_x,pos9,":ball_x"),
-       (position_move_y,pos9,":ball_y"),
-       (position_move_z,pos9,":ball_z"),
-       
-       (copy_position,pos49,pos9), # pos49 is prop pos.
-       (call_script, "script_find_or_create_scene_prop_instance", ":ammo_size", 0, 0, 0),
-       (assign,":ball_instance_id",reg0),
-
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_in_use, 1),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_x_value, ":init_x_vel"),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_y_value, ":init_y_vel"),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_z_value, ":init_z_vel"),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_time, 0),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_bounces, 0),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_user_agent, ":using_agent"),
-       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_ammo_type, ":ammo_type"),
-       
-       (try_begin),
-         (gt,":flight_sound_id",-1),
-         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_sound,":flight_sound_id",prop_effect_handle_start),
-       (try_end),
-       
-       (try_begin),
-         (gt,":particle",-1),
-         #(particle_system_burst,":particle",pos49,40),
-         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_particle,":particle",prop_effect_handle_start),
-       (try_end),
-     (try_end),
-     
-     # remove the loaded_ammo display if applicable.
-     (try_for_range,":cur_ammotype","spr_mm_cannon_mortar_loaded_ammo","spr_mm_cannonball_code_only_6pd"),
-       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_ammotype"),
-       (call_script,"script_set_prop_child_inactive",reg0),
-     (try_end),
-     
-     (call_script,"script_set_prop_child_active",":load_button_instance"), # enable load button
-     
-     (try_begin), # mortar is angled 45 degrees up so need to do this for particles.
-       (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
-       (position_rotate_y,pos12,-45),
-     (else_try),
-       (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
-       (position_rotate_y,pos12,-15),
-     (try_end),
-     
-     (assign,":flash_type","psys_cannon_flash"),
-     (assign,":flash_strength",100),
-     (assign,":smoke_type","psys_cannon_smoke"),
-     (assign,":smoke_strength",90),
-     (assign,":sound_id","snd_cannon"),
-     (try_begin),
-       (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
-       (assign,":flash_type",-1),
-       (assign,":smoke_type",-1),
-       (assign,":sound_id","snd_rocket_launch"),
-     (try_end),
-     
-     (copy_position,pos60,pos12), # pos60 is particle pos
-     (try_begin),
-       (gt,":smoke_type",-1),
-       (call_script,"script_multiplayer_server_spawn_particle_at_position",":smoke_type",":smoke_strength"),
-     (try_end),
-     (try_begin),
-       (gt,":flash_type",-1),
-       (call_script,"script_multiplayer_server_spawn_particle_at_position",":flash_type",":flash_strength"),
-     (try_end),
-     
-     (try_begin),
-       (gt,":sound_id",-1),
-       (copy_position,pos56,pos12),
-       (call_script,"script_multiplayer_server_play_sound_at_position",":sound_id"),
-     (try_end),
-     
-     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_has_ball, 0),
-     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_is_loaded, 0),
-     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_ammo_type, 0),
-     
-     (call_script,"script_stop_agent_controlling_cannon",":cannon_instance",":using_agent"),
-     
-     (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
-     (call_script,"script_set_prop_child_inactive",reg0),
-     
-     # lets do the animation. 
-     (call_script,"script_recoil_cannon",":cannon_instance",1,0),
-   (try_end),
   ]),
 
    # script_multiplayer_server_spawn_particle_at_position
@@ -9240,8 +8908,10 @@ scripts.extend([("game_start", []), # single player only, not used
         
         (try_begin),
           (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
-
+          # cannon thus set crosshair on.
           (start_presentation,"prsnt_multiplayer_cannon_crosshair"),
+        #(else_try),
+          # nothing at this time for ships.
         (try_end),
       (else_try), # else reset the instance
         (assign, "$g_cur_control_prop_instance", 0),
@@ -9249,11 +8919,365 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign, "$g_currently_controlling_object", 0),
         (try_begin),
           (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+          # cannon thus set crosshair off.
           (is_presentation_active,"prsnt_multiplayer_cannon_crosshair"),
           (assign,"$g_close_crosshair",1),
+        #(else_try),
+          # nothing at this time for ships.
         (try_end),
       (try_end),
     (try_end),
+  ]),
+  
+  # script_stop_agent_controlling_cannon
+  # Input: prop_instance of cannon
+  #        agent_id of agent
+  ("stop_agent_controlling_cannon",
+  [
+    (store_script_param, ":prop_instance", 1),
+    (store_script_param, ":agent_id", 2),
+    
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (prop_instance_is_valid,":prop_instance"),
+      (agent_is_active,":agent_id"),
+      
+      (call_script,"script_set_agent_controlling_prop",":prop_instance",":agent_id",0),
+      
+      (call_script, "script_prop_instance_find_first_child_of_type", ":prop_instance", "spr_mm_cannon_aim_platform"),
+      (prop_instance_is_valid,reg0),
+   #   (prop_instance_get_position,pos19,reg0),
+    #  (position_get_rotation_around_z,":z_rot",pos19),
+    #  (position_copy_origin,pos20,pos19),
+  #    (position_rotate_z,pos20,":z_rot"),
+   #   (copy_position,pos21,pos20),
+    #  (position_move_y,pos20,-100),
+     # (agent_set_position,":agent_id",pos20),
+      (call_script,"script_set_prop_child_inactive",reg0),
+      #(call_script, "script_clean_up_prop_instance", reg0),
+      (agent_set_animation,":agent_id","anim_kneeling_end"),
+     # (agent_set_position,":agent_id",pos21),
+    (try_end),
+  ]),
+  
+  
+  # script_fire_cannon
+  # Input: cannon_instance of cannon
+  #        agent_id of agent
+  ("fire_cannon",
+  [
+   (store_script_param, ":cannon_instance", 1),
+   (store_script_param, ":using_agent", 2),
+    
+   (try_begin),
+     (this_or_next|multiplayer_is_server),
+     (neg|game_in_multiplayer_mode),
+     
+     (prop_instance_is_valid,":cannon_instance"),
+     (agent_is_active,":using_agent"),
+     
+     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_has_ball, 1),
+     (scene_prop_slot_eq, ":cannon_instance", scene_prop_slot_is_loaded, 1),
+     (scene_prop_get_slot,":ammo_type",":cannon_instance",scene_prop_slot_ammo_type),
+     (prop_instance_get_scene_prop_kind,":cannon_kind",":cannon_instance"),
+     (set_fixed_point_multiplier,100),
+     
+     (call_script,"script_cannon_instance_get_barrel",":cannon_instance"),
+     (assign,":barrel_instance",reg0),
+     
+     (prop_instance_get_position, pos11, ":cannon_instance"),
+     (try_begin),        
+       #(gt,":barrel_instance",-1),
+       (prop_instance_is_valid,":barrel_instance"), #patch1115 fix 18/4
+       (prop_instance_get_position, pos10, ":barrel_instance"),
+       (copy_position, pos11, pos10),
+     (else_try),
+       (assign,":barrel_instance",":cannon_instance"),
+     (try_end),
+     
+     # Get the origin position of ball/canister. Based on the relative position of the load button.
+     (assign,":load_button_instance",-1),
+     (copy_position,pos12,pos11),
+     (assign, ":load_found", 0),
+     (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+       (eq, ":load_found", 0),
+       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+       (assign,":load_button_instance",reg0),
+       #(gt,":load_button_instance",-1),
+       (prop_instance_is_valid,":load_button_instance"), #patch1115 18/3
+       
+       (assign, ":load_found", 1),
+       
+       (scene_prop_get_slot,":xvalue",":load_button_instance",scene_prop_slot_x_value),
+       (scene_prop_get_slot,":yvalue",":load_button_instance",scene_prop_slot_y_value),
+       (scene_prop_get_slot,":zvalue",":load_button_instance",scene_prop_slot_z_value),
+       # add extra cm to be out of barrel.    HERE
+       (try_begin),
+         (eq,":cannon_kind","spr_mm_cannon_fort_wood"),
+         (val_add,":xvalue",66), 
+		 
+		 (assign, ":UpY", 5), #patch1115 fix 8/1
+		 (assign, ":lowY", -4),
+		 
+		 (assign, ":lowz", -10),
+		 (assign, ":upZ", 10), # fix 8/1 end
+		 
+       (else_try),
+		  (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
+		  (val_add,":xvalue",30), # fix 8/2
+		 #(val_add,":yvalue",30),
+		# (val_add,":zvalue",30), # moved below
+		 
+		  (assign, ":UpY", 3),
+		  (assign, ":lowY", -2),
+		 
+		  (assign, ":lowz", -10),
+		  (assign, ":upZ", 10), # fix 8/2 end
+		 
+    (else_try),
+      (val_add,":xvalue",46), # changed from 46 to 56 for tests
+		 
+		  (assign, ":UpY", 5), # fix 8/3
+		  (assign, ":lowY", -2),
+		 
+		  (assign, ":lowz", -10),
+		  (assign, ":upZ", 10), # fix 8/3 end
+		 
+       (try_end),
+       
+       (position_move_x, pos12,":xvalue"),
+       (position_move_y, pos12,":yvalue"),
+       (position_move_z, pos12,":zvalue"),
+     (try_end),
+     
+     (try_begin),
+       (eq,":load_found",0),
+       
+       (position_move_x,pos12,180), # if no load ball button for whatevaahh reason just set it to some average barel end position.
+     (try_end),
+     
+     (try_begin),
+       (eq,":ammo_type",cannon_ammo_type_canister),
+	   
+	    (try_begin), # fix 8/5
+		    (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"), 
+		    (val_add,":zvalue",20), #20
+		    (position_move_z, pos12,":zvalue"),
+		    (position_get_rotation_around_y,":y_rot_howi",pos12),
+
+			  (val_add,":y_rot_howi",-15), # howitzer has extra angle.   was -15, lets try other #s for fun!
+         (try_begin),
+           (lt,":y_rot_howi",0),
+           (val_add,":y_rot_howi",360),
+		     (try_end),
+		 
+		  (position_rotate_y,pos12,":y_rot_howi"), # fix 8/5 end
+	  (try_end),
+
+       # Do some canister crap here.
+       
+       (try_for_range,":unused",0,40), #40 bullets in one shot :D    cani work HERE
+         (copy_position,pos22,pos12),
+         (store_random_in_range,":y_change",":lowY",":UpY"), #patch1115  fix 8/6          make cani shoot higher?   -4, 5    -2, 7 
+         (store_random_in_range,":z_change",":lowz",":upZ"),  # -8, 9
+         (val_add,":z_change",-90), # add extra rotation due to cannon pos.
+         (position_rotate_y, pos22, ":y_change"),
+         (position_rotate_z, pos22, ":z_change"),
+         (store_random_in_range,":bullet_speed",12000,19000),
+         (add_missile, ":using_agent", pos22, ":bullet_speed", "itm_cannon_canister_dummy", 0, "itm_canister_ammo", 0),		
+		 #(set_spawn_position,pos22),
+		 #(spawn_item,"itm_flag_france_45e",0,60),
+		 #(try_begin),
+		# (set_spawn_position,pos22),
+		# (spawn_item,"itm_flag_france_45e",0,30),       #to find position.
+		 #(try_end),
+		 
+       (try_end),
+       
+     (else_try),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_round),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+       (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
+       (eq,":ammo_type",cannon_ammo_type_rocket),
+       
+       (init_position,pos9), # pos9 holds new pos for cannonball
+       (position_copy_origin,pos9,pos12),
+       (position_get_rotation_around_y,":y_rot",pos10),
+       (position_get_rotation_around_z,":z_rot",pos10),
+       (position_rotate_z,pos9,":z_rot"),
+       
+       (assign,":init_vel",45), # 45 meters per 0.5 seconds = 90m/s
+       (assign,":ammo_size","spr_mm_cannonball_code_only_12pd"),
+       (assign,":particle",-1),
+       (assign,":flight_sound_id","snd_cannonball_loop"),
+       (assign,":ball_x",0),
+       (assign,":ball_y",0),
+       (assign,":ball_z",0),
+       (assign,":random_offset",25),
+       (try_begin),
+         (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+         (assign,":init_vel",20),
+         (val_add,":y_rot",-15), # howitzer has extra angle.
+         (try_begin),
+           (lt,":y_rot",0),
+           (val_add,":y_rot",360),
+         (try_end),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+         (val_add,":y_rot",-45), # mortar has extra angle.
+         (try_begin),
+           (lt,":y_rot",0),
+           (val_add,":y_rot",360),
+         (try_end),
+         (assign,":init_vel",16),
+         (assign,":random_offset",8),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_36pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_naval_wood"),
+         (assign,":init_vel",40),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_carronade_wood"),
+         (assign,":init_vel",40),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_24pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_swievel_wood"),
+         (assign,":init_vel",30),
+         (assign,":ammo_size","spr_mm_cannonball_code_only_6pd"),
+       (else_try),
+         (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+         (assign,":init_vel",0),
+         (assign,":ammo_size","spr_mm_rocket_code_only"),
+         (assign,":particle","psys_rocket_smoke"),
+         (assign,":flight_sound_id","snd_rocket_loop"),
+       (try_end),
+
+      (store_mul,":random_offset_min",":random_offset",-1),
+      (val_add,":random_offset",1),
+      (store_random_in_range, ":rand_x_vel", ":random_offset_min",":random_offset"), # random for fire speed
+      (store_random_in_range, ":init_y_vel", ":random_offset_min",":random_offset"), # random for left and right so aim is not perfect
+      (store_random_in_range, ":rand_z_vel", ":random_offset_min",":random_offset"), # random for up and down so aim is not perfect
+       
+       # DEBUGDEBUGDEBUG
+       # (assign,":rand_x_vel",0),
+       # (assign,":init_y_vel",0),
+       # (assign,":rand_z_vel",0),
+       
+       (assign,":init_x_vel",0),
+       (assign,":init_z_vel",0),
+       (try_begin),
+         (eq,":init_vel",0),
+         (position_rotate_y,pos9,":y_rot"),
+         (val_add,":init_x_vel",200),
+       (else_try),
+         (set_fixed_point_multiplier, 1000),
+         # make rotation fixed point.
+         (val_mul,":y_rot",1000),
+         
+         # x += Speed * Math.Cos(angle);
+         (store_cos, ":cos_of_angle", ":y_rot"),
+         (store_mul,":init_x_vel",":cos_of_angle",":init_vel"),
+         (val_div,":init_x_vel",10),
+         
+         # z += speed * Math.Sin(angle);
+         (store_sin, ":sin_of_angle", ":y_rot"),
+         (store_mul,":init_z_vel",":sin_of_angle",":init_vel"),
+         (val_div,":init_z_vel",10),
+         (val_mul,":init_z_vel",-1),
+         
+         (set_fixed_point_multiplier, 100),
+       (try_end),
+       
+       (val_add,":init_x_vel",":rand_x_vel"),
+       (val_add,":init_z_vel",":rand_z_vel"),
+       
+       (position_move_x,pos9,":ball_x"),
+       (position_move_y,pos9,":ball_y"),
+       (position_move_z,pos9,":ball_z"),
+       
+       (copy_position,pos49,pos9), # pos49 is prop pos.
+       (call_script, "script_find_or_create_scene_prop_instance", ":ammo_size", 0, 0, 0),
+       (assign,":ball_instance_id",reg0),
+
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_in_use, 1),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_x_value, ":init_x_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_y_value, ":init_y_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_z_value, ":init_z_vel"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_time, 0),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_bounces, 0),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_user_agent, ":using_agent"),
+       (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_ammo_type, ":ammo_type"),
+       
+       (try_begin),
+         (gt,":flight_sound_id",-1),
+         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_sound,":flight_sound_id",prop_effect_handle_start),
+       (try_end),
+       
+       (try_begin),
+         (gt,":particle",-1),
+         #(particle_system_burst,":particle",pos49,40),
+         (call_script,"script_multiplayer_handle_prop_effect",":ball_instance_id",prop_effect_type_particle,":particle",prop_effect_handle_start),
+       (try_end),
+     (try_end),
+     
+     # remove the loaded_ammo display if applicable.
+     (try_for_range,":cur_ammotype","spr_mm_cannon_mortar_loaded_ammo","spr_mm_cannonball_code_only_6pd"),
+       (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_ammotype"),
+       (call_script,"script_set_prop_child_inactive",reg0),
+     (try_end),
+     
+     (call_script,"script_set_prop_child_active",":load_button_instance"), # enable load button
+     
+     (try_begin), # mortar is angled 45 degrees up so need to do this for particles.
+       (eq,":cannon_kind","spr_mm_cannon_mortar_wood"),
+       (position_rotate_y,pos12,-45),
+     (else_try),
+       (eq,":cannon_kind","spr_mm_cannon_howitzer_wood"),
+       (position_rotate_y,pos12,-15),
+     (try_end),
+     
+     (assign,":flash_type","psys_cannon_flash"),
+     (assign,":flash_strength",100),
+     (assign,":smoke_type","psys_cannon_smoke"),
+     (assign,":smoke_strength",90),
+     (assign,":sound_id","snd_cannon"),
+     (try_begin),
+       (eq,":cannon_kind","spr_mm_cannon_rocket_wood"),
+       (assign,":flash_type",-1),
+       (assign,":smoke_type",-1),
+       (assign,":sound_id","snd_rocket_launch"),
+     (try_end),
+     
+     (copy_position,pos60,pos12), # pos60 is particle pos
+     (try_begin),
+       (gt,":smoke_type",-1),
+       (call_script,"script_multiplayer_server_spawn_particle_at_position",":smoke_type",":smoke_strength"),
+     (try_end),
+     (try_begin),
+       (gt,":flash_type",-1),
+       (call_script,"script_multiplayer_server_spawn_particle_at_position",":flash_type",":flash_strength"),
+     (try_end),
+     
+     (try_begin),
+       (gt,":sound_id",-1),
+       (copy_position,pos56,pos12),
+       (call_script,"script_multiplayer_server_play_sound_at_position",":sound_id"),
+     (try_end),
+     
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_has_ball, 0),
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_is_loaded, 0),
+     (scene_prop_set_slot,":cannon_instance", scene_prop_slot_ammo_type, 0),
+     
+     (call_script,"script_stop_agent_controlling_cannon",":cannon_instance",":using_agent"),
+     
+     (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
+     (call_script,"script_set_prop_child_inactive",reg0),
+     
+     # lets do the animation. 
+     (call_script,"script_recoil_cannon",":cannon_instance",1,0),
+   (try_end),
   ]),
 
    # script_agent_take_cannonball

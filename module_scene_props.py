@@ -428,6 +428,122 @@ check_common_explosive_crate_use_trigger = (ti_on_scene_prop_use,
     (try_end),
 ])
 
+check_mm_use_cannon_prop_start_trigger = (ti_on_scene_prop_start_use,
+  [
+    (store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":instance_id"),
+    
+    (call_script, "script_multiplayer_server_check_if_can_use_button", ":agent_id", ":instance_id"),
+    (eq, reg0, 1),
+    
+    (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
+     
+    (assign, ":anim_id", -1),
+    (try_begin),
+      (is_between, ":scene_prop_id", mm_unlimber_button_types_begin, mm_unlimber_button_types_end), 
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_limber_button"),
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_aim_button"),
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_load_rocket_button"),
+      (assign, ":anim_id", "anim_rocket_load"),
+    (else_try),
+      (is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"), # Load something button
+      (assign, ":anim_id", "anim_cannon_load"),
+      (try_begin),
+        (agent_get_slot, ":frizzle_times", ":agent_id", slot_agent_frizzle_times),
+        (val_add,":frizzle_times",1),
+        (agent_set_slot, ":agent_id", slot_agent_frizzle_times, ":frizzle_times"),
+        (try_begin),
+          (le,":frizzle_times",3), # only 2 times before calling it off
+          # pos56 is sound pos.
+          (prop_instance_get_position,pos56,":instance_id"),
+          (call_script,"script_multiplayer_server_play_sound_at_position","snd_cannon_ball"),
+        (try_end),
+      (try_end),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_reload_button"),
+      (assign, ":anim_id", "anim_cannon_reload"),
+      (try_begin),
+        (agent_get_slot, ":frizzle_times", ":agent_id", slot_agent_frizzle_times),
+        (val_add,":frizzle_times",1),
+        (agent_set_slot, ":agent_id", slot_agent_frizzle_times, ":frizzle_times"),
+        (try_begin),
+          (le,":frizzle_times",3), # only 2 times before calling it off
+          # pos56 is sound pos.
+          (prop_instance_get_position,pos56,":instance_id"),
+          (call_script,"script_multiplayer_server_play_sound_at_position","snd_ramrod"),
+        (try_end),
+      (try_end),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_round_button"),
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_shell_button"),
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_canister_button"),
+      #(assign, ":anim_id", "anim_"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_mm_bomb_button"),
+      #(assign, ":anim_id", "anim_"),
+    (try_end),
+    
+    (try_begin),
+      (gt,":anim_id",-1),
+      # stop current anim
+      (agent_set_animation, ":agent_id", "anim_cannon_end", 1),
+      (agent_set_animation_progress, ":agent_id", 100),
+      # and play new
+      (agent_set_animation, ":agent_id", ":anim_id", 1),
+    (try_end),
+  ])
+
+check_mm_use_cannon_prop_end_trigger = (ti_on_scene_prop_use,
+  [
+    (store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":instance_id"),
+    
+    (call_script, "script_multiplayer_server_check_if_can_use_button", ":agent_id", ":instance_id"),
+    (eq, reg0, 1),
+    
+    (agent_set_slot,":agent_id", slot_agent_frizzle_times,0), # Reset frizzles
+    
+    (call_script, "script_use_item", ":instance_id", ":agent_id"),
+   ])
+
+check_mm_use_cannon_prop_cancel_trigger = (ti_on_scene_prop_cancel_use,
+  [
+    (store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":instance_id"),
+
+    (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
+    
+    (try_begin),
+      (this_or_next|is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+      (eq, ":scene_prop_id", "spr_mm_reload_button"),
+      (agent_set_animation, ":agent_id", "anim_cannon_end", 1),
+    (try_end),
+  ])
+  
+check_item_use_trigger = (ti_on_scene_prop_use,
+  [
+    (store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":instance_id"),
+    
+    #for only server itself-----------------------------------------------------------------------------------------------
+    (call_script, "script_use_item", ":instance_id", ":agent_id"),
+    #for only server itself-----------------------------------------------------------------------------------------------                          
+    (try_for_players, ":player_no", 1),
+      (player_is_active, ":player_no"),
+      (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_use_item, ":instance_id", ":agent_id"),
+    (try_end),
+  ])
+  
 check_cannon_animation_finished_trigger = (ti_on_scene_prop_animation_finished,
   [
     (store_trigger_param_1, ":instance_id"),
@@ -441,11 +557,11 @@ check_cannon_animation_finished_trigger = (ti_on_scene_prop_animation_finished,
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
       
-      (call_script,"script_cannon_instance_get_barrel",":instance_id"),
+      (call_script,"script_cannon_instance_get_barrel",":instance_id"), # then activate the aim button.
       (call_script, "script_prop_instance_find_first_child_of_type", reg0, "spr_mm_aim_button"),
       (call_script,"script_set_prop_child_active",reg0),
     (try_end),
-])
+  ])
 
 check_cannon_wheels_animation_finished_trigger = (ti_on_scene_prop_animation_finished,
   [
@@ -464,100 +580,7 @@ check_cannon_wheels_animation_finished_trigger = (ti_on_scene_prop_animation_fin
       (call_script, "script_prop_instance_find_first_child_of_type", reg0, "spr_mm_aim_button"),
       (call_script,"script_set_prop_child_active",reg0),
     (try_end),
-])
-
-check_mm_use_cannon_prop_start_trigger = (ti_on_scene_prop_start_use,
-  [
-    (store_trigger_param_1, ":agent_id"),
-    (store_trigger_param_2, ":instance_id"),
-    
-    (call_script, "script_multiplayer_server_check_if_can_use_button", ":agent_id", ":instance_id"),
-    (eq, reg0, 1),
-    
-    (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
-     
-    (assign, ":anim_id", -1),
-    (try_begin),
-      (is_between, ":scene_prop_id", mm_unlimber_button_types_begin, mm_unlimber_button_types_end), 
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_limber_button"),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_aim_button"),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_load_rocket_button"),
-      (assign, ":anim_id", "anim_rocket_load"),
-    (else_try),
-      (is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"), # Load something button
-      (assign, ":anim_id", "anim_cannon_load"),
-      (try_begin),
-        (agent_get_slot, ":frizzle_times", ":agent_id", slot_agent_frizzle_times),
-        (val_add,":frizzle_times",1),
-        (agent_set_slot, ":agent_id", slot_agent_frizzle_times, ":frizzle_times"),
-        (try_begin),
-          (le,":frizzle_times",3), # only 2 times before calling it off
-          (prop_instance_get_position,pos56,":instance_id"),
-          (call_script,"script_multiplayer_server_play_sound_at_position","snd_cannon_ball"),
-        (try_end),
-      (try_end),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_reload_button"),
-      (assign, ":anim_id", "anim_cannon_reload"),
-      (try_begin),
-        (agent_get_slot, ":frizzle_times", ":agent_id", slot_agent_frizzle_times),
-        (val_add,":frizzle_times",1),
-        (agent_set_slot, ":agent_id", slot_agent_frizzle_times, ":frizzle_times"),
-        (try_begin),
-          (le,":frizzle_times",3), # only 2 times before calling it off
-          (prop_instance_get_position,pos56,":instance_id"),
-          (call_script,"script_multiplayer_server_play_sound_at_position","snd_ramrod"),
-        (try_end),
-      (try_end),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_round_button"),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_shell_button"),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_canister_button"),
-    (else_try),
-      (eq, ":scene_prop_id", "spr_mm_bomb_button"),
-    (try_end),
-    
-    (try_begin),
-      (gt,":anim_id",-1),
-      # stop current anim
-      (agent_set_animation, ":agent_id", "anim_cannon_end", 1),
-      (agent_set_animation_progress, ":agent_id", 100),
-      # and play new
-      (agent_set_animation, ":agent_id", ":anim_id", 1),
-    (try_end),
-])
-
-check_mm_use_cannon_prop_end_trigger = (ti_on_scene_prop_use,
-  [
-    (store_trigger_param_1, ":agent_id"),
-    (store_trigger_param_2, ":instance_id"),
-    
-    (call_script, "script_multiplayer_server_check_if_can_use_button", ":agent_id", ":instance_id"),
-    (eq, reg0, 1),
-    
-    (agent_set_slot,":agent_id", slot_agent_frizzle_times,0), # Reset frizzles
-    
-    (call_script, "script_use_item", ":instance_id", ":agent_id"),
-])
-
-check_mm_use_cannon_prop_cancel_trigger = (ti_on_scene_prop_cancel_use,
-  [
-    (store_trigger_param_1, ":agent_id"),
-    (store_trigger_param_2, ":instance_id"),
-
-    (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":instance_id"),
-    
-    (try_begin),
-      (this_or_next|is_between,":scene_prop_id","spr_mm_load_cartridge_button","spr_mm_reload_button"),
-      (eq, ":scene_prop_id", "spr_mm_reload_button"),
-      (agent_set_animation, ":agent_id", "anim_cannon_end", 1),
-    (try_end),
-])
+  ])
 
 check_common_earth_on_hit_trigger = (ti_on_scene_prop_hit,
   [

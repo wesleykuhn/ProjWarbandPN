@@ -50,6 +50,7 @@ multiplayer_event_return_rejection                          = 41
 multiplayer_event_player_build_prop                         = 42
 multiplayer_event_send_control_command                      = 43
 multiplayer_event_return_particle_at_pos                    = 44
+multiplayer_event_use_item                                  = 45
 
 # Add new events here: above if sent from the server, below if from clients.
 
