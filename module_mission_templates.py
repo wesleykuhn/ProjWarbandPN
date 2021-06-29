@@ -170,6 +170,7 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (assign, "$g_next_scene", -1),
     (call_script, "script_setup_ship_collision_props"),
     (call_script, "script_setup_scene_props_after_mission_start"),
+    (call_script, "script_multiplayer_mm_reset_stuff"), #debug ver se vai funfar msm
     (init_position, pos1),
     (set_spawn_position, pos1), # spawn a respawn position marker scene prop for each possible player
     (server_get_max_num_players, "$g_spawn_marker_count"),
@@ -1657,8 +1658,8 @@ multiplayer_server_aim_cannon  = (
     (try_for_range,":cannon_type", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
       (try_for_prop_instances, ":instance_id", ":cannon_type", somt_temporary_object),
         (scene_prop_get_slot,":cur_control_agent",":instance_id",scene_prop_slot_controller_agent),
-        
         (agent_is_active, ":cur_control_agent"),
+        #(agent_set_slot, ":cur_control_agent", slot_agent_character_language, player_character_language_russian),
         
         (prop_instance_get_position, pos10, ":instance_id"),
         
@@ -1667,7 +1668,7 @@ multiplayer_server_aim_cannon  = (
           (agent_is_alive, ":cur_control_agent"),
         
           (agent_get_horse,":horse",":cur_control_agent"),
-          (eq,":horse",-1),          
+          (eq,":horse",-1),
           
           (agent_get_position, pos11, ":cur_control_agent"),
           

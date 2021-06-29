@@ -2841,7 +2841,18 @@ scripts.extend([("game_start", []), # single player only, not used
 
     (try_begin), # section of events received by clients from the server
       (neg | multiplayer_is_server),
-      (try_begin), # displays preset messages sent from the server as a module string id, rather than the actual text
+      (try_begin),
+        (eq, ":event_type", multiplayer_event_send_control_command),
+        (try_begin), 
+        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
+          (store_script_param, ":type", 3),
+          (store_script_param, ":value", 4),
+          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
+        (try_end),
+
+      (else_try), # displays preset messages sent from the server as a module string id, rather than the actual text
         (eq, ":event_type", server_event_preset_message),
         (store_script_param, ":string_id", 3),
         (store_script_param, ":flags", 4),
@@ -2877,17 +2888,6 @@ scripts.extend([("game_start", []), # single player only, not used
               (start_presentation,"prsnt_multiplayer_music"),
             (try_end),
           (try_end),
-        (try_end),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_send_control_command),
-        (try_begin), 
-        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
-          (agent_is_active, ":player_no_agent_id"),
-          (agent_is_alive, ":player_no_agent_id"),
-          (store_script_param, ":type", 3),
-          (store_script_param, ":value", 4),
-          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
         (try_end),
 
       (else_try), # play a non 3D interface sound
@@ -3344,6 +3344,7 @@ scripts.extend([("game_start", []), # single player only, not used
             (call_script, "script_cf_use_cart", ":agent_id", ":instance_id", -1),
           (try_end),
         (try_end),
+
       (else_try), # handle players sending control messages for scene props (only ships)
         (eq, ":event_type", client_event_control_scene_prop),
         (store_script_param, ":instance_id", 3),
@@ -3867,6 +3868,8 @@ scripts.extend([("game_start", []), # single player only, not used
             (store_script_param, ":action", 4),
             (is_between,":action",voice_types_begin,voice_types_end),
             (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
+            (multiplayer_send_2_int_to_player, ":sender_player_id", server_event_preset_message, "str_debug1", preset_message_yellow | preset_message_fail_sound),
+            (agent_set_slot, ":player_no_agent_id", slot_agent_character_language, player_character_language_russian),#debug
 
           (else_try),
             (eq,":action_type",player_action_music),
@@ -6621,6 +6624,105 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
   ]),
 
+  # script_attach_window_to_wall
+  # Input: instance_id of the prop to attach the window to.
+  ("attach_window_to_wall",
+  [
+    (store_script_param, ":instance_id", 1),
+    
+    (try_begin),
+      (prop_instance_is_valid,":instance_id"),
+      (prop_instance_get_variation_id, ":window_variation", ":instance_id"),
+            # 1= Rich type glass
+            # 2 = Broken normal type glass
+            # 3 = Broken rich type glass
+            # 4 = Don't spawn any window,
+            # All else normal glass type is spawned.
+      (neq,":window_variation",4),
+      
+      (prop_instance_get_scene_prop_kind,":wall_type",":instance_id"),
+      
+      (assign,":prop_to_spawn",-1),
+      (try_begin),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_1"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_2"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_3"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_4"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_1"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_2"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_3_1"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_3_2"),
+        (this_or_next|eq, ":wall_type", "spr_mm_woodenwall3"),
+        (eq, ":wall_type", "spr_mm_woodenwallsnowy3"),
+        
+        (assign,":prop_to_spawn","spr_mm_window1_poor"),
+      (else_try),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_7"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_9"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_1_11"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_7"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_9"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_11"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_3_7"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_3_9"),
+        (eq, ":wall_type", "spr_mm_new_wall_3_11"),
+        
+        (assign,":prop_to_spawn","spr_mm_window2_poor"),
+      (else_try),
+        (this_or_next|eq, ":wall_type", "spr_mm_house_wall_2"),
+        (this_or_next|eq, ":wall_type", "spr_mm_house_wall_21"),
+        (this_or_next|eq, ":wall_type", "spr_mm_house_wall_3"),
+        (this_or_next|eq, ":wall_type", "spr_mm_house_wall_31"),
+        (this_or_next|eq, ":wall_type", "spr_mm_house_wall_4"),
+        (eq, ":wall_type", "spr_mm_house_wall_41"),
+        
+        (assign,":prop_to_spawn","spr_mm_window3_poor"),
+      (else_try),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_3"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_2_4"),
+        (this_or_next|eq, ":wall_type", "spr_mm_new_wall_3_3"),
+        (eq, ":wall_type", "spr_mm_new_wall_3_4"),
+        
+        (assign,":prop_to_spawn","spr_mm_window4_poor"),
+      (try_end),
+      
+      (gt,":prop_to_spawn",-1), # we have a window! :)
+      
+      (assign,":addition",0),
+      (try_begin),
+        (eq,":window_variation",1),
+        (assign,":addition",2),
+      (else_try),
+        (eq,":window_variation",2),
+        (assign,":addition",4),
+      (else_try),
+        (eq,":window_variation",3),
+        (assign,":addition",6),
+      (try_end),
+      
+      (val_add,":prop_to_spawn",":addition"),
+      
+      (prop_instance_get_position,pos49,":instance_id"),
+      
+      (try_begin),
+        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+        (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+        (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
+        (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+      (else_try),
+        (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+      (try_end),
+      (assign, ":window_instance", reg0),
+      
+      #(gt,":window_instance",-1),
+      (prop_instance_is_valid,":window_instance"), #patch1115 fix 18/1
+      
+      (scene_prop_set_slot,":window_instance", scene_prop_slot_parent_prop, ":instance_id"),
+      (scene_prop_set_slot,":instance_id", scene_prop_slot_child_prop1, ":window_instance"),
+    (try_end),
+  ]),
+
   # script_handle_cannon_hit_effect_event
   # Input: pos60  pos of event.
   #        event_type  type Explosion/ground  
@@ -6997,6 +7099,420 @@ scripts.extend([("game_start", []), # single player only, not used
     
     (assign,reg0,":instance_id"),
   ]),
+
+  # script_multiplayer_mm_reset_stuff_after_round
+  # Input: 
+  # Output: 
+  ("multiplayer_mm_reset_stuff",
+   [
+    (try_begin),
+
+      # move back construction objects placed by mapper after round end.
+      (try_for_range,":prop_type", "spr_mm_palisadedd", "spr_crate_explosive"),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+          
+          #(call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+          
+          (try_begin),
+            (this_or_next|multiplayer_is_server),
+            (neg|game_in_multiplayer_mode),
+            
+            (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+            (prop_instance_get_position,pos22,":cur_instance_id"),
+            (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+            (gt,":distance",0),
+            (try_begin),
+              (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+              (eq,":animating",1),
+              (prop_instance_stop_animating, ":cur_instance_id"),
+            (try_end),
+            (prop_instance_set_position,":cur_instance_id",pos21),
+          (try_end),
+          
+          (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+          (assign,":max_health",reg1),
+          (assign,":health",reg2),
+          
+          (gt,":max_health",0),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+          (prop_instance_enable_physics, ":cur_instance_id", 1),
+        (try_end),
+      (try_end),
+      
+      #Destroy props
+      (try_for_range,":prop_type", mm_destructible_props_begin, mm_destroyed_props_end),
+        (scene_prop_get_num_instances, ":num_instances", ":prop_type"),
+        (gt,":num_instances",0),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        
+        (try_for_range,":prop_no",0,":num_instances"),
+          (scene_prop_get_instance,":cur_instance_id",":prop_type",":prop_no"),
+        #(try_for_prop_instances, ":cur_instance_id", ":prop_type"),
+          #(assign,":cur_instance_id",":cur_instance_id"),
+          (try_begin), # Reset wall health.
+           # (is_between, ":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
+            
+            (gt,":max_health",0),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+            (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+            (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+            (prop_instance_enable_physics, ":cur_instance_id", 1),
+          (try_end),
+          
+          (try_begin),
+            (this_or_next|multiplayer_is_server),
+            (neg|game_in_multiplayer_mode),
+            (try_begin),
+              (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
+              (try_begin),
+                (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
+                (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
+              (try_end),
+            (else_try),
+              (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+              (prop_instance_get_position,pos22,":cur_instance_id"),
+              (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+
+              (gt,":distance",0),
+              
+              (try_begin),
+                (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+                (eq,":animating",1),
+                (prop_instance_stop_animating, ":cur_instance_id"),
+              (try_end),
+              (prop_instance_set_position,":cur_instance_id",pos21),
+
+              
+              (this_or_next|is_between,":prop_type","spr_mm_new_wall_1_1","spr_mm_woodenwall1"),
+              (this_or_next|is_between,":prop_type","spr_mm_house_wall_2","spr_mm_house_wall_41d"),
+              (this_or_next|eq,":prop_type","spr_mm_woodenwall3"),
+              (eq,":prop_type","spr_mm_woodenwallsnowy3"),
+              
+              (call_script,"script_attach_window_to_wall",":cur_instance_id"),
+            (try_end),
+          (try_end),
+        (try_end),
+      (try_end),
+
+      
+      # reset gourds
+      (try_for_range,":gourd_type", "spr_gourd", "spr_gourd_spike"),
+        (try_for_prop_instances, ":cur_instance_id", ":gourd_type", somt_object),
+          (scene_prop_set_hit_points, ":cur_instance_id", 1),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", 1),
+          (prop_instance_enable_physics, ":cur_instance_id", 1),
+          
+          (this_or_next|multiplayer_is_server),
+          (neg|game_in_multiplayer_mode),
+          
+          (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+          (prop_instance_get_position,pos22,":cur_instance_id"),
+          (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+          (gt,":distance",0),
+          (prop_instance_set_position,":cur_instance_id",pos21),
+        (try_end),
+      (try_end),
+      
+      (rebuild_shadow_map),
+      # Server only
+      
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      #remove any cannonballs
+      (try_for_range,":cannonball_type", "spr_mm_cannonball_code_only_6pd", "spr_mm_cannon_12pdr_wood"),
+        (try_for_prop_instances, ":cur_instance_id", ":cannonball_type", somt_temporary_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_in_use, 1),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1), # only if its a code thing and not added by mapper.
+          
+          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+        (try_end),
+      (try_end),
+      
+      # Place earth dig works back
+      (try_for_range,":earth_type", "spr_mm_tunnel_wall", "spr_mm_ambience_sound_global_wind_snow"),
+        (try_for_prop_instances, ":cur_instance_id", ":earth_type"),
+          (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+          (prop_instance_get_position,pos22,":cur_instance_id"),
+          (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+          (gt,":distance",0),
+          (try_begin),
+            (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+            (eq,":animating",1),
+            (prop_instance_stop_animating, ":cur_instance_id"),
+          (try_end),
+          (prop_instance_set_position,":cur_instance_id",pos21),
+        (try_end),
+      (try_end),
+      
+      # Clean up limbers of horses.
+      (try_for_prop_instances, ":cur_instance_id", "spr_mm_limber_wood", somt_temporary_object),
+        (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
+        (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
+        (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
+      (try_end),
+      
+      # get position of origional cannon and move the replaced by cannon wood and its parts back to that position.
+      (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
+        (try_for_prop_instances, ":cur_instance_id", ":cannon_type"),
+          (scene_prop_get_slot,":cannon_wood",":cur_instance_id", scene_prop_slot_replaced_by),
+
+          (try_begin),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0), # a mapper added cannon.
+           
+            (try_begin),
+              (prop_instance_is_valid,":cannon_wood"),
+              (prop_instance_get_scene_prop_kind, ":prop_kind", ":cannon_wood"),
+              (is_between,":prop_kind", mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+              
+              (scene_prop_get_slot,":ground_dist",":cannon_wood", scene_prop_slot_ground_offset),
+             
+              (call_script,"script_cannon_instance_get_barrel",":cannon_wood"),
+              (assign,":barrel_instance",reg0),
+
+              (try_begin),        
+                (eq,":barrel_instance",-1),
+                (assign,":barrel_instance",":cannon_wood"),
+              (try_end),
+              
+              # reset barel rotations
+              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_x_rot, 0),
+              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_y_rot, 0),
+              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_z_rot, 0),
+              
+               
+              # reset the right buttons.
+              (assign,":end_cond","spr_mm_reload_button"), # place load button back
+              (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
+                (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+                (prop_instance_is_valid,reg0),
+                (call_script,"script_set_prop_child_active",reg0),
+                (assign,":end_cond",0),
+              (try_end),
+             
+              (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive.
+              (try_for_range,":cur_butt_type","spr_mm_aim_button",":end_cond"),
+                (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+               
+                (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_butt_type"),
+                (prop_instance_is_valid,reg0),
+                (call_script,"script_set_prop_child_inactive",reg0),
+              (try_end),
+             
+              (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive. # patch1115 fix 7/1
+              (try_for_range,":cur_butt_type","spr_mm_12pdr_push_button",":end_cond"),
+                (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+               
+                (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_wood", ":cur_butt_type"),
+                (prop_instance_is_valid,reg0),
+                (call_script,"script_set_prop_child_inactive",reg0),
+              (try_end),
+
+             
+              (prop_instance_get_starting_position,pos57,":cur_instance_id"),
+              
+              (try_begin), # dont move swievel gun.              #patch1115 34/1 fix 
+                (neq, ":cannon_type", "spr_mm_cannon_swievel"),
+                                                   
+                (position_set_z_to_ground_level,pos57),
+                  #(position_move_z,pos57,":ground_dist"),
+               
+              (try_end),
+              
+              (position_move_z,pos57,":ground_dist"),
+              
+              (prop_instance_get_scene_prop_kind,":wood_type",":cannon_wood"),
+              (try_begin),
+                (eq,":wood_type","spr_mm_cannon_fort_wood"),
+                
+                (try_begin),
+                  (prop_instance_is_animating, ":animating", ":cannon_wood"),
+                  (eq,":animating",1),
+                  (prop_instance_stop_animating, ":cannon_wood"),
+                (try_end),
+                (prop_instance_set_position,":cannon_wood",pos57),
+              (try_end),
+
+              (call_script,"script_recoil_cannon",":cannon_wood",1,1), # put it back defaultly.
+              (try_begin),
+                (eq,reg0,0), # has no recoil then move it back manually.
+               
+                # get current pos and compare with new.
+                (prop_instance_get_position,pos44,":cannon_wood"),
+                (assign,":move_prop",0),
+                (try_begin),
+                  (get_distance_between_positions,":dist",pos44,pos57),
+                  (gt,":dist",0),
+                  (assign,":move_prop",1),
+                (else_try), # else check at least if rotations are difirent.
+                  (position_get_rotation_around_x,":cur_x_rot",pos44),
+                  (position_get_rotation_around_y,":cur_y_rot",pos44),
+                  (position_get_rotation_around_z,":cur_z_rot",pos44),
+                  (position_get_rotation_around_x,":new_x_rot",pos57),
+                  (position_get_rotation_around_y,":new_y_rot",pos57),
+                  (position_get_rotation_around_z,":new_z_rot",pos57),
+                  
+                  (this_or_next|neq,":cur_z_rot",":new_z_rot"),
+                  (this_or_next|neq,":cur_x_rot",":new_x_rot"),
+                  (neq,":cur_y_rot",":new_y_rot"),
+                  (assign,":move_prop",1),
+                (try_end),
+                
+                (eq,":move_prop",1),
+               
+                (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_wood", 0,0,0),
+
+              (try_end),
+             
+              # reset some slots on it.
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_has_ball, 0),
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_is_loaded, 0),
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ammo_type, 0),
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_controller_agent, -1),
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_user_agent, -1),
+              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rot,0), 
+              (scene_prop_set_slot,":cannon_wood",scene_prop_slot_just_pushed_back,0), #patch1115 fix 7/2
+
+            (else_try),
+              (prop_instance_get_starting_position,pos30,":cur_instance_id"),
+              (call_script,"script_generate_bits_for_cannon_instance",":cur_instance_id", 1,0), # re-create the cannon for it was limbered once.
+            (try_end),
+          (else_try),
+            # a limbered cannon of some sort.
+            # Set cannon to be not in_use so cannons can be re-used next round.
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_in_use,0),
+            
+            (prop_instance_is_valid,":cannon_wood"),
+            (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_wood"), # remove this cannon for it is part of a limber.
+          (try_end),
+        (try_end),
+      (try_end),
+      
+      # Reset birds.
+      (try_for_prop_instances, ":instance_id", "spr_mm_bird"),
+        (assign,":instance_id",":instance_id"),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),      
+        
+        (prop_instance_get_starting_position, pos21, ":instance_id"),
+        (prop_instance_get_position,pos22,":instance_id"),
+        (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+        (gt,":distance",0),
+        (prop_instance_stop_animating,":instance_id"),
+        (prop_instance_set_position,":instance_id",pos21),
+      (try_end),
+      
+      # reset broken windows...
+      (try_for_range,":prop_type", "spr_mm_window1d_poor", "spr_mm_window3_poor"),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
+          (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
+          
+          #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall.  #patch1115 fix 5/12
+          (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/14
+          (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
+          
+          (try_begin),
+            (prop_instance_is_valid,":wall_instance"),
+            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+            (call_script,"script_attach_window_to_wall",":wall_instance"),
+          (else_try),
+            (prop_instance_get_position,pos49,":cur_instance_id"),
+            
+            (assign,":prop_to_spawn",-1),
+            (try_begin),
+              (eq,":prop_type","spr_mm_window1d"),
+              (assign,":prop_to_spawn","spr_mm_window1"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window2d"),
+              (assign,":prop_to_spawn","spr_mm_window2"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window1d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window1_poor"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window2d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window2_poor"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window3d"),
+              (assign,":prop_to_spawn","spr_mm_window3"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window4d"),
+              (assign,":prop_to_spawn","spr_mm_window4"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window3d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window3_poor"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window4d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window4_poor"),
+            (try_end),
+            
+            (try_begin),
+              (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+              (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
+              (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
+              (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
+              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+            (else_try),
+              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+            (try_end),
+
+            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+          (try_end),
+        (try_end),
+      (try_end),
+      
+      # reset broken windows...
+      (try_for_range,":prop_type", "spr_mm_window3d_poor", "spr_mm_windows_end"),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
+          (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
+          
+          #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall. #patch1115 fix 5/13
+          (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/15
+          (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
+          
+          (try_begin),
+            (prop_instance_is_valid,":wall_instance"),
+            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+            (call_script,"script_attach_window_to_wall",":wall_instance"),
+          (else_try),
+            (prop_instance_get_position,pos49,":cur_instance_id"),
+            
+            (assign,":prop_to_spawn",-1),
+            (try_begin),
+              (eq,":prop_type","spr_mm_window3d"),
+              (assign,":prop_to_spawn","spr_mm_window3"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window4d"),
+              (assign,":prop_to_spawn","spr_mm_window4"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window3d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window3_poor"),
+            (else_try),
+              (eq,":prop_type","spr_mm_window4d_poor"),
+              (assign,":prop_to_spawn","spr_mm_window4_poor"),
+            (try_end),
+            
+            (try_begin),
+              (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+              (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
+              (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
+              (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
+              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+            (else_try),
+              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+            (try_end),
+
+            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+          (try_end),
+        (try_end),
+      (try_end),
+    (try_end),
+   ]),
 
   # script_get_prop_center
   ("get_prop_center",
@@ -13789,7 +14305,7 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
         (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
       (try_end),
     (else_try),
-      (is_between, ":item_id", "itm_pw_banner_pole_a01", "itm_wurttemberg_flag_infantry2"),
+      (is_between, ":item_id", "itm_pw_banner_pole_a01", "itm_flag_wurttemberg_flag_infantry2"),
       (neq, ":agent_died", 1), # if not dropped because the agent died, plant the flag pole upright
       (prop_instance_get_position, pos1, ":instance_id"),
       (position_rotate_x, pos1, 90),

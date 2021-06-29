@@ -420,6 +420,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("limit_officer", "limit_officer"),
   ("limit_general", "limit_general"),
 
+  ("debug1", "Entered on the ccontrol command block!"),
+
   # PN START ***************************************************************************
 
   ("character_language", "Choose Character Nationality"),

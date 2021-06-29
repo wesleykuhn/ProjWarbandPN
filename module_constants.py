@@ -275,6 +275,9 @@ prop_effect_handles_end    = 2
 mm_destructible_props_begin  = "spr_mm_house_wall_1"
 mm_destructible_props_end    = "spr_mm_house_wall_2dd"
 
+mm_destroyed_props_begin     = "spr_mm_house_wall_2dd"
+mm_destroyed_props_end       = "spr_mm_wallgate"
+
 construct_costs_offset    = 50
 construct_button_offset   = construct_costs_offset + 20
 construct_display_offset  = construct_button_offset + 20
