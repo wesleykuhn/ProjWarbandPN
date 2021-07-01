@@ -420,8 +420,6 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("limit_officer", "limit_officer"),
   ("limit_general", "limit_general"),
 
-  ("debug1", "Entered on the ccontrol command block!"),
-
   # PN START ***************************************************************************
 
   ("character_language", "Choose Character Nationality"),
@@ -642,6 +640,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("invalid_prop_place_2","You have to wait half a second between making props!"),
   ("invalid_prop_place_3","You can't place this prop here and you have to wait half a second between making props!"),
   ("server_s0", "[SERVER]: {s0}"),
+
+  ("pn_debug", "DEBUG: {reg49}."),
 
   # PN END ***************************************************************************
 

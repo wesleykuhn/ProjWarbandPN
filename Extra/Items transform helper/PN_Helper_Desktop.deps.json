@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "PN_Helper_Desktop/1.0.0": {
+        "runtime": {
+          "PN_Helper_Desktop.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "PN_Helper_Desktop/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

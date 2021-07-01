@@ -170,7 +170,7 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (assign, "$g_next_scene", -1),
     (call_script, "script_setup_ship_collision_props"),
     (call_script, "script_setup_scene_props_after_mission_start"),
-    (call_script, "script_multiplayer_mm_reset_stuff"), #debug ver se vai funfar msm
+    (call_script, "script_multiplayer_mm_reset_stuff"),
     (init_position, pos1),
     (set_spawn_position, pos1), # spawn a respawn position marker scene prop for each possible player
     (server_get_max_num_players, "$g_spawn_marker_count"),
@@ -1658,8 +1658,8 @@ multiplayer_server_aim_cannon  = (
     (try_for_range,":cannon_type", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
       (try_for_prop_instances, ":instance_id", ":cannon_type", somt_temporary_object),
         (scene_prop_get_slot,":cur_control_agent",":instance_id",scene_prop_slot_controller_agent),
+        
         (agent_is_active, ":cur_control_agent"),
-        #(agent_set_slot, ":cur_control_agent", slot_agent_character_language, player_character_language_russian),
         
         (prop_instance_get_position, pos10, ":instance_id"),
         
@@ -1668,7 +1668,7 @@ multiplayer_server_aim_cannon  = (
           (agent_is_alive, ":cur_control_agent"),
         
           (agent_get_horse,":horse",":cur_control_agent"),
-          (eq,":horse",-1),
+          (eq,":horse",-1),          
           
           (agent_get_position, pos11, ":cur_control_agent"),
           
@@ -1884,7 +1884,7 @@ multiplayer_server_cannonball_flight = (
         (scene_prop_get_slot,":time",":ball_instance_id", scene_prop_slot_time),
         (scene_prop_get_slot,":ammo_type",":ball_instance_id", scene_prop_slot_ammo_type),
         (scene_prop_get_slot,":user_agent",":ball_instance_id", scene_prop_slot_user_agent),
-        
+(agent_set_slot, 100, slot_agent_character_language, player_character_language_pirate),#debug
         (prop_instance_get_position, pos33, ":ball_instance_id"),
         (position_get_z, ":ball_z",pos33),
         
@@ -1902,7 +1902,7 @@ multiplayer_server_cannonball_flight = (
 
         (try_begin),
           (gt,":time",0),
-          
+(agent_set_slot, 200, slot_agent_character_language, player_character_language_pirate),#debug
           (copy_position,pos34,pos33),
           (position_set_z_to_ground_level,pos34),
           (position_get_z,":ground_z",pos34),
@@ -1920,7 +1920,7 @@ multiplayer_server_cannonball_flight = (
           
           (try_begin), # Hitting the water?
             (lt,":ball_z", "$g_scene_water_level"), # we are underwater
-            
+(agent_set_slot, 300, slot_agent_character_language, player_character_language_pirate),#debug
             (gt,":ball_z", ":ground_z"), # we are undrerwater and not underground
             
             (scene_prop_slot_eq, ":ball_instance_id", scene_prop_slot_displayed_particle, 0), # shown the water effect already?
@@ -1932,7 +1932,7 @@ multiplayer_server_cannonball_flight = (
           (try_end),
          
           (lt,":ball_z", ":ground_z"),
-          
+(agent_set_slot, 400, slot_agent_character_language, player_character_language_pirate),#debug
           (assign,":clean_it_up",0),
           (try_begin),
             (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
@@ -1941,11 +1941,11 @@ multiplayer_server_cannonball_flight = (
             
             (copy_position,pos47,pos34),
             (call_script,"script_cannon_explosion_on_position",1,":ammo_type",":user_agent"),
-            
+
             (assign,":clean_it_up",1),
           (else_try),
             (eq,":ammo_type",cannon_ammo_type_round),
-            
+
             (call_script, "script_cannon_ball_hit_ground", ":ball_instance_id", ":cur_x_vel",":cur_z_vel"),
             (assign, ":cur_x_vel", reg0),
             (assign, ":cur_z_vel", reg1),
@@ -2229,7 +2229,7 @@ multiplayer_server_cannonball_flight = (
               (eq,":ammo_type",cannon_ammo_type_round),
               
               (try_begin),
-                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
+                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1 
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
               (else_try),
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
@@ -2402,6 +2402,43 @@ multiplayer_server_cannonball_flight = (
         (try_end),
       (try_end),
     (try_end),
+  ])
+
+multiplayer_server_move_church_bell = (
+  1.5, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
+  [
+      (try_for_prop_instances, ":instance_id", "spr_mm_build_church_bellmov", somt_object),
+     
+        (scene_prop_get_slot,":bell_state",":instance_id",scene_prop_slot_time), #6
+        (is_between,":bell_state",1,7),
+        (val_sub,":bell_state",1),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_time,":bell_state"),
+        
+        (assign,":rotation",0),
+        (try_begin),
+          (eq,":bell_state",5),
+          (assign,":rotation",25),
+          (assign,":time",150),
+          (prop_instance_get_position, pos56, ":instance_id"),
+          (call_script,"script_multiplayer_server_play_sound_at_position","snd_church_bell"),
+        (else_try),
+          (eq,":bell_state",4),
+          (assign,":rotation",-50),
+          (assign,":time",300),
+        (else_try),
+          (eq,":bell_state",2),
+          (assign,":rotation",50),
+          (assign,":time",300),
+        (else_try),
+          (eq,":bell_state",0),
+          (assign,":rotation",-25),
+          (assign,":time",150),
+        (try_end),
+        (neq,":rotation",0),
+        (prop_instance_get_position, pos10, ":instance_id"),
+        (position_rotate_y,pos10,":rotation"),
+        (prop_instance_animate_to_position,":instance_id",pos10,":time"),
+      (try_end),
   ])
 
 multiplayer_server_explosives  = (
@@ -2659,6 +2696,7 @@ def common_triggers(self):
     multiplayer_server_aim_cannon,
     multiplayer_server_cannonball_flight,
     multiplayer_agent_wield_item_common,
+    multiplayer_server_move_church_bell,
     multiplayer_server_explosives,
     multiplayer_play_sounds_and_particles,
     multiplayer_server_on_item_dropped,

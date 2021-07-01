@@ -2290,9 +2290,6 @@ scripts.extend([("game_start", []), # single player only, not used
      (try_end),
   ]),
 
-  # PN END
-  # ********************************************************************************************************
-
   ("game_get_use_string", # clients: called by the game when the local player is aiming at a usable
                           # scene prop
    [(store_script_param, ":instance_id", 1),
@@ -2606,7 +2603,7 @@ scripts.extend([("game_start", []), # single player only, not used
             (str_store_string, s0, "str_dig_prop"),
           (else_try),
             (eq,":item_id","itm_shovel_undig"),
-            (str_store_string, s0, "str_undig_prop"), #FAZER AGORA: IMPOR LIMITES NO USO DO CANHAO APENAS GOLIKE E TROPAS AFIM PODEM SUAR ITEMS ESPECIAIS
+            (str_store_string, s0, "str_undig_prop"),
           (try_end),
         (try_end),
       (else_try),
@@ -2839,18 +2836,14 @@ scripts.extend([("game_start", []), # single player only, not used
    [(store_script_param, ":sender_player_id", 1),
     (store_script_param, ":event_type", 2),
 
+    # NETWORK CLIENT SIDE BELOW
     (try_begin), # section of events received by clients from the server
       (neg | multiplayer_is_server),
       (try_begin),
-        (eq, ":event_type", multiplayer_event_send_control_command),
-        (try_begin), 
-        (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
-          (agent_is_active, ":player_no_agent_id"),
-          (agent_is_alive, ":player_no_agent_id"),
-          (store_script_param, ":type", 3),
-          (store_script_param, ":value", 4),
-          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
-        (try_end),
+        (eq, ":event_type", multiplayer_event_return_currently_controlling_object),
+        (store_script_param, ":prop_instance", 3),
+        (store_script_param, ":value", 4),
+        (call_script,"script_client_process_set_prop_control",":prop_instance",":value"),
 
       (else_try), # displays preset messages sent from the server as a module string id, rather than the actual text
         (eq, ":event_type", server_event_preset_message),
@@ -3248,6 +3241,31 @@ scripts.extend([("game_start", []), # single player only, not used
           (troop_set_plural_name, "$g_chat_overlay_faction_buffer_stored", s0),
           (troop_set_slot, "$g_chat_overlay_faction_buffer_stored", slot_chat_overlay_faction_color, ":color"),
         (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_show_multiplayer_message),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (try_begin),
+          (eq, ":value", multiplayer_message_type_message_custom_color),
+          (store_script_param, ":custom_color", 5),
+          (call_script, "script_show_multiplayer_message_custom_color", ":value_2", ":custom_color"),
+        (else_try),
+          (store_script_param, reg5, 5),
+          (call_script, "script_show_multiplayer_message", ":value", ":value_2"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_sound_at_pos),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (call_script,"script_multiplayer_client_play_sound_at_pos",":value",":value_2"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_prop_effects),
+        (store_script_param, ":value", 3),
+        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
+
       (else_try), # display admin chat and announcemnts
         (is_between, ":event_type", server_event_admin_chat, server_event_admin_chat_announce + 1),
         (neg | str_is_empty, s0),
@@ -3275,7 +3293,85 @@ scripts.extend([("game_start", []), # single player only, not used
           (str_store_string, s0, ":string_id"),
           (display_message, "str_log_animation", local_animation_color),
         (try_end),
-      (else_try), # update the client side hit points bar when looking at the scene prop; values
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_show_server_message),
+        (display_message, "str_server_s0", 0xFFFF6666),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_scale_object),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (call_script,"script_multiplayer_client_apply_prop_scale",":value",":value_2"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_particle_at_pos),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (store_script_param, ":value_3", 5),
+        (store_script_param, ":value_4", 6),
+        (try_begin),
+          # First lets unpack...     
+          (store_div, ":x_value", ":value", 1000),
+          (store_mod, ":x_rot", ":value", 1000),
+          (store_div, ":y_value", ":value_2", 1000),
+          (store_mod, ":y_rot", ":value_2", 1000),
+          (store_div, ":z_value", ":value_3", 1000),
+          (store_mod, ":z_rot", ":value_3", 1000),
+          (store_div, ":particle_effect_id", ":value_4", 1000),
+          (store_mod, ":burst_strength", ":value_4", 1000),
+          (is_between,":particle_effect_id","psys_pistol_smoke","psys_dynamic_snow"), # hoorah we have a effect! :)
+          # remove 100 meters to support minus values.
+          (val_sub,":z_value",10000),
+          (set_fixed_point_multiplier, 100),
+          (init_position, pos25),
+          (position_set_x,pos25,":x_value"),
+          (position_set_y,pos25,":y_value"),
+          (position_set_z,pos25,":z_value"),
+          (position_rotate_z,pos25,":z_rot"),
+          (position_rotate_y,pos25,":y_rot"),
+          (position_rotate_x,pos25,":x_rot"),
+          (particle_system_burst,":particle_effect_id",pos25,":burst_strength"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_destructible_prop_spawn_or_destroy),
+        (store_script_param, ":value", 3),
+        (call_script, "script_multiplayer_client_apply_destructible_prop_spawn_or_destroy", ":value"),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_cannon_hit_effect_event),
+        (store_script_param, ":value", 3),
+        (store_script_param, ":value_2", 4),
+        (store_script_param, ":value_3", 5),
+        (store_script_param, ":value_4", 6),
+        (store_div,":extra_value",":value_4",100),
+        (store_mod,":effect_type",":value_4",100),
+        (try_begin),
+          (is_between,":effect_type",cannon_hit_effect_event_types_begin,cannon_hit_effect_event_types_end),
+          (set_fixed_point_multiplier, 100),
+          (init_position, pos60),
+          (position_set_x,pos60,":value"),
+          (position_set_y,pos60,":value_2"),
+          (position_set_z,pos60,":value_3"),
+          (call_script,"script_handle_cannon_hit_effect_event",":effect_type",":extra_value"),
+        (try_end),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_confirmation),
+        (assign, "$g_confirmation_result", 1),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_rejection),
+        (assign, "$g_confirmation_result", -1),
+
+      (else_try),
+        (eq, ":event_type", multiplayer_event_return_prop_effects),
+        (store_script_param, ":value", 3),
+        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
+
+      (else_try),
+                  # update the client side hit points bar when looking at the scene prop; values
                   # less than 0 clear attached missiles
         (eq, ":event_type", server_event_update_scene_prop_hit_points),
         (store_script_param, ":instance_id", 3),
@@ -3297,9 +3393,41 @@ scripts.extend([("game_start", []), # single player only, not used
         (try_end),
       (try_end),
 
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  #####################                             THE GREAT WALL                                  #################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+  ###################################################################################################################
+
+    # NETWORK SERVER SIDE BELOW
     (else_try), # section of events received by server from the clients
       (multiplayer_is_server),
-      (try_begin), # handle players requesting to attach a cart to themselves or a horse
+      (try_begin),
+        (eq, ":event_type", multiplayer_event_send_control_command),
+        (player_get_agent_id, ":sender_agent_id", ":sender_player_id"),
+        (try_begin), 
+          (agent_is_active, ":sender_agent_id"),
+          (agent_is_alive, ":sender_agent_id"),
+          (store_script_param, ":type", 3),
+          (store_script_param, ":value", 4),
+          (call_script,"script_handle_agent_control_command",":sender_agent_id",":type",":value"),
+        (try_end),
+
+      (else_try), # handle players requesting to attach a cart to themselves or a horse
         (eq, ":event_type", client_event_attach_scene_prop),
         (store_script_param, ":instance_id", 3),
         (player_get_agent_id, ":agent_id", ":sender_player_id"),
@@ -3837,18 +3965,6 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script, "script_cf_try_execute_animation", ":sender_player_id", ":string_id", 0),
         (try_end),
 
-    # PN NETWORK COMM BELOW *********************************************************************
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_sound_at_pos),
-        (store_script_param, ":value", 3),
-        (store_script_param, ":value_2", 4),
-        (call_script,"script_multiplayer_client_play_sound_at_pos",":value",":value_2"),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_prop_effects),
-        (store_script_param, ":value", 3),
-        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
-
       (else_try),
         (eq, ":event_type", multiplayer_event_send_player_action),
         (try_begin),
@@ -3868,8 +3984,6 @@ scripts.extend([("game_start", []), # single player only, not used
             (store_script_param, ":action", 4),
             (is_between,":action",voice_types_begin,voice_types_end),
             (call_script,"script_multiplayer_server_agent_play_voicecommand", ":player_agent",":action"),
-            (multiplayer_send_2_int_to_player, ":sender_player_id", server_event_preset_message, "str_debug1", preset_message_yellow | preset_message_fail_sound),
-            (agent_set_slot, ":player_no_agent_id", slot_agent_character_language, player_character_language_russian),#debug
 
           (else_try),
             (eq,":action_type",player_action_music),
@@ -3968,36 +4082,6 @@ scripts.extend([("game_start", []), # single player only, not used
          (try_end),
 
       (else_try),
-        (eq, ":event_type", multiplayer_event_return_particle_at_pos),
-        (store_script_param, ":value", 3),
-        (store_script_param, ":value_2", 4),
-        (store_script_param, ":value_3", 5),
-        (store_script_param, ":value_4", 6),
-        (try_begin),
-          # First lets unpack...     
-          (store_div, ":x_value", ":value", 1000),
-          (store_mod, ":x_rot", ":value", 1000),
-          (store_div, ":y_value", ":value_2", 1000),
-          (store_mod, ":y_rot", ":value_2", 1000),
-          (store_div, ":z_value", ":value_3", 1000),
-          (store_mod, ":z_rot", ":value_3", 1000),
-          (store_div, ":particle_effect_id", ":value_4", 1000),
-          (store_mod, ":burst_strength", ":value_4", 1000),
-          (is_between,":particle_effect_id","psys_pistol_smoke","psys_dynamic_snow"), # hoorah we have a effect! :)
-          # remove 100 meters to support minus values.
-          (val_sub,":z_value",10000),
-          (set_fixed_point_multiplier, 100),
-          (init_position, pos25),
-          (position_set_x,pos25,":x_value"),
-          (position_set_y,pos25,":y_value"),
-          (position_set_z,pos25,":z_value"),
-          (position_rotate_z,pos25,":z_rot"),
-          (position_rotate_y,pos25,":y_rot"),
-          (position_rotate_x,pos25,":x_rot"),
-          (particle_system_burst,":particle_effect_id",pos25,":burst_strength"),
-        (try_end),
-
-      (else_try),
         (eq, ":event_type", multiplayer_event_player_build_prop),
         (try_begin),
           (store_script_param, ":prop_type", 3),
@@ -4043,74 +4127,10 @@ scripts.extend([("game_start", []), # single player only, not used
             (multiplayer_send_message_to_player, ":sender_player_id", multiplayer_event_return_rejection),
           (try_end),
         (try_end),
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_prop_effects),
-        (store_script_param, ":value", 3),
-        (call_script,"script_multiplayer_client_apply_prop_effect",":value"),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_show_server_message),
-        (display_message, "str_server_s0", 0xFFFF6666),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_show_multiplayer_message),
-        (store_script_param, ":value", 3),
-        (store_script_param, ":value_2", 4),
-        (try_begin),
-          (eq, ":value", multiplayer_message_type_message_custom_color),
-          (store_script_param, ":custom_color", 5),
-          (call_script, "script_show_multiplayer_message_custom_color", ":value_2", ":custom_color"),
-        (else_try),
-          (store_script_param, reg5, 5),
-          (call_script, "script_show_multiplayer_message", ":value", ":value_2"),
-        (try_end),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_scale_object),
-        (store_script_param, ":value", 3),
-        (store_script_param, ":value_2", 4),
-        (call_script,"script_multiplayer_client_apply_prop_scale",":value",":value_2"),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_destructible_prop_spawn_or_destroy),
-        (store_script_param, ":value", 3),
-        (call_script, "script_multiplayer_client_apply_destructible_prop_spawn_or_destroy", ":value"),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_currently_controlling_object),
-        (store_script_param, ":prop_instance", 3),
-        (store_script_param, ":value", 4),
-        (call_script,"script_client_process_set_prop_control",":prop_instance",":value"),
-
-    (else_try),
-        (eq, ":event_type", multiplayer_event_return_cannon_hit_effect_event),
-        (store_script_param, ":value", 3),
-        (store_script_param, ":value_2", 4),
-        (store_script_param, ":value_3", 5),
-        (store_script_param, ":value_4", 6),
-        (store_div,":extra_value",":value_4",100),
-        (store_mod,":effect_type",":value_4",100),
-        (try_begin),
-          (is_between,":effect_type",cannon_hit_effect_event_types_begin,cannon_hit_effect_event_types_end),
-          (set_fixed_point_multiplier, 100),
-          (init_position, pos60),
-          (position_set_x,pos60,":value"),
-          (position_set_y,pos60,":value_2"),
-          (position_set_z,pos60,":value_3"),
-          (call_script,"script_handle_cannon_hit_effect_event",":effect_type",":extra_value"),
-        (try_end),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_confirmation),
-        (assign, "$g_confirmation_result", 1),
-
-      (else_try),
-        (eq, ":event_type", multiplayer_event_return_rejection),
-        (assign, "$g_confirmation_result", -1),
-
-      (try_end),# this is the end of eventtype block
+      (try_end),
     (try_end),
   ]),
+  # NETWORK SCRIPT END
 
   # script_get_hightest_pos_and_angle_from_pos
   # Input: pos37  
@@ -4623,7 +4643,15 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":effect_type", 2),
     (store_script_param, ":effect_id", 3), # 0 = all 
     (store_script_param, ":handle", 4),
-
+    
+    
+    # (assign,reg22,":prop_instance_id"),
+    # (assign,reg23,":effect_type"),
+    # (assign,reg24,":effect_id"),
+    # (assign,reg25,":handle"),
+    # (display_message,"@in params:  prop_instance_id: {reg22}  effect_type: {reg23}  effect_id: {reg24}  handle: {reg25}"),
+    
+    
     (try_begin),
       (prop_instance_is_valid,":prop_instance_id"),
       (is_between,":effect_type",prop_effect_types_begin,prop_effect_types_end),
@@ -4680,21 +4708,27 @@ scripts.extend([("game_start", []), # single player only, not used
         (try_end),
       (else_try),
         (eq,":effect_type",prop_effect_type_particle),
+        #(display_message,"@we has particles!"),
         (init_position,pos33),
         (try_begin),
           (eq,":handle",prop_effect_handle_start),
           (gt,":effect_id",0), # start only a value above 0
           
+         # (display_message,"@particle params are good."),
+          
           (assign,":end_cond",scene_prop_slot_parent_prop),
           (try_for_range,":cur_slot",scene_prop_slot_particle_effect1,":end_cond"),
             (scene_prop_slot_eq, ":prop_instance_id",":cur_slot", -1),
             (scene_prop_set_slot,":prop_instance_id", ":cur_slot", ":effect_id"),
+          #  (display_message,"@found a slut and assigned."),
             (assign,":end_cond",0),
           (try_end),
           
           (assign,":need_to_update",1),
           
           (neg|multiplayer_is_dedicated_server), # play only for clients
+          
+         # (display_message,"@adding ze effect.."),
           
           (prop_instance_add_particle_system, ":prop_instance_id", ":effect_id", pos33),
         (else_try),
@@ -4737,6 +4771,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (multiplayer_is_server),
         (eq,":need_to_update",1),
         
+        # pack it up.
         (assign,":packed_value", ":prop_instance_id"),
         (val_lshift,":packed_value",10), # free up space for effect id.
         (val_add,":packed_value",":effect_id"),
@@ -4820,7 +4855,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
   ]),
 
-# script_cannon_instance_get_barrel
+  # script_cannon_instance_get_barrel
   # Input: arg1 = cannon_instance
   # Output: reg0 = barrel_instance
   ("cannon_instance_get_barrel",
@@ -5227,7 +5262,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign, reg0, ":is_ok"),
   ]),
 
- # script_cannon_child_find_cannon_instance
+  # script_cannon_child_find_cannon_instance
   # Input: arg1 = cannon_instance
   # Output: reg0 = barrel_instance
   ("cannon_child_find_cannon_instance",
@@ -5240,15 +5275,17 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (assign,":cannon_instance",-1),
       (scene_prop_get_slot,":cannon_instance",":child_instance",scene_prop_slot_parent_prop),
-      (prop_instance_is_valid,":cannon_instance"),
+      #(gt,":cannon_instance",-1), #patch1115 fix 5/14
+      (prop_instance_is_valid,":cannon_instance"), #patch1115 fix 18/28
       (prop_instance_get_scene_prop_kind, ":cannon_kind", ":cannon_instance"),
       (assign,":is_ok_cannon",0),
       (try_begin),
         (is_between, ":cannon_kind", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
         (assign,":is_ok_cannon",1),
       (else_try),
-        (scene_prop_get_slot,":cannon_instance",":cannon_instance",scene_prop_slot_parent_prop),
-        (prop_instance_is_valid,":cannon_instance"),
+        (scene_prop_get_slot,":cannon_instance",":cannon_instance",scene_prop_slot_parent_prop), # get his parent..
+        #(gt,":cannon_instance",-1), #patch1115 fix 5/15
+        (prop_instance_is_valid,":cannon_instance"), #patch1115 fix 18/29
         (prop_instance_get_scene_prop_kind, ":cannon_kind", ":cannon_instance"),
         (is_between, ":cannon_kind", mm_cannon_wood_types_begin, mm_cannon_wood_types_end),
         (assign,":is_ok_cannon",1),
@@ -5256,7 +5293,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (eq,":is_ok_cannon",1),
       (assign,reg0,":cannon_instance"),
     (try_end),
-  ]),
+   ]),
 
 # script_get_prop_kind_for_constr_kind
   # Input: prop_kind
@@ -6139,7 +6176,8 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (prop_instance_get_position, pos49, ":wood_limber_instance"),
       (position_get_rotation_around_z,":cur_z_rot",pos49),
-
+      
+     # pos49 is prop pos.
       (position_move_y,pos49,-220),
       (position_move_z,pos49,34),
       (call_script,"script_find_or_create_scene_prop_instance",":cannon_limber_kind_id",0,0,0),
@@ -6166,6 +6204,8 @@ scripts.extend([("game_start", []), # single player only, not used
       (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_ammo_type),
       (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_just_fired),
       (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_is_active,1),
+      
+
       (try_begin),
         (gt,":cannon_wheels_instance",-1),
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_parent_prop, ":cannon_limber_instance"),
@@ -6173,9 +6213,11 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_y_value, ":cannon_wheel_y"),
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_is_active,1),
       (try_end),
+      
+     
       (assign, reg0, 1),
     (try_end),
-  ]),
+   ]),
 
   # script_recoil_cannon
   # Input: cannon_instance
@@ -6523,9 +6565,11 @@ scripts.extend([("game_start", []), # single player only, not used
   ("unlimber_cannon_from_horse",
    [
     (store_script_param, ":instance_id", 1),
+    
     (try_begin),
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
+      
       (prop_instance_is_valid, ":instance_id"),
       (prop_instance_get_scene_prop_kind,":scene_prop_id",":instance_id"),
        
@@ -6552,7 +6596,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":prop_to_spawn","spr_mm_cannon_howitzer"),
       (try_end),
        
-      (try_begin),
+      (try_begin),# scale this bitch
         (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
         (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
         (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
@@ -6566,29 +6610,36 @@ scripts.extend([("game_start", []), # single player only, not used
       (call_script,"script_generate_bits_for_cannon_instance",":new_cannon", 0, 1),
       (assign,":cannon_wood",reg1),
       
+      # copy current state
       (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_has_ball),
       (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_is_loaded),
       (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_ammo_type),
       (call_script,"script_copy_prop_slot",":cannon_wood",":instance_id",scene_prop_slot_just_fired),
       
+      # Set that the cannon to be not pushed
       (scene_prop_set_slot,":cannon_wood",scene_prop_slot_is_not_pushed_back,1),
       
+      # According to state set some difirent buttons.
       (scene_prop_get_slot,":has_ball",":cannon_wood", scene_prop_slot_has_ball),
       (scene_prop_get_slot,":is_loaded",":cannon_wood", scene_prop_slot_is_loaded),
+      #(scene_prop_get_slot,":ammo_type",":cannon_wood", scene_prop_slot_ammo_type),
+      #(scene_prop_get_slot,":just_fired",":cannon_wood", scene_prop_slot_just_fired),
       
       (call_script,"script_cannon_instance_get_barrel",":cannon_wood"),
       (assign,":barrel_instance",reg0),
        
-      (try_begin),
+      (try_begin),        
         (eq,":barrel_instance",-1),
         (assign,":barrel_instance",":cannon_wood"),
       (try_end),
       
       (try_begin),
         (eq,":is_loaded",1),
+        # get control button up, 
         (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_aim_button"),
         (call_script,"script_set_prop_child_active",reg0),
-
+        
+        # remove place ammo.
         (assign, ":end_cond", "spr_mm_reload_button"),
         (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
           (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
@@ -6599,30 +6650,37 @@ scripts.extend([("game_start", []), # single player only, not used
         (try_end),
       (else_try),
         (eq,":has_ball",1),
+        # get load button up
         (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", "spr_mm_reload_button"),
         (call_script,"script_set_prop_child_active",reg0),
+        
+        # remove place ammo.
         (assign, ":end_cond", "spr_mm_reload_button"),
         (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
           (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
           (gt,reg0,-1),
           (call_script,"script_set_prop_child_inactive",reg0),
+          
           (assign, ":end_cond", 0),
         (try_end),
       (try_end),
-
+      
+      #set it scales to 1000 on cannon limber cause it wont reset in clean up.
       (try_begin),
-        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1),
+        (scene_prop_slot_eq, ":instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
         (scene_prop_set_slot,":instance_id",scene_prop_slot_is_scaled,0),
         (scene_prop_set_slot,":instance_id",scene_prop_slot_x_scale,1000),
         (scene_prop_set_slot,":instance_id",scene_prop_slot_y_scale,1000),
         (scene_prop_set_slot,":instance_id",scene_prop_slot_z_scale,1000),
       (try_end),
-
+      
+      # clean up old cannon from the limber
       (call_script, "script_clean_up_prop_instance_with_childs", ":instance_id"),
-
+      
+      # Set cannon to be in_use just for this round so he wont be re-used
       (scene_prop_set_slot,":new_cannon",scene_prop_slot_in_use,1),
     (try_end),
-  ]),
+   ]),
 
   # script_attach_window_to_wall
   # Input: instance_id of the prop to attach the window to.
@@ -6803,11 +6861,11 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":sound_id",reg4),
         
         (try_begin),
-          (gt,":smoke_type",-1),
+          (gt,":smoke_type",-1),              
           (particle_system_burst_no_sync,":smoke_type",":smoke_strength"),
         (try_end),
         (try_begin),
-          (gt,":smoke_type2",-1),
+          (gt,":smoke_type2",-1),              
           (particle_system_burst_no_sync,":smoke_type2",":smoke_strength"),
         (try_end),
         (try_begin),
@@ -6895,13 +6953,22 @@ scripts.extend([("game_start", []), # single player only, not used
         (get_distance_between_positions,":cur_dist",pos46,pos47),
 
         (lt, ":cur_dist", ":range"), # We are in range. lets calculate damage.. see here: for example.
-
+        
+        # Calculate damage 100-25% of damage according to range
+        # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage
         (store_mul,":damage",":cur_dist",750),
         (val_div,":damage",":range"),
         (store_sub,":damage",1000,":damage"),
         (val_mul,":damage",":max_damage"),
         (val_div,":damage",1000),
-
+        
+        # Calculate damage 100-0% of damage according to range
+        # (store_mul,":damage",":cur_dist",1000), # distance 5 meter = 500000
+        # (val_div,":damage",":range"), # distance 5 meter range 10 meter = 500
+        # (val_mul,":damage",":max_damage"), # 500 * lets say 40 damage = 20000
+        # (val_div,":damage",1000), # 20000 / 1000 = 20 damage
+        # (store_sub,":damage",":max_damage",":damage"),
+        
         (try_begin), # If we have no shooter killed himself then.
           (neg|agent_is_active,":shooter_agent_no"),
           (assign,":shooter_agent_no",":agent_no"),
@@ -6926,12 +6993,14 @@ scripts.extend([("game_start", []), # single player only, not used
           (agent_set_animation, ":agent_no", "anim_horse_rear"),
         (try_end),
       (try_end), 	
-
+      
+      #prop_instance_receive_damage
       (assign,":end_wall_cond",mm_destructible_props_end),
       (try_for_range_backwards,":wall_type",mm_destructible_props_begin,":end_wall_cond"),
         (neg|is_between,":wall_type",mm_explosive_props_begin, mm_explosive_props_end),
         
         (try_for_prop_instances, ":wall_id", ":wall_type", somt_object),
+					
           # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
           (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
           (try_begin),
@@ -6962,7 +7031,7 @@ scripts.extend([("game_start", []), # single player only, not used
           
           (le, ":cur_dist", ":range"),
           
-          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage
+          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage          
           (store_mul,":damage",":cur_dist",750),
           (val_div,":damage",":range"),
           (store_sub,":damage",1000,":damage"),
@@ -6970,9 +7039,10 @@ scripts.extend([("game_start", []), # single player only, not used
           (val_div,":damage",1000),
          
           (call_script,"script_deliver_damage_to_prop",":wall_id",":damage", 0, ":shooter_agent_no"),
-          (try_end),
-
-          (try_for_prop_instances, ":wall_id", ":wall_type", somt_temporary_object),
+        (try_end),
+        
+				(try_for_prop_instances, ":wall_id", ":wall_type", somt_temporary_object),
+						
           # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
           (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
           (try_begin),
@@ -7027,6 +7097,22 @@ scripts.extend([("game_start", []), # single player only, not used
           (particle_system_burst, "psys_dummy_smoke", pos46, 50),
 
           (call_script, "script_clean_up_prop_instance", ":pioneer_prop_id"),
+          
+          (store_add,":cost_index",construct_costs_offset,":pioneer_build_type"),
+          (val_sub,":cost_index",mm_construct_props_begin),
+          (troop_get_slot,":prop_cost","trp_track_select_dummy",":cost_index"),
+          (val_sub,":prop_cost",1), #Return prop cost -1 build points when deconstructing
+          
+          (agent_is_active,":shooter_agent_no"),
+          (agent_get_team,":team_no",":shooter_agent_no"),
+          (try_begin),
+            (eq,":team_no",0),
+            (val_add,"$g_team_1_build_points",":prop_cost"),
+          (else_try),
+            (val_add,"$g_team_2_build_points",":prop_cost"),
+          (try_end),     
+          
+          (call_script,"script_multiplayer_server_send_build_points"),
         (try_end),
       (try_end),
       
@@ -7041,24 +7127,38 @@ scripts.extend([("game_start", []), # single player only, not used
           (val_sub,":cur_dist",50), 
           
           (lt, ":cur_dist", ":range"),
-
+          
+          #Changed below to be consecutive - not instant
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
+          
+          #(prop_instance_get_position, pos47, ":instance_id"), 
+          #(call_script, "script_clean_up_prop_instance", ":instance_id"),
+          
+          #(call_script,"script_explosion_at_position",":shooter_agent_no",1000,500), # Input: shooter_agent_no, max_damage points, range in cm
         (try_end),
-		(try_for_prop_instances, ":instance_id", ":explosive_type", somt_temporary_object),
+				(try_for_prop_instances, ":instance_id", ":explosive_type", somt_temporary_object),
+          #(scene_prop_slot_eq, ":instance_id", scene_prop_slot_in_use, 1),
           
           (prop_instance_get_position,pos7,":instance_id"),
           (get_distance_between_positions,":cur_dist",pos7,pos47),
-
+          
+          # add 50 cm to range due to box size.
           (val_sub,":cur_dist",50), 
           
           (lt, ":cur_dist", ":range"),
-
+          
+          #Changed below to be consecutive - not instant
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
+          
+          #(prop_instance_get_position, pos47, ":instance_id"), 
+          #(call_script, "script_clean_up_prop_instance", ":instance_id"),
+          
+          #(call_script,"script_explosion_at_position",":shooter_agent_no",1000,500), # Input: shooter_agent_no, max_damage points, range in cm
         (try_end),
       (try_end),
-
+      
       # make a crator at the explosion position
       (try_begin),
         (position_get_distance_to_terrain, ":height_to_terrain", pos47),
@@ -7066,7 +7166,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (copy_position,pos49,pos47), # pos49 is prop pos.
         (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_explosion"),
       (try_end),
-    (try_end),
+    (try_end),  		
   ]),
 
   # script_spawn_crator_on_pos
@@ -7200,41 +7300,12 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_end),
         (try_end),
       (try_end),
-
-      
-      # reset gourds
-      (try_for_range,":gourd_type", "spr_gourd", "spr_gourd_spike"),
-        (try_for_prop_instances, ":cur_instance_id", ":gourd_type", somt_object),
-          (scene_prop_set_hit_points, ":cur_instance_id", 1),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", 1),
-          (prop_instance_enable_physics, ":cur_instance_id", 1),
-          
-          (this_or_next|multiplayer_is_server),
-          (neg|game_in_multiplayer_mode),
-          
-          (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
-          (prop_instance_get_position,pos22,":cur_instance_id"),
-          (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
-          (gt,":distance",0),
-          (prop_instance_set_position,":cur_instance_id",pos21),
-        (try_end),
-      (try_end),
       
       (rebuild_shadow_map),
       # Server only
       
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
-      
-      #remove any cannonballs
-      (try_for_range,":cannonball_type", "spr_mm_cannonball_code_only_6pd", "spr_mm_cannon_12pdr_wood"),
-        (try_for_prop_instances, ":cur_instance_id", ":cannonball_type", somt_temporary_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_in_use, 1),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1), # only if its a code thing and not added by mapper.
-          
-          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
-        (try_end),
-      (try_end),
       
       # Place earth dig works back
       (try_for_range,":earth_type", "spr_mm_tunnel_wall", "spr_mm_ambience_sound_global_wind_snow"),
@@ -7259,7 +7330,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
       (try_end),
       
-      # get position of origional cannon and move the replaced by cannon wood and its parts back to that position.
+       # get position of origional cannon and move the replaced by cannon wood and its parts back to that position.
       (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
         (try_for_prop_instances, ":cur_instance_id", ":cannon_type"),
           (scene_prop_get_slot,":cannon_wood",":cur_instance_id", scene_prop_slot_replaced_by),
@@ -7394,20 +7465,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_end),
         (try_end),
       (try_end),
-      
-      # Reset birds.
-      (try_for_prop_instances, ":instance_id", "spr_mm_bird"),
-        (assign,":instance_id",":instance_id"),
-        (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),      
-        
-        (prop_instance_get_starting_position, pos21, ":instance_id"),
-        (prop_instance_get_position,pos22,":instance_id"),
-        (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
-        (gt,":distance",0),
-        (prop_instance_stop_animating,":instance_id"),
-        (prop_instance_set_position,":instance_id",pos21),
-      (try_end),
-      
+
       # reset broken windows...
       (try_for_range,":prop_type", "spr_mm_window1d_poor", "spr_mm_window3_poor"),
         (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
@@ -8445,7 +8503,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
     ]),
 
-  # script_handle_agent_control_command
+ # script_handle_agent_control_command
   # Input: agent_id
   #        command_type
   #        command
@@ -8623,6 +8681,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_begin),
       (prop_instance_is_valid, ":instance_id"),
 
+      #(scene_prop_slot_eq, ":instance_id", scene_prop_slot_child_prop1, 0), # No childs lets set them.
       (prop_instance_get_scene_prop_kind, ":cannon_type", ":instance_id"),
       (try_begin),
         (eq,":use_given_position",0),
@@ -8631,7 +8690,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (prop_instance_get_variation_id,":z_rotation_limit",":instance_id"),
       (prop_instance_get_variation_id_2,":linked_wall_index",":instance_id"),
       
-      (call_script, "script_clean_up_prop_instance", ":instance_id"),
+      (call_script, "script_clean_up_prop_instance", ":instance_id"), # Lets remove this dummy cannon.
       
       (assign,":wood_type",-1),
       (assign,":wheel_type",-1),
@@ -8829,7 +8888,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (scene_prop_get_slot,":y_scale",":instance_id",scene_prop_slot_y_scale),
       (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
       
-      (try_begin),
+      (try_begin), # if all slots zere its not scaled its broken lol.
         (eq,":is_scaled",1),
         (eq,":x_scale",0),
         (eq,":y_scale",0),
@@ -8843,10 +8902,15 @@ scripts.extend([("game_start", []), # single player only, not used
         (position_set_z_to_ground_level,pos30),
       (try_end),
       
-      (val_mul, ":ground_dist", ":z_scale"),
+      (val_mul, ":ground_dist", ":z_scale"),              
       (val_div, ":ground_dist", 1000),
       (position_move_z,pos30,":ground_dist"),
-      (copy_position,pos49,pos30),
+      
+      (copy_position,pos49,pos30), # pos49 is prop pos.
+      # (position_set_scale_x,pos49, ":x_scale"),
+      # (position_set_scale_y,pos49, ":y_scale"),
+      # (position_set_scale_z,pos49, ":z_scale"),
+      
       (assign,":cannon_wood",-1),
       (assign,":cannon_wheels",-1),
       (assign,":cannon_barrel",-1),
@@ -8890,43 +8954,47 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
       
       (try_begin),
-        (prop_instance_is_valid,":cannon_wood"),
+        #(gt,":cannon_wood",-1),
+        (prop_instance_is_valid,":cannon_wood"), # patch1115 fix 18/17
         
-        (try_begin),
+        (try_begin),# no z limit assigned in prop var values.
           (eq,":z_rotation_limit",0), 
           (assign,":z_rotation_limit",":predefined_z_rotation_limit"),
         (try_end),
         
-        (scene_prop_set_slot,":instance_id", scene_prop_slot_replaced_by, ":cannon_wood"),
-        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_replacing, ":instance_id"),
+        (scene_prop_set_slot,":instance_id", scene_prop_slot_replaced_by, ":cannon_wood"), # replaced by the wood part
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_replacing, ":instance_id"), # wood is replacing that cannon
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ground_offset, ":ground_dist"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rotation_limit, ":z_rotation_limit"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_linked_prop, ":linked_wall_index"),
-        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_x_extra, ":fire_x"), 
+        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_x_extra, ":fire_x"), # extra values for smoke from frizzle.
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_y_extra, ":fire_y"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_extra, ":fire_z"),
         
         (assign, ":cur_slot", scene_prop_slot_child_prop1),
         
         (try_begin),
-          (prop_instance_is_valid,":cannon_wheels"),
+          #(gt,":cannon_wheels",-1),
+          (prop_instance_is_valid,":cannon_wheels"), #patch1115 18/18
+          
           (scene_prop_set_slot,":cannon_wheels", scene_prop_slot_parent_prop, ":cannon_wood"),
-          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_wheels"),
+          (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_wheels"), # set parent's child prop. starting at scene_prop_slot_child_prop1
           (scene_prop_set_slot,":cannon_wheels", scene_prop_slot_is_active,1),
           (val_add, ":cur_slot", 1),
         (try_end),
         
         (assign,":button_main_piece",-1),
         (try_begin),
-          (prop_instance_is_valid,":cannon_barrel"),
+          #(gt,":cannon_barrel",-1),
+          (prop_instance_is_valid,":cannon_barrel"), #patch1115 fix 18/19
           
           (assign,":button_main_piece",":cannon_barrel"),
           
           (try_begin),
             (eq,":is_scaled",1),
-            (val_mul, ":barrel_x", ":x_scale"),
+            (val_mul, ":barrel_x", ":x_scale"),            
             (val_mul, ":barrel_y", ":y_scale"),
-            (val_mul, ":barrel_z", ":z_scale"),
+            (val_mul, ":barrel_z", ":z_scale"),              
             (val_div, ":barrel_x", 1000),
             (val_div, ":barrel_y", 1000),
             (val_div, ":barrel_z", 1000),
@@ -8936,13 +9004,19 @@ scripts.extend([("game_start", []), # single player only, not used
           (position_move_x, pos31,":barrel_x"),
           (position_move_y, pos31,":barrel_y"),
           (position_move_z, pos31,":barrel_z"),
+         # (prop_instance_animate_to_position, ":cannon_barrel", pos31, 0),
           (try_begin),
             (prop_instance_is_animating, ":animating", ":cannon_barrel"),
             (eq,":animating",1),
             (prop_instance_stop_animating, ":cannon_barrel"),
           (try_end),
           (prop_instance_set_position,":cannon_barrel",pos31),
-
+          
+                # (copy_position,pos49,pos31), # pos49 is prop pos.
+                # (call_script, "script_find_or_create_scene_prop_instance", "spr_cooking_pole", 0),
+                # (position_rotate_x, pos49, 90), 
+                # (call_script, "script_find_or_create_scene_prop_instance", "spr_cooking_pole", 0),
+          
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_x_value, ":barrel_x"),
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_y_value, ":barrel_y"),
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_z_value, ":barrel_z"),
@@ -8952,19 +9026,23 @@ scripts.extend([("game_start", []), # single player only, not used
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_x_extra, ":fire_x"), # extra values for smoke from frizzle.
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_y_extra, ":fire_y"),
           (scene_prop_set_slot,":cannon_barrel", scene_prop_slot_z_extra, ":fire_z"),
-
+          
+          
           (val_add, ":cur_slot", 1),
         (else_try),
           (assign,":button_main_piece",":cannon_wood"),
         (try_end),
+        
+        # attach static prop
         (try_begin),
-          (prop_instance_is_valid,":cannon_static"),
+          #(gt,":cannon_static",-1),
+          (prop_instance_is_valid,":cannon_static"), #patch1115 18/20
           
           (try_begin),
             (eq,":is_scaled",1),
-            (val_mul, ":static_x", ":x_scale"),
+            (val_mul, ":static_x", ":x_scale"),            
             (val_mul, ":static_y", ":y_scale"),
-            (val_mul, ":static_z", ":z_scale"),
+            (val_mul, ":static_z", ":z_scale"),              
             (val_div, ":static_x", 1000),
             (val_div, ":static_y", 1000),
             (val_div, ":static_z", 1000),
@@ -8980,6 +9058,7 @@ scripts.extend([("game_start", []), # single player only, not used
             (prop_instance_stop_animating, ":cannon_static"),
           (try_end),
           (prop_instance_set_position,":cannon_static",pos49),
+          #(prop_instance_animate_to_position, ":cannon_static", pos49, 0),
           
           (scene_prop_set_slot,":cannon_static", scene_prop_slot_x_value, ":static_x"),
           (scene_prop_set_slot,":cannon_static", scene_prop_slot_y_value, ":static_y"),
@@ -8987,10 +9066,13 @@ scripts.extend([("game_start", []), # single player only, not used
           (scene_prop_set_slot,":cannon_static", scene_prop_slot_parent_prop, ":cannon_wood"),
           (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":cannon_static"),
           (scene_prop_set_slot,":cannon_static", scene_prop_slot_is_active,1),
+          # Set ignore inherited movement to true.
           (scene_prop_set_slot,":cannon_static", scene_prop_slot_ignore_inherit_movement,1),
           
           (val_add, ":cur_slot", 1),
         (try_end),
+        
+        # attach loaded ammo object to the cannon (to display when its loaded)
         (assign,":loaded_ammo_instance",-1),
         (try_begin),
           (gt,":loaded_ammo_type",-1),
@@ -9017,17 +9099,20 @@ scripts.extend([("game_start", []), # single player only, not used
           (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_z_value,":loaded_ammo_z"),
           (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_parent_prop,":button_main_piece"),
           (scene_prop_set_slot,":button_main_piece",":cur_slot",":loaded_ammo_instance"),
-          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_is_active,0),
+          (scene_prop_set_slot,":loaded_ammo_instance", scene_prop_slot_is_active,0), # not active right now.
           
           (val_add, ":cur_slot", 1),
         (try_end),
-
+        
+        
+        # attach platform
         (assign,":platform_instance",-1),
         (try_begin),
+          # scale the distance
           (try_begin),
             (eq,":is_scaled",1),
-            (val_mul, ":platform_x", ":x_scale"),
-            (val_mul, ":platform_y", ":y_scale"),
+            (val_mul, ":platform_x", ":x_scale"),            
+            (val_mul, ":platform_y", ":y_scale"),            
             (val_div, ":platform_x", 1000),
             (val_div, ":platform_y", 1000),
           (try_end),
@@ -9043,20 +9128,22 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_aim_platform", 0, 0, 0),
           (assign, ":platform_instance", reg0),
 
+
           (scene_prop_set_slot,":platform_instance", scene_prop_slot_x_value,":platform_x"),
           (scene_prop_set_slot,":platform_instance", scene_prop_slot_y_value,":platform_y"),
           (scene_prop_set_slot,":platform_instance", scene_prop_slot_parent_prop,":cannon_wood"),
           (scene_prop_set_slot,":cannon_wood",":cur_slot",":platform_instance"),
           (scene_prop_set_slot,":platform_instance", scene_prop_slot_z_value,1),
-          (scene_prop_set_slot,":platform_instance", scene_prop_slot_is_active,0),
+          (scene_prop_set_slot,":platform_instance", scene_prop_slot_is_active,0), # not active right now.
           (scene_prop_set_slot,":platform_instance", scene_prop_slot_float_ground, 1),
            
           (val_add, ":cur_slot", 1),
         (try_end),
-
+        
+        # attach ammobox to the new spawned cannon.
         (assign,":ammobox_instance",-1),
         (try_begin),
-          (gt,":ammo_box_type",0),
+          (gt,":ammo_box_type",0), # assigned
           
           (store_random_in_range,":random_rot",-4,5),
           
@@ -9067,7 +9154,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (position_move_z, pos49,":ammobox_z"),
           (call_script, "script_find_or_create_scene_prop_instance", ":ammo_box_type", 0, 1, 0),
           (assign, ":ammobox_instance", reg0),
-
+          
+          
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_x_value, ":ammobox_x"),
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_y_value, ":ammobox_y"),
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_z_value, ":ammobox_z"),
@@ -9075,7 +9163,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_parent_prop, ":cannon_wood"),
           (scene_prop_set_slot,":cannon_wood", ":cur_slot", ":ammobox_instance"),
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_is_active,1),
-
+          # Set ignore inherited movement to true.
           (scene_prop_set_slot,":ammobox_instance", scene_prop_slot_ignore_inherit_movement,1),          
           
           (val_add, ":cur_slot", 1),
@@ -9083,7 +9171,9 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_begin),
             (this_or_next|eq,":ammo_box_type","spr_mm_ammobox_cannon"),
             (eq,":ammo_box_type","spr_mm_ammobox_howitzer"),
-
+            
+            # for the normal ammo box create the 3 buttons.
+            
             (assign, ":cur_box_slot", scene_prop_slot_child_prop1),
             
             (try_for_range,":cur_loop",0,2),
@@ -9117,13 +9207,16 @@ scripts.extend([("game_start", []), # single player only, not used
               (scene_prop_set_slot,":button_instance", scene_prop_slot_y_value, ":cur_y"),
               (scene_prop_set_slot,":button_instance", scene_prop_slot_z_value, ":cur_z"),
               (scene_prop_set_slot,":button_instance", scene_prop_slot_parent_prop, ":ammobox_instance"),
-              (scene_prop_set_slot,":ammobox_instance", ":cur_box_slot", ":button_instance"),
+              (scene_prop_set_slot,":ammobox_instance", ":cur_box_slot", ":button_instance"), # set parent's child prop. starting at scene_prop_slot_child_prop1
+              #(scene_prop_set_slot,":button_instance", scene_prop_slot_in_use, 1),
               (scene_prop_set_slot,":button_instance", scene_prop_slot_is_active,1),
+              #(scene_prop_set_slot,":button_instance", scene_prop_slot_ignore_inherit_movement,1),       
               (val_add,":cur_box_slot",1),
             (try_end),
           (try_end),
         (try_end),
-
+        
+        
         (try_for_range,":button_type", mm_cannon_button_types_begin, mm_cannon_button_types_end),
           (this_or_next|neq,":button_type","spr_mm_limber_button"),
           (eq,":can_be_limbered",1),
@@ -9196,9 +9289,9 @@ scripts.extend([("game_start", []), # single player only, not used
           
           (try_begin),
             (eq,":is_scaled",1),
-            (val_mul, ":cur_x", ":x_scale"),
+            (val_mul, ":cur_x", ":x_scale"),            
             (val_mul, ":cur_y", ":y_scale"),
-            (val_mul, ":cur_z", ":z_scale"),
+            (val_mul, ":cur_z", ":z_scale"),              
             (val_div, ":cur_x", 1000),
             (val_div, ":cur_y", 1000),
             (val_div, ":cur_z", 1000),
@@ -9221,9 +9314,9 @@ scripts.extend([("game_start", []), # single player only, not used
             (position_set_z, pos32,-3000),
           (try_end),
           
-          (copy_position,pos49,pos32),
+          (copy_position,pos49,pos32), # pos49 is prop pos.
           (try_begin),
-            (eq,":button_type","spr_mm_bomb_button"),
+            (eq,":button_type","spr_mm_bomb_button"), # scale that one.
             (eq,":is_scaled",1),
             (call_script, "script_find_or_create_scene_prop_instance", ":button_type", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
           (else_try),
@@ -9235,7 +9328,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (scene_prop_set_slot,":button_instance", scene_prop_slot_y_value, ":cur_y"),
           (scene_prop_set_slot,":button_instance", scene_prop_slot_z_value, ":cur_z"),
           (scene_prop_set_slot,":button_instance", scene_prop_slot_parent_prop, ":parent_prop"),
-          (scene_prop_set_slot,":parent_prop", ":cur_slot", ":button_instance"),
+          (scene_prop_set_slot,":parent_prop", ":cur_slot", ":button_instance"), # set parent's child prop. starting at scene_prop_slot_child_prop1
+          #(scene_prop_set_slot,":button_instance", scene_prop_slot_in_use, 1),
           (scene_prop_set_slot,":button_instance", scene_prop_slot_is_active,":is_active"),
           
           (val_add, ":cur_slot", 1),
@@ -9246,11 +9340,60 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_begin),
         (eq,":dont_recoil",0),
         (copy_position,pos57,pos30),
-        (call_script,"script_recoil_cannon",":cannon_wood",1,1),
+        (call_script,"script_recoil_cannon",":cannon_wood",1,1), # put it back defaultly.
       (try_end),
     (try_end),
     (assign,reg1,":cannon_wood"),
-  ]),
+   ]),
+
+  # script_attach_limber_to_horse
+  # Input: arg1 = agent_id
+  # Output: reg0 = limber wood instance id
+  ("attach_limber_to_horse",
+   [
+    (store_script_param, ":agent_id", 1),
+    
+    (assign, reg0, 0),
+    (try_begin),
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+      
+      (agent_is_active,":agent_id"),
+      
+      (set_fixed_point_multiplier, 100),
+      
+      (agent_get_position, pos49, ":agent_id"),
+      
+     # pos49 is prop pos.
+      (position_move_z, pos49, 55),
+      (call_script,"script_find_or_create_scene_prop_instance","spr_mm_limber_wood",0,0,0),
+      (assign, ":wood_limber_instance", reg0),
+      (position_move_y,pos49,-220),
+      (call_script,"script_find_or_create_scene_prop_instance","spr_mm_limber_wheels",0,0,0),
+      (assign, ":wheels_limber_instance", reg0),
+
+      
+      (scene_prop_set_slot,":wood_limber_instance", scene_prop_slot_carrier_agent, ":agent_id"),
+      (scene_prop_set_slot,":wood_limber_instance", scene_prop_slot_z_value,55),
+      (scene_prop_set_slot,":wood_limber_instance", scene_prop_slot_is_active,1),
+      
+      
+      (scene_prop_set_slot,":wheels_limber_instance", scene_prop_slot_parent_prop,":wood_limber_instance"),
+      (scene_prop_set_slot,":wood_limber_instance", scene_prop_slot_child_prop1,":wheels_limber_instance"),
+      (scene_prop_set_slot,":wheels_limber_instance", scene_prop_slot_y_value,-220),
+      (scene_prop_set_slot,":wheels_limber_instance", scene_prop_slot_is_active,1),
+     
+     
+      
+      # (agent_get_position, pos1, ":agent_id"),
+      # (copy_position,pos57,pos1),
+      # (position_move_z, pos57, 55),
+      # (call_script, "script_prop_instance_animate_to_position_with_childs", ":wood_limber_instance", 0,0,0),
+      
+      
+      (assign, reg0, ":wood_limber_instance"),
+    (try_end),
+   ]),
 
   # script_set_prop_child_inactive
   # Input: instance_id
@@ -9338,7 +9481,27 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
    ]),
 
-   # script_set_agent_controlling_prop
+  #script_multiplayer_server_send_build_points
+  # INPUT: arg1 = value (packed)
+  # OUTPUT: none 
+  ("multiplayer_server_send_build_points",
+   [
+   #  (try_begin),
+   #   # pack buildpoints.
+   #   (val_clamp,"$g_team_1_build_points",0,32767),
+   #   (val_clamp,"$g_team_2_build_points",0,65535),
+   #   (assign,":packed_value","$g_team_1_build_points"),
+   #   (val_lshift,":packed_value",16),
+   #   (val_add,":packed_value","$g_team_2_build_points"),     
+      
+   #   (try_for_players, ":player_no", 1),
+   #     (player_is_active, ":player_no"),
+   #     (multiplayer_send_int_to_player, ":player_no", multiplayer_event_return_build_points,":packed_value"),
+   #   (try_end),
+   #(try_end),
+   ]), 
+
+  # script_set_agent_controlling_prop
   # Input: prop_instance of prop under control
   #        agent_id of controlling agent
   #        value  1 = controlling  2 = stop controlling
@@ -9358,7 +9521,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (eq,":value",1),
           (scene_prop_set_slot,":prop_instance",scene_prop_slot_controller_agent,":agent_id"),
           (agent_set_slot,":agent_id",slot_agent_current_control_prop,":prop_instance"), # assign agent his current controlling prop.
-
+          
+          # For cannons switch to lighter.
           (try_begin),
             
             (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
@@ -9369,11 +9533,15 @@ scripts.extend([("game_start", []), # single player only, not used
               (agent_has_item_equipped,":agent_id","itm_cannon_lighter"),
               (agent_set_wielded_item,":agent_id","itm_cannon_lighter"),
             (else_try),
-              (game_in_multiplayer_mode),
+              # dont need lighter in commander battle.
+              (game_in_multiplayer_mode), #debug ver se isso aqui funciona no serverside ou no clientside, apenas caso outros jogadores reclamem que nao parou a animacao
               (assign,":error_message", "str_need_to_have_a_lighter"),
-              (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
+			  (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
             (try_end),
           (try_end),
+        (else_try),
+          (scene_prop_set_slot,":prop_instance",scene_prop_slot_controller_agent,-1),
+          (agent_set_slot,":agent_id",slot_agent_current_control_prop,-1),
         (try_end),
         
         (game_in_multiplayer_mode),
@@ -11887,14 +12055,6 @@ scripts.extend([("game_start", []), # single player only, not used
   ("on_agent_spawned", # server and clients: set agent slots and attributes after spawning
    [(store_script_param, ":agent_id", 1), # must be valid
 
-    (agent_get_player_id, ":player_id", ":agent_id"),
-
-    (try_begin),
-      (agent_is_human, ":agent_id"),
-      (agent_set_slot, ":agent_id", slot_agent_character_language, 1),
-      (player_set_slot, ":player_id", slot_player_character_language, 1),
-    (try_end),
-
     (agent_set_slot, ":agent_id", slot_agent_horse_last_rider, -1),
     (agent_set_slot, ":agent_id", slot_agent_freeze_instance_id, -1),
     (agent_set_slot, ":agent_id", slot_agent_poisoner_agent_id, -1),
@@ -11908,6 +12068,12 @@ scripts.extend([("game_start", []), # single player only, not used
       (eq, "$g_full_respawn_health", 0),
       (agent_is_human, ":agent_id"),
       (agent_set_max_hit_points, ":agent_id", max_hit_points_percent),
+    (try_end),
+    (agent_get_player_id, ":player_id", ":agent_id"),
+    (try_begin),
+      (agent_is_human, ":agent_id"),
+      (agent_set_slot, ":agent_id", slot_agent_character_language, 1),
+      (player_set_slot, ":player_id", slot_player_character_language, 1),
     (try_end),
     (try_begin),
       (player_is_active, ":player_id"),
@@ -11960,7 +12126,43 @@ scripts.extend([("game_start", []), # single player only, not used
         (eq, "$g_mute_global_chat", 1),
         (player_set_is_muted, ":player_id", "$g_mute_global_chat"),
       (try_end),
-    (try_end),]),
+    (try_end),
+
+    # only for horses. Spawn limber with horse
+    (try_begin),
+      (neg|agent_is_human, ":agent_id"),
+      (agent_get_item_id, ":horse_item_id", ":agent_id"),
+      (gt,":horse_item_id",-1),
+      (this_or_next|item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon), # Hoorah we have a Arty horse.
+      (item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_howitzer),
+      (call_script,"script_attach_limber_to_horse",":agent_id"),
+      (assign,":limber_wood_instance",reg0),
+         
+      (try_begin),
+        (this_or_next|eq,"$g_spawn_with_artillery",1),# 1 = Spawn for all
+        (eq,"$g_spawn_with_artillery",2),# 2 = Spawn with cannons only
+           
+        (prop_instance_get_position, pos18, ":limber_wood_instance"),
+        (position_move_y,pos18,-220),
+        (position_move_z,pos18,14),
+        (position_rotate_z,pos18,-90),
+        (copy_position,pos49,pos18), # pos49 is prop pos.
+           
+           # Spawn the cannon, If horse1 a 12 pounder, if horse2 a howitzer.
+        (try_begin),
+          (item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon),
+          (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_12pdr_wood", 0, 0, 0),
+        (else_try),
+          (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_howitzer_wood", 0, 0, 0),
+        (try_end),
+        (assign,":cannon_instance",reg0),
+         
+        (call_script,"script_limber_cannon_to_horse",":limber_wood_instance",":cannon_instance"),
+        
+        (call_script, "script_clean_up_prop_instance", ":cannon_instance"),
+      (try_end),
+    (try_end),
+    ]),
 
   ("setup_agent_for_respawn", # server: when an agent dies, clean up slots and attached props; set up
                               # lootable items
