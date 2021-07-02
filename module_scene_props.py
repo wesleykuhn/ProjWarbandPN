@@ -6480,7 +6480,9 @@ scene_props = [
   ("triangle_stucco_5",0,"mm_triangle_stucco_5","bo_mm_triangle_wood1", []),
   ("triangle_mmstuco",0,"mm_triangle_mmstuco","bo_mm_triangle_wood1", []),
   ("triangle_mmstuco4",0,"mm_triangle_mmstuco4","bo_mm_triangle_wood1", []),
- 
+
+  ("mm_door_rotate_mm_restroom_door",spr_rotate_door_flags(1),"mm_restroom_door","bo_mm_restroom_door", spr_rotate_door_triggers(hit_points=700)),
+
   ("pyramid",0,"pyramid","bo_pyramid", []),
   ("mm_house_wall_1_sandstones2",0,"1wall_sandstones2","bo_1wall", []),
 
