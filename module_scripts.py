@@ -3418,13 +3418,13 @@ scripts.extend([("game_start", []), # single player only, not used
       (multiplayer_is_server),
       (try_begin),
         (eq, ":event_type", multiplayer_event_send_control_command),
-        (player_get_agent_id, ":sender_agent_id", ":sender_player_id"),
         (try_begin), 
-          (agent_is_active, ":sender_agent_id"),
-          (agent_is_alive, ":sender_agent_id"),
+          (player_get_agent_id, ":player_no_agent_id", ":sender_player_id"),
+          (agent_is_active, ":player_no_agent_id"),
+          (agent_is_alive, ":player_no_agent_id"),
           (store_script_param, ":type", 3),
           (store_script_param, ":value", 4),
-          (call_script,"script_handle_agent_control_command",":sender_agent_id",":type",":value"),
+          (call_script,"script_handle_agent_control_command",":player_no_agent_id",":type",":value"),
         (try_end),
 
       (else_try), # handle players requesting to attach a cart to themselves or a horse
@@ -7224,6 +7224,13 @@ scripts.extend([("game_start", []), # single player only, not used
   ("multiplayer_mm_after_mission_start_common",
   [
     (try_begin),
+      (get_scene_boundaries, pos10,pos11),
+      (set_fixed_point_multiplier, 100),
+      (position_get_x,"$g_scene_min_x",pos10),
+      (position_get_x,"$g_scene_max_x",pos11),
+      (position_get_y,"$g_scene_min_y",pos10),
+      (position_get_y,"$g_scene_max_y",pos11),
+
       # Set wall slot to their variation for linking walls to cannons for final destruction.
       (try_for_range,":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
         (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
@@ -8714,7 +8721,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (prop_instance_is_valid,":instance_id"),
           (prop_instance_get_scene_prop_kind, ":cannon_kind", ":instance_id"),
           (is_between,":cannon_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
-          
+
           (try_begin),
             (eq,":command",cannon_command_fire),
             
@@ -11070,8 +11077,12 @@ scripts.extend([("game_start", []), # single player only, not used
     [
       (assign,"$g_rain_type",0),
       (assign,"$g_rain_amount",0),
-      #(assign,"$g_scene_water_level",-40),
-      (assign,"$g_scene_water_level",0),
+      (assign,"$g_scene_min_x",0),
+      (assign,"$g_scene_max_x",0),
+      (assign,"$g_scene_min_y",0),
+      (assign,"$g_scene_max_y",0),
+      (assign,"$g_scene_water_level",-40),
+      #(assign,"$g_scene_water_level",0), #debug qualquer bug de canhao posicionamento deles ou start da position dele tentar descomentar essa linha e comentar a de cima
       (assign,"$g_scene_has_snowy_ground",0),
       (assign, "$g_hq_last_spawn_wave", 0),
       (assign, "$g_original_selected_troop", 0),

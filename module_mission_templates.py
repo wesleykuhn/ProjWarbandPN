@@ -1885,6 +1885,7 @@ multiplayer_server_cannonball_flight = (
         (scene_prop_get_slot,":time",":ball_instance_id", scene_prop_slot_time),
         (scene_prop_get_slot,":ammo_type",":ball_instance_id", scene_prop_slot_ammo_type),
         (scene_prop_get_slot,":user_agent",":ball_instance_id", scene_prop_slot_user_agent),
+
         (prop_instance_get_position, pos33, ":ball_instance_id"),
         (position_get_z, ":ball_z",pos33),
         
@@ -1898,9 +1899,11 @@ multiplayer_server_cannonball_flight = (
         (assign,":check_agents",1),
         (copy_position,pos35,pos33),
         (copy_position,pos26,pos35),
+        
 
         (try_begin),
-          #(gt,":time",0),
+          (gt,":time",0),
+          
           (copy_position,pos34,pos33),
           (position_set_z_to_ground_level,pos34),
           (position_get_z,":ground_z",pos34),
@@ -1918,6 +1921,7 @@ multiplayer_server_cannonball_flight = (
           
           (try_begin), # Hitting the water?
             (lt,":ball_z", "$g_scene_water_level"), # we are underwater
+            
             (gt,":ball_z", ":ground_z"), # we are undrerwater and not underground
             
             (scene_prop_slot_eq, ":ball_instance_id", scene_prop_slot_displayed_particle, 0), # shown the water effect already?
@@ -1929,27 +1933,26 @@ multiplayer_server_cannonball_flight = (
           (try_end),
          
           (lt,":ball_z", ":ground_z"),
+          
           (assign,":clean_it_up",0),
           (try_begin),
-            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
+            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell), #debug is not taking the type of the ammo
             (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
             (eq,":ammo_type",cannon_ammo_type_rocket),
-(agent_set_slot, 25, slot_agent_character_language, player_character_language_pirate),#debug
             (copy_position,pos47,pos34),
             (call_script,"script_cannon_explosion_on_position",1,":ammo_type",":user_agent"),
-
+            
             (assign,":clean_it_up",1),
           (else_try),
             (eq,":ammo_type",cannon_ammo_type_round),
-(agent_set_slot, 50, slot_agent_character_language, player_character_language_pirate),#debug
             (call_script, "script_cannon_ball_hit_ground", ":ball_instance_id", ":cur_x_vel",":cur_z_vel"),
             (assign, ":cur_x_vel", reg0),
             (assign, ":cur_z_vel", reg1),
             (assign, ":clean_it_up", reg2),
           (try_end),
+          
           (try_begin),
             (eq,":clean_it_up",1),
-            
             (call_script, "script_clean_up_prop_instance", ":ball_instance_id"),
             
             (assign,":time",-1),
@@ -1957,14 +1960,18 @@ multiplayer_server_cannonball_flight = (
             (assign,":check_walls",0),
             (assign,":check_agents",0),
           (try_end),
+          
         (else_try),
           (assign, ":modulus", ":time"),
+          
           (try_begin),
             (eq,":ammo_type",cannon_ammo_type_rocket),
+            
             (val_mod, ":modulus", 2), # move and check once in 2 times (0.25 seconds)
           (else_try),
             (val_mod, ":modulus", 4), # move and check once in 4 times (0.5 seconds)
           (try_end),
+          
           (gt, ":modulus", 0), # If not right mod result dont move. (1 == second value it will return so always move first pass :) )
           (assign,":move",0), # Dont move/check stuff just for ground detection...
         (try_end),
@@ -1977,7 +1984,7 @@ multiplayer_server_cannonball_flight = (
         (else_try),
           (val_div,":z_offset_calc",10000),      
         (try_end),
-        
+
         (store_div,":x_movement",":cur_x_vel",2),
         (store_div,":y_movement",":cur_y_vel",2),
         (store_div,":z_movement",":cur_z_vel",2),
@@ -1985,22 +1992,18 @@ multiplayer_server_cannonball_flight = (
         (position_move_x,pos35,":x_movement"),
         (position_move_y,pos35,":y_movement"),
         (position_move_z,pos35,":z_movement"),
-        
           
         (try_begin),
           (eq,":move",1),
           (set_fixed_point_multiplier, 100),
+          
           (position_get_x,":ball_x",pos33),
           (position_get_y,":ball_y",pos33),
-          
-(agent_set_slot, 100, slot_agent_character_language, player_character_language_pirate),#debug
           (try_begin),
             (this_or_next|lt,":ball_x","$g_scene_min_x"),
             (this_or_next|gt,":ball_x","$g_scene_max_x"),
             (this_or_next|lt,":ball_y","$g_scene_min_y"),
             (gt,":ball_y","$g_scene_max_y"),
-            
-(agent_set_slot, 200, slot_agent_character_language, player_character_language_pirate),#debug
             (call_script, "script_clean_up_prop_instance", ":ball_instance_id"),
             (assign,":time",-1),
             (assign,":move",0),
@@ -2017,12 +2020,11 @@ multiplayer_server_cannonball_flight = (
             (position_move_x,pos33,":cur_x_vel"),
             (position_move_y,pos33,":cur_y_vel"),
             (position_move_z,pos33,":cur_z_vel"),
-(agent_set_slot, 300, slot_agent_character_language, player_character_language_pirate),#debug
+            
             (try_begin),
               (eq,":ammo_type",cannon_ammo_type_rocket),
               (try_begin),
                 (ge,":time", 4),
-(agent_set_slot, 400, slot_agent_character_language, player_character_language_pirate),#debug
                 (store_random_in_range,":rand_z",-4,4),
                 (position_rotate_z,pos33,":rand_z"),
                 (store_random_in_range,":rand_y",-4,4),
@@ -2037,7 +2039,6 @@ multiplayer_server_cannonball_flight = (
               (eq,":ammo_type",cannon_ammo_type_rocket),
               (try_begin),
                 (le,":time", 28),
-(agent_set_slot, 500, slot_agent_character_language, player_character_language_pirate),#debug
                 (val_add, ":cur_x_vel", 150),
               (else_try),
                 (val_mul, ":cur_x_vel", 99), 
@@ -2061,16 +2062,16 @@ multiplayer_server_cannonball_flight = (
             (scene_prop_set_slot,":ball_instance_id", scene_prop_slot_z_value, ":cur_z_vel"),
           (try_end),
         (try_end),
-(agent_set_slot, 600, slot_agent_character_language, player_character_language_pirate),#debug
+        
         (val_add,":time",1),
         (scene_prop_set_slot, ":ball_instance_id", scene_prop_slot_time, ":time"),
         
-        #(eq,":move",1), # Only check stuff when just moved.
+        (eq,":move",1), # Only check stuff when just moved.
         
-(agent_set_slot, 650, slot_agent_character_language, player_character_language_pirate),#debug
+        
         (assign,":hitted_wall_x_dist",":cur_x_vel"),
                 
-        (try_begin), # destroy
+        (try_begin), # destroy those bloody walls bitch..
           #(gt,":time",0),
           (eq,":check_walls",1), # not the first time so dont destroy your defence walls..
           (assign,":min_dist",9999999999),
@@ -2214,7 +2215,7 @@ multiplayer_server_cannonball_flight = (
               (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
               (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
               (eq,":ammo_type",cannon_ammo_type_rocket),
-(agent_set_slot, 700, slot_agent_character_language, player_character_language_pirate),#debug
+              
               (call_script,"script_cannon_explosion_on_position",0,":ammo_type",":user_agent"),
               
               (call_script, "script_clean_up_prop_instance", ":ball_instance_id"), # clean up ball
@@ -2223,7 +2224,7 @@ multiplayer_server_cannonball_flight = (
               (eq,":ammo_type",cannon_ammo_type_round),
               
               (try_begin),
-                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1 
+                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
               (else_try),
                 (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
@@ -2368,7 +2369,7 @@ multiplayer_server_cannonball_flight = (
             (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
             (eq,":ammo_type",cannon_ammo_type_rocket),
             (copy_position,pos47,pos40),
-(agent_set_slot, 800, slot_agent_character_language, player_character_language_pirate),#debug
+            
             (call_script,"script_cannon_explosion_on_position",0,":ammo_type",":user_agent"),
             
             (call_script, "script_clean_up_prop_instance", ":ball_instance_id"), # clean up ball
@@ -2388,7 +2389,7 @@ multiplayer_server_cannonball_flight = (
             (agent_deliver_damage_to_agent_advanced, ":unused", ":killer_agent", ":cur_agent", 200,"itm_cannon_ball_dummy"),
             (particle_system_burst,"psys_cannon_blood",pos40,100),
             (particle_system_burst,"psys_cannon_blood_2",pos40,100),
-(agent_set_slot, 900, slot_agent_character_language, player_character_language_pirate),#debug
+                                 
             # Play hitsound
             (copy_position,pos56,pos40),
             (call_script,"script_multiplayer_server_play_sound_at_position","snd_cannon_hit"),
