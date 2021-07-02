@@ -7200,6 +7200,177 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign,reg0,":instance_id"),
   ]),
 
+  #script_initialize_scene_prop_slots
+  # INPUT: arg1 = scene_prop_no
+  # OUTPUT: none
+  ("initialize_scene_prop_slots",
+   [
+     (store_script_param, ":scene_prop_no", 1),
+
+     (try_for_prop_instances, ":cur_instance_id", ":scene_prop_no"),
+       (assign,":cur_instance_id",":cur_instance_id"),
+       
+       # Reset slots
+       (try_for_range, ":cur_slot", 0, scene_prop_slots_end),
+         (scene_prop_set_slot, ":cur_instance_id", ":cur_slot", 0),
+       (try_end),
+     (try_end),
+     ]),
+
+  # script_multiplayer_mm_after_mission_start_common
+  # Input: 
+  # Output: 
+  ("multiplayer_mm_after_mission_start_common",
+  [
+    (try_begin),
+      # Set wall slot to their variation for linking walls to cannons for final destruction.
+      (try_for_range,":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+          
+          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this wall.
+          
+          (prop_instance_get_variation_id_2,":linked_cannon_index",":cur_instance_id"),
+          (scene_prop_set_slot,":cur_instance_id", scene_prop_slot_linked_prop, ":linked_cannon_index"),
+          
+          (gt,":max_health",0),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+        (try_end),
+      (try_end),
+      
+      # for constructible props placed by the mapper set the correct healths.
+      (try_for_range,":prop_type", "spr_mm_palisadedd", "spr_crate_explosive"),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+          
+          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+          
+          (gt,":max_health",0),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+        (try_end),
+      (try_end),
+	  
+      # set health for mapper added windows
+      (try_for_range,":prop_type", "spr_mm_window1_poor", "spr_mm_window1d_poor"),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+          
+          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+          
+          (gt,":max_health",0),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+        (try_end),
+      (try_end),
+      
+      # set health for mapper added windows
+      (try_for_range,":prop_type", "spr_mm_window3_poor", "spr_mm_window3d_poor"),
+        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+        (assign,":max_health",reg1),
+        (assign,":health",reg2),
+        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+          
+          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+          
+          (gt,":max_health",0),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+        (try_end),
+      (try_end),
+
+      (rebuild_shadow_map),
+      
+      # The rest is only for servers setting up the props and stuff.
+      (this_or_next|multiplayer_is_server),
+      (neg|game_in_multiplayer_mode),
+
+      (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
+        (scene_prop_get_num_instances, ":num_instances", ":cannon_type"),
+        (gt,":num_instances",0),
+        
+        (try_for_range,":prop_no",0,":num_instances"),
+          (scene_prop_get_instance,":instance_id",":cannon_type",":prop_no"),
+
+          (call_script,"script_generate_bits_for_cannon_instance",":instance_id",0,1,1),
+        (try_end),
+      (try_end),
+
+      # set birds added by mapper as in_use so they start flying around ;)
+      (try_for_prop_instances, ":instance_id", "spr_mm_bird", somt_object),
+        (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),      
+      (try_end),
+
+      (try_for_range,":wall_type", "spr_mm_new_wall_1_1", "spr_mm_woodenwall1"),
+        (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
+          (call_script,"script_attach_window_to_wall",":instance_id"),
+        (try_end),
+      (try_end),
+      
+      (try_for_range,":wall_type", "spr_mm_house_wall_2", "spr_mm_house_wall_41d"),
+        (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
+          (call_script,"script_attach_window_to_wall",":instance_id"),
+        (try_end),
+      (try_end),
+      
+      (try_for_prop_instances, ":instance_id", "spr_mm_woodenwall3", somt_object),
+        (call_script,"script_attach_window_to_wall",":instance_id"),
+      (try_end),
+      
+      (try_for_prop_instances, ":instance_id", "spr_mm_woodenwallsnowy3", somt_object),
+        (call_script,"script_attach_window_to_wall",":instance_id"),
+      (try_end),
+      
+      
+      (set_fixed_point_multiplier, 100),
+      (try_for_prop_instances, ":instance_id", "spr_mm_restroom", somt_object),
+        (prop_instance_get_position, pos30, ":instance_id"),
+        (assign,":x_movement",30),
+        (assign,":z_movement",30),
+        
+        # Resize the prefered positions to scale
+        (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+        (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+        
+        (try_begin),
+          (this_or_next|gt,":x_scale",0),
+          (gt,":z_scale",0),
+          
+          (val_mul, ":x_movement", ":x_scale"),           
+          (val_mul, ":z_movement", ":z_scale"),              
+          (val_div, ":x_movement", 1000),
+          (val_div, ":z_movement", 1000),
+        (try_end),
+        
+        (position_move_x,pos30,":x_movement"),
+        (position_move_z,pos30,":z_movement"),
+        
+        (copy_position,pos49,pos30), # pos49 is prop pos.
+        
+        (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_shithouse_button", 0, 0, 0),
+      (try_end),
+    (try_end),
+  ]),
+
   # script_multiplayer_mm_reset_stuff_after_round
   # Input: 
   # Output: 
@@ -8675,6 +8846,13 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":instance_id", 1),
     (store_script_param, ":use_given_position", 2),
     (store_script_param, ":dont_recoil", 3),
+    (store_script_param, ":is_first_scene_load", 4),
+
+    (assign, ":is_load_scene", 0),
+    (try_begin),
+      (eq, ":is_first_scene_load", 1),
+      (assign, ":is_load_scene", 1),
+    (try_end),
     
     (assign, reg0, 0),
     (assign,":cannon_wood",-1),
@@ -8901,8 +9079,28 @@ scripts.extend([("game_start", []), # single player only, not used
         (neq, ":cannon_type", "spr_mm_cannon_swievel"),
         (position_set_z_to_ground_level,pos30),
       (try_end),
+
+      (try_begin),
+        (eq, ":is_load_scene", 1),
+        (try_begin),
+          (eq, ":cannon_type", "spr_mm_cannon_mortar"),
+          (position_move_z, pos30, 53),
+        (else_try),
+          (eq, ":cannon_type", "spr_mm_cannon_naval"),
+          (position_move_z, pos30, 70),
+        (else_try),
+          (eq, ":cannon_type", "spr_mm_cannon_12pdr"),
+          (position_move_z, pos30, 65),
+        (else_try),
+          (eq, ":cannon_type", "spr_mm_cannon_howitzer"),
+          (position_move_z, pos30, 65),
+        (else_try),
+          (eq, ":cannon_type", "spr_mm_cannon_rocket"),
+          (position_move_z, pos30, 180),
+        (try_end),
+      (try_end),
       
-      (val_mul, ":ground_dist", ":z_scale"),              
+      (val_mul, ":ground_dist", ":z_scale"),
       (val_div, ":ground_dist", 1000),
       (position_move_z,pos30,":ground_dist"),
       
@@ -8992,9 +9190,9 @@ scripts.extend([("game_start", []), # single player only, not used
           
           (try_begin),
             (eq,":is_scaled",1),
-            (val_mul, ":barrel_x", ":x_scale"),            
+            (val_mul, ":barrel_x", ":x_scale"),
             (val_mul, ":barrel_y", ":y_scale"),
-            (val_mul, ":barrel_z", ":z_scale"),              
+            (val_mul, ":barrel_z", ":z_scale"),
             (val_div, ":barrel_x", 1000),
             (val_div, ":barrel_y", 1000),
             (val_div, ":barrel_z", 1000),
@@ -9010,6 +9208,21 @@ scripts.extend([("game_start", []), # single player only, not used
             (eq,":animating",1),
             (prop_instance_stop_animating, ":cannon_barrel"),
           (try_end),
+
+          (try_begin),
+            (eq, ":is_load_scene", 1),
+            (try_begin),
+              (eq, ":cannon_type", "spr_mm_cannon_naval"),
+              (position_move_z, pos31, 45),
+            (else_try),
+              (eq, ":cannon_type", "spr_mm_cannon_12pdr"),
+              (position_move_z, pos31, 45),
+            (else_try),
+              (eq, ":cannon_type", "spr_mm_cannon_howitzer"),
+              (position_move_z, pos31, 40),
+            (try_end),
+          (try_end),
+
           (prop_instance_set_position,":cannon_barrel",pos31),
           
                 # (copy_position,pos49,pos31), # pos49 is prop pos.
@@ -9057,6 +9270,17 @@ scripts.extend([("game_start", []), # single player only, not used
             (eq,":animating",1),
             (prop_instance_stop_animating, ":cannon_static"),
           (try_end),
+
+          #(try_begin), #debug ver se era necessario mesmo
+          #  (eq, ":is_load_scene", 1),
+          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_mortar"),
+          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_naval"),
+          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_12pdr"),
+          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_howitzer"),
+          #  (eq, ":cannon_type", "spr_mm_cannon_rocket"),
+          #  (position_move_z, pos31, 20),
+          #(try_end),
+
           (prop_instance_set_position,":cannon_static",pos49),
           #(prop_instance_animate_to_position, ":cannon_static", pos49, 0),
           

@@ -4122,7 +4122,6 @@ scene_props = [
   ("pn_buy_arty_horse_howitzer_austrian", spr_buy_item_flags(60), "austrian_hussard_horse", "bo_pw_horse", spr_buy_item_triggers("itm_arty_horse_howitzer_austrian", resources=[("itm_iron_bar_long",4)], engineer=7)),
   ("pn_buy_arty_horse_howitzer_prussian", spr_buy_item_flags(60), "prussian_cuirassier_horse1", "bo_pw_horse", spr_buy_item_triggers("itm_arty_horse_howitzer_prussian", resources=[("itm_iron_bar_long",4)], engineer=7)),
 
-
   # PN END #####################################################################
 
   ("pw_buy_shirt",spr_buy_item_flags(1),"shirt","bo_pw_armor_body", spr_buy_item_triggers("itm_shirt", resources=["itm_linen_cloth"], tailoring=1)),
@@ -6033,7 +6032,6 @@ scene_props = [
     ("mm_sp_rich_house24",0,"sp_rich_village_houses24","bo_sp_rich_village_houses2", []),
     ("mm_sp_rich_house25",0,"sp_rich_village_houses25","bo_sp_rich_village_houses2", []),
 
-    
     #Trenches
     ("mm_trench_straight",0,"mm_trench_straight","bo_mm_trench_straight", []),
     ("mm_trench_corner",0,"mm_trench_corner","bo_mm_trench_corner", []),
