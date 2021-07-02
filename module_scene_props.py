@@ -4654,19 +4654,34 @@ scene_props = [
   ("pw_local_precious_price_area",sokf_invisible,"pw_local_precious_price_area","0", []),
 
   # PN START ************************************************************************************************************************
+#("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
+#("pw_ship_c_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
 
   # SHIPS
   ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=1200, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
   ("pn_ship_longboat_sail",sokf_moveable,"pn_ship_longboat_sail","bo_birdmodel", []),
   ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_longboat", []),
 
-  ("pn_ship_schooner",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=10000, length=1400, width=265, height=130, speed=5, sail="pn_ship_schooner_sail", collision="pn_ship_schooner_cd")),
+  ("pn_ship_schooner_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_with_ramp_sail", ramp="pn_ship_schooner_with_ramp_ramp", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_with_ramp_cd")),
+  ("pn_ship_schooner_with_ramp_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
+  ("pn_ship_schooner_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
+  ("pn_ship_schooner_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner", []),
+
+  ("pn_ship_schooner",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_sail", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_cd")),
   ("pn_ship_schooner_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
+  ("pn_ship_schooner_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=70, max_item_length=500)),
   ("pn_ship_schooner_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner", []),
 
-  ("pn_ship_frigate",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=14000, length=2100, width=520, height=200, speed=3, sail="pn_ship_frigate_sail", collision="pn_ship_frigate_cd")),
+  ("pn_ship_frigate_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=400, height=200, speed=3, sail="pn_ship_frigate_with_ramp_sail", ramp="pn_ship_frigate_with_ramp_ramp", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_with_ramp_cd")),
+  ("pn_ship_frigate_with_ramp_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
+  ("pn_ship_frigate_with_ramp_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
+  ("pn_ship_frigate_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
+  ("pn_ship_frigate_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_frigate", []),
+
+  ("pn_ship_frigate",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=520, height=200, speed=3, sail="pn_ship_frigate_sail", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_cd")),
   ("pn_ship_frigate_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
   ("pn_ship_frigate_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
+  ("pn_ship_frigate_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
   ("pn_ship_frigate_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_frigate", []),
 
   ("mm_weather_time", 0, "0", "0", []), # var1 = time of day 0-23; Default = 15
