@@ -7191,6 +7191,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (position_set_z_to_ground_level,pos36),
       (position_get_distance_to_terrain,":dist",pos36),
 
+      # Check if the ground level is terrain, if so then we are on top of the ground and not a prop. spawn that crator!
       (le,":dist",2),
       
       (call_script, "script_find_or_create_scene_prop_instance", ":prop_kind_id", 0, 1, 0),
@@ -7198,7 +7199,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
     
     (assign,reg0,":instance_id"),
-  ]),
+   ]),
 
   #script_initialize_scene_prop_slots
   # INPUT: arg1 = scene_prop_no
@@ -7311,7 +7312,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (try_for_range,":prop_no",0,":num_instances"),
           (scene_prop_get_instance,":instance_id",":cannon_type",":prop_no"),
 
-          (call_script,"script_generate_bits_for_cannon_instance",":instance_id",0,1,1),
+          (call_script,"script_generate_bits_for_cannon_instance",":instance_id",0,0,1),
         (try_end),
       (try_end),
 
@@ -8546,6 +8547,12 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_add,":angle_difirence",":ball_angle",":y_rot"),
       (val_abs,":angle_difirence"),
       
+      # (assign,reg0,":ball_angle"),
+      # (assign,reg2,":angle_difirence"),
+      
+      # (str_store_string,s4,"@ground rotation here, ball_angle: {reg0}   y_rot: {reg1}   ball_angle+y_rot = angle_difirence(abs): {reg2}"),
+      # (call_script, "script_multiplayer_broadcast_message"),
+      
       (copy_position,pos49,pos34), # pos49 is prop pos.
       (position_rotate_z,pos49,-90),
       (try_begin),
@@ -8566,6 +8573,12 @@ scripts.extend([("game_start", []), # single player only, not used
       (else_try),
         (call_script, "script_spawn_crator_on_pos", "spr_mm_crator_small"),
       (try_end),
+
+      
+
+      # (assign,reg29,":cur_x_vel"),
+      # (assign,reg30,":cur_z_vel"),
+      # (display_message,"@before  cur_x_vel: {reg29}  cur_z_vel: {reg30}"),
 
       (val_mul,":angle_difirence",-1), # reverse angle.
       
@@ -9257,16 +9270,6 @@ scripts.extend([("game_start", []), # single player only, not used
             (prop_instance_stop_animating, ":cannon_static"),
           (try_end),
 
-          #(try_begin), #debug ver se era necessario mesmo
-          #  (eq, ":is_load_scene", 1),
-          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_mortar"),
-          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_naval"),
-          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_12pdr"),
-          #  (this_or_next|eq, ":cannon_type", "spr_mm_cannon_howitzer"),
-          #  (eq, ":cannon_type", "spr_mm_cannon_rocket"),
-          #  (position_move_z, pos31, 20),
-          #(try_end),
-
           (prop_instance_set_position,":cannon_static",pos49),
           #(prop_instance_animate_to_position, ":cannon_static", pos49, 0),
           
@@ -9743,8 +9746,7 @@ scripts.extend([("game_start", []), # single player only, not used
               (agent_has_item_equipped,":agent_id","itm_cannon_lighter"),
               (agent_set_wielded_item,":agent_id","itm_cannon_lighter"),
             (else_try),
-              # dont need lighter in commander battle.
-              (game_in_multiplayer_mode), #debug ver se isso aqui funciona no serverside ou no clientside, apenas caso outros jogadores reclamem que nao parou a animacao
+              (game_in_multiplayer_mode),
               (assign,":error_message", "str_need_to_have_a_lighter"),
 			  (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
             (try_end),
@@ -9752,6 +9754,12 @@ scripts.extend([("game_start", []), # single player only, not used
         (else_try),
           (scene_prop_set_slot,":prop_instance",scene_prop_slot_controller_agent,-1),
           (agent_set_slot,":agent_id",slot_agent_current_control_prop,-1),
+          
+          # store when lost control.
+          #(is_between,":prop_kind", "spr_mm_ship", "spr_door_destructible"),
+          
+          #(store_mission_timer_a,":cur_time"),
+          #(scene_prop_set_slot, ":prop_instance", scene_prop_slot_time_left, ":cur_time"),
         (try_end),
         
         (game_in_multiplayer_mode),
@@ -11062,7 +11070,8 @@ scripts.extend([("game_start", []), # single player only, not used
     [
       (assign,"$g_rain_type",0),
       (assign,"$g_rain_amount",0),
-      (assign,"$g_scene_water_level",-40),
+      #(assign,"$g_scene_water_level",-40),
+      (assign,"$g_scene_water_level",0),
       (assign,"$g_scene_has_snowy_ground",0),
       (assign, "$g_hq_last_spawn_wave", 0),
       (assign, "$g_original_selected_troop", 0),
