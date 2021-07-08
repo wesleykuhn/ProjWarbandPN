@@ -413,7 +413,7 @@ meshes = [
   ("construct_mesh_plank", 0, "ui_construct_plank", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_earthwork", 0, "ui_construct_dig", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_explosives", 0, "ui_construct_crate", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  
+
   #Bonus icons
   ("bonus_icon_melee", 0, "bonus_icon_melee", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("bonus_icon_accuracy", 0, "bonus_icon_accuracy", 0, 0, 0, 0, 0, 0, 1, 1, 1),

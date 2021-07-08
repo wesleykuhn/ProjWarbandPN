@@ -1236,7 +1236,14 @@ multiplayer_server_drag_limber = (
         (position_move_z,pos12,-30),
         (position_move_y,pos12,-18),
         (position_rotate_x,pos12,-22),
-        (prop_instance_animate_to_position,":instance_id",pos12,100),
+
+        (scene_prop_get_slot,":cannon_has_ship", ":instance_id", slot_scene_prop_cannon_has_ship), #if its one a ship, dont do animations
+        (try_begin),
+          (eq, ":cannon_has_ship", 1),
+          (prop_instance_set_position,":instance_id", pos12),
+        (else_try),
+          (prop_instance_animate_to_position,":instance_id",pos12,100),
+        (try_end),
       (try_end),
       (eq,":agent_is_ok",1),
       
@@ -1395,7 +1402,13 @@ multiplayer_server_drag_limber = (
       (position_rotate_x,pos14,":deg_value"),
       
       # And finally move the wood to this rotated position.
-      (prop_instance_animate_to_position, ":instance_id", pos14, 28),
+      (scene_prop_get_slot,":cannon_has_ship", ":instance_id", slot_scene_prop_cannon_has_ship), #if its one a ship, dont do animations
+      (try_begin),
+        (eq, ":cannon_has_ship", 1),
+        (prop_instance_set_position,":instance_id", pos14),
+      (else_try),
+        (prop_instance_animate_to_position, ":instance_id", pos14, 28),
+      (try_end),
       
       # move from middle of horse to center where wheels should be.
       (position_move_y, pos14,":y_offset"),
@@ -1417,7 +1430,12 @@ multiplayer_server_drag_limber = (
       (scene_prop_set_slot,":wheels_instance",scene_prop_slot_x_extra,":x_rot"),
       (position_rotate_x,pos14,":x_rot"),
       
-      (prop_instance_animate_to_position, ":wheels_instance", pos14, 28),
+      (try_begin), #if its one a ship, dont do animations
+        (eq, ":cannon_has_ship", 1),
+        (prop_instance_set_position,":wheels_instance", pos14),
+      (else_try),
+        (prop_instance_animate_to_position, ":wheels_instance", pos14, 28),
+      (try_end),
       
       
       # if we have a cannon and wheels, go on.
@@ -1558,7 +1576,12 @@ multiplayer_server_drag_limber = (
       (position_rotate_y,pos14,":deg_value2"),
       (position_rotate_x,pos14,":deg_value"),
 
-      (prop_instance_animate_to_position, ":cannon_instance", pos14, 28),
+      (try_begin),#if its one a ship, dont do animations
+        (eq, ":cannon_has_ship", 1),
+        (prop_instance_set_position,":cannon_instance", pos14),
+      (else_try),
+        (prop_instance_animate_to_position, ":cannon_instance", pos14, 28),
+      (try_end),
 
       # Wheels.
       # move from middle of spike to the wheel position on limber.
@@ -1578,7 +1601,12 @@ multiplayer_server_drag_limber = (
       (scene_prop_set_slot,":cannon_wheels_instance",scene_prop_slot_x_extra,":x_rot"),
       (position_rotate_x,pos14,":x_rot"),
       
-      (prop_instance_animate_to_position, ":cannon_wheels_instance", pos14, 28),
+      (try_begin),#if its one a ship, dont do animations
+        (eq, ":cannon_has_ship", 1),
+        (prop_instance_set_position,":cannon_wheels_instance", pos14),
+      (else_try),
+        (prop_instance_animate_to_position, ":cannon_wheels_instance", pos14, 28),
+      (try_end),
     (try_end),
 ])
 

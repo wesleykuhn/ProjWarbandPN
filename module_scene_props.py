@@ -1205,14 +1205,7 @@ def spr_ship_triggers(hit_points=1000, length=1000, width=200, height=100, speed
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-
-      (assign, ":is_little_boat", 0),
-      (try_begin),
-        (eq, length, 290),
-        (assign, ":is_little_boat", 1),
-      (try_end),
-
-      (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0, ":is_little_boat"),
+      (call_script, "script_cf_damage_ship", ":instance_id", ":hit_damage", hit_points, 0),
       ]),
     (ti_on_scene_prop_destroy, []),
     (ti_on_scene_prop_animation_finished,
@@ -2653,6 +2646,7 @@ scene_props = [
   ("cave_entrance_1",0,"cave_entrance_1","bo_cave_entrance_1", []),
 
   ("pointer_arrow", 0, "pointer_arrow", "0", []),
+  ("pn_ship_cannon_attachment", 0, "pn_cannon_attach_indicator", "0", []),
   ("fireplace_d_interior",0,"fireplace_d","bo_fireplace_d", []),
   ("ship_sail_off",0,"ship_sail_off","bo_ship_sail_off", []),
   ("ship_sail_off_b",0,"ship_sail_off_b","bo_ship_sail_off", []),
@@ -4660,29 +4654,29 @@ scene_props = [
   # SHIPS
   ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=1200, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
   ("pn_ship_longboat_sail",sokf_moveable,"pn_ship_longboat_sail","bo_birdmodel", []),
-  ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_longboat", []),
+  ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_longboat_cd", []),
 
   ("pn_ship_schooner_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_with_ramp_sail", ramp="pn_ship_schooner_with_ramp_ramp", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_with_ramp_cd")),
   ("pn_ship_schooner_with_ramp_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
   ("pn_ship_schooner_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
-  ("pn_ship_schooner_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner", []),
+  ("pn_ship_schooner_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner_cd", []),
 
   ("pn_ship_schooner",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_sail", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_cd")),
   ("pn_ship_schooner_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
   ("pn_ship_schooner_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=70, max_item_length=500)),
-  ("pn_ship_schooner_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner", []),
+  ("pn_ship_schooner_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner_cd", []),
 
   ("pn_ship_frigate_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=400, height=200, speed=3, sail="pn_ship_frigate_with_ramp_sail", ramp="pn_ship_frigate_with_ramp_ramp", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_with_ramp_cd")),
   ("pn_ship_frigate_with_ramp_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
   ("pn_ship_frigate_with_ramp_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
   ("pn_ship_frigate_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
-  ("pn_ship_frigate_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_frigate", []),
+  ("pn_ship_frigate_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_frigate_cd", []),
 
   ("pn_ship_frigate",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=520, height=200, speed=3, sail="pn_ship_frigate_sail", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_cd")),
   ("pn_ship_frigate_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
   ("pn_ship_frigate_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
   ("pn_ship_frigate_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
-  ("pn_ship_frigate_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_frigate", []),
+  ("pn_ship_frigate_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_frigate_cd", []),
 
   ("mm_weather_time", 0, "0", "0", []), # var1 = time of day 0-23; Default = 15
   ("mm_weather_rain", 0, "0", "0", []), # var1 = rain type 1 = rain 2 = snow, var2 = rain ammount 0-25  

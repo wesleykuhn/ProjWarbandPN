@@ -478,6 +478,39 @@ slot_animal_carcass_hide_count        = 101
 ##  SCENE PROP SLOTS  *PN*     #########################
 ########################################################
 
+# PN CANNONS ON SHIPS - This one is for you daddy ;(
+slot_scene_prop_num_linked_cannons       = 55
+slot_scene_prop_ship_cannon_0       = 56
+slot_scene_prop_ship_cannon_1       = 57
+slot_scene_prop_ship_cannon_2       = 58
+slot_scene_prop_ship_cannon_3       = 59
+slot_scene_prop_ship_cannon_4       = 60
+slot_scene_prop_ship_cannon_5       = 61
+slot_scene_prop_ship_cannon_6       = 62
+slot_scene_prop_ship_cannon_7       = 63
+slot_scene_prop_ship_cannon_8       = 64
+
+slot_scene_prop_cannon_wheels       = 65
+slot_scene_prop_cannon_barrel       = 66
+slot_scene_prop_cannon_loaded       = 67
+slot_scene_prop_cannon_ammo         = 68
+slot_scene_prop_cannon_static       = 69
+slot_scene_prop_cannon_plataform    = 70
+slot_scene_prop_cannon_button_1     = 72
+slot_scene_prop_cannon_button_2     = 73
+slot_scene_prop_cannon_button_3     = 74
+slot_scene_prop_cannon_button_4     = 75
+slot_scene_prop_cannon_button_5     = 76
+slot_scene_prop_cannon_button_6     = 77
+slot_scene_prop_cannon_button_7     = 78
+slot_scene_prop_cannon_button_8     = 79
+slot_scene_prop_cannon_button_9     = 80
+
+slot_scene_prop_cannon_has_ship     = 81
+slot_scene_prop_cannon_ship_rel_x   = 82
+slot_scene_prop_cannon_ship_rel_y   = 83
+scene_prop_slot_counter             = 84
+
 scene_prop_open_or_close_slot       = 691
 scene_prop_smoke_effect_done        = 692
 scene_prop_slot_is_spawned          = 693
