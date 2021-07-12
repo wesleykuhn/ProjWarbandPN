@@ -5976,23 +5976,28 @@ scripts.extend([("game_start", []), # single player only, not used
                (eq, ":old_control_agent", ":using_agent"),
 
              (else_try),
-               (call_script,"script_set_agent_controlling_prop",":cannon_instance",":using_agent",1),
-               
-               (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", "spr_mm_cannon_aim_platform"),
-               (assign,":platform_instance",reg0),
-               (prop_instance_is_valid,":platform_instance"),
-               
-               (scene_prop_get_slot,":x_value",":platform_instance",scene_prop_slot_x_value),
-               (scene_prop_get_slot,":y_value",":platform_instance",scene_prop_slot_y_value),
-               (copy_position,pos49,pos3),
-               (position_move_x,pos49,":x_value"),
-               (position_move_y,pos49,":y_value"),
-               
-               (agent_set_position,":using_agent",pos49),
-               (agent_set_animation,":using_agent","anim_kneeling"),
-               
-               (call_script,"script_set_prop_child_active",":platform_instance"),
 
+               (scene_prop_get_slot, ":cannon_moving", ":cannon_instance", slot_scene_prop_cannon_ship_moving),
+               (try_begin),
+                 (eq, ":cannon_moving", 1),
+                 (call_script, "script_send_message_to_agent", ":using_agent", "str_cant_control_cannon_moving"),
+               (else_try),
+                 (call_script,"script_set_agent_controlling_prop",":cannon_instance",":using_agent",1),
+                 (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_instance", "spr_mm_cannon_aim_platform"),
+                 (assign,":platform_instance",reg0),
+                 (prop_instance_is_valid,":platform_instance"),
+               
+                 (scene_prop_get_slot,":x_value",":platform_instance",scene_prop_slot_x_value),
+                 (scene_prop_get_slot,":y_value",":platform_instance",scene_prop_slot_y_value),
+                 (copy_position,pos49,pos3),
+                 (position_move_x,pos49,":x_value"),
+                 (position_move_y,pos49,":y_value"),
+               
+                 (agent_set_position,":using_agent",pos49),
+                 (agent_set_animation,":using_agent","anim_kneeling"),
+               
+                 (call_script,"script_set_prop_child_active",":platform_instance"),
+               (try_end),
              (try_end),
            (try_end),
          (else_try),
@@ -6229,7 +6234,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":cannon_instance", 1),
     (store_script_param, ":direction", 2),
     (store_script_param, ":use_given_position", 3),
-    
+
     (assign,":has_recoil",0),
     (try_begin),
       (this_or_next|multiplayer_is_server),
@@ -6258,6 +6263,13 @@ scripts.extend([("game_start", []), # single player only, not used
       (assign,":recoil_y",0),
       (assign,":recoil_z",0),
       (assign,":speed",50), # speed in ms
+
+      (try_begin),
+        (scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_part_unpushed_x, 0),
+        (scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_part_unpushed_y, 0),
+        (assign,":speed", 1),
+      (try_end),
+
       (try_begin),
         (this_or_next|eq, ":cannon_kind", "spr_mm_cannon_12pdr_wood"),
         (this_or_next|eq, ":cannon_kind", "spr_mm_cannon_howitzer_wood"),
@@ -6292,6 +6304,8 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":speed",200), 
       (try_end),
 
+      (scene_prop_get_slot,":cannon_ship_moving", ":cannon_instance", slot_scene_prop_cannon_ship_moving),
+
       (set_fixed_point_multiplier, 100),
 
       (try_begin),
@@ -6318,7 +6332,7 @@ scripts.extend([("game_start", []), # single player only, not used
         
         (try_begin),
           (eq,":use_given_position",0),
-          (prop_instance_get_position, pos57, ":cannon_instance"), # pos57 = cannon location
+          (prop_instance_get_position, pos57, ":cannon_instance"),
         (try_end),
         (assign,":move_pos",1),
         (try_begin),
@@ -6331,6 +6345,11 @@ scripts.extend([("game_start", []), # single player only, not used
           (position_move_x,pos57,":recoil_x",0),
           (position_move_y,pos57,":recoil_y",0),
           (position_move_z,pos57,":recoil_z",0),
+
+          #(try_begin), By now we dont recoil when shoting from a moving ship
+          #  (eq, ":cannon_ship_moving", 1),
+          #  (call_script, "script_handle_ship_cannon_move_storage", ":cannon_instance", ":recoil_x", ":recoil_y", ":recoil_z", 0),
+          #(try_end),
         (try_end),
         (copy_position,pos31,pos57),
          
@@ -6341,17 +6360,19 @@ scripts.extend([("game_start", []), # single player only, not used
           (prop_instance_is_valid,":wheels_instance"),
           (try_begin),
             (eq,":move_wood",1),
-            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",0),
             (try_begin),
               (eq,":direction",2),
               (scene_prop_set_slot,":cannon_instance",scene_prop_slot_just_pushed_back,1),
             (try_end),
+            (neq, ":cannon_ship_moving", 1),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",0),
           (else_try),
-            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",":cannon_instance"),
             (try_begin),
               (eq,":direction",2),
               (scene_prop_set_slot,":wheels_instance",scene_prop_slot_just_pushed_back,1),
             (try_end),
+            (neq, ":cannon_ship_moving", 1),
+            (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":wheels_instance",":cannon_instance"),
           (try_end),
           
           (try_begin),
@@ -6370,19 +6391,18 @@ scripts.extend([("game_start", []), # single player only, not used
             (scene_prop_set_slot,":wheels_instance", scene_prop_slot_y_rot, ":y_rot_value"),
           (try_end),
 
-          (scene_prop_get_slot,":cannon_has_ship", ":cannon_instance", slot_scene_prop_cannon_has_ship), #if its one a ship, dont do animations
           (try_begin),
-            (eq, ":cannon_has_ship", 1),
-            (prop_instance_set_position,":wheels_instance", pos31),
-          (else_try),
+            (neq, ":cannon_ship_moving", 1),
             (prop_instance_animate_to_position, ":wheels_instance", pos31, ":speed"),
           (try_end),
 
         (else_try),
           (try_begin),
             (eq,":move_wood",1),
+            (neq, ":cannon_ship_moving", 1),
             (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",0,0),
           (else_try),
+            (neq, ":cannon_ship_moving", 1),
             (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_instance", ":speed",":cannon_instance",0),
           (try_end),
           
@@ -6391,11 +6411,220 @@ scripts.extend([("game_start", []), # single player only, not used
             (scene_prop_set_slot,":cannon_instance",scene_prop_slot_just_pushed_back,1),
           (try_end),
         (try_end),
+
+        (try_begin),
+          (eq, ":direction", 1),
+          #(call_script, "script_set_ship_cannon_slot", ":cannon_instance", slot_scene_prop_cannon_ship_unpushed, 1),
+
+          (scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_part_unpushed_x, 0),
+          (scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_part_unpushed_y, 0),
+          (call_script, "script_set_ship_cannon_unpushed_position", ":cannon_instance"),
+        (else_try),
+          (call_script, "script_set_ship_cannon_slot", ":cannon_instance", slot_scene_prop_cannon_ship_unpushed, 0),
+        (try_end),
       (try_end),
+
+      (try_begin),
+        (eq, ":direction", 1),
+        (neg|scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
+        (call_script, "script_set_ship_cannon_slot", ":cannon_instance", slot_scene_prop_cannon_ship_unpushed, 1),
+      (try_end),
+
     (try_end),
     
     (assign,reg0,":has_recoil"),
   ]),
+
+  ("set_ship_cannon_slot",
+    [
+      (store_script_param, ":cannon_instance", 1),
+      (store_script_param, ":slot_no", 2),
+      (store_script_param, ":new_value", 3),
+
+      (try_begin),
+        (neg|scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_ship_id, -1),
+
+        (scene_prop_set_slot, ":cannon_instance",  ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_wheels, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_barrel, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_loaded, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_ammo, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_plataform, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_static, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_1, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_2, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_3, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_4, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_5, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_6, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_7, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_8, ":slot_no", ":new_value"),
+        (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_button_9, ":slot_no", ":new_value"),
+      (try_end),
+    ]
+  ),
+
+  ("set_ship_cannon_parts_slot",
+    [
+      (store_script_param, ":cannon_instance", 1),
+      (store_script_param, ":cannon_part_type", 2),
+      (store_script_param, ":slot_no", 3),
+      (store_script_param, ":new_value", 4),
+
+      (scene_prop_get_slot, ":cannon_part", ":cannon_instance", ":cannon_part_type"),
+      (try_begin),
+        (neq, ":cannon_part", -1),
+        (scene_prop_set_slot, ":cannon_part", ":slot_no", ":new_value"),
+      (try_end),
+    ]
+  ),
+  
+
+  ("set_ship_cannon_unpushed_position",
+    [
+      (store_script_param, ":cannon_instance", 1),
+
+      (scene_prop_get_slot,":ship_instance",":cannon_instance", slot_scene_prop_cannon_ship_id),
+      (prop_instance_get_position, pos54, ":ship_instance"),
+
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_instance"),
+
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_wheels),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_loaded),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_ammo),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_barrel),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_static),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_plataform),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_1),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_2),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_3),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_4),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_5),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_6),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_7),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_8),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_9),
+      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+    ]
+  ),
+
+  ("set_ship_cannon_part_unpushed_position",
+    [
+      (store_script_param, ":cannon_part_instance", 1),
+
+      (try_begin),
+        (neq, ":cannon_part_instance", -1),
+        (try_begin),
+          (prop_instance_get_scene_prop_kind, ":part_type", ":cannon_part_instance"),
+          (neq, ":part_type", "spr_mm_ammobox_cannon"),
+          (neq, ":part_type", "spr_mm_ammobox_howitzer"),
+          (neq, ":part_type", "spr_mm_round_button"),
+          (neq, ":part_type", "spr_mm_shell_button"),
+          (neq, ":part_type", "spr_mm_canister_button"),
+
+          (set_fixed_point_multiplier, 100),
+          (copy_position, pos52, pos57),
+          (position_transform_position_to_local, pos53, pos54, pos52),
+          (position_get_x, ":dif_x", pos53),
+          (position_get_y, ":dif_y", pos53),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, ":dif_x"),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y, ":dif_y"),
+        (else_try),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y, -1),
+        (try_end),
+      (try_end),
+    ]
+  ),
+  
+
+  ("handle_ship_cannon_move_storage",
+    [
+      (store_script_param, ":cannon_instance", 1),
+      (store_script_param, ":move_x", 2),
+      (store_script_param, ":move_y", 3),
+      (store_script_param, ":move_z", 4),
+      (store_script_param, ":rotate_z", 5),
+
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_wheels),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_loaded),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_ammo),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_barrel),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_static),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_plataform),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_1),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_2),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_3),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_4),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_5),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_6),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_7),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_8),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_9),
+      (call_script, "script_storage_all_moves_on_cannon_part", ":cannon_part_instance", ":move_x", ":move_y", ":move_z", ":rotate_z"),
+    ]
+  ),
+
+  ("storage_all_moves_on_cannon_part",
+    [
+      (store_script_param, ":cannon_part_instance", 1),
+      (store_script_param, ":move_x", 2),
+      (store_script_param, ":move_y", 3),
+      (store_script_param, ":move_z", 4),
+      (store_script_param, ":rotate_z", 5),
+      (try_begin),
+        (neq, ":cannon_part_instance", -1),
+        (call_script, "script_store_move_to_ship_cannon_part", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_x, ":move_x"),
+        (call_script, "script_store_move_to_ship_cannon_part", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_y, ":move_y"),
+        (call_script, "script_store_move_to_ship_cannon_part", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_z, ":move_z"),
+        (call_script, "script_store_move_to_ship_cannon_part", ":cannon_part_instance", slot_scene_prop_cannon_stored_rot_z, ":rotate_z"),
+      (try_end),
+    ]
+  ),
+
+  ("store_move_to_ship_cannon_part",
+    [
+      (store_script_param, ":cannon_part_instance", 1),
+      (store_script_param, ":mov_type", 2),
+      (store_script_param, ":val_to_add", 3),
+      (try_begin),
+        (neq, ":val_to_add", 0),
+        (scene_prop_get_slot,":old_val",":cannon_part_instance", ":mov_type"),
+        (store_add, ":new_val", ":old_val", ":val_to_add"),
+        (scene_prop_set_slot,":cannon_part_instance", ":mov_type", ":new_val"),
+      (try_end),
+    ]
+  ),
 
   # script_prop_instance_animate_to_position_with_childs
   # Input: arg1 = prop_instance_id
@@ -6410,8 +6639,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":duration", 2),
     (store_script_param, ":ignored_prop_instance", 3),
     (store_script_param, ":ignored_prop_instance2", 4),
-
-    (assign, ":is_cannon_and_has_ship", 0),
     
     (try_begin),
       (prop_instance_is_valid,":prop_instance_id"),
@@ -6432,26 +6659,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_end),
           (prop_instance_set_position,":prop_instance_id", pos57),
         (else_try),
-
-          #if its a ship cannon and has one ship, dont do animations
-          (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":prop_instance_id"),
-          (try_begin),
-            (this_or_next|eq, ":scene_prop_id", "spr_mm_cannon_mortar"),
-            (this_or_next|eq, ":scene_prop_id", "spr_mm_cannon_naval"),
-            (this_or_next|eq, ":scene_prop_id", "spr_mm_cannon_carronade"),
-            (this_or_next|eq, ":scene_prop_id", "spr_mm_cannon_swievel"),
-            (eq, ":scene_prop_id", "spr_mm_cannon_rocket"),
-            (scene_prop_get_slot,":cannon_has_ship", ":prop_instance_id", slot_scene_prop_cannon_has_ship),
-            (eq, ":cannon_has_ship", 1),
-            (assign, ":is_cannon_and_has_ship", 1),
-          (try_end),
-
-          (try_begin),
-            (eq, ":is_cannon_and_has_ship", 1),
-            (prop_instance_set_position,":prop_instance_id", pos57),
-          (else_try),
-            (prop_instance_animate_to_position, ":prop_instance_id", pos57, ":duration"),
-          (try_end),
+          (prop_instance_animate_to_position, ":prop_instance_id", pos57, ":duration"),
 
         (try_end),
       (try_end),
@@ -6491,8 +6699,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (position_rotate_y,pos58,":y_rot_value"),
         (position_rotate_z,pos58,":z_rot_value"),
         
-        (call_script, "script_prop_child_animate_to_position_with_childs", ":cur_child", ":duration",":ignored_prop_instance",":ignored_prop_instance2", 
-                      ":is_cannon_and_has_ship"),
+        (call_script, "script_prop_child_animate_to_position_with_childs", ":cur_child", ":duration",":ignored_prop_instance",":ignored_prop_instance2"),
       (try_end),
     (try_end),
    ]),
@@ -6508,7 +6715,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":duration", 2),
     (store_script_param, ":ignored_prop_instance", 3),
     (store_script_param, ":ignored_prop_instance2", 4),
-    (store_script_param, ":is_cannon_part_and_has_ship", 5),
 
     (try_begin),
       (prop_instance_is_valid,":prop_instance_id"),
@@ -6531,12 +6737,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (else_try),
 
           #if its a ship cannon and has one ship, dont do animations
-          (try_begin),
-            (eq, ":is_cannon_part_and_has_ship", 1),
-            (prop_instance_set_position,":prop_instance_id", pos58),
-          (else_try),
-            (prop_instance_animate_to_position, ":prop_instance_id", pos58, ":duration"),
-          (try_end),
+          (prop_instance_animate_to_position, ":prop_instance_id", pos58, ":duration"),
         (try_end),
       (try_end),
 
@@ -6584,13 +6785,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (prop_instance_set_position,":cur_child", pos59),
         (try_end),
 
-        #if its a ship cannon and has one ship, dont do animations
-        (try_begin),
-          (eq, ":is_cannon_part_and_has_ship", 1),
-          (prop_instance_set_position,":cur_child", pos59),
-        (else_try),
-          (prop_instance_animate_to_position, ":cur_child", pos59, ":duration"),
-        (try_end),
+        (prop_instance_animate_to_position, ":cur_child", pos59, ":duration"),
         
       (try_end),
     (try_end),
@@ -7427,377 +7622,377 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
   ]),
 
-  # script_multiplayer_mm_reset_stuff_after_round
+  # script_multiplayer_mm_reset_stuff_after_round - Maybe wont be needed I hope so
   # Input: 
   # Output: 
-  ("multiplayer_mm_reset_stuff",
-   [
-    (try_begin),
+  #("multiplayer_mm_reset_stuff", 
+  # [
+  #  (try_begin),
 
-      # move back construction objects placed by mapper after round end.
-      (try_for_range,":prop_type", "spr_mm_palisadedd", "spr_crate_explosive"),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+  #    # move back construction objects placed by mapper after round end.
+  #    (try_for_range,":prop_type", "spr_mm_palisadedd", "spr_crate_explosive"),
+  #      (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+  #        (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
           
-          #(call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+  #        #(call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
           
-          (try_begin),
-            (this_or_next|multiplayer_is_server),
-            (neg|game_in_multiplayer_mode),
+  #        (try_begin),
+  #          (this_or_next|multiplayer_is_server),
+  #          (neg|game_in_multiplayer_mode),
             
-            (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
-            (prop_instance_get_position,pos22,":cur_instance_id"),
-            (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
-            (gt,":distance",0),
-            (try_begin),
-              (prop_instance_is_animating, ":animating", ":cur_instance_id"),
-              (eq,":animating",1),
-              (prop_instance_stop_animating, ":cur_instance_id"),
-            (try_end),
-            (prop_instance_set_position,":cur_instance_id",pos21),
-          (try_end),
+  #          (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+  #          (prop_instance_get_position,pos22,":cur_instance_id"),
+  #          (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+  #          (gt,":distance",0),
+  #          (try_begin),
+  #            (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+  #            (eq,":animating",1),
+  #            (prop_instance_stop_animating, ":cur_instance_id"),
+  #          (try_end),
+  #          (prop_instance_set_position,":cur_instance_id",pos21),
+  #        (try_end),
           
-          (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-          (assign,":max_health",reg1),
-          (assign,":health",reg2),
+  #        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+  #        (assign,":max_health",reg1),
+  #        (assign,":health",reg2),
           
-          (gt,":max_health",0),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-          (prop_instance_enable_physics, ":cur_instance_id", 1),
-        (try_end),
-      (try_end),
+  #        (gt,":max_health",0),
+  #        (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+  #        (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+  #        (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+  #        (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+  #        (prop_instance_enable_physics, ":cur_instance_id", 1),
+  #      (try_end),
+  #    (try_end),
       
-      #Destroy props
-      (try_for_range,":prop_type", mm_destructible_props_begin, mm_destroyed_props_end),
-        (scene_prop_get_num_instances, ":num_instances", ":prop_type"),
-        (gt,":num_instances",0),
-        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-        (assign,":max_health",reg1),
-        (assign,":health",reg2),
+  #    #Destroy props
+  #    (try_for_range,":prop_type", mm_destructible_props_begin, mm_destroyed_props_end),
+  #      (scene_prop_get_num_instances, ":num_instances", ":prop_type"),
+  #      (gt,":num_instances",0),
+  #      (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+  #      (assign,":max_health",reg1),
+  #      (assign,":health",reg2),
         
-        (try_for_range,":prop_no",0,":num_instances"),
-          (scene_prop_get_instance,":cur_instance_id",":prop_type",":prop_no"),
-        #(try_for_prop_instances, ":cur_instance_id", ":prop_type"),
-          #(assign,":cur_instance_id",":cur_instance_id"),
-          (try_begin), # Reset wall health.
-           # (is_between, ":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
+  #      (try_for_range,":prop_no",0,":num_instances"),
+  #        (scene_prop_get_instance,":cur_instance_id",":prop_type",":prop_no"),
+  #      #(try_for_prop_instances, ":cur_instance_id", ":prop_type"),
+  #        #(assign,":cur_instance_id",":cur_instance_id"),
+  #        (try_begin), # Reset wall health.
+  #         # (is_between, ":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
             
-            (gt,":max_health",0),
-            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-            (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-            (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-            (prop_instance_enable_physics, ":cur_instance_id", 1),
-          (try_end),
+  #          (gt,":max_health",0),
+  #          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+  #          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+  #          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+  #          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+  #          (prop_instance_enable_physics, ":cur_instance_id", 1),
+  #        (try_end),
           
-          (try_begin),
-            (this_or_next|multiplayer_is_server),
-            (neg|game_in_multiplayer_mode),
-            (try_begin),
-              (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
-              (try_begin),
-                (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
-                (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
-              (try_end),
-            (else_try),
-              (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
-              (prop_instance_get_position,pos22,":cur_instance_id"),
-              (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+  #        (try_begin),
+  #          (this_or_next|multiplayer_is_server),
+  #          (neg|game_in_multiplayer_mode),
+  #          (try_begin),
+  #            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
+  #            (try_begin),
+  #              (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
+  #              (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
+  #            (try_end),
+  #          (else_try),
+  #            (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+  #            (prop_instance_get_position,pos22,":cur_instance_id"),
+  #            (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
 
-              (gt,":distance",0),
+  #            (gt,":distance",0),
               
-              (try_begin),
-                (prop_instance_is_animating, ":animating", ":cur_instance_id"),
-                (eq,":animating",1),
-                (prop_instance_stop_animating, ":cur_instance_id"),
-              (try_end),
-              (prop_instance_set_position,":cur_instance_id",pos21),
+  #            (try_begin),
+  #              (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+  #              (eq,":animating",1),
+  #              (prop_instance_stop_animating, ":cur_instance_id"),
+  #            (try_end),
+  #            (prop_instance_set_position,":cur_instance_id",pos21),
 
               
-              (this_or_next|is_between,":prop_type","spr_mm_new_wall_1_1","spr_mm_woodenwall1"),
-              (this_or_next|is_between,":prop_type","spr_mm_house_wall_2","spr_mm_house_wall_41d"),
-              (this_or_next|eq,":prop_type","spr_mm_woodenwall3"),
-              (eq,":prop_type","spr_mm_woodenwallsnowy3"),
+  #            (this_or_next|is_between,":prop_type","spr_mm_new_wall_1_1","spr_mm_woodenwall1"),
+  #            (this_or_next|is_between,":prop_type","spr_mm_house_wall_2","spr_mm_house_wall_41d"),
+  #            (this_or_next|eq,":prop_type","spr_mm_woodenwall3"),
+  #            (eq,":prop_type","spr_mm_woodenwallsnowy3"),
               
-              (call_script,"script_attach_window_to_wall",":cur_instance_id"),
-            (try_end),
-          (try_end),
-        (try_end),
-      (try_end),
+  #            (call_script,"script_attach_window_to_wall",":cur_instance_id"),
+  #          (try_end),
+  #        (try_end),
+  #      (try_end),
+  #    (try_end),
       
-      (rebuild_shadow_map),
-      # Server only
+  #    (rebuild_shadow_map),
+  #    # Server only
       
-      (this_or_next|multiplayer_is_server),
-      (neg|game_in_multiplayer_mode),
+  #    (this_or_next|multiplayer_is_server),
+  #    (neg|game_in_multiplayer_mode),
       
-      # Place earth dig works back
-      (try_for_range,":earth_type", "spr_mm_tunnel_wall", "spr_mm_ambience_sound_global_wind_snow"),
-        (try_for_prop_instances, ":cur_instance_id", ":earth_type"),
-          (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
-          (prop_instance_get_position,pos22,":cur_instance_id"),
-          (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
-          (gt,":distance",0),
-          (try_begin),
-            (prop_instance_is_animating, ":animating", ":cur_instance_id"),
-            (eq,":animating",1),
-            (prop_instance_stop_animating, ":cur_instance_id"),
-          (try_end),
-          (prop_instance_set_position,":cur_instance_id",pos21),
-        (try_end),
-      (try_end),
+  #    # Place earth dig works back
+  #    (try_for_range,":earth_type", "spr_mm_tunnel_wall", "spr_mm_ambience_sound_global_wind_snow"),
+  #      (try_for_prop_instances, ":cur_instance_id", ":earth_type"),
+  #        (prop_instance_get_starting_position, pos21, ":cur_instance_id"),
+  #        (prop_instance_get_position,pos22,":cur_instance_id"),
+  #        (get_distance_between_positions,":distance",pos21,pos22), # only move it back when its actually moved :P
+  #        (gt,":distance",0),
+  #        (try_begin),
+  #          (prop_instance_is_animating, ":animating", ":cur_instance_id"),
+  #          (eq,":animating",1),
+  #          (prop_instance_stop_animating, ":cur_instance_id"),
+  #        (try_end),
+  #        (prop_instance_set_position,":cur_instance_id",pos21),
+  #      (try_end),
+  #    (try_end),
       
-      # Clean up limbers of horses.
-      (try_for_prop_instances, ":cur_instance_id", "spr_mm_limber_wood", somt_temporary_object),
-        (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
-        (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
-        (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
-      (try_end),
+  #    # Clean up limbers of horses.
+  #    (try_for_prop_instances, ":cur_instance_id", "spr_mm_limber_wood", somt_temporary_object),
+  #      (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
+  #      (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_in_use, 1),
+  #      (call_script, "script_clean_up_prop_instance_with_childs", ":cur_instance_id"),
+  #    (try_end),
       
-       # get position of origional cannon and move the replaced by cannon wood and its parts back to that position.
-      (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
-        (try_for_prop_instances, ":cur_instance_id", ":cannon_type"),
-          (scene_prop_get_slot,":cannon_wood",":cur_instance_id", scene_prop_slot_replaced_by),
+  #     # get position of origional cannon and move the replaced by cannon wood and its parts back to that position.
+  #    (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
+  #      (try_for_prop_instances, ":cur_instance_id", ":cannon_type"),
+  #        (scene_prop_get_slot,":cannon_wood",":cur_instance_id", scene_prop_slot_replaced_by),
 
-          (try_begin),
-            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0), # a mapper added cannon.
+  #        (try_begin),
+  #          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0), # a mapper added cannon.
            
-            (try_begin),
-              (prop_instance_is_valid,":cannon_wood"),
-              (prop_instance_get_scene_prop_kind, ":prop_kind", ":cannon_wood"),
-              (is_between,":prop_kind", mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
+  #          (try_begin),
+  #            (prop_instance_is_valid,":cannon_wood"),
+  #            (prop_instance_get_scene_prop_kind, ":prop_kind", ":cannon_wood"),
+  #            (is_between,":prop_kind", mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
               
-              (scene_prop_get_slot,":ground_dist",":cannon_wood", scene_prop_slot_ground_offset),
+  #            (scene_prop_get_slot,":ground_dist",":cannon_wood", scene_prop_slot_ground_offset),
              
-              (call_script,"script_cannon_instance_get_barrel",":cannon_wood"),
-              (assign,":barrel_instance",reg0),
+  #            (call_script,"script_cannon_instance_get_barrel",":cannon_wood"),
+  #            (assign,":barrel_instance",reg0),
 
-              (try_begin),        
-                (eq,":barrel_instance",-1),
-                (assign,":barrel_instance",":cannon_wood"),
-              (try_end),
+  #            (try_begin),        
+  #              (eq,":barrel_instance",-1),
+  #              (assign,":barrel_instance",":cannon_wood"),
+  #            (try_end),
               
-              # reset barel rotations
-              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_x_rot, 0),
-              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_y_rot, 0),
-              (scene_prop_set_slot,":barrel_instance", scene_prop_slot_z_rot, 0),
+  #            # reset barel rotations
+  #            (scene_prop_set_slot,":barrel_instance", scene_prop_slot_x_rot, 0),
+  #            (scene_prop_set_slot,":barrel_instance", scene_prop_slot_y_rot, 0),
+  #            (scene_prop_set_slot,":barrel_instance", scene_prop_slot_z_rot, 0),
               
                
-              # reset the right buttons.
-              (assign,":end_cond","spr_mm_reload_button"), # place load button back
-              (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
-                (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
-                (prop_instance_is_valid,reg0),
-                (call_script,"script_set_prop_child_active",reg0),
-                (assign,":end_cond",0),
-              (try_end),
+  #            # reset the right buttons.
+  #            (assign,":end_cond","spr_mm_reload_button"), # place load button back
+  #            (try_for_range,":cur_loadtype","spr_mm_load_cartridge_button",":end_cond"),
+  #              (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_loadtype"),
+  #              (prop_instance_is_valid,reg0),
+  #              (call_script,"script_set_prop_child_active",reg0),
+  #              (assign,":end_cond",0),
+  #            (try_end),
              
-              (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive.
-              (try_for_range,":cur_butt_type","spr_mm_aim_button",":end_cond"),
-                (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+  #            (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive.
+  #            (try_for_range,":cur_butt_type","spr_mm_aim_button",":end_cond"),
+  #              (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
                
-                (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_butt_type"),
-                (prop_instance_is_valid,reg0),
-                (call_script,"script_set_prop_child_inactive",reg0),
-              (try_end),
+  #              (call_script, "script_prop_instance_find_first_child_of_type", ":barrel_instance", ":cur_butt_type"),
+  #              (prop_instance_is_valid,reg0),
+  #              (call_script,"script_set_prop_child_inactive",reg0),
+  #            (try_end),
              
-              (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive. # patch1115 fix 7/1
-              (try_for_range,":cur_butt_type","spr_mm_12pdr_push_button",":end_cond"),
-                (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
+  #            (assign,":end_cond","spr_mm_round_button"), # set all other buttons inactive. # patch1115 fix 7/1
+  #            (try_for_range,":cur_butt_type","spr_mm_12pdr_push_button",":end_cond"),
+  #              (neg|is_between,":cur_butt_type","spr_mm_load_cartridge_button","spr_mm_reload_button"),
                
-                (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_wood", ":cur_butt_type"),
-                (prop_instance_is_valid,reg0),
-                (call_script,"script_set_prop_child_inactive",reg0),
-              (try_end),
+  #              (call_script, "script_prop_instance_find_first_child_of_type", ":cannon_wood", ":cur_butt_type"),
+  #              (prop_instance_is_valid,reg0),
+  #              (call_script,"script_set_prop_child_inactive",reg0),
+  #            (try_end),
 
              
-              (prop_instance_get_starting_position,pos57,":cur_instance_id"),
+  #            (prop_instance_get_starting_position,pos57,":cur_instance_id"),
               
-              (try_begin), # dont move swievel gun.              #patch1115 34/1 fix 
-                (neq, ":cannon_type", "spr_mm_cannon_swievel"),
+  #            (try_begin), # dont move swievel gun.              #patch1115 34/1 fix 
+  #              (neq, ":cannon_type", "spr_mm_cannon_swievel"),
                                                    
-                (position_set_z_to_ground_level,pos57),
-                  #(position_move_z,pos57,":ground_dist"),
+  #              (position_set_z_to_ground_level,pos57),
+  #                #(position_move_z,pos57,":ground_dist"),
                
-              (try_end),
+  #            (try_end),
               
-              (position_move_z,pos57,":ground_dist"),
+  #            (position_move_z,pos57,":ground_dist"),
               
-              (prop_instance_get_scene_prop_kind,":wood_type",":cannon_wood"),
-              (try_begin),
-                (eq,":wood_type","spr_mm_cannon_fort_wood"),
+  #            (prop_instance_get_scene_prop_kind,":wood_type",":cannon_wood"),
+  #            (try_begin),
+  #              (eq,":wood_type","spr_mm_cannon_fort_wood"),
                 
-                (try_begin),
-                  (prop_instance_is_animating, ":animating", ":cannon_wood"),
-                  (eq,":animating",1),
-                  (prop_instance_stop_animating, ":cannon_wood"),
-                (try_end),
-                (prop_instance_set_position,":cannon_wood",pos57),
-              (try_end),
+  #              (try_begin),
+  #                (prop_instance_is_animating, ":animating", ":cannon_wood"),
+  #                (eq,":animating",1),
+  #                (prop_instance_stop_animating, ":cannon_wood"),
+  #              (try_end),
+  #              (prop_instance_set_position,":cannon_wood",pos57),
+  #            (try_end),
 
-              (call_script,"script_recoil_cannon",":cannon_wood",1,1), # put it back defaultly.
-              (try_begin),
-                (eq,reg0,0), # has no recoil then move it back manually.
+  #            (call_script,"script_recoil_cannon",":cannon_wood",1,1), # put it back defaultly.
+  #            (try_begin),
+  #              (eq,reg0,0), # has no recoil then move it back manually.
                
-                # get current pos and compare with new.
-                (prop_instance_get_position,pos44,":cannon_wood"),
-                (assign,":move_prop",0),
-                (try_begin),
-                  (get_distance_between_positions,":dist",pos44,pos57),
-                  (gt,":dist",0),
-                  (assign,":move_prop",1),
-                (else_try), # else check at least if rotations are difirent.
-                  (position_get_rotation_around_x,":cur_x_rot",pos44),
-                  (position_get_rotation_around_y,":cur_y_rot",pos44),
-                  (position_get_rotation_around_z,":cur_z_rot",pos44),
-                  (position_get_rotation_around_x,":new_x_rot",pos57),
-                  (position_get_rotation_around_y,":new_y_rot",pos57),
-                  (position_get_rotation_around_z,":new_z_rot",pos57),
+  #              # get current pos and compare with new.
+  #              (prop_instance_get_position,pos44,":cannon_wood"),
+  #              (assign,":move_prop",0),
+  #              (try_begin),
+  #                (get_distance_between_positions,":dist",pos44,pos57),
+  #                (gt,":dist",0),
+  #                (assign,":move_prop",1),
+  #              (else_try), # else check at least if rotations are difirent.
+  #                (position_get_rotation_around_x,":cur_x_rot",pos44),
+  #                (position_get_rotation_around_y,":cur_y_rot",pos44),
+  #                (position_get_rotation_around_z,":cur_z_rot",pos44),
+  #                (position_get_rotation_around_x,":new_x_rot",pos57),
+  #                (position_get_rotation_around_y,":new_y_rot",pos57),
+  #                (position_get_rotation_around_z,":new_z_rot",pos57),
                   
-                  (this_or_next|neq,":cur_z_rot",":new_z_rot"),
-                  (this_or_next|neq,":cur_x_rot",":new_x_rot"),
-                  (neq,":cur_y_rot",":new_y_rot"),
-                  (assign,":move_prop",1),
-                (try_end),
+  #                (this_or_next|neq,":cur_z_rot",":new_z_rot"),
+  #                (this_or_next|neq,":cur_x_rot",":new_x_rot"),
+  #                (neq,":cur_y_rot",":new_y_rot"),
+  #                (assign,":move_prop",1),
+  #              (try_end),
                 
-                (eq,":move_prop",1),
+  #              (eq,":move_prop",1),
                
-                (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_wood", 0,0,0),
+  #              (call_script, "script_prop_instance_animate_to_position_with_childs", ":cannon_wood", 0,0,0),
 
-              (try_end),
+  #            (try_end),
              
-              # reset some slots on it.
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_has_ball, 0),
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_is_loaded, 0),
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ammo_type, 0),
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_controller_agent, -1),
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_user_agent, -1),
-              (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rot,0), 
-              (scene_prop_set_slot,":cannon_wood",scene_prop_slot_just_pushed_back,0), #patch1115 fix 7/2
+  #            # reset some slots on it.
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_has_ball, 0),
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_is_loaded, 0),
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ammo_type, 0),
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_controller_agent, -1),
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_user_agent, -1),
+  #            (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rot,0), 
+  #            (scene_prop_set_slot,":cannon_wood",scene_prop_slot_just_pushed_back,0), #patch1115 fix 7/2
 
-            (else_try),
-              (prop_instance_get_starting_position,pos30,":cur_instance_id"),
-              (call_script,"script_generate_bits_for_cannon_instance",":cur_instance_id", 1,0,0), # re-create the cannon for it was limbered once.
-            (try_end),
-          (else_try),
-            # a limbered cannon of some sort.
-            # Set cannon to be not in_use so cannons can be re-used next round.
-            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_in_use,0),
+  #          (else_try),
+  #            (prop_instance_get_starting_position,pos30,":cur_instance_id"),
+  #            (call_script,"script_generate_bits_for_cannon_instance",":cur_instance_id", 1,0,0), # re-create the cannon for it was limbered once.
+  #          (try_end),
+  #        (else_try),
+  #          # a limbered cannon of some sort.
+  #          # Set cannon to be not in_use so cannons can be re-used next round.
+  #          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_in_use,0),
             
-            (prop_instance_is_valid,":cannon_wood"),
-            (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_wood"), # remove this cannon for it is part of a limber.
-          (try_end),
-        (try_end),
-      (try_end),
+  #          (prop_instance_is_valid,":cannon_wood"),
+  #          (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_wood"), # remove this cannon for it is part of a limber.
+  #        (try_end),
+  #      (try_end),
+  #    (try_end),
 
-      # reset broken windows...
-      (try_for_range,":prop_type", "spr_mm_window1d_poor", "spr_mm_window3_poor"),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
-          (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
+  #    # reset broken windows...
+  #    (try_for_range,":prop_type", "spr_mm_window1d_poor", "spr_mm_window3_poor"),
+  #      (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
+  #        (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
           
-          #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall.  #patch1115 fix 5/12
-          (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/14
-          (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
+  #        #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall.  #patch1115 fix 5/12
+  #        (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/14
+  #        (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
           
-          (try_begin),
-            (prop_instance_is_valid,":wall_instance"),
-            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
-            (call_script,"script_attach_window_to_wall",":wall_instance"),
-          (else_try),
-            (prop_instance_get_position,pos49,":cur_instance_id"),
+  #        (try_begin),
+  #          (prop_instance_is_valid,":wall_instance"),
+  #          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+  #          (call_script,"script_attach_window_to_wall",":wall_instance"),
+  #        (else_try),
+  #          (prop_instance_get_position,pos49,":cur_instance_id"),
             
-            (assign,":prop_to_spawn",-1),
-            (try_begin),
-              (eq,":prop_type","spr_mm_window1d"),
-              (assign,":prop_to_spawn","spr_mm_window1"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window2d"),
-              (assign,":prop_to_spawn","spr_mm_window2"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window1d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window1_poor"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window2d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window2_poor"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window3d"),
-              (assign,":prop_to_spawn","spr_mm_window3"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window4d"),
-              (assign,":prop_to_spawn","spr_mm_window4"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window3d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window3_poor"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window4d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window4_poor"),
-            (try_end),
+  #          (assign,":prop_to_spawn",-1),
+  #          (try_begin),
+  #            (eq,":prop_type","spr_mm_window1d"),
+  #            (assign,":prop_to_spawn","spr_mm_window1"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window2d"),
+  #            (assign,":prop_to_spawn","spr_mm_window2"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window1d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window1_poor"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window2d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window2_poor"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window3d"),
+  #            (assign,":prop_to_spawn","spr_mm_window3"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window4d"),
+  #            (assign,":prop_to_spawn","spr_mm_window4"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window3d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window3_poor"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window4d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window4_poor"),
+  #          (try_end),
             
-            (try_begin),
-              (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
-              (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
-              (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
-              (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
-              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
-            (else_try),
-              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
-            (try_end),
+  #          (try_begin),
+  #            (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+  #            (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
+  #            (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
+  #            (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+  #          (else_try),
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+  #          (try_end),
 
-            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
-          (try_end),
-        (try_end),
-      (try_end),
+  #          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+  #        (try_end),
+  #      (try_end),
+  #    (try_end),
       
-      # reset broken windows...
-      (try_for_range,":prop_type", "spr_mm_window3d_poor", "spr_mm_windows_end"),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
-          (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
+  #    # reset broken windows...
+  #    (try_for_range,":prop_type", "spr_mm_window3d_poor", "spr_mm_windows_end"),
+  #      (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
+  #        (scene_prop_get_slot,":replacing_old_prop_instance",":cur_instance_id", scene_prop_slot_replacing),
           
-          #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall. #patch1115 fix 5/13
-          (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/15
-          (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
+  #        #(gt,":replacing_old_prop_instance",-1), # this one is replacing something.. lets clean it up and spawn a new window for said wall. #patch1115 fix 5/13
+  #        (prop_instance_is_valid,":replacing_old_prop_instance"), #patch1115 18/15
+  #        (scene_prop_get_slot,":wall_instance",":cur_instance_id", scene_prop_slot_parent_prop),
           
-          (try_begin),
-            (prop_instance_is_valid,":wall_instance"),
-            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
-            (call_script,"script_attach_window_to_wall",":wall_instance"),
-          (else_try),
-            (prop_instance_get_position,pos49,":cur_instance_id"),
+  #        (try_begin),
+  #          (prop_instance_is_valid,":wall_instance"),
+  #          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+  #          (call_script,"script_attach_window_to_wall",":wall_instance"),
+  #        (else_try),
+  #          (prop_instance_get_position,pos49,":cur_instance_id"),
             
-            (assign,":prop_to_spawn",-1),
-            (try_begin),
-              (eq,":prop_type","spr_mm_window3d"),
-              (assign,":prop_to_spawn","spr_mm_window3"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window4d"),
-              (assign,":prop_to_spawn","spr_mm_window4"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window3d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window3_poor"),
-            (else_try),
-              (eq,":prop_type","spr_mm_window4d_poor"),
-              (assign,":prop_to_spawn","spr_mm_window4_poor"),
-            (try_end),
+  #          (assign,":prop_to_spawn",-1),
+  #          (try_begin),
+  #            (eq,":prop_type","spr_mm_window3d"),
+  #            (assign,":prop_to_spawn","spr_mm_window3"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window4d"),
+  #            (assign,":prop_to_spawn","spr_mm_window4"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window3d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window3_poor"),
+  #          (else_try),
+  #            (eq,":prop_type","spr_mm_window4d_poor"),
+  #            (assign,":prop_to_spawn","spr_mm_window4_poor"),
+  #          (try_end),
             
-            (try_begin),
-              (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
-              (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
-              (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
-              (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
-              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
-            (else_try),
-              (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
-            (try_end),
+  #          (try_begin),
+  #            (scene_prop_slot_eq, ":cur_instance_id", scene_prop_slot_is_scaled, 1), # is scaled.
+  #            (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
+  #            (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
+  #            (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 1, ":x_scale",":y_scale",":z_scale"),
+  #          (else_try),
+  #            (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 0, 0),
+  #          (try_end),
 
-            (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
-          (try_end),
-        (try_end),
-      (try_end),
-    (try_end),
-   ]),
+  #          (call_script, "script_clean_up_prop_instance", ":cur_instance_id"),
+  #        (try_end),
+  #      (try_end),
+  #    (try_end),
+  #  (try_end),
+  # ]),
 
   # script_get_prop_center
   ("get_prop_center",
@@ -9648,6 +9843,40 @@ scripts.extend([("game_start", []), # single player only, not used
         (try_end),
       (try_end),
       (assign, reg0, 1),
+
+      (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_ship_id, -1),
+      (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_ship_moving, -1),
+
+      (try_begin), # Attaching cannon to the ships with same var 2
+        (eq, ":is_load_scene", 1),
+        (this_or_next|eq, ":cannon_type", "spr_mm_cannon_mortar"),
+        (this_or_next|eq, ":cannon_type", "spr_mm_cannon_naval"),
+        (this_or_next|eq, ":cannon_type", "spr_mm_cannon_carronade"),
+        (this_or_next|eq, ":cannon_type", "spr_mm_cannon_swievel"),
+        (eq, ":cannon_type", "spr_mm_cannon_rocket"),
+
+        (prop_instance_get_variation_id_2, ":cannon_var_2", ":instance_id"), # lets get the var 2 of the cannon
+        (gt, ":cannon_var_2", 0),
+
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_type, ":cannon_type"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_wheels, ":cannon_wheels"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_barrel, ":cannon_barrel"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_static, ":cannon_static"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_loaded, ":loaded_ammo_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_plataform, ":platform_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_ammo, ":ammobox_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_1, ":button_1_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_2, ":button_2_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_3, ":button_3_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_4, ":button_4_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_5, ":button_5_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_6, ":button_6_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_7, ":button_7_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_8, ":button_8_instance"),
+        (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_button_9, ":button_9_instance"),
+
+        (call_script, "script_handle_cannon_attachment_on_ship", ":cannon_wood", ":cannon_var_2"),
+      (try_end),
       
       (try_begin),
         (eq,":dont_recoil",0),
@@ -9657,40 +9886,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (try_end),
 
     (assign,reg1,":cannon_wood"),
-
-    (scene_prop_set_slot, reg1, slot_scene_prop_cannon_has_ship, 0),
-
-    (try_begin), # Attaching cannon to the ships with same var 2
-      (eq, ":is_load_scene", 1),
-
-      (this_or_next|eq, ":cannon_type", "spr_mm_cannon_mortar"),
-      (this_or_next|eq, ":cannon_type", "spr_mm_cannon_naval"),
-      (this_or_next|eq, ":cannon_type", "spr_mm_cannon_carronade"),
-      (this_or_next|eq, ":cannon_type", "spr_mm_cannon_swievel"),
-      (eq, ":cannon_type", "spr_mm_cannon_rocket"),
-
-      (prop_instance_get_variation_id_2, ":cannon_var_2", ":instance_id"), # lets get the var 2 of the cannon
-
-      (gt, ":cannon_var_2", 0),
-
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_wheels, ":cannon_wheels"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_barrel, ":cannon_barrel"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_static, ":cannon_static"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_loaded, ":loaded_ammo_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_plataform, ":platform_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_ammo, ":ammobox_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_1, ":button_1_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_2, ":button_2_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_3, ":button_3_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_4, ":button_4_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_5, ":button_5_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_6, ":button_6_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_7, ":button_7_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_8, ":button_8_instance"),
-      (scene_prop_set_slot, reg1, slot_scene_prop_cannon_button_9, ":button_9_instance"),
-
-      (call_script, "script_handle_cannon_attachment_on_ship", reg1, ":cannon_var_2"),
-    (try_end),
    ]),
 
   # script_handle_cannon_attachment_on_ship
@@ -9747,6 +9942,9 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_get_slot, ":num_cannons_ship", ":ship_instance_id", slot_scene_prop_num_linked_cannons),
         (lt, ":num_cannons_ship", 9),
 
+        (scene_prop_set_slot, ":wood_instance", slot_scene_prop_cannon_ship_id, ":ship_instance_id"),
+
+        (assign, ":fail", 0),
         (try_begin),
           (eq, ":num_cannons_ship", 0),
           (scene_prop_set_slot, ":ship_instance_id", slot_scene_prop_ship_cannon_0, ":wood_instance"),
@@ -9774,20 +9972,30 @@ scripts.extend([("game_start", []), # single player only, not used
         (else_try),
           (eq, ":num_cannons_ship", 8),
           (scene_prop_set_slot, ":ship_instance_id", slot_scene_prop_ship_cannon_8, ":wood_instance"),
+        (else_try),
+          (assign, ":fail", 1),
         (try_end),
 
-        (assign, reg23, ":ship_instance_id"),
-        (assign, reg24, ":num_cannons_ship"),
-        (display_message, "@Cannon {reg1} attached to ship {reg23} as cannon {reg24}/8"),
+        (try_begin),
+          (eq, ":fail", 1),
+          (assign, reg22, ":wood_instance"),
+          (assign, reg23, ":ship_instance_id"),
+          (display_message, "@Ship {reg23} has no more space for the cannon with instance equals to {reg22}! Please, verify and/or remove."),
+        (else_try),
+          (assign, reg22, ":wood_instance"),
+          (assign, reg23, ":ship_instance_id"),
+          (assign, reg24, ":num_cannons_ship"),
+          (display_message, "@Cannon with instance equals to {reg22}, successfully attached to ship {reg23}, as its cannon {reg24}/8"),
 
-        (scene_prop_set_slot, ":wood_instance", slot_scene_prop_cannon_has_ship, 1),
+          (scene_prop_set_slot, ":wood_instance", slot_scene_prop_cannon_ship_moving, 0),
 
-        (call_script, "script_setup_ship_cannon_relative_dist", ":wood_instance", ":ship_instance_id"),
+          (call_script, "script_setup_ship_cannon_relative_dist", ":wood_instance", ":ship_instance_id"),
 
-        (val_add, ":num_cannons_ship", 1),
-        (scene_prop_set_slot, ":ship_instance_id", slot_scene_prop_num_linked_cannons, ":num_cannons_ship"),
+          (val_add, ":num_cannons_ship", 1),
+          (scene_prop_set_slot, ":ship_instance_id", slot_scene_prop_num_linked_cannons, ":num_cannons_ship"),
 
-        (assign, reg19, 1),
+          (assign, reg19, 1),
+        (try_end),
       (try_end),
     ]
   ),
@@ -9799,49 +10007,58 @@ scripts.extend([("game_start", []), # single player only, not used
 
       (set_fixed_point_multiplier, 100),
 
+      (scene_prop_get_slot, ":cannon_type", ":wood_instance", slot_scene_prop_cannon_type),
+
       (prop_instance_get_position, pos51, ":ship_instance"),
 
-      (call_script, "script_set_ship_cannon_rel_dist", ":wood_instance"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":wood_instance", ":cannon_type"),
 
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_wheels),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_barrel),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_loaded),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_ammo),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_plataform),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_static),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_1),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_2),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_3),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_4),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_5),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_6),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_7),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_8),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
       (scene_prop_get_slot, ":cannon_part", ":wood_instance", slot_scene_prop_cannon_button_9),
-      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part"),
+      (call_script, "script_set_ship_cannon_rel_dist", ":cannon_part", ":cannon_type"),
     ]
   ),
 
   ("set_ship_cannon_rel_dist",
     [
       (store_script_param, ":cannon_part_instance", 1),
-      
+      (store_script_param, ":cannon_type", 2),
+
       (try_begin),
         (neq, ":cannon_part_instance", -1),
+
+        # Lets make them ready for the animations while whip is moving :)
+        (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_x, 0),
+        (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_y, 0),
+        (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_z, 0),
+        (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_rot_z, 0),
 
         (set_fixed_point_multiplier, 100),
 
@@ -9853,6 +10070,15 @@ scripts.extend([("game_start", []), # single player only, not used
 
         (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_x, ":dif_x"),
         (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_y, ":dif_y"),
+
+        (try_begin),
+          (eq, ":cannon_type", "spr_mm_cannon_naval"),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, 0),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y, 0),
+        (else_try),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y, -1),
+        (try_end),
       (try_end),
     ]
   ),
@@ -10027,9 +10253,7 @@ scripts.extend([("game_start", []), # single player only, not used
           
           # For cannons switch to lighter.
           (try_begin),
-            
             (is_between,":prop_kind",mm_cannon_wood_types_begin,mm_cannon_wood_types_end),
-            
             (agent_get_wielded_item, ":wielded_item", ":agent_id", 0),
             (neq, ":wielded_item", "itm_cannon_lighter"),
             (try_begin),
@@ -10038,18 +10262,12 @@ scripts.extend([("game_start", []), # single player only, not used
             (else_try),
               (game_in_multiplayer_mode),
               (assign,":error_message", "str_need_to_have_a_lighter"),
-			  (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
+              (call_script,"script_stop_agent_controlling_cannon",":prop_instance",":agent_id"),
             (try_end),
           (try_end),
         (else_try),
           (scene_prop_set_slot,":prop_instance",scene_prop_slot_controller_agent,-1),
           (agent_set_slot,":agent_id",slot_agent_current_control_prop,-1),
-          
-          # store when lost control.
-          #(is_between,":prop_kind", "spr_mm_ship", "spr_door_destructible"),
-          
-          #(store_mission_timer_a,":cur_time"),
-          #(scene_prop_set_slot, ":prop_instance", scene_prop_slot_time_left, ":cur_time"),
         (try_end),
         
         (game_in_multiplayer_mode),
@@ -10120,6 +10338,15 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
     (try_end),
   ]),
+
+  ("send_message_to_agent",
+    [
+      (store_script_param, ":agent_id", 1),
+      (store_script_param, ":message_string_id", 2),
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, ":message_string_id"),
+    ]
+  ),
   
   # script_stop_agent_controlling_cannon
   # Input: prop_instance of cannon
@@ -10140,13 +10367,7 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (call_script, "script_prop_instance_find_first_child_of_type", ":prop_instance", "spr_mm_cannon_aim_platform"),
       (prop_instance_is_valid,reg0),
-   #   (prop_instance_get_position,pos19,reg0),
-    #  (position_get_rotation_around_z,":z_rot",pos19),
-    #  (position_copy_origin,pos20,pos19),
-  #    (position_rotate_z,pos20,":z_rot"),
-   #   (copy_position,pos21,pos20),
-    #  (position_move_y,pos20,-100),
-     # (agent_set_position,":agent_id",pos20),
+
       (call_script,"script_set_prop_child_inactive",reg0),
       #(call_script, "script_clean_up_prop_instance", reg0),
       (agent_set_animation,":agent_id","anim_kneeling_end"),
@@ -19790,9 +20011,6 @@ scripts.extend([("cf_process_wood",
     (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_7, -1),
     (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_8, -1),
 
-    # For the statup moviment cannons bug
-    (scene_prop_set_slot, ":hull_instance_id", scene_prop_slot_counter, 0),
-
     (troop_get_slot, ":ship_array_count", "trp_ship_array", 0),
     (val_add, ":ship_array_count", 1),
     (troop_set_slot, "trp_ship_array", ":ship_array_count", ":hull_instance_id"),
@@ -20171,11 +20389,9 @@ scripts.extend([("cf_process_wood",
 
   # script_move_ship_cannon_part
   # 1 => The instance of the cannon part
-  # reg32 => To move in X
-  # reg33 => To move in Y
+  # pos51 => The ship destination position
   # reg34 => Need to rotate the cannon?
   # reg35 => How much to rotate then
-  # reg36 => Times that ship was moved, used to handle the boring startup moviment bug
   ("move_ship_cannon_part",
     [
       (store_script_param, ":cannon_part_instance", 1),
@@ -20187,11 +20403,19 @@ scripts.extend([("cf_process_wood",
 
         (prop_instance_get_position, pos15, ":cannon_part_instance"), # original position of the part
 
-        (scene_prop_get_slot, ":dif_x", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_x),
-        (scene_prop_get_slot, ":dif_y", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_y),
+        (try_begin),
+          (neg|scene_prop_slot_eq, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
+          (scene_prop_slot_eq, ":cannon_part_instance", slot_scene_prop_cannon_ship_unpushed, 1),
+
+          (scene_prop_get_slot, ":dif_x", ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x),
+          (scene_prop_get_slot, ":dif_y", ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y),
+        (else_try),
+          (scene_prop_get_slot, ":dif_x", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_x),
+          (scene_prop_get_slot, ":dif_y", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_y),
+        (try_end),
 
         (init_position, pos53),
-        (copy_position, pos53, pos3),
+        (copy_position, pos53, pos51),
 
         (position_move_x, pos53, ":dif_x"),
         (position_move_y, pos53, ":dif_y"),
@@ -20206,7 +20430,33 @@ scripts.extend([("cf_process_wood",
           (position_rotate_z, pos53, reg35),
         (try_end),
 
-        (prop_instance_animate_to_position, ":cannon_part_instance", pos53, 100), #debug nao funciona direito na velocidade 100 :(
+        # Is there some animation to do stored by another script? - Disabled
+        #(scene_prop_get_slot, ":stored_x", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_x),
+        #(scene_prop_get_slot, ":stored_y", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_y),
+        #(scene_prop_get_slot, ":stored_mov_z", ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_z, 0),
+        #(scene_prop_get_slot, ":stored_rot_z", ":cannon_part_instance", slot_scene_prop_cannon_stored_rot_z),
+        #(try_begin),
+        #  (neq, ":stored_x", 0),
+        #  (position_move_x, pos53, ":stored_x"),
+        #  (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_x, 0),
+        #(try_end),
+        #(try_begin),
+        #  (neq, ":stored_y", 0),
+        #  (position_move_y, pos53, ":stored_y"),
+        #  (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_y, 0), 
+        #(try_end),
+        #(try_begin),
+        #  (neq, ":stored_mov_z", 0),
+        #  (position_move_z, pos53, ":stored_mov_z"),
+        #  (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_mov_z, 0),
+        #(try_end),
+        #(try_begin),
+        #  (neq, ":stored_rot_z", 0),
+        #  (position_rotate_z, pos53, ":stored_rot_z"),
+        #  (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_stored_rot_z, 0),
+        #(try_end),
+
+        (prop_instance_animate_to_position, ":cannon_part_instance", pos53, 100),
       (try_end),
     ]
   ),
@@ -20310,6 +20560,56 @@ scripts.extend([("cf_process_wood",
     ]
   ),
 
+  ("set_ship_cannon_is_ship_moving",
+    [
+      (store_script_param, ":cannon_instance", 1),
+      (store_script_param, ":is_ship_moving", 2),
+
+      (try_begin),
+        (neq, ":cannon_instance", -1),
+        (scene_prop_set_slot, ":cannon_instance", slot_scene_prop_cannon_ship_moving, ":is_ship_moving"),
+      (try_end),
+    ]
+  ),
+
+  ("handle_ship_cannons_is_ship_moving_slot",
+    [
+      (store_script_param, ":ship_instance", 1),
+      (store_script_param, ":is_ship_moving", 2),
+
+      (scene_prop_get_slot, ":num_cannons_ship", ":ship_instance", slot_scene_prop_num_linked_cannons),
+      (try_begin),
+        (gt, ":num_cannons_ship", 0),
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_0),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_1),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_2),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_3),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_4),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_5),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_6),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_7),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+
+        (scene_prop_get_slot, ":cannon_instance", ":ship_instance", slot_scene_prop_ship_cannon_8),
+        (call_script, "script_set_ship_cannon_is_ship_moving", ":cannon_instance", ":is_ship_moving"),
+      (try_end),
+    ]
+  ),
+
   ("move_ship", # server: animate movement of all ship parts together, also handling collision detection
    [(store_script_param, ":hull_instance_id", 1), # must be valid
 
@@ -20319,20 +20619,14 @@ scripts.extend([("cf_process_wood",
     (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_position, ":target_forwards"),
 
     # For PN cannons on ships moviments
-    (scene_prop_get_slot, ":ship_moved_times", ":hull_instance_id", scene_prop_slot_counter),
-    (try_begin),
-      (assign, reg36, ":ship_moved_times"),
-      (lt, ":ship_moved_times", 4),
-      (prop_instance_get_position, pos51, ":hull_instance_id"),
-    (try_end),
-
-    (assign, ":to_move_x", 0),
-    (assign, ":to_move_y", 0),
     (assign, ":rotate_cannons", 0),
     (assign, ":rotate_cannons_value", 0),
 
     (try_begin),
       (neq, ":forwards", 0), # ship is moving
+
+      (call_script, "script_handle_ship_cannons_is_ship_moving_slot", ":hull_instance_id", 1),
+
       (set_fixed_point_multiplier, 100),
       (prop_instance_get_position, pos1, ":hull_instance_id"),
       (assign, ":crashed", 0),
@@ -20370,9 +20664,6 @@ scripts.extend([("cf_process_wood",
             (val_mul, ":max_distance", -1),
           (try_end),
           (position_move_x, pos2, ":max_distance"),
-    
-          (val_add, ":to_move_x", ":max_distance"),
-
           (prop_instance_set_position, ":cd_instance_id", pos2, 1),
           (prop_instance_intersects_with_prop_instance, ":cd_instance_id", ":other_cd_instance_id"),
           (assign, ":crashed", 1),
@@ -20395,9 +20686,6 @@ scripts.extend([("cf_process_wood",
             (val_mul, ":max_distance", -1),
           (try_end),
           (position_move_x, pos2, ":max_distance"),
-
-          (val_add, ":to_move_x", ":max_distance"),
-
           (prop_instance_set_position, ":cd_instance_id", pos2, 1),
           (prop_instance_intersects_with_prop_instance, ":cd_instance_id", ":collision_instance_id"),
           (assign, ":crashed", 1),
@@ -20463,9 +20751,6 @@ scripts.extend([("cf_process_wood",
         (init_position, pos2),
         (store_mul, ":distance", ":forwards", ship_forwards_multiplier),
         (position_move_x, pos2, ":distance"),
-
-        (val_add, ":to_move_x", ":distance"),
-
         (scene_prop_get_slot, ":rotation", ":hull_instance_id", slot_scene_prop_target_rotation),
         (try_begin),
           (neq, ":rotation", 0),
@@ -20480,9 +20765,6 @@ scripts.extend([("cf_process_wood",
           (val_abs, ":forwards_multiplier"),
           (store_mul, ":move_sideways", ":rotation", ":forwards_multiplier"),
           (position_move_y, pos2, ":move_sideways"),
-
-          (val_add, ":to_move_y", ":move_sideways"),
-
           (store_mul, ":fore_side_ratio", ":move_sideways", ship_rotation_multiplier),
           (convert_to_fixed_point, ":fore_side_ratio"),
           (val_div, ":fore_side_ratio", ":distance"),
@@ -20504,19 +20786,17 @@ scripts.extend([("cf_process_wood",
         (position_transform_position_to_parent, pos3, pos1, pos2),
         (prop_instance_animate_to_position, ":hull_instance_id", pos3, 100),
 
+        #(try_begin),
+        #  (gt, ":target_forwards", 0),
+        #  (call_script, "script_handle_ship_cannons_is_ship_moving_slot", ":hull_instance_id", 1),
+        #(try_end),
+        
+
         # Why dont we move our cannons also? :)
-        (assign, reg32, ":to_move_x"),
-        (assign, reg33, ":to_move_y"),
+        (copy_position, pos51, pos3),
         (assign, reg34, ":rotate_cannons"),
         (assign, reg35, ":rotate_cannons_value"),
         (call_script, "script_handle_ship_cannons_moviment", ":hull_instance_id"),
-
-        # PN Ship cannon used the moviment, so lets register it, for the startup cannons moviment bug, stops on 10
-        (try_begin),
-          (lt, ":ship_moved_times", 3),
-          (val_add, ":ship_moved_times", 1),
-          (scene_prop_set_slot, ":hull_instance_id", scene_prop_slot_counter, ":ship_moved_times"),
-        (try_end),
 
         (scene_prop_get_slot, ":hold_instance_id", ":hull_instance_id", slot_scene_prop_linked_hold),
         (try_begin),
@@ -20549,6 +20829,15 @@ scripts.extend([("cf_process_wood",
         (prop_instance_enable_physics, ":inactive_sail_instance_id", 0),
       (try_end),
     (try_end),
+
+    (scene_prop_get_slot, ":current_forwards", ":hull_instance_id", slot_scene_prop_target_position),
+    (try_begin),
+      (eq, ":current_forwards", 0),
+      (call_script, "script_handle_ship_cannons_is_ship_moving_slot", ":hull_instance_id", 0),
+    (else_try),
+      (call_script, "script_handle_ship_cannons_is_ship_moving_slot", ":hull_instance_id", 1),
+    (try_end),
+
     (try_begin), # animate the ramp if necessary, even if the ship is not moving
       (neq, ":ramp_instance_id", -1),
       (scene_prop_get_slot, ":ramp_target", ":ramp_instance_id", slot_scene_prop_target_position),

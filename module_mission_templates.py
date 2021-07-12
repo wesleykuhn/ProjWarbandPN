@@ -1221,6 +1221,9 @@ multiplayer_server_drag_limber = (
       (ge, ":cur_control_agent", 0),
       
       (assign,":agent_is_ok",0),
+
+      (scene_prop_get_slot,":cannon_ship_moving", ":instance_id", slot_scene_prop_cannon_ship_moving), #if its one a ship, dont do animations
+
       (try_begin),
         (agent_is_active, ":cur_control_agent"),
         (agent_is_alive, ":cur_control_agent"),
@@ -1237,13 +1240,13 @@ multiplayer_server_drag_limber = (
         (position_move_y,pos12,-18),
         (position_rotate_x,pos12,-22),
 
-        (scene_prop_get_slot,":cannon_has_ship", ":instance_id", slot_scene_prop_cannon_has_ship), #if its one a ship, dont do animations
         (try_begin),
-          (eq, ":cannon_has_ship", 1),
-          (prop_instance_set_position,":instance_id", pos12),
-        (else_try),
+          (neq, ":cannon_ship_moving", 1),
           (prop_instance_animate_to_position,":instance_id",pos12,100),
+        (else_try),
+          (prop_instance_set_position, ":instance_id", pos12),
         (try_end),
+
       (try_end),
       (eq,":agent_is_ok",1),
       
@@ -1286,22 +1289,7 @@ multiplayer_server_drag_limber = (
         (agent_set_slot, ":cur_control_agent", slot_agent_last_rotz, ":z_rot_temp"),
       (try_end),
       (eq,":continue",1),
-      
-      # (try_begin),
-        # (eq,":agent_speed",0), # no movement...
-        # (position_get_rotation_around_z,":z_rot_temp",pos11),
-        # (prop_instance_get_position, pos13, ":instance_id"),
-        # (position_get_rotation_around_z,":prop_z_rot_temp",pos13),
-        # (eq,":prop_z_rot_temp",":z_rot_temp"),
-        # (assign,":continue",0),
-      # (try_end),
-       
-      
-      # max speed 2907  old:  2766
-        # (assign, reg0, ":agent_speed"),
-        # (str_store_string, s4, "@agent_speed: {reg0}"),
-        # (call_script, "script_multiplayer_broadcast_message"),
-      
+
       (store_mul,":agent_speed_wheel",":agent_speed",-1), # inverse
       (store_div,":limber_wheel_speed",":agent_speed_wheel",64), # make it realistic for front wheels
       (store_div,":cannon_wheel_speed",":agent_speed_wheel",76), # make it realistic for cannon wheels
@@ -1332,11 +1320,6 @@ multiplayer_server_drag_limber = (
       (position_move_x,pos12,120),
       (position_get_distance_to_ground_level, ":right_height_to_terrain", pos12),
       (val_div,":right_height_to_terrain",10), # due to fixed point at 1000
-      
-      # march back to center
-      # (position_rotate_z,pos12,180),
-      # (position_move_y,pos12,60),
-      # (position_rotate_z,pos12,-90),
       
       # calculate
       (store_sub,":height_difference",":left_height_to_terrain",":right_height_to_terrain"),
@@ -1386,28 +1369,18 @@ multiplayer_server_drag_limber = (
       (position_move_z,pos14,50),
       (position_rotate_y,pos14,":deg_value2"),
       (position_move_z,pos14,-50),
-      
-      # Do a slight Z change due to the bars otherwise sticking into the horse.
-      # (try_begin),
-        # (neq,":deg_value2",0),
 
-        # (store_div,":deg_value2_div",":deg_value2",8),
-        # (position_rotate_z,pos14,":deg_value2_div"),
-        
-        # (val_add,":z_rot",":deg_value2_div"),
-      # (try_end),
       (scene_prop_get_slot,":previous_z_rot",":instance_id",scene_prop_slot_z_extra),
       (scene_prop_set_slot,":instance_id",scene_prop_slot_z_extra,":z_rot"),
       
       (position_rotate_x,pos14,":deg_value"),
       
       # And finally move the wood to this rotated position.
-      (scene_prop_get_slot,":cannon_has_ship", ":instance_id", slot_scene_prop_cannon_has_ship), #if its one a ship, dont do animations
       (try_begin),
-        (eq, ":cannon_has_ship", 1),
-        (prop_instance_set_position,":instance_id", pos14),
-      (else_try),
+        (neq, ":cannon_ship_moving", 1),
         (prop_instance_animate_to_position, ":instance_id", pos14, 28),
+      (else_try),
+        (prop_instance_set_position, ":instance_id", pos14),
       (try_end),
       
       # move from middle of horse to center where wheels should be.
@@ -1431,12 +1404,11 @@ multiplayer_server_drag_limber = (
       (position_rotate_x,pos14,":x_rot"),
       
       (try_begin), #if its one a ship, dont do animations
-        (eq, ":cannon_has_ship", 1),
-        (prop_instance_set_position,":wheels_instance", pos14),
-      (else_try),
+        (neq, ":cannon_ship_moving", 1),
         (prop_instance_animate_to_position, ":wheels_instance", pos14, 28),
+      (else_try),
+        (prop_instance_set_position, ":wheels_instance", pos14),
       (try_end),
-      
       
       # if we have a cannon and wheels, go on.
       (prop_instance_is_valid,":cannon_instance"),
@@ -1577,10 +1549,10 @@ multiplayer_server_drag_limber = (
       (position_rotate_x,pos14,":deg_value"),
 
       (try_begin),#if its one a ship, dont do animations
-        (eq, ":cannon_has_ship", 1),
-        (prop_instance_set_position,":cannon_instance", pos14),
-      (else_try),
+        (neq, ":cannon_ship_moving", 1),
         (prop_instance_animate_to_position, ":cannon_instance", pos14, 28),
+      (else_try),
+        (prop_instance_set_position, ":cannon_instance", pos14),
       (try_end),
 
       # Wheels.
@@ -1602,10 +1574,10 @@ multiplayer_server_drag_limber = (
       (position_rotate_x,pos14,":x_rot"),
       
       (try_begin),#if its one a ship, dont do animations
-        (eq, ":cannon_has_ship", 1),
-        (prop_instance_set_position,":cannon_wheels_instance", pos14),
-      (else_try),
+        (neq, ":cannon_ship_moving", 1),
         (prop_instance_animate_to_position, ":cannon_wheels_instance", pos14, 28),
+      (else_try),
+        (prop_instance_set_position, ":cannon_wheels_instance", pos14),
       (try_end),
     (try_end),
 ])
@@ -1708,20 +1680,21 @@ multiplayer_server_aim_cannon  = (
         (else_try),
           (call_script,"script_stop_agent_controlling_cannon",":instance_id",":cur_control_agent"),
         (try_end),
+
+        (scene_prop_get_slot, ":is_moving", ":instance_id", slot_scene_prop_cannon_ship_moving),
+        (try_begin),
+          (eq, ":is_moving", 1),
+          (call_script, "script_send_message_to_agent", ":cur_control_agent", "str_cant_control_cannon_moving"),
+          (call_script, "script_handle_agent_control_command", ":cur_control_agent", command_type_cannon, cannon_command_stop_aim),
+          (assign, ":agent_is_ok", 0),
+        (try_end),
         
         (eq,":agent_is_ok",1),
         
         (store_mission_timer_a,":cur_time"),
         (scene_prop_set_slot,":instance_id",scene_prop_slot_spawned_at,":cur_time"),
-        
-        # (try_begin),
-          # (call_script, "script_prop_instance_find_first_child_of_type", ":instance_id", "spr_mm_cannon_aim_platform"),
-          # (prop_instance_is_valid,reg0),
-          # (neg|scene_prop_has_agent_on_it, reg0, ":cur_control_agent"),
-          ####(call_script,"script_stop_agent_controlling_cannon",":instance_id",":cur_control_agent"),
-          # (prop_instance_get_position,pos9,reg0),
-          # (agent_set_position,":cur_control_agent",pos9),
-        # (try_end),
+
+        (scene_prop_get_slot,":cannon_ship_moving", ":instance_id", slot_scene_prop_cannon_ship_moving), #if its one a ship, dont do animations
         
         # Handle firing first, else handle aiming.
         (agent_get_slot,":cur_command",":cur_control_agent",slot_agent_current_command),
@@ -1849,13 +1822,22 @@ multiplayer_server_aim_cannon  = (
             (try_end),
 
             (position_rotate_z,pos10,":diffirence_z"),
+
+            #(try_begin),
+            #  (eq, ":cannon_ship_moving", 1),
+            #  (call_script, "script_handle_ship_cannon_move_storage", ":instance_id", 0, 0, 0, ":diffirence_z"),
+            #(try_end),
+
             (copy_position,pos57,pos10),
 
             (try_begin),
               (prop_instance_is_valid,":barrel_instance"), #patch1115 18/24
               
-              (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,":barrel_instance",0),
-   
+              (try_begin),
+                (neq, ":cannon_ship_moving", 1),
+                (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,":barrel_instance",0),
+              (try_end),
+
               (scene_prop_get_slot,":xvalue",":barrel_instance",scene_prop_slot_x_value),
               (scene_prop_get_slot,":yvalue",":barrel_instance",scene_prop_slot_y_value),
               (scene_prop_get_slot,":zvalue",":barrel_instance",scene_prop_slot_z_value),
@@ -1884,11 +1866,16 @@ multiplayer_server_aim_cannon  = (
               (position_rotate_y,pos57,":prop_y_rot"),
               
               (scene_prop_set_slot,":barrel_instance",scene_prop_slot_y_rot,":prop_y_rot"), # store rotation to keep barrel in same direction :3
-              
+
+              (neq, ":cannon_ship_moving", 1),
               (call_script, "script_prop_instance_animate_to_position_with_childs", ":barrel_instance", 53,0,0),
             (else_try),
               (position_rotate_y,pos57,":diffirence_y"),
-              (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,0,0),
+
+              (try_begin),
+                (neq, ":cannon_ship_moving", 1),
+                (call_script, "script_prop_instance_animate_to_position_with_childs", ":instance_id", 53,0,0),
+              (try_end),
             (try_end),
           (try_end),
         (try_end),
