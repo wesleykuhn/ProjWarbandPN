@@ -6101,6 +6101,8 @@ scripts.extend([("game_start", []), # single player only, not used
              (call_script,"script_stop_agent_controlling_cannon",":cannon_instance",":cur_control_agent"),
            (try_end),
 
+           (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_cannon_limber_locked, 1),
+
            (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_instance"),
 
            (agent_equip_item,":using_agent","itm_rocket_placement"),
@@ -6479,46 +6481,51 @@ scripts.extend([("game_start", []), # single player only, not used
     ]
   ),
   
-
   ("set_ship_cannon_unpushed_position",
     [
       (store_script_param, ":cannon_instance", 1),
 
-      (scene_prop_get_slot,":ship_instance",":cannon_instance", slot_scene_prop_cannon_ship_id),
-      (prop_instance_get_position, pos54, ":ship_instance"),
+      (try_begin),
+        (neq, ":cannon_instance", -1),
 
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_instance"),
+        (scene_prop_get_slot,":ship_instance",":cannon_instance", slot_scene_prop_cannon_ship_id),
+        (neq, ":ship_instance", -1),
 
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_wheels),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_loaded),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_ammo),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_barrel),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_static),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_plataform),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_1),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_2),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_3),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_4),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_5),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_6),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_7),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_8),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
-      (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_9),
-      (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (prop_instance_get_position, pos54, ":ship_instance"),
+
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_instance"),
+
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_wheels),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_loaded),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_ammo),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_barrel),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_static),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_plataform),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_1),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_2),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_3),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_4),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_5),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_6),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_7),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_8),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+        (scene_prop_get_slot,":cannon_part_instance",":cannon_instance", slot_scene_prop_cannon_button_9),
+        (call_script, "script_set_ship_cannon_part_unpushed_position", ":cannon_part_instance"),
+      (try_end),
     ]
   ),
 
@@ -9129,7 +9136,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (prop_instance_get_position, pos30, ":instance_id"),
       (try_end),
       (prop_instance_get_variation_id,":z_rotation_limit",":instance_id"),
-      (prop_instance_get_variation_id_2,":linked_wall_index",":instance_id"),
       
       (call_script, "script_clean_up_prop_instance", ":instance_id"), # Lets remove this dummy cannon.
       
@@ -9426,7 +9432,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_replacing, ":instance_id"), # wood is replacing that cannon
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_ground_offset, ":ground_dist"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_rotation_limit, ":z_rotation_limit"),
-        (scene_prop_set_slot,":cannon_wood", scene_prop_slot_linked_prop, ":linked_wall_index"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_x_extra, ":fire_x"), # extra values for smoke from frizzle.
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_y_extra, ":fire_y"),
         (scene_prop_set_slot,":cannon_wood", scene_prop_slot_z_extra, ":fire_z"),
@@ -9809,6 +9814,8 @@ scripts.extend([("game_start", []), # single player only, not used
 
           (assign, ":button_instance", reg0),
 
+          (scene_prop_set_slot, ":button_instance", slot_scene_prop_cannon_limber_locked, 0),
+
           (scene_prop_set_slot,":button_instance", scene_prop_slot_x_value, ":cur_x"),
           (scene_prop_set_slot,":button_instance", scene_prop_slot_y_value, ":cur_y"),
           (scene_prop_set_slot,":button_instance", scene_prop_slot_z_value, ":cur_z"),
@@ -9933,7 +9940,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (assign, reg19, 0),
 
       (scene_prop_get_num_instances, ":instances_number", ":ship_scene_prop_id"),
-      (try_for_range, ":ship_prop_no", 0, ":instances_number"), # iterate over all scene props of the specified kind
+      (try_for_range, ":ship_prop_no", 0, ":instances_number"), # iterate over all scene props
         (scene_prop_get_instance, ":ship_instance_id", ":ship_scene_prop_id", ":ship_prop_no"),
         (prop_instance_get_variation_id_2, ":ship_var_2", ":ship_instance_id"), # lets get the var 2 of this ship
         (gt, ":ship_var_2", 0),
@@ -10078,6 +10085,13 @@ scripts.extend([("game_start", []), # single player only, not used
         (else_try),
           (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
           (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y, -1),
+        (try_end),
+
+        # If its a rocket on a ship we will lock it on the ship
+        (prop_instance_get_scene_prop_kind, ":scene_prop_id", ":cannon_part_instance"),
+        (try_begin),
+          (eq, ":scene_prop_id", "spr_mm_pickup_rocket_button"),
+          (scene_prop_set_slot, ":cannon_part_instance", slot_scene_prop_cannon_limber_locked, 1),
         (try_end),
       (try_end),
     ]

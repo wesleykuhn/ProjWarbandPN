@@ -518,6 +518,7 @@ slot_scene_prop_cannon_stored_rot_z       = 89
 slot_scene_prop_cannon_ship_unpushed      = 90
 slot_scene_prop_cannon_ship_moving        = 91
 slot_scene_prop_cannon_ship_id            = 92
+slot_scene_prop_cannon_limber_locked      = 93
 
 scene_prop_open_or_close_slot       = 691
 scene_prop_smoke_effect_done        = 692

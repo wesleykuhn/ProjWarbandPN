@@ -2216,14 +2216,7 @@ multiplayer_server_cannonball_flight = (
             (val_add,":wall_middle_z",":random_z_add"),
             
             (position_set_z,pos45,":wall_middle_z"),
-            #(position_rotate_y,pos45,90),
-            
-            
-            # place wall xyz into the rotation of ball.
-            #(position_copy_origin,pos45,pos47),
-            # flip the position
-            # (position_rotate_x,pos45,180),
-            # (position_move_x,pos45,":hitted_length_div2"),
+
             (copy_position,pos47,pos45),
             
             (try_begin),
