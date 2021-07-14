@@ -288,6 +288,9 @@ mm_construct_props_end         = "spr_mm_crator_small"
 mm_construct_props_strings     = "str_mm_stakes_construct"
 mm_construct_props_meshes     = "mesh_construct_mesh_stakes"
 
+pn_ships_begin = "spr_pn_ship_longboat"
+pn_ships_end   = "spr_mm_weather_time"
+
 # PN END ***********************************
 
 ########################################################
@@ -479,7 +482,7 @@ slot_animal_carcass_hide_count        = 101
 ########################################################
 
 # PN CANNONS ON SHIPS - This one is for you daddy ;(
-slot_scene_prop_num_linked_cannons       = 55
+slot_scene_prop_num_linked_cannons  = 55
 slot_scene_prop_ship_cannon_0       = 56
 slot_scene_prop_ship_cannon_1       = 57
 slot_scene_prop_ship_cannon_2       = 58
@@ -490,35 +493,37 @@ slot_scene_prop_ship_cannon_6       = 62
 slot_scene_prop_ship_cannon_7       = 63
 slot_scene_prop_ship_cannon_8       = 64
 
-slot_scene_prop_cannon_type         = 65
-slot_scene_prop_cannon_wheels       = 66
-slot_scene_prop_cannon_barrel       = 67
-slot_scene_prop_cannon_loaded       = 68
-slot_scene_prop_cannon_ammo         = 69
-slot_scene_prop_cannon_static       = 70
-slot_scene_prop_cannon_plataform    = 72
-slot_scene_prop_cannon_button_1     = 73
-slot_scene_prop_cannon_button_2     = 74
-slot_scene_prop_cannon_button_3     = 75
-slot_scene_prop_cannon_button_4     = 76
-slot_scene_prop_cannon_button_5     = 77
-slot_scene_prop_cannon_button_6     = 78
-slot_scene_prop_cannon_button_7     = 79
-slot_scene_prop_cannon_button_8     = 80
-slot_scene_prop_cannon_button_9     = 81
+slot_scene_prop_cannon_type          = 65
+slot_scene_prop_cannon_wheels        = 66
+slot_scene_prop_cannon_barrel        = 67
+slot_scene_prop_cannon_loaded        = 68
+slot_scene_prop_cannon_ammo          = 69
+slot_scene_prop_cannon_static        = 70
+slot_scene_prop_cannon_plataform     = 72
+slot_scene_prop_cannon_button_1      = 73
+slot_scene_prop_cannon_button_2      = 74
+slot_scene_prop_cannon_button_3      = 75
+slot_scene_prop_cannon_button_4      = 76
+slot_scene_prop_cannon_button_5      = 77
+slot_scene_prop_cannon_button_6      = 78
+slot_scene_prop_cannon_button_7      = 79
+slot_scene_prop_cannon_button_8      = 80
+slot_scene_prop_cannon_button_9      = 81
+slot_scene_prop_cannon_ship_moving   = 91
+slot_scene_prop_cannon_limber_locked = 93
+slot_scene_prop_cannon_ship_id       = 92
 
-slot_scene_prop_cannon_ship_rel_x         = 82
-slot_scene_prop_cannon_ship_rel_y         = 83
-slot_scene_prop_cannon_part_unpushed_x    = 84
-slot_scene_prop_cannon_part_unpushed_y    = 85
-slot_scene_prop_cannon_stored_mov_x       = 86
-slot_scene_prop_cannon_stored_mov_y       = 87
-slot_scene_prop_cannon_stored_mov_z       = 88
-slot_scene_prop_cannon_stored_rot_z       = 89
-slot_scene_prop_cannon_ship_unpushed      = 90
-slot_scene_prop_cannon_ship_moving        = 91
-slot_scene_prop_cannon_ship_id            = 92
-slot_scene_prop_cannon_limber_locked      = 93
+slot_scene_prop_cannon_part_original_rot     = 94
+slot_scene_prop_cannon_part_original_heigth  = 95
+slot_scene_prop_cannon_ship_rel_x            = 82
+slot_scene_prop_cannon_ship_rel_y            = 83
+slot_scene_prop_cannon_part_unpushed_x       = 84
+slot_scene_prop_cannon_part_unpushed_y       = 85
+slot_scene_prop_cannon_stored_mov_x          = 86
+slot_scene_prop_cannon_stored_mov_y          = 87
+slot_scene_prop_cannon_stored_mov_z          = 88
+slot_scene_prop_cannon_stored_rot_z          = 89
+slot_scene_prop_cannon_ship_unpushed          = 90
 
 scene_prop_open_or_close_slot       = 691
 scene_prop_smoke_effect_done        = 692
