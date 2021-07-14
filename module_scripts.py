@@ -21011,8 +21011,122 @@ scripts.extend([("cf_process_wood",
         (position_rotate_z, pos20, ":z_angle"),
         (store_sub, ":ground_distance", ":floating_z", ":sunk_z"),
         (call_script, "script_animate_ship_parts", ":instance_id", ":ground_distance"),
+
+        (assign, reg36, ":ground_distance"),
+        (call_script, "script_handle_repair_ship_cannons", ":instance_id"),
       (try_end),
     (try_end),]),
+
+  ("handle_repair_ship_cannons",
+    [
+      (store_script_param, ":ship_instance", 1),
+
+      (scene_prop_get_slot, ":num_cannons", ":ship_instance", slot_scene_prop_num_linked_cannons),
+
+      (try_begin),
+        (gt, ":num_cannons", 0),
+
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_0),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_1),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_2),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_3),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_4),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_5),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_6),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_7),
+        (call_script, "script_repair_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_8),
+      (try_end),
+    ]
+  ),
+
+  ("repair_ship_cannon",
+    [
+      (store_script_param, ":ship_instance", 1),
+      (store_script_param, ":cannon_no", 2),
+
+      (scene_prop_get_slot, ":cannon_instance", ":ship_instance", ":cannon_no"),
+      (try_begin),
+        (neq, ":cannon_instance", -1),
+
+        # The main, cannon wood
+        (call_script, "script_repair_ship_cannon_part", ":cannon_instance"),
+        # Lets reset it complete
+        (scene_prop_set_slot, ":cannon_instance", scene_prop_slot_has_ball, 0),
+        (scene_prop_set_slot, ":cannon_instance", scene_prop_slot_is_loaded, 0),
+        # Like the original, lets recoil the cannon if its the naval type
+        (scene_prop_get_slot, ":cannon_type", ":cannon_instance", slot_scene_prop_cannon_type),
+        (try_begin),
+          (eq, ":cannon_type", "spr_mm_cannon_naval"),
+          (call_script, "script_recoil_cannon", ":cannon_instance", 1, 0), # put it back defaultly.
+        (try_end),
+
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_wheels),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_barrel),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_ammo),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_loaded),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_static),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_plataform),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_1),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_2),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_3),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_4),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_5),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_6),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_7),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_8),
+        (call_script, "script_repair_ship_cannon_get_cannon_part", ":cannon_instance", slot_scene_prop_cannon_button_9),
+      (try_end),
+    ]
+  ),
+
+  ("repair_ship_cannon_get_cannon_part",
+    [
+      (store_script_param, ":cannon_instance", 1),
+      (store_script_param, ":cannon_part_no", 2),
+
+      (scene_prop_get_slot, ":cannon_part_instance", ":cannon_instance", ":cannon_part_no"),
+      (call_script, "script_repair_ship_cannon_part", ":cannon_part_instance"),
+    ]
+  ),
+
+  # Input pos20 => The destination ship's position
+  # Input reg36 => The speed for the animation
+  ("repair_ship_cannon_part",
+    [
+      (store_script_param, ":cannon_part_instance", 1),
+
+      (try_begin),
+        (neq, ":cannon_part_instance", -1),
+
+        (set_fixed_point_multiplier, 100),
+
+        (prop_instance_get_position, pos15, ":cannon_part_instance"), # original position of the part
+
+        (try_begin),
+          (neg|scene_prop_slot_eq, ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x, -1),
+          (scene_prop_slot_eq, ":cannon_part_instance", slot_scene_prop_cannon_ship_unpushed, 1),
+
+          (scene_prop_get_slot, ":dif_x", ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_x),
+          (scene_prop_get_slot, ":dif_y", ":cannon_part_instance", slot_scene_prop_cannon_part_unpushed_y),
+        (else_try),
+          (scene_prop_get_slot, ":dif_x", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_x),
+          (scene_prop_get_slot, ":dif_y", ":cannon_part_instance", slot_scene_prop_cannon_ship_rel_y),
+        (try_end),
+        
+        (copy_position, pos52, pos20),
+
+        (position_move_x, pos52, ":dif_x"), # moves to the relative position to the ship
+        (position_move_y, pos52, ":dif_y"),
+
+        (scene_prop_get_slot, ":orig_heigth", ":cannon_part_instance", slot_scene_prop_cannon_part_original_heigth), # gets the original heigth of part
+        (position_set_z, pos52, ":orig_heigth"),
+
+        (position_copy_rotation, pos52, pos15), # returns to the original rotation
+
+        (prop_instance_animate_to_position, ":cannon_part_instance", pos52, reg36),
+      (try_end),
+    ]
+  ),
 
   ("sink_animate_ship_all_cannons",
     [
@@ -21022,8 +21136,6 @@ scripts.extend([("cf_process_wood",
 
       (try_begin),
         (gt, ":num_cannons", 0),
-
-        (prop_instance_get_position, pos51, ":ship_instance"),
 
         (call_script, "script_sink_animate_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_0),
         (call_script, "script_sink_animate_ship_cannon", ":ship_instance", slot_scene_prop_ship_cannon_1),
