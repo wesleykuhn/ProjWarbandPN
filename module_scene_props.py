@@ -4426,35 +4426,62 @@ scene_props = [
   ("pw_clean_blood",spr_use_time(3),"cloth_a","bo_cloth_a", spr_clean_blood_triggers()),
 
   ("code_spawn_marker",0,"0","0", []),
-  ("pw_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
-  ("pw_change_troop_serf",spr_use_time(30),"trident","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
-  ("pw_change_troop_militia",spr_use_time(30),"practice_sword","bo_pw_weapon", spr_change_troop_triggers("trp_militia", cost=500)),
-  ("pw_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
-  ("pw_change_troop_craftsman",spr_use_time(50),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_craftsman", cost=800)),
-  ("pw_change_troop_healer",spr_use_time(60),"package","bobaggage", spr_change_troop_triggers("trp_healer", cost=1000)),
+
+  # Do not touch at this first record's order
+  ("pn_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
+
+  ## CIVIL TROOPS
+  ("pn_change_troop_serf",spr_use_time(30),"trident","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
+  ("pn_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
+  ("pn_change_troop_craftsman",spr_use_time(50),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_craftsman", cost=800)),
+  ("pn_change_troop_healer",spr_use_time(60),"package","bobaggage", spr_change_troop_triggers("trp_healer", cost=1000)),
+  ("pn_change_troop_engineer",spr_use_time(80),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_engineer", cost=2500)),
+  ("pn_change_troop_master_smith",spr_use_time(120),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_master_smith", cost=7500)),
+  ("pn_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
+  ("pn_change_troop_traveler",spr_use_time(70),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_traveler", cost=1300, use_string="str_troop_become")),
+  ("pn_change_troop_herdsman",spr_use_time(40),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=900)),
+
+  ## BANDITS
+  ("pn_change_troop_pirate",spr_use_time(40),"pirate_hat","bo_pw_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
+  ("pn_change_troop_rebel",spr_use_time(50),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_brigand", cost=500, after_respawn=True, use_string="str_troop_become")),
+
+  ## MILITARY TROOPS
+  # Infatry
+  ("pn_change_troop_militia",spr_use_time(5),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_militia", cost=500)),
+  ("pn_change_troop_line_infantry",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_line_infantry", cost=2000)),
+  ("pn_change_troop_light_infantry",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_light_infantry", cost=3500)),
+  ("pn_change_troop_grenadier",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_grenadier", cost=3500)),
+  ("pn_change_troop_infantry_musician",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_musician", cost=1500)),
+  ("pn_change_troop_infantry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_officer", cost=5000)),
+
+  # Cavalry
+  ("pn_change_troop_dragoon",spr_use_time(40),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_dragoon", cost=2000)),
+  ("pn_change_troop_lancer",spr_use_time(60),"arena_lance","bo_pw_weapon_big", spr_change_troop_triggers("trp_lancer", cost=3500)),
+  ("pn_change_troop_hussar",spr_use_time(60),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_hussar", cost=3500)),
+  ("pn_change_troop_cavalry_musician",spr_use_time(40),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
+  ("pn_change_troop_cuirassier",spr_use_time(80),"training_heavy_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cuirassier", cost=4500)),
+  ("pn_change_troop_cavalry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cavalry_officer", cost=5000)),
+
+  # Naval
+  ("pn_change_troop_sailor",spr_use_time(30),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_sailor", cost=1500)),
+  ("pn_change_troop_captain",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_captain", cost=5000)),
+
+  # Artillery
+  ("pn_change_troop_artillerist",spr_use_time(60),"training_lighter","bo_pw_weapon", spr_change_troop_triggers("trp_artillerist", cost=3500)),
+  ("pn_change_troop_artillerist_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_artillerist_officer", cost=5000)),
+
+  # Especial
+  ("pn_change_troop_emperor",spr_use_time(100),"pn_crown","bo_pw_weapon_small", spr_change_troop_triggers("trp_lord", cost=1000, use_string="str_troop_assume_role")),
+
+  # PW UNUSED TROOPS
   ("pw_change_troop_footman",spr_use_time(60),"heavy_practicesword","bo_pw_weapon", spr_change_troop_triggers("trp_footman", cost=1000)),
   ("pw_change_troop_archer",spr_use_time(60),"hunting_bow","bo_pw_weapon", spr_change_troop_triggers("trp_archer", cost=1100)),
   ("pw_change_troop_crossbowman",spr_use_time(60),"crossbow_a","bo_pw_weapon", spr_change_troop_triggers("trp_crossbowman", cost=1200)),
-  ("pw_change_troop_lancer",spr_use_time(70),"arena_lance","bo_pw_weapon_big", spr_change_troop_triggers("trp_lancer", cost=1500)),
   ("pw_change_troop_man_at_arms",spr_use_time(90),"shield_heater_c","bo_pw_shield_kite_small", spr_change_troop_triggers("trp_man_at_arms", cost=5000)),
   ("pw_change_troop_sergeant",spr_use_time(90),"shield_heater_c","bo_pw_shield_kite_small", spr_change_troop_triggers("trp_sergeant", cost=5000)),
-  ("pw_change_troop_engineer",spr_use_time(80),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_engineer", cost=2500)),
-  ("pw_change_troop_master_smith",spr_use_time(120),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_master_smith", cost=7500)),
-  ("pw_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
-  ("pw_change_troop_sailor",spr_use_time(70),"scimeter","bo_pw_weapon", spr_change_troop_triggers("trp_sailor", cost=2000)),
-  ("pw_change_troop_traveler",spr_use_time(70),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_traveler", cost=1300, use_string="str_troop_become")),
-  ("pw_change_troop_herdsman",spr_use_time(40),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=900)),
-  ("pw_change_troop_lord",spr_use_time(70),"gothic_chair","bogothic_chair", spr_change_troop_triggers("trp_lord", cost=500, use_string="str_troop_assume_role")),
-  ("pw_change_troop_ruffian",spr_use_time(40),"sledgehammer","bo_pw_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
-  ("pw_change_troop_brigand",spr_use_time(50),"spiked_club","bo_pw_weapon", spr_change_troop_triggers("trp_brigand", cost=900, after_respawn=True, use_string="str_troop_become")),
-  
-  # PN TROOPS BEGIN
-  ("pw_change_troop_line_infantry",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_line_infantry", cost=1200)),
-  ("pw_change_troop_military_musician",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_military_musician", cost=1200)),
-  ("pw_change_troop_artillerist",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_artillerist", cost=1200)),
-  # PN TROOPS END
 
-  ("pw_change_troop_mercenary",spr_use_time(50),"spiked_mace","bo_pw_weapon", spr_change_troop_triggers("trp_mercenary", cost=700, mercenary=True, after_respawn=True, use_string="str_troop_become_for")),
+  # Do not touch at this last record's order
+  ("pn_change_troop_mercenary",spr_use_time(40),"training_musket","bo_pw_weapon", spr_change_troop_triggers("trp_mercenary", cost=1000, mercenary=True, after_respawn=True, use_string="str_troop_become_for")),
 
   ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
   ("pw_door_teleport_square_a",spr_use_time(1),"tutorial_door_b","bo_tutorial_door_b", spr_teleport_door_triggers(pos_offset=(70,50,0))),

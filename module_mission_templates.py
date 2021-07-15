@@ -940,7 +940,7 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
           #(call_script, "script_cf_agent_is_playing_music", ":hit_agent_no"), # is playing
           # if we have a musician just to be sure call stop music.
           (agent_get_troop_id,":troop_no",":hit_agent_no"),
-          (this_or_next|eq,":troop_no", "trp_military_musician"),
+          (this_or_next|eq,":troop_no", "trp_infantry_musician"),
           (eq, ":troop_no", "trp_godlike_hero"),
           (call_script,"script_multiplayer_server_agent_stop_music",":hit_agent_no"),
         (try_end),
@@ -1068,7 +1068,7 @@ multiplayer_client_music_and_sapper = (
           #(neg|is_presentation_active, "prsnt_multiplayer_construct"),
           #(start_presentation,"prsnt_multiplayer_construct"),
         (else_try),
-          (this_or_next|eq,":player_troop","trp_military_musician"),
+          (this_or_next|eq,":player_troop","trp_infantry_musician"),
           (eq, ":player_troop", "trp_godlike_hero"),
           (is_between, ":item_id", "itm_drumstick_right", "itm_bullets"), # an instrument
           (try_begin),

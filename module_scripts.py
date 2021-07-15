@@ -843,7 +843,7 @@ scripts.extend([("game_start", []), # single player only, not used
             (agent_slot_eq, ":agent_no", slot_agent_music_play_together, 1),
           
             (agent_get_troop_id,":agent_troop",":agent_no"),
-            (this_or_next|eq,":agent_troop", "trp_military_musician"),
+            (this_or_next|eq,":agent_troop", "trp_infantry_musician"),
             (eq, ":agent_troop","trp_godlike_hero"),
             
             (agent_get_wielded_item,":item_id",":agent_no",0),
@@ -2460,7 +2460,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_proficiency_level, reg11, ":troop_id", wpt_two_handed_weapon),
       (store_proficiency_level, reg12, ":troop_id", wpt_polearm),
       (store_proficiency_level, reg13, ":troop_id", wpt_archery),
-      (store_proficiency_level, reg14, ":troop_id", wpt_crossbow),
+      (store_proficiency_level, reg14, ":troop_id", wpt_firearm),
       (store_proficiency_level, reg15, ":troop_id", wpt_throwing),
       (str_store_string, s0, "str_troop_weapon_proficiencies"),
 
@@ -13855,7 +13855,7 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
     (try_for_range, ":slot", slot_mission_data_castle_allows_training_begin, slot_mission_data_castle_allows_training_end),
       (troop_set_slot, "trp_mission_data", ":slot", 0),
     (try_end),
-    (try_for_range, ":scene_prop_id", "spr_pw_change_troop_peasant", "spr_pw_change_troop_mercenary"),
+    (try_for_range, ":scene_prop_id", "spr_pn_change_troop_peasant", "spr_pn_change_troop_mercenary"),
       (scene_prop_get_num_instances, ":num_instances", ":scene_prop_id"),
       (try_for_range, ":instance_no", 0, ":num_instances"),
         (scene_prop_get_instance, ":instance_id", ":scene_prop_id", ":instance_no"),

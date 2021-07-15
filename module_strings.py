@@ -846,7 +846,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("troop_become_for", "Become {s1} for the {s2}"),
   ("troop_cost", "{s0}^Cost: {reg10}"),
   ("troop_strength_agility", "{s0}^Strength: {reg10}^Agility: {reg11}"),
-  ("troop_weapon_proficiencies", "{s0}^One handed: {reg10}^Two Handed: {reg11}^Polearms: {reg12}^Archery: {reg13}^Crossbows: {reg14}^Throwing: {reg15}"),
+  ("troop_weapon_proficiencies", "{s0}^One handed: {reg10}^Two Handed: {reg11}^Polearms: {reg12}^Archery: {reg13}^Firearms: {reg14}^Throwing: {reg15}"),
   ("requires_strength_reg1", "Requires strength: {reg1}"),
   ("requires_power_draw_reg1", "Requires power draw: {reg1}"),
   ("requires_power_throw_reg1", "Requires power throw: {reg1}"),

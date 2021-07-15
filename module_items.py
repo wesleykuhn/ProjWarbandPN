@@ -743,7 +743,7 @@ items = [
 
 ["hunting_bow", "Hunting Bow", [("hunting_bow", 0), ("hunting_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
  260, weight(1)|difficulty(1)|weapon_length(170)|spd_rtng(100)|shoot_speed(52)|thrust_damage(15, pierce), imodbits_bow],
-["short_bow", "Short Bow", [("short_bow",0),("short_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
+["short_bow", "Cheap Bow", [("short_bow",0),("short_bow_carry",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bow_back,
  304, weight(1)|difficulty(1)|weapon_length(145)|spd_rtng(97)|shoot_speed(55)|thrust_damage(18, pierce), imodbits_bow],
 ["nomad_bow", "Nomad Bow", [("nomad_bow",0),("nomad_bow_case",ixmesh_carry)], itp_type_bow|itp_primary|itp_two_handed|itp_cant_use_on_horseback, itcf_shoot_bow|itcf_carry_bowcase_left|itcf_show_holster_when_drawn,
  414, weight(1.25)|difficulty(2)|weapon_length(95)|spd_rtng(94)|shoot_speed(56)|thrust_damage(20, pierce), imodbits_bow],
@@ -2509,6 +2509,9 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 
 ## Hats
+# Neutral
+["emperor_crown", "Crown", [("pn_crown",0)], itp_type_head_armor|itp_doesnt_cover_hair|itp_attach_armature, 0, 302, weight(0.5)|head_armor(2)|difficulty(0), imodbits_cloth],
+
 # Russian
 ["rus_opol_hat_ranker", "Russian Opolocheniye Hat", [("rus_opol_hat",0)],  itp_type_head_armor |itp_civilian|itp_doesnt_cover_hair  ,0, 4 , weight(0.5)|abundance(100)|head_armor(8)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
 ["rus_opol_hat_officer", "Russian Opolocheniye Officer Hat", [("rus_opol_captain_hat",0)],  itp_type_head_armor |itp_civilian|itp_doesnt_cover_hair  ,0, 4 , weight(0.5)|abundance(100)|head_armor(8)|body_armor(0)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
@@ -2951,7 +2954,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
 
 ## Horses
 # French
-["hussar_horse_french","French Hussar Horse",[("french_hussards_horse",0)], itp_type_horse, 0, 400,abundance(70)|body_armor(6)|hit_points(80)|difficulty(3)|horse_speed(45)|horse_maneuver(50)|horse_charge(19)|horse_scale(104),imodbits_horse_basic|imodbit_champion],
+["hussar_horse_french","French Hussar Horse",[("french_hussards_horse",0)], itp_type_horse, 0, 400,body_armor(6)|hit_points(80)|difficulty(3)|horse_speed(45)|horse_maneuver(50)|horse_charge(19)|horse_scale(104),imodbits_none],
 ["lancer_horse_french","French Lancer Horse",[("french_lancier_polonais_horse",0)], itp_type_horse, 0, 400,abundance(70)|body_armor(6)|hit_points(80)|difficulty(3)|horse_speed(41)|horse_maneuver(41)|horse_charge(17)|horse_scale(104),imodbits_horse_basic|imodbit_champion],
 ["dragoon_horse_french","French Dragoon Horse",[("french_dragoon_horse",0)], itp_type_horse, 0, 500,abundance(90)|hit_points(100)|body_armor(8)|difficulty(3)|horse_speed(40)|horse_maneuver(40)|horse_charge(24)|horse_scale(106),imodbits_horse_basic|imodbit_champion],
 ["cuirassier_horse_french","French Cuirassier Horse",[("french_cuirassier_horse",0)], itp_type_horse, 0, 600,abundance(60)|hit_points(115)|body_armor(12)|difficulty(3)|horse_speed(38)|horse_maneuver(39)|horse_charge(32)|horse_scale(108),imodbits_horse_basic|imodbit_champion],
