@@ -5555,9 +5555,6 @@ scene_props = [
         ]),
   ]),
 
-  
-  
-
   ("mm_house_wall_2dd" ,sokf_static_movement,"2ddwall" ,"bo_2ddwall" , []),
   ("mm_house_wall_2ddd" ,sokf_static_movement,"2dddwall" ,"bo_2dddwall" , []),
   ("mm_house_wall_3dd" ,sokf_static_movement,"3ddwall" ,"bo_3ddwall" , []),

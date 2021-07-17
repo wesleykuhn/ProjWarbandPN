@@ -288,8 +288,8 @@ mm_construct_props_end         = "spr_mm_crator_small"
 mm_construct_props_strings     = "str_mm_stakes_construct"
 mm_construct_props_meshes     = "mesh_construct_mesh_stakes"
 
-pn_ships_begin = "spr_pn_ship_longboat"
-pn_ships_end   = "spr_mm_weather_time"
+#pn_ships_begin = "spr_pn_ship_longboat"
+#pn_ships_end   = "spr_mm_weather_time"
 
 # PN END ***********************************
 

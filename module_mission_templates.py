@@ -1904,11 +1904,6 @@ multiplayer_server_cannonball_flight = (
         (prop_instance_get_position, pos33, ":ball_instance_id"),
         (position_get_z, ":ball_z",pos33),
         
-        # (assign,reg22,":cur_x_vel"),
-        # (assign,reg23,":cur_y_vel"),
-        # (assign,reg24,":cur_z_vel"),
-        # (display_message,"@cur_x_vel: {reg22}  cur_y_vel: {reg23}  cur_z_vel: {reg24}"),
-        
         (assign,":move",1),
         (assign,":check_walls",1),
         (assign,":check_agents",1),
@@ -1951,7 +1946,7 @@ multiplayer_server_cannonball_flight = (
           
           (assign,":clean_it_up",0),
           (try_begin),
-            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell), #debug is not taking the type of the ammo
+            (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
             (this_or_next|eq,":ammo_type",cannon_ammo_type_bomb),
             (eq,":ammo_type",cannon_ammo_type_rocket),
             (copy_position,pos47,pos34),
@@ -2026,12 +2021,6 @@ multiplayer_server_cannonball_flight = (
             (assign,":check_agents",0),
           (else_try),
             # Animate first
-            
-            # (assign,reg29,":cur_x_vel"),
-            # (assign,reg30,":cur_z_vel"),
-            # (assign,reg31,":cur_y_vel"),
-            # (display_message,"@at move;  cur_x_vel: {reg29}  cur_z_vel: {reg30}  cur_y_vel: {reg31}"),
-            
             (position_move_x,pos33,":cur_x_vel"),
             (position_move_y,pos33,":cur_y_vel"),
             (position_move_z,pos33,":cur_z_vel"),
@@ -2082,29 +2071,21 @@ multiplayer_server_cannonball_flight = (
         (scene_prop_set_slot, ":ball_instance_id", scene_prop_slot_time, ":time"),
         
         (eq,":move",1), # Only check stuff when just moved.
-        
-        
-        (assign,":hitted_wall_x_dist",":cur_x_vel"),
-                
-        (try_begin), # destroy those bloody walls bitch..
-          #(gt,":time",0),
+
+        (assign,":hitted_wall_x_dist", ":cur_x_vel"),
+
+        (try_begin), # destroy those bloody walls
           (eq,":check_walls",1), # not the first time so dont destroy your defence walls..
           (assign,":min_dist",9999999999),
           (assign,":hitted_wall_instance",-1),
-          #(assign,":hitted_length_div2",0),
           (assign,":hitted_wall_kind",-1),
           (assign,":hitted_wall_power",3),
           (assign,":hitted_distance_ball_wall",0),
           (store_mul,":cur_x_vel_min",":cur_x_vel",-1),
-          (try_for_range,":wall_type",mm_destructible_props_begin,mm_destructible_props_end),
-            
+
+          (try_for_range, ":wall_type", mm_destructible_props_begin, mm_destructible_props_end),
             (assign,":wall_power", 3),
-            #(try_begin),
-             # (this_or_next|is_between, ":wall_type", "spr_mm_stakes","spr_mm_destructible_pioneer_builds_end"), #patch1115 fix 35/1 removed
-             # (eq,":wall_type","spr_mm_dummy"),
-            #  (assign,":wall_power",1),
-           # (try_end),
-            
+
             (try_for_prop_instances, ":wall_id", ":wall_type"),
               (prop_instance_get_position, pos40, ":wall_id"),
               
@@ -2191,21 +2172,12 @@ multiplayer_server_cannonball_flight = (
               (copy_position,pos47,pos40),
             (try_end),
           (try_end),
-          
 
           (try_begin), # we have something hit.
-           # (gt,":hitted_wall_instance", -1),
             (prop_instance_is_valid,":hitted_wall_instance"), #patch1115 18/25
             
             (copy_position,pos45,pos33),
             (position_move_x,pos45,":cur_x_vel_min"),
-            
-            
-            # copy ball to a temp pos. (for its rotations.
-            
-            #            85%
-            # (val_mul,":hitted_length_div2",85),
-            # (val_div,":hitted_length_div2",100),
             
             (val_sub,":hitted_distance_ball_wall",":hitted_width_div2"),
             (position_move_x,pos45,":hitted_distance_ball_wall"),
@@ -2231,12 +2203,12 @@ multiplayer_server_cannonball_flight = (
             (else_try),
               (eq,":ammo_type",cannon_ammo_type_round),
               
-              (try_begin),
-                (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
-                (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
-              (else_try),
-                (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
-              (try_end),
+              #(try_begin), lets try to disable this
+              #  (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
+              #  (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
+              #(else_try),
+              #  (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
+              #(try_end),
               
               (scene_prop_get_slot,":ball_times_hit",":ball_instance_id", scene_prop_slot_times_hit),
               (val_add, ":ball_times_hit", ":hitted_wall_power"),
@@ -2256,26 +2228,18 @@ multiplayer_server_cannonball_flight = (
             (try_end),
           (try_end),
         (try_end), 
-        #(gt,":time",1),
         (eq, ":check_agents", 1),
 	    	(neq,":ammo_type",cannon_ammo_type_bomb),
         (set_fixed_point_multiplier, 100),
-        
-        
-        # get the Z offset by knowing the Z mov per x mov. (fixed point * 10000)
         
         (assign,":myhorseid",-1),
         (try_begin),
           (agent_is_active, ":user_agent"),
           (agent_get_horse,":myhorseid",":user_agent"),
         (try_end),
-        
-        
 
         (store_add,":check_range",":x_movement",120),
-        
 
-        
         (try_for_agents, ":cur_agent",pos35,":check_range"),
           (eq, ":check_agents", 1),
           (agent_is_active, ":cur_agent"),
