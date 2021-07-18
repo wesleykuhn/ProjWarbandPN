@@ -99,6 +99,9 @@ pn_usable_dam_doors_huge_end   = "spr_pw_wooden_bridge_a"
 pn_usable_dam_doors_begin = pn_usable_dam_doors_small_begin
 pn_usable_dam_doors_end   = pn_usable_dam_doors_huge_end
 
+pn_trees_begin = "spr_pw_tree_a1"
+pn_trees_end   = "spr_pw_stick_bush_2a"
+
 pn_effect_type_wood = 0
 pn_effect_type_bricks = 1
 

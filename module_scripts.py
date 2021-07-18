@@ -5057,6 +5057,14 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":move_height_to_center",0),
         (assign,":wall_length_offset",-200),
         (assign,":is_ok",1),
+
+      # TREES
+      (else_try),
+        (is_between, ":prop_kind_id", pn_trees_begin, pn_trees_end),
+        (assign,":wall_height",250),
+        (assign,":wall_width",50),
+        (assign,":wall_length",50),
+        (assign,":is_ok",1),
       # PN NEW HITTABLE STUFF END
 
       (else_try),
@@ -6679,6 +6687,7 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":shooter_agent_no", 1),
     (store_script_param, ":max_damage", 2),
     (store_script_param, ":range", 3),
+    (store_script_param, ":is_mortar", 4),
 
     (try_begin),
       (this_or_next|multiplayer_is_server),
@@ -6706,13 +6715,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (val_mul,":damage",":max_damage"),
         (val_div,":damage",1000),
         
-        # Calculate damage 100-0% of damage according to range
-        # (store_mul,":damage",":cur_dist",1000), # distance 5 meter = 500000
-        # (val_div,":damage",":range"), # distance 5 meter range 10 meter = 500
-        # (val_mul,":damage",":max_damage"), # 500 * lets say 40 damage = 20000
-        # (val_div,":damage",1000), # 20000 / 1000 = 20 damage
-        # (store_sub,":damage",":max_damage",":damage"),
-        
         (try_begin), # If we have no shooter killed himself then.
           (neg|agent_is_active,":shooter_agent_no"),
           (assign,":shooter_agent_no",":agent_no"),
@@ -6736,17 +6738,13 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script,"script_multiplayer_server_play_sound_at_position","snd_neigh"),
           (agent_set_animation, ":agent_no", "anim_horse_rear"),
         (try_end),
-      (try_end), 	
-      
-      #prop_instance_receive_damage
-      (assign,":end_wall_cond",mm_destructible_props_end),
-      (try_for_range_backwards,":wall_type",mm_destructible_props_begin,":end_wall_cond"),
-        (neg|is_between,":wall_type",mm_explosive_props_begin, mm_explosive_props_end),
-        
+      (try_end),
+
+      (try_for_range_backwards,":wall_type", pn_hittable_props_begin, pn_hittable_props_end),
         (try_for_prop_instances, ":wall_id", ":wall_type", somt_object),
-					
+
           # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
-          (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
+          (scene_prop_get_slot, ":range_adition", ":wall_id", scene_prop_slot_destruct_max_length),
           (try_begin),
             (gt,":range_adition",0),
             
@@ -6768,67 +6766,18 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script,"script_get_prop_center",":wall_id"),
           (eq,reg1,1), # is ok :)
           
-          # pos42 is the center pos.
           (get_distance_between_positions, ":cur_dist", pos47, pos42),
-          # substract the wall size from the distance to get the "real" distance to the prop.
-          (val_sub,":cur_dist",":divved_range_adition"), 
-          
-          (le, ":cur_dist", ":range"),
-          
-          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage          
-          (store_mul,":damage",":cur_dist",750),
-          (val_div,":damage",":range"),
-          (store_sub,":damage",1000,":damage"),
-          (val_mul,":damage",":max_damage"),
-          (val_div,":damage",1000),
-         
-          (call_script,"script_deliver_damage_to_prop",":wall_id",":damage", 0, ":shooter_agent_no"),
+
+          (val_sub,":cur_dist",":divved_range_adition"),
+
+          (try_begin),
+            (le, ":cur_dist", ":range"),
+            (eq, ":is_mortar", 1),
+            (call_script, "script_handle_pn_cannons_damage_on_props", ":wall_type", ":wall_id", -1, cannon_ammo_type_bomb),
+          (try_end),
         (try_end),
-        
-				(try_for_prop_instances, ":wall_id", ":wall_type", somt_temporary_object),
-						
-          # Get the longest dimension of the prop and see that as the range addition of the explosion (to hit this thing)
-          (scene_prop_get_slot,":range_adition",":wall_id",scene_prop_slot_destruct_max_length),
-          (try_begin),
-            (gt,":range_adition",0),
-            
-            # make range adition 75 % for balance/tweaking.
-            (val_mul, ":range_adition", 75), 
-            (val_div, ":range_adition", 100),
-            
-            # devide the longest dimension by 2 since were calculating from center of prop.
-            (store_div,":divved_range_adition",":range_adition",2),
-          (try_end),
-          
-          (store_add,":range_awall", ":range",":range_adition"),
-          
-          # only get shit that is close to this ball
-          (prop_instance_get_position, pos46, ":wall_id"),
-          (get_distance_between_positions, ":distance_explosion_wall", pos46, pos47),
-          (le, ":distance_explosion_wall", ":range_awall"),
-          
-          (call_script,"script_get_prop_center",":wall_id"),
-          (eq,reg1,1), # is ok :)
-          
-          # pos42 is the center pos.
-          (get_distance_between_positions, ":cur_dist", pos47, pos42),
-          # substract the wall size from the distance to get the "real" distance to the prop.
-          (val_sub,":cur_dist",":divved_range_adition"), 
-          
-          (le, ":cur_dist", ":range"),
-          
-          # Damage = damage_max * (1 - ((0.75*distance)/range))   for our example:   40 * (1 - ((0.75*500)/800)) = 21.25  damage          
-          (store_mul,":damage",":cur_dist",750),
-          (val_div,":damage",":range"),
-          (store_sub,":damage",1000,":damage"),
-          (val_mul,":damage",":max_damage"),
-          (val_div,":damage",1000),
-         
-          (call_script,"script_deliver_damage_to_prop",":wall_id",":damage", 0, ":shooter_agent_no"),
-        (try_end),  			
-      (try_end),  
+      (try_end),
        
-			
       #destroyed pioneer props can disapear completely and give build points.
       (try_for_range,":pioneer_build_type","spr_mm_stakes_construct","spr_plank_construct_dummy"),
         (try_for_prop_instances, ":pioneer_prop_id", ":pioneer_build_type"),
@@ -6875,13 +6824,9 @@ scripts.extend([("game_start", []), # single player only, not used
           #Changed below to be consecutive - not instant
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
-          
-          #(prop_instance_get_position, pos47, ":instance_id"), 
-          #(call_script, "script_clean_up_prop_instance", ":instance_id"),
-          
-          #(call_script,"script_explosion_at_position",":shooter_agent_no",1000,500), # Input: shooter_agent_no, max_damage points, range in cm
+
         (try_end),
-				(try_for_prop_instances, ":instance_id", ":explosive_type", somt_temporary_object),
+          (try_for_prop_instances, ":instance_id", ":explosive_type", somt_temporary_object),
           #(scene_prop_slot_eq, ":instance_id", scene_prop_slot_in_use, 1),
           
           (prop_instance_get_position,pos7,":instance_id"),
@@ -6895,11 +6840,6 @@ scripts.extend([("game_start", []), # single player only, not used
           #Changed below to be consecutive - not instant
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,1),
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_user_agent,":shooter_agent_no"),
-          
-          #(prop_instance_get_position, pos47, ":instance_id"), 
-          #(call_script, "script_clean_up_prop_instance", ":instance_id"),
-          
-          #(call_script,"script_explosion_at_position",":shooter_agent_no",1000,500), # Input: shooter_agent_no, max_damage points, range in cm
         (try_end),
       (try_end),
       
@@ -7341,20 +7281,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign,reg3,":is_scaled"),
   ]),
 
-  # todo = Damage to prop, implement
-  # script_deliver_damage_to_prop
-  # Input: prop_instance_id
-  #        damage
-  #        use_pos47_particle (particle from pos47)
-  #
-  # Output: reg1 = is_ok
-  ("deliver_damage_to_prop",
-    [
-     (assign,":is_ok",1), # delete this line when implementing the method
-     (assign,reg1,":is_ok"),
-    ]
-  ),
-
   # script_search_for_first_ground_from_direction_to_angle
   # Input: pos23
   #        pos10
@@ -7440,8 +7366,14 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":max_damage",200),
         (assign,":range",310),
       (try_end),
+
+      (assign, ":is_mortar", 0),
+      (try_begin),
+        (eq, ":ammo_type", cannon_ammo_type_bomb),
+        (assign, ":is_mortar", 1),
+      (try_end),
       
-      (call_script,"script_explosion_at_position",":shooter_agent",":max_damage",":range"), # Input: shooter_agent_no, max_damage points, range in cm
+      (call_script,"script_explosion_at_position",":shooter_agent",":max_damage",":range", ":is_mortar"), # Input: shooter_agent_no, max_damage points, range in cm
       
       (try_begin),
         (eq,":spawn_particles",1),
@@ -7754,22 +7686,28 @@ scripts.extend([("game_start", []), # single player only, not used
 
         (assign, ":hit_effect_type", -1),
 
-        (assign, ":damage", 300), # canister shot
+        # base shots damage
         (try_begin),
           (eq, ":cannon_shot_type", cannon_ammo_type_round),
-            (assign, ":damage", 1500), # round shot
+          (assign, ":damage", 1000), # round shot
+        (else_try),
           (eq, ":cannon_shot_type", cannon_ammo_type_shell),
-            (assign, ":damage", 1500), # shell shot
+          (assign, ":damage", 1000), # shell shot
+        (else_try),
           (eq, ":cannon_shot_type", cannon_ammo_type_bomb),
-            (assign, ":damage", 3000), # bomb shot
+          (assign, ":damage", 2000), # bomb shot
+        (else_try),
           (eq, ":cannon_shot_type", cannon_ammo_type_rocket),
-            (assign, ":damage", 800), # rocket shot
+          (assign, ":damage", 500), # rocket shot
+        (else_try),
+          (assign, ":damage", 300), # canister shot
         (try_end),
 
         # DOORS
         (try_begin),
           (is_between, ":hitted_prop_type", pn_usable_dam_doors_begin, pn_usable_dam_doors_end),
           (assign, ":hit_effect_type", pn_effect_type_wood),
+          (val_mul, ":damage", 2),
           (call_script, "script_cf_hit_door", ":hitted_prop_instance", ":damage", item_class_wood, ":agent_id"),
 
         # SHIPS
@@ -7792,6 +7730,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_begin),
             (eq, ":hit_effect_type", pn_effect_type_wood),
             (prop_instance_get_position, pos56, ":hitted_prop_instance"),
+            (copy_position, pos60, pos56),
             (call_script, "script_multiplayer_server_play_sound_at_position", "snd_cannon_hit_ship"),
             (call_script, "script_multiplayer_server_spawn_particle_at_position", "psys_woodwallhit_particles", 90),
           (try_end),

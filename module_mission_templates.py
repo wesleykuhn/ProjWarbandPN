@@ -2410,7 +2410,7 @@ multiplayer_server_explosives  = (
           
           (call_script, "script_clean_up_prop_instance", ":instance_id"),
           
-          (call_script,"script_explosion_at_position",":agent_id",270,370), # Input: shooter_agent_no, max_damage points, range in cm
+          (call_script,"script_explosion_at_position",":agent_id",270,370,0), # Input: shooter_agent_no, max_damage points, range in cm
         (else_try),
           (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
           (set_fixed_point_multiplier,100),
