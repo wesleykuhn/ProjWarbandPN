@@ -81,6 +81,27 @@ slot_player_character_language        = 59
 
 # PN START *********************************
 
+pn_hittable_props_begin = "spr_table_tavern"
+pn_hittable_props_end = "spr_mm_ambience_sound_global_wind_snow"
+
+pn_usable_not_dam_doors_small_begin = "spr_pw_door_teleport_small_arch_a"
+pn_usable_not_dam_doors_small_end   = "spr_pw_door_teleport_arch_a"
+
+pn_usable_dam_doors_small_begin = "spr_pw_door_rotate_a"
+pn_usable_dam_doors_small_end   = "spr_pw_door_rotate_e_left"
+
+pn_usable_dam_doors_medium_begin = "spr_pw_door_rotate_e_left"
+pn_usable_dam_doors_medium_end   = "spr_pw_door_rotate_earth_left"
+
+pn_usable_dam_doors_huge_begin = "spr_pw_door_rotate_earth_left"
+pn_usable_dam_doors_huge_end   = "spr_pw_wooden_bridge_a"
+
+pn_usable_dam_doors_begin = pn_usable_dam_doors_small_begin
+pn_usable_dam_doors_end   = pn_usable_dam_doors_huge_end
+
+pn_effect_type_wood = 0
+pn_effect_type_bricks = 1
+
 player_character_language_french = 1
 player_character_language_english = 2
 player_character_language_austrian = 3
@@ -287,9 +308,6 @@ mm_construct_props_begin       = "spr_mm_stakes_construct"
 mm_construct_props_end         = "spr_mm_crator_small"
 mm_construct_props_strings     = "str_mm_stakes_construct"
 mm_construct_props_meshes     = "mesh_construct_mesh_stakes"
-
-#pn_ships_begin = "spr_pn_ship_longboat"
-#pn_ships_end   = "spr_mm_weather_time"
 
 # PN END ***********************************
 

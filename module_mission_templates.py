@@ -1889,6 +1889,8 @@ multiplayer_server_cannonball_flight = (
               ],
   [
     (set_fixed_point_multiplier, 100),
+
+    (assign, ":hitted_prop_id", -1),
     
     (try_for_range,":cannonball_type", "spr_mm_cannonball_code_only_6pd", "spr_mm_cannon_12pdr_wood"),
       (try_for_prop_instances, ":ball_instance_id", ":cannonball_type", somt_temporary_object),
@@ -2078,12 +2080,12 @@ multiplayer_server_cannonball_flight = (
           (eq,":check_walls",1), # not the first time so dont destroy your defence walls..
           (assign,":min_dist",9999999999),
           (assign,":hitted_wall_instance",-1),
-          (assign,":hitted_wall_kind",-1),
           (assign,":hitted_wall_power",3),
           (assign,":hitted_distance_ball_wall",0),
           (store_mul,":cur_x_vel_min",":cur_x_vel",-1),
 
-          (try_for_range, ":wall_type", mm_destructible_props_begin, mm_destructible_props_end),
+          # checking if the cannon ball or rocket hit a scene prop
+          (try_for_range, ":wall_type", pn_hittable_props_begin, pn_hittable_props_end),
             (assign,":wall_power", 3),
 
             (try_for_prop_instances, ":wall_id", ":wall_type"),
@@ -2163,8 +2165,9 @@ multiplayer_server_cannonball_flight = (
               (assign,":hitted_wall_x_dist",":x_value"),
               #(assign,":hitted_length_div2",":length_div2"),
               (store_div,":hitted_width_div2", ":cur_wall_width_usa", 2),
-              (assign,":hitted_wall_kind",":wall_type"),
               (assign,":hitted_wall_power",":wall_power"),
+
+              (assign, ":hitted_prop_id", ":wall_type"), #PN says, we have hitted this, sir
               
               (copy_position,pos45,pos33),
               (position_move_x,pos45,":cur_x_vel_min"),
@@ -2175,6 +2178,8 @@ multiplayer_server_cannonball_flight = (
 
           (try_begin), # we have something hit.
             (prop_instance_is_valid,":hitted_wall_instance"), #patch1115 18/25
+
+            (call_script, "script_handle_pn_cannons_damage_on_props", ":hitted_prop_id", ":hitted_wall_instance", ":user_agent", ":ammo_type"),
             
             (copy_position,pos45,pos33),
             (position_move_x,pos45,":cur_x_vel_min"),
@@ -2202,14 +2207,7 @@ multiplayer_server_cannonball_flight = (
               (assign,":check_agents",0),
             (else_try),
               (eq,":ammo_type",cannon_ammo_type_round),
-              
-              #(try_begin), lets try to disable this
-              #  (is_between, ":hitted_wall_kind", "spr_fortnew", "spr_mm_new_wall_1_1"), #patch1115 fix 38/1
-              #  (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 1, ":user_agent"),
-              #(else_try),
-              #  (call_script,"script_deliver_damage_to_prop",":hitted_wall_instance",201, 0, ":user_agent"),
-              #(try_end),
-              
+
               (scene_prop_get_slot,":ball_times_hit",":ball_instance_id", scene_prop_slot_times_hit),
               (val_add, ":ball_times_hit", ":hitted_wall_power"),
               
@@ -2313,8 +2311,6 @@ multiplayer_server_cannonball_flight = (
           
           (is_between,":y_value",":min_y_test",":y_test"), # width 50 cm each side so a meter wide we hit him
           
-         
-          
           (store_add,":z_test",":z_size",15),
           (store_mul,":min_z_test",":z_test",-1),
           (val_add,":z_test",20),
@@ -2322,21 +2318,9 @@ multiplayer_server_cannonball_flight = (
           (val_div,":z_offset",10000), # zoffset is clear.
           (val_add,":z_test",":z_offset"),
           (val_add,":min_z_test",":z_offset"),
-          
-          
-          # (assign,reg21,":cur_agent"),
-           # (assign,reg22,":x_value"),
-           # (assign,reg24,":z_value"),
-           # (assign,reg25,":cur_x_vel"),
-           # (assign,reg27,":cur_z_vel"),
-           # (assign,reg28,":z_offset"),
-           
-           # (display_message,"@cur_agent:{reg21}  x_value: {reg22}  z_value: {reg24}  ball_x_vel: {reg25}  ball_z_vel: {reg27}  z_offset: {reg28}"),
-          
-          
+
           (is_between,":z_value",":min_z_test",":z_test"),#,-110,121), # height 2 meter man + 20 for correction
-          
-          
+
           (try_begin),
             (this_or_next|eq,":ammo_type",cannon_ammo_type_shell),
             (eq,":ammo_type",cannon_ammo_type_rocket),

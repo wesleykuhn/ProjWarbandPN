@@ -915,7 +915,7 @@ def spr_rotate_door_triggers(hit_points=1000, resource_class=item_class_wood, le
     (ti_on_scene_prop_hit,
      [(store_trigger_param_1, ":instance_id"),
       (store_trigger_param_2, ":hit_damage"),
-      (call_script, "script_cf_hit_door", ":instance_id", ":hit_damage", resource_class),
+      (call_script, "script_cf_hit_door", ":instance_id", ":hit_damage", resource_class, -1),
       ]),
     (ti_on_scene_prop_destroy, []),
     spr_call_script_use_trigger("script_cf_use_rotate_door", left),
@@ -4483,42 +4483,58 @@ scene_props = [
   # Do not touch at this last record's order
   ("pn_change_troop_mercenary",spr_use_time(40),"training_musket","bo_pw_weapon", spr_change_troop_triggers("trp_mercenary", cost=1000, mercenary=True, after_respawn=True, use_string="str_troop_become_for")),
 
+  # UNDAMAGEBLE DOORS
+  # Small teleports
   ("pw_door_teleport_small_arch_a",spr_use_time(1),"tutorial_door_a","bo_tutorial_door_a", spr_teleport_door_triggers(pos_offset=(-55,50,-98))),
   ("pw_door_teleport_square_a",spr_use_time(1),"tutorial_door_b","bo_tutorial_door_b", spr_teleport_door_triggers(pos_offset=(70,50,0))),
-  ("pw_door_teleport_arch_a",spr_use_time(1),"dungeon_door_direction_a","bo_dungeon_door_direction_a", spr_teleport_door_triggers(pos_offset=(100,0,-230))),
-  ("pw_door_teleport_roof",spr_use_time(1),"house_roof_door","bo_house_roof_door", spr_teleport_door_triggers(pos_offset=(0,0,100))),
   ("pw_door_teleport_inset_a",spr_use_time(1),"pw_teleport_door_a","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_inset_b",spr_use_time(1),"pw_teleport_door_b","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_inset_c",spr_use_time(1),"pw_teleport_door_c","bo_pw_teleport_door_a", spr_teleport_door_triggers(pos_offset=(0,50,0))),
+  ("pw_door_teleport_roof",spr_use_time(1),"house_roof_door","bo_house_roof_door", spr_teleport_door_triggers(pos_offset=(0,0,100))),
+  ("pw_door_rotate_dungeon_cell_a",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_a","bo_dungeon_door_cell_a_fixed", spr_rotate_door_no_hit_triggers()),
+  ("pw_door_rotate_dungeon_cell_b",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_b_fixed","bo_dungeon_door_cell_b_fixed", spr_rotate_door_no_hit_triggers()),
+  ("pw_door_rotate_dungeon_cell_c",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_c","bo_dungeon_door_cell_c", spr_rotate_door_no_hit_triggers()),
+
+  # Huge teleports
+  ("pw_door_teleport_arch_a",spr_use_time(1),"dungeon_door_direction_a","bo_dungeon_door_direction_a", spr_teleport_door_triggers(pos_offset=(100,0,-230))),
+
+  # just two teleports
   ("pw_door_teleport_invisible",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0))),
   ("pw_door_teleport_invisible_not_pickable",sokf_invisible|spr_use_time(1),"pw_invisible_door","bo_pw_invisible_door", spr_teleport_door_triggers(pos_offset=(0,50,0), pickable=0)),
+  
+  # DAMAGABLE DOORS
+  # Small doors
   ("pw_door_rotate_a",spr_rotate_door_flags(1),"castle_f_sally_door_a","bo_castle_f_sally_door_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_b",spr_rotate_door_flags(1),"castle_e_sally_door_a","bo_castle_e_sally_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_c",spr_rotate_door_flags(1),"castle_f_door_a","bo_castle_f_door_a_fixed", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_d",spr_rotate_door_flags(1),"pw_door_d","bo_pw_door_d", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_viking_left",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left_fixed", spr_rotate_door_triggers(hit_points=5000, left=1)),
-  ("pw_door_rotate_viking_right",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right_fixed", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_gatehouse_left",spr_rotate_door_flags(1),"pw_gatehouse_door_left","bo_pw_gatehouse_door_left", spr_rotate_door_triggers(hit_points=7000, left=1)),
-  ("pw_door_rotate_gatehouse_right",spr_rotate_door_flags(1),"pw_gatehouse_door_right","bo_pw_gatehouse_door_right", spr_rotate_door_triggers(hit_points=7000)),
-  ("pw_door_rotate_dungeon_cell_a",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_a","bo_dungeon_door_cell_a_fixed", spr_rotate_door_no_hit_triggers()),
-  ("pw_door_rotate_dungeon_cell_b",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_b_fixed","bo_dungeon_door_cell_b_fixed", spr_rotate_door_no_hit_triggers()),
-  ("pw_door_rotate_dungeon_cell_c",spr_rotate_door_no_hit_flags(2),"dungeon_door_cell_c","bo_dungeon_door_cell_c", spr_rotate_door_no_hit_triggers()),
+  ("mm_door_rotate_mm_restroom_door",spr_rotate_door_flags(1),"mm_restroom_door","bo_mm_restroom_door", spr_rotate_door_triggers(hit_points=700)),
   ("pw_door_rotate_dungeon_a",spr_rotate_door_flags(1),"pw_dungeon_door_a","bo_pw_dungeon_door_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_dungeon_b",spr_rotate_door_flags(1),"pw_dungeon_door_b","bo_pw_dungeon_door_a", spr_rotate_door_triggers(hit_points=5000)),
   ("pw_door_rotate_dungeon_c",spr_rotate_door_flags(1),"pw_dungeon_door_c","bo_pw_dungeon_door_a", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_e_left",spr_rotate_door_flags(1),"pw_door_e_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
-  ("pw_door_rotate_e_right",spr_rotate_door_flags(1),"pw_door_e_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_f_left",spr_rotate_door_flags(1),"pw_door_f_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
-  ("pw_door_rotate_f_right",spr_rotate_door_flags(1),"pw_door_f_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_h_left",spr_rotate_door_flags(1),"pw_door_g_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
-  ("pw_door_rotate_h_right",spr_rotate_door_flags(1),"pw_door_g_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
-  ("pw_door_rotate_towngate_left",spr_rotate_door_flags(2),"towngate_rectangle_door_left","bo_towngate_rectangle_door_left_fixed", spr_rotate_door_triggers(hit_points=10000, left=1)),
-  ("pw_door_rotate_towngate_right",spr_rotate_door_flags(2),"towngate_rectangle_door_right","bo_towngate_rectangle_door_right_fixed", spr_rotate_door_triggers(hit_points=10000)),
-  ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
-  ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
-  ("pw_door_rotate_stable",spr_rotate_door_flags(1),"pw_full_stable_door_a","bo_pw_full_stable_door_a", spr_rotate_door_triggers(hit_points=1000, left=1)),
   ("pw_door_rotate_village_a",spr_rotate_door_flags(1),"pw_village_door_a","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
   ("pw_door_rotate_village_b",spr_rotate_door_flags(1),"pw_village_door_b","bo_pw_village_door_a", spr_rotate_door_triggers(hit_points=2000)),
+
+  # Medium doors left
+  ("pw_door_rotate_e_left",spr_rotate_door_flags(1),"pw_door_e_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_f_left",spr_rotate_door_flags(1),"pw_door_f_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_h_left",spr_rotate_door_flags(1),"pw_door_g_left","bo_pw_door_left", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_viking_left",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_left","bo_viking_keep_destroy_sally_door_left_fixed", spr_rotate_door_triggers(hit_points=5000, left=1)),
+  ("pw_door_rotate_towngate_left",spr_rotate_door_flags(2),"towngate_rectangle_door_left","bo_towngate_rectangle_door_left_fixed", spr_rotate_door_triggers(hit_points=10000, left=1)),
+
+  # Medium doors right
+  ("pw_door_rotate_e_right",spr_rotate_door_flags(1),"pw_door_e_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_f_right",spr_rotate_door_flags(1),"pw_door_f_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_h_right",spr_rotate_door_flags(1),"pw_door_g_right","bo_pw_door_right", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_stable",spr_rotate_door_flags(1),"pw_full_stable_door_a","bo_pw_full_stable_door_a", spr_rotate_door_triggers(hit_points=1000, left=1)),
+  ("pw_door_rotate_viking_right",spr_rotate_door_flags(1),"viking_keep_destroy_sally_door_right","bo_viking_keep_destroy_sally_door_right_fixed", spr_rotate_door_triggers(hit_points=5000)),
+  ("pw_door_rotate_towngate_right",spr_rotate_door_flags(2),"towngate_rectangle_door_right","bo_towngate_rectangle_door_right_fixed", spr_rotate_door_triggers(hit_points=10000)),
+
+  # Huge doors
+  ("pw_door_rotate_earth_left",spr_rotate_door_flags(2),"earth_sally_gate_left","bo_earth_sally_gate_left", spr_rotate_door_triggers(hit_points=10000, left=1)),
+  ("pw_door_rotate_gatehouse_left",spr_rotate_door_flags(1),"pw_gatehouse_door_left","bo_pw_gatehouse_door_left", spr_rotate_door_triggers(hit_points=7000, left=1)),
+  ("pw_door_rotate_earth_right",spr_rotate_door_flags(2),"earth_sally_gate_right","bo_earth_sally_gate_right", spr_rotate_door_triggers(hit_points=10000)),
+  ("pw_door_rotate_gatehouse_right",spr_rotate_door_flags(1),"pw_gatehouse_door_right","bo_pw_gatehouse_door_right", spr_rotate_door_triggers(hit_points=7000)),
 
   ("pw_wooden_bridge_a",spr_structure_flags(),"bridge_wooden","bo_bridge_wooden_fixed", spr_bridge_triggers("pw_wooden_bridge_a_footing", hit_points=15000)),
   ("pw_wooden_bridge_a_footing",spr_build_flags(),"pw_build_bridge","bo_pw_build", spr_bridge_footing_triggers()),
@@ -4574,20 +4590,20 @@ scene_props = [
   ("pw_back_box",sokf_static_movement|spr_use_time(3),"pw_back_box","bo_pw_back_box", spr_cart_triggers(detach_offset=-13, inventory_count=10, max_item_length=80, access_distance=-80)),
   ("pw_horse_pack",sokf_static_movement|spr_use_time(2),"pw_horse_pack","bo_pw_horse_pack", spr_cart_triggers(horse=1, detach_offset=49, inventory_count=20, max_item_length=100, access_distance=90)),
 
-  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=5000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
+  ("pw_ship_a",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_a","bo_pw_ship_a", spr_ship_triggers(hit_points=4000, length=800, width=150, height=-20, speed=6, sail="pw_ship_a_sail", sail_off="pw_ship_a_sail_off", collision="pw_ship_a_cd")),
   ("pw_ship_a_sail",sokf_moveable,"pw_ship_a_sail","bo_pw_ship_a_sail", []),
   ("pw_ship_a_sail_off",sokf_moveable,"pw_ship_a_sail_off","bo_pw_ship_a_sail_off", []),
   ("pw_ship_a_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_a_cd", []),
-  ("pw_ship_b",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_b","bo_pw_ship_b", spr_ship_triggers(hit_points=8000, length=1400, width=230, height=100, speed=4, sail="pw_ship_b_sail", collision="pw_ship_b_cd")),
+  ("pw_ship_b",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_b","bo_pw_ship_b", spr_ship_triggers(hit_points=6000, length=1400, width=230, height=100, speed=4, sail="pw_ship_b_sail", collision="pw_ship_b_cd")),
   ("pw_ship_b_sail",sokf_moveable,"pw_ship_b_sail","bo_pw_ship_b_sail", []),
   ("pw_ship_b_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_b_cd", []),
-  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=10000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
+  ("pw_ship_c",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_c","bo_pw_ship_c", spr_ship_triggers(hit_points=7000, length=1400, width=300, height=300, speed=4, sail="pw_ship_c_sail", sail_off="pw_ship_c_sail_off", ramp="pw_ship_c_ramp", hold="pw_ship_c_hold", collision="pw_ship_c_cd")),
   ("pw_ship_c_sail",sokf_moveable,"pw_ship_c_sail","bo_pw_ship_c_sail", []),
   ("pw_ship_c_sail_off",sokf_moveable,"pw_ship_c_sail_off","bo_pw_ship_c_sail_off", []),
   ("pw_ship_c_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
   ("pw_ship_c_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
   ("pw_ship_c_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_c_cd", []),
-  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=7000, length=900, width=250, height=120, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
+  ("pw_ship_d",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pw_ship_d","bo_pw_ship_d", spr_ship_triggers(hit_points=6000, length=900, width=250, height=120, speed=5, sail="pw_ship_d_sail", hold="pw_ship_d_hold", collision="pw_ship_d_cd")),
   ("pw_ship_d_sail",sokf_moveable,"pw_ship_d_sail","bo_pw_ship_d_sail", []),
   ("pw_ship_d_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_d_hold", spr_item_storage_triggers(inventory_count=64, max_item_length=500)),
   ("pw_ship_d_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pw_ship_d_cd", []),
@@ -4675,27 +4691,27 @@ scene_props = [
 
   # PN START ************************************************************************************************************************
   # SHIPS
-  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=1200, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
+  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=2000, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
   ("pn_ship_longboat_sail",sokf_moveable,"pn_ship_longboat_sail","bo_birdmodel", []),
   ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_longboat_cd", []),
 
-  ("pn_ship_schooner_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_with_ramp_sail", ramp="pn_ship_schooner_with_ramp_ramp", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_with_ramp_cd")),
+  ("pn_ship_schooner_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=13000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_with_ramp_sail", ramp="pn_ship_schooner_with_ramp_ramp", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_with_ramp_cd")),
   ("pn_ship_schooner_with_ramp_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
   ("pn_ship_schooner_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
   ("pn_ship_schooner_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner_cd", []),
 
-  ("pn_ship_schooner",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=6000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_sail", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_cd")),
+  ("pn_ship_schooner",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_schooner", "bo_pn_ship_schooner",spr_ship_triggers(hit_points=13000, length=1400, width=225, height=130, speed=5, sail="pn_ship_schooner_sail", hold="pn_ship_schooner_hold", collision="pn_ship_schooner_cd")),
   ("pn_ship_schooner_sail",sokf_moveable,"pn_ship_schooner_sail","bo_birdmodel", []),
   ("pn_ship_schooner_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=70, max_item_length=500)),
   ("pn_ship_schooner_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_schooner_cd", []),
 
-  ("pn_ship_frigate_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=400, height=200, speed=3, sail="pn_ship_frigate_with_ramp_sail", ramp="pn_ship_frigate_with_ramp_ramp", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_with_ramp_cd")),
+  ("pn_ship_frigate_with_ramp",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=15000, length=2100, width=400, height=200, speed=3, sail="pn_ship_frigate_with_ramp_sail", ramp="pn_ship_frigate_with_ramp_ramp", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_with_ramp_cd")),
   ("pn_ship_frigate_with_ramp_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
   ("pn_ship_frigate_with_ramp_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
   ("pn_ship_frigate_with_ramp_ramp",sokf_moveable|spr_use_time(1),"pw_ship_c_ramp","bo_pw_ship_c_ramp", spr_ship_ramp_triggers()),
   ("pn_ship_frigate_with_ramp_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_frigate_cd", []),
 
-  ("pn_ship_frigate",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=9000, length=2100, width=520, height=200, speed=3, sail="pn_ship_frigate_sail", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_cd")),
+  ("pn_ship_frigate",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_frigate", "bo_pn_ship_frigate",spr_ship_triggers(hit_points=15000, length=2100, width=520, height=200, speed=3, sail="pn_ship_frigate_sail", hold="pn_ship_frigate_hold", collision="pn_ship_frigate_cd")),
   ("pn_ship_frigate_sail",sokf_moveable,"pn_ship_frigate_sail","bo_birdmodel", []),
   ("pn_ship_frigate_sail_off",sokf_moveable,"pn_ship_frigate_sail_off","bo_birdmodel", []),
   ("pn_ship_frigate_hold",sokf_moveable|sokf_invisible|spr_use_time(2),"0","bo_pw_ship_c_hold", spr_item_storage_triggers(inventory_count=90, max_item_length=500)),
@@ -6274,7 +6290,30 @@ scene_props = [
   ("mm_earth_dig3" ,sokf_static_movement|sokf_destructible,"mm_shovel_earth2" ,"bo_mm_shovel_earth2" , [check_common_earth_on_hit_trigger,]),
   ("mm_earth_dig4" ,sokf_static_movement|sokf_destructible,"mm_shovel_earth4" ,"bo_mm_shovel_earth4" , [check_common_earth_on_hit_trigger,]),
 
-  # ULTIMOS
+  ("ground_prop_stone_a",0,"mm_ground_prop_stone_a","bo_zaval", []),
+  ("ground_prop_patch_rock",0,"mm_ground_prop_patch_rock","bo_zaval", []),
+  ("ground_prop_grassy_ground",0,"mm_ground_prop_grassy_ground","bo_zaval", []),
+  ("ground_prop_snow",0,"mm_ground_prop_snow","bo_zaval", []),
+  ("ground_prop_ground_earth",0,"mm_ground_prop_ground_earth","bo_zaval", []),
+  ("ground_prop_ground_desert",0,"mm_ground_prop_ground_desert","bo_zaval", []),
+  ("ground_prop_ground_path",0,"mm_ground_prop_ground_path","bo_zaval", []),
+  ("ground_prop_stucco_5",0,"mm_ground_prop_stucco_5","bo_zaval", []),
+  ("ground_prop_roof3",0,"mm_ground_prop_roof3","bo_zaval", []),
+  ("ground_prop_bricks1",0,"mm_ground_prop_bricks1","bo_zaval", []),
+  ("ground_prop_stone_wall_5",0,"mm_ground_prop_stone_wall_5","bo_zaval", []),
+  ("ground_prop_wood1",0,"mm_ground_prop_wood1","bo_zaval", []),
+  ("ground_prop_wood4",0,"mm_ground_prop_wood4","bo_zaval", []),
+ 
+  ("triangle_wood1",0,"mm_triangle_wood1","bo_mm_triangle_wood1", []),
+  ("triangle_wood9",0,"mm_triangle_wood9","bo_mm_triangle_wood1", []),
+  ("triangle_bricks1",0,"mm_triangle_bricks1","bo_mm_triangle_wood1", []),
+  ("triangle_stucco_5",0,"mm_triangle_stucco_5","bo_mm_triangle_wood1", []),
+  ("triangle_mmstuco",0,"mm_triangle_mmstuco","bo_mm_triangle_wood1", []),
+  ("triangle_mmstuco4",0,"mm_triangle_mmstuco4","bo_mm_triangle_wood1", []),
+
+  ("pyramid",0,"pyramid","bo_pyramid", []),
+  ("mm_house_wall_1_sandstones2",0,"1wall_sandstones2","bo_1wall", []),
+
   ("mm_ambience_sound_global_wind_snow",0,"0" ,"0" , [
   (ti_on_init_scene_prop,
     [
@@ -6489,34 +6528,6 @@ scene_props = [
   ("mm_weather_fog_color_red", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in red color. (like html RGB)
   ("mm_weather_fog_color_green", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in green color. (like html RGB)
   ("mm_weather_fog_color_blue", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in blue color. (like html RGB)
-  
-  ("headquarters_base_flag_names",0,"0","0",[]), # custom name ids for the conquest flags that spawn on team base points (entries 64 and 65). var1 for team 1, var2 for team 2
- 
-  ("ground_prop_stone_a",0,"mm_ground_prop_stone_a","bo_zaval", []),
-  ("ground_prop_patch_rock",0,"mm_ground_prop_patch_rock","bo_zaval", []),
-  ("ground_prop_grassy_ground",0,"mm_ground_prop_grassy_ground","bo_zaval", []),
-  ("ground_prop_snow",0,"mm_ground_prop_snow","bo_zaval", []),
-  ("ground_prop_ground_earth",0,"mm_ground_prop_ground_earth","bo_zaval", []),
-  ("ground_prop_ground_desert",0,"mm_ground_prop_ground_desert","bo_zaval", []),
-  ("ground_prop_ground_path",0,"mm_ground_prop_ground_path","bo_zaval", []),
-  ("ground_prop_stucco_5",0,"mm_ground_prop_stucco_5","bo_zaval", []),
-  ("ground_prop_roof3",0,"mm_ground_prop_roof3","bo_zaval", []),
-  ("ground_prop_bricks1",0,"mm_ground_prop_bricks1","bo_zaval", []),
-  ("ground_prop_stone_wall_5",0,"mm_ground_prop_stone_wall_5","bo_zaval", []),
-  ("ground_prop_wood1",0,"mm_ground_prop_wood1","bo_zaval", []),
-  ("ground_prop_wood4",0,"mm_ground_prop_wood4","bo_zaval", []),
- 
-  ("triangle_wood1",0,"mm_triangle_wood1","bo_mm_triangle_wood1", []),
-  ("triangle_wood9",0,"mm_triangle_wood9","bo_mm_triangle_wood1", []),
-  ("triangle_bricks1",0,"mm_triangle_bricks1","bo_mm_triangle_wood1", []),
-  ("triangle_stucco_5",0,"mm_triangle_stucco_5","bo_mm_triangle_wood1", []),
-  ("triangle_mmstuco",0,"mm_triangle_mmstuco","bo_mm_triangle_wood1", []),
-  ("triangle_mmstuco4",0,"mm_triangle_mmstuco4","bo_mm_triangle_wood1", []),
-
-  ("mm_door_rotate_mm_restroom_door",spr_rotate_door_flags(1),"mm_restroom_door","bo_mm_restroom_door", spr_rotate_door_triggers(hit_points=700)),
-
-  ("pyramid",0,"pyramid","bo_pyramid", []),
-  ("mm_house_wall_1_sandstones2",0,"1wall_sandstones2","bo_1wall", []),
 
   #PN END ***************************************************************************************************************************
 

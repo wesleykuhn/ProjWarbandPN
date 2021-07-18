@@ -315,6 +315,7 @@ sounds = [
  ("cannon_hit_wood_wall",sf_priority_10|sf_vol_15, ["wallhit_wood.wav"]),
  ("cannon_fuse",sf_vol_3, ["fuse.ogg"]),
  ("cannon_ball",sf_vol_3, ["cannonball.ogg"]),
+ ("cannon_hit_ship",sf_priority_7|sf_vol_10, ["wallhit_wood.ogg", "cannon_hit2.ogg"]),
  ("explosion",sf_priority_15|sf_vol_15, ["shell1.ogg","shell2.ogg","shell3.ogg"]),
  
  ("glass_break",sf_priority_7|sf_vol_10, ["glass.ogg"]),
