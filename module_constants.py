@@ -81,29 +81,53 @@ slot_player_character_language        = 59
 
 # PN START *********************************
 
-pn_hittable_props_begin = "spr_table_tavern"
-pn_hittable_props_end = "spr_mm_ambience_sound_global_wind_snow"
+pn_hittable_props_begin             = "spr_table_tavern"
+pn_hittable_props_end               = "spr_mm_ambience_sound_global_wind_snow"
 
 pn_usable_not_dam_doors_small_begin = "spr_pw_door_teleport_small_arch_a"
 pn_usable_not_dam_doors_small_end   = "spr_pw_door_teleport_arch_a"
 
-pn_usable_dam_doors_small_begin = "spr_pw_door_rotate_a"
-pn_usable_dam_doors_small_end   = "spr_pw_door_rotate_e_left"
+pn_usable_dam_doors_small_begin     = "spr_pw_door_rotate_a"
+pn_usable_dam_doors_small_end       = "spr_pw_door_rotate_e_left"
 
-pn_usable_dam_doors_medium_begin = "spr_pw_door_rotate_e_left"
-pn_usable_dam_doors_medium_end   = "spr_pw_door_rotate_earth_left"
+pn_usable_dam_doors_medium_begin    = "spr_pw_door_rotate_e_left"
+pn_usable_dam_doors_medium_end      = "spr_pw_door_rotate_earth_left"
 
-pn_usable_dam_doors_huge_begin = "spr_pw_door_rotate_earth_left"
-pn_usable_dam_doors_huge_end   = "spr_pw_wooden_bridge_a"
+pn_usable_dam_doors_huge_begin      = "spr_pw_door_rotate_earth_left"
+pn_usable_dam_doors_huge_end        = "spr_pw_wooden_bridge_a"
 
-pn_usable_dam_doors_begin = pn_usable_dam_doors_small_begin
-pn_usable_dam_doors_end   = pn_usable_dam_doors_huge_end
+pn_usable_dam_doors_begin           = pn_usable_dam_doors_small_begin
+pn_usable_dam_doors_end             = pn_usable_dam_doors_huge_end
 
-pn_trees_begin = "spr_pw_tree_a1"
-pn_trees_end   = "spr_pw_stick_bush_2a"
+pn_trees_begin                      = "spr_pw_tree_a1"
+pn_trees_end                        = "spr_pw_stick_bush_2a"
 
-pn_effect_type_wood = 0
-pn_effect_type_bricks = 1
+pn_small_houses_one_floor_begin     = "spr_mm_house_basic13"
+pn_small_houses_one_floor_end       = "spr_mm_house_basic14"
+
+pn_small_houses_two_floor_begin     = "spr_mm_house_basic14"
+pn_small_houses_two_floor_end       = "spr_mm_house_basic12"
+
+pn_medium_houses_one_floor_begin    = "spr_mm_house_basic12"
+pn_medium_houses_one_floor_end      = "spr_mm_house_basic1"
+
+pn_medium_houses_two_floor_begin    = "spr_mm_house_basic1"
+pn_medium_houses_two_floor_end      = "spr_mm_house_basic4"
+
+pn_house_stairs_begin               = "spr_mm_house_stair1"
+pn_house_stairs_end                 = "spr_mm_house_basic13"
+
+pn_fake_square_cor_houses_begin     = "spr_mm_sp_rich_house10"
+pn_fake_square_cor_houses_end       = "spr_mm_sp_rich_house1"
+
+pn_fake_square_houses_begin         = "spr_mm_sp_rich_house1"
+pn_fake_square_houses_end           = "spr_mm_sp_rich_house4"
+
+pn_fake_retangular_houses_begin     = "spr_mm_sp_rich_house4"
+pn_fake_retangular_houses_end       = "spr_mm_sp_rich_church1"
+
+pn_effect_type_wood    = 0
+pn_effect_type_bricks  = 1
 
 player_character_language_french = 1
 player_character_language_english = 2
