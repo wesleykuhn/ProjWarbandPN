@@ -642,7 +642,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("invalid_prop_place_3","You can't place this prop here and you have to wait half a second between making props!"),
   ("server_s0", "[SERVER]: {s0}"),
 
-  ("pn_debug", "DEBUG: {reg49}."),
+  ("sit","Sit"),
+  ("cant_sit","You cannot sit on it!"),
+  ("sit_in_use","Someone is already sitting on it!"),
 
   # PN END ***************************************************************************
 

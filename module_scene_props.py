@@ -643,6 +643,53 @@ check_common_earth_on_hit_trigger = (ti_on_scene_prop_hit,
     (try_end),
 ])
 
+# Sitting on chairs animation
+chair_on_use_trigger = (ti_on_scene_prop_use,
+  [
+    (store_trigger_param_1, ":agent_id"),
+    (store_trigger_param_2, ":instance_id"),
+
+    (agent_is_active,":agent_id"),
+    (agent_is_alive,":agent_id"),
+    (agent_get_player_id,":player_id",":agent_id"),
+    (player_is_active,":player_id"),
+    (prop_instance_is_valid,":instance_id"),
+    (assign,":in_use",0),
+    (try_for_agents, ":cur_agent"),
+      (agent_is_active,":cur_agent"),
+      (agent_is_alive,":cur_agent"),
+      (agent_get_slot,":cur_inst",":cur_agent",slot_agent_used_prop_instance),
+      (eq,":cur_inst",":instance_id"),
+      (neq,":cur_agent",":agent_id"),
+      (assign,":in_use",1),
+    (try_end),
+    # not in use by a other player.
+    (try_begin),
+      (eq,":in_use",0),
+      # not on horseback
+      (try_begin),
+        (agent_get_horse, ":player_horse", ":agent_id"),
+        (le, ":player_horse", 0),
+        (try_begin),
+          (call_script,"script_cf_agent_is_taking_a_shit",":agent_id"),
+          # we stopped sitting
+          (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
+        (else_try),
+          (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
+          (agent_set_animation,":agent_id","anim_shitting",0),
+          (agent_set_wielded_item,":agent_id",-1),  
+          (prop_instance_get_position,pos5,":instance_id"),
+          (position_move_x,pos5,30),
+          (agent_set_position,":agent_id",pos5),
+        (try_end),
+      (else_try),
+        (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cant_sit"),
+      (try_end),
+    (else_try),
+      (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_sit_in_use"),
+    (try_end),
+  ])
+
 # PN TRIGGERS END *************************************************************************
 
 from header_item_modifiers import *
@@ -5789,6 +5836,7 @@ scene_props = [
   ("mm_restroom" ,0,"restroom" ,"restroom_collision" , []),
   ("mm_sign" ,0,"sign" ,"sign_collision" , []),
   ("mm_bed" ,0,"bed" ,"bed_collision" , []),
+  #("mm_chair1" ,spr_use_time(1),"chair1" ,"chair_collision" , [chair_on_use_trigger]),
   ("mm_chair1" ,0,"chair1" ,"chair_collision" , []),
   ("mm_little_table" ,0,"little_table" ,"little_table_collision" , []),
   ("mm_little_table2" ,0,"little_table2" ,"little_table2_collision" , []),
