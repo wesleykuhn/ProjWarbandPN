@@ -117,15 +117,6 @@ pn_medium_houses_two_floor_end      = "spr_mm_house_basic4"
 pn_house_stairs_begin               = "spr_mm_house_stair1"
 pn_house_stairs_end                 = "spr_mm_house_basic13"
 
-pn_fake_square_cor_houses_begin     = "spr_mm_sp_rich_house10"
-pn_fake_square_cor_houses_end       = "spr_mm_sp_rich_house1"
-
-pn_fake_square_houses_begin         = "spr_mm_sp_rich_house1"
-pn_fake_square_houses_end           = "spr_mm_sp_rich_house4"
-
-pn_fake_retangular_houses_begin     = "spr_mm_sp_rich_house4"
-pn_fake_retangular_houses_end       = "spr_mm_sp_rich_church1"
-
 pn_effect_type_wood    = 0
 pn_effect_type_bricks  = 1
 
