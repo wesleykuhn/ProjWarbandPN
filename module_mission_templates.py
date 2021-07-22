@@ -207,7 +207,7 @@ agent_killed = (ti_on_agent_killed_or_wounded, 0, 0, [], # server and clients: h
     (multiplayer_is_server),
     (call_script, "script_setup_agent_for_respawn", ":dead_agent_id"),
     (call_script, "script_check_animal_killed", ":dead_agent_id", ":killer_agent_id"),
-    (call_script, "script_check_spawn_bots", ":dead_agent_id"),
+    #(call_script, "script_check_spawn_bots", ":dead_agent_id"),
     ])
 
 agent_hit = (ti_on_agent_hit, 0, 0, [], # server: apply extra scripted effects for special weapons, hitting animals, and when overloaded by armor
@@ -786,6 +786,29 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
     ])
 
 # PN START *******************************************************************************************************************
+
+#multiplayer_daytime_cicle_check = (5, 0, 0, [], # server: update the current daytime every five minutes
+#   [
+#     (try_begin),
+#       (multiplayer_is_server),
+#       (assign, ":cur_dt", "$g_cur_daytime"),
+#       (try_begin),
+#         (eq, ":cur_dt", 23),
+#         (assign, ":cur_dt", 0),
+#       (else_try),
+#         (val_add, ":cur_dt", 1),
+#       (try_end),
+#       (assign, "$g_cur_daytime", ":cur_dt"),
+#(store_add, ":sky_box", ":cur_dt", 1), #debug
+#(set_skybox, ":sky_box", ":sky_box"), #debug
+#(assign, reg24, ":sky_box"),
+#(display_message, "@New skybox: {reg24}"), #debug
+#       (try_for_players, ":player_id", 1),
+#         (player_is_active,":player_id"),
+#         (multiplayer_send_int_to_player, ":player_id", multiplayer_event_set_daytime, ":cur_dt"),
+#       (try_end),
+#     (try_end),
+#   ])
 
 multiplayer_client_surrender = (
   0, 0.5, 0.1, [

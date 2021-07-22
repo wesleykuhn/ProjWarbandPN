@@ -2507,6 +2507,14 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 683 , weight(3.5)
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
 ["neutral_militia_pants2", "Militia Pants", [("rus_militia_ranker_pants1",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   10 , weight(1.25)|abundance(100)|head_armor(0)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
+["pn_dress1", "Blue Dress", [("empire_dress1",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 60, weight(3)|body_armor(6)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["pn_dress2", "Red Dress", [("empire_dress2",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 60, weight(3)|body_armor(6)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["pn_dress3", "White Dress", [("empire_dress3",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 60, weight(3)|body_armor(6)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["pn_dress4", "Yellow Dress", [("empire_dress4",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 60, weight(3)|body_armor(6)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
 
 ## Hats
 # Neutral

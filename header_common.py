@@ -37,6 +37,7 @@ multiplayer_event_send_player_action                        = 30
 multiplayer_event_player_build_prop                         = 31
 multiplayer_event_send_control_command                      = 32
 multiplayer_event_use_item                                  = 33
+multiplayer_event_set_daytime                               = 34
 
 # Add new events here: above if sent from the server, below if from clients.
 

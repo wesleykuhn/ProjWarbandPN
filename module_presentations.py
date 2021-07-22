@@ -4753,13 +4753,14 @@ presentations.extend([
       (position_set_x, pos10, 1000),
       (position_set_y, pos10, 800),
       (assign, ":y_pos", 500),
-
-      (create_mesh_overlay, reg1, "mesh_mp_ui_order_button"),
-      (position_set_x, pos1, 5),
-      (position_set_y, pos1, ":y_pos"),
-      (overlay_set_position, reg1, pos10),
-      (overlay_set_size, reg1, pos10),
-      (val_sub, ":y_pos", animation_menu_item_height),
+      (try_for_range, reg0, 0, 9),
+        (create_mesh_overlay, reg1, "mesh_mp_ui_order_button"),
+        (position_set_x, pos1, 5),
+        (position_set_y, pos1, ":y_pos"),
+        (overlay_set_position, reg1, pos1),
+        (overlay_set_size, reg1, pos10),
+        (val_sub, ":y_pos", animation_menu_item_height),
+      (try_end),
 
       (position_set_x, pos10, 800),
       (assign, ":y_pos", 508),
@@ -5310,7 +5311,7 @@ presentations.extend([
       
       (create_text_overlay, reg0, "str_play_together", 0),
       (overlay_set_color, reg0, 0xFFFFFF),
-      (position_set_x, pos1, 120), #0
+      (position_set_x, pos1, 120),
       (position_set_y, pos1, ":cur_y"),
       (overlay_set_position, reg0, pos1),
       (position_set_x, pos1, 1000),

@@ -1,0 +1,23 @@
+** NEW PROPS TO CANNON BALL COLLISION CHECK **
+-Add size on the script_get_prop_kind_size_and_shift
+
+** BOTS SYSTEM **
+# Merchants #
+-They Can't be killed. 
+-Verify if exists the entry_point number 5 before call this.
+-Their calling show be something like: (add_visitors_to_current_scene, 5,"trp_merchant_bot", 1, team_spawn_invulnerable, -1).
+-The number '1' is the amount of bots. If you create more than one they will start side by side. You can create a way to take all 
+agents, check if they are 'trp_merchant_bot' and move them, using (agent_set_position,*). 
+Where '5' is the spawn entry point target. This entry point needs to be on a far place, where players will trade with those bots. 
+-This trade is sample. Just put the 'pw_export_*' stuff on front of those merchants. 
+-Also, call diferent standing animations to those. Their clothes should be like foreigns.
+
+# Bandits Gang
+-Verify if exists the entry_point number 6 before call this.
+-This should be an event, called in 20-20 minutes, with only 40% of chance to happen.
+-Use (entry_point_get_position, pos2, 6). Where '6' is the entry point for those.
+-Then use (set_spawn_position, pos2).
+-And finnaly (spawn_agent,"trp_*"). Where the 'trp_*' is the troop for it, also can be random.
+-Should be spawn between 3-7.
+-They can only have a main weapon.
+-When dead, they can drop between 700-6000 gold.
