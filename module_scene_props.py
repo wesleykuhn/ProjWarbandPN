@@ -1678,8 +1678,6 @@ scene_props = [
   ("village_house_f",0,"village_house_f","bo_village_house_f", []),
   ("village_house_g",0,"village_house_g","bo_village_house_g", []),
   ("village_house_h",0,"village_house_h","bo_village_house_h", []),
-  ("village_house_i",0,"village_house_i","bo_village_house_i", []),
-  ("village_house_j",0,"village_house_j","bo_village_house_j", []),
   ("village_wall_a",0,"village_wall_a","bo_village_wall_a", []),
   ("village_wall_b",0,"village_wall_b","bo_village_wall_b", []),
 
@@ -2248,12 +2246,6 @@ scene_props = [
   ("snowy_castle_round_tower_a",0,"snowy_castle_round_tower_a","bo_snowy_castle_round_tower_a", []),
   ("snowy_castle_square_keep_a",0,"snowy_castle_square_keep_a","bo_snowy_castle_square_keep_a", []),
   ("snowy_castle_stairs_a",sokf_type_ladder,"snowy_castle_stairs_a","bo_snowy_castle_stairs_a", []),
-
-  ("square_keep_b",0,"square_keep_b","bo_square_keep_b", []),
-  ("square_keep_c",0,"square_keep_c","bo_square_keep_c", []),
-  ("square_keep_d",0,"square_keep_d","bo_square_keep_d", []),
-  ("square_keep_e",0,"square_keep_e","bo_square_keep_e", []),
-  ("square_keep_f",0,"square_keep_f","bo_square_keep_f", []),
 
   ("square_extension_a",0,"square_extension_a","bo_square_extension_a", []),
   ("square_stairs_a",0,"square_stairs_a","bo_square_stairs_a", []),
@@ -4186,7 +4178,7 @@ scene_props = [
   ("pn_buy_pirate_hat", spr_buy_item_flags(4), "pirate_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_pirate_hat", resources=["itm_linen_cloth"], tailoring=2)),
 
   # BOOTS
-    ("pn_buy_french_voltigeur_pants", spr_buy_item_flags(4), "french_voltigeur_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_french_voltigeur_pants", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_french_voltigeur_pants", spr_buy_item_flags(4), "french_voltigeur_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_french_voltigeur_pants", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_voltigeur_officer_pants", spr_buy_item_flags(4), "french_voltigeur_officer_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_french_voltigeur_officer_pants", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_dragoon_pants", spr_buy_item_flags(4), "french_dragoon_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_french_dragoon_pants", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_general_boots", spr_buy_item_flags(4), "french_general_boots", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_french_general_boots", resources=["itm_linen_cloth"], tailoring=2)),
@@ -6042,8 +6034,6 @@ scene_props = [
     ("mm_oim_fortwall9",0,"euro_fort_wall_in","bo_euro_fort_wall_in", []),
     
     ("mm_oim_debris1",0,"zaval","bo_zaval", []),
-    ("oim_church1",0,"oim_rus_wood_church_a","bo_oim_rus_wood_church_a", []),
-    ("oim_church2",0,"polsc_chapel_1a","bo_pol_wood_church", []),
     ("oim_rus_house1",0,"rus_izba_c","bo_rus_izba_c", []),
     ("oim_rus_house2",0,"rus_izba_d","bo_rus_izba_d", []),
     ("oim_rus_house3",0,"rus_izba_e","bo_rus_izba_e", []),
