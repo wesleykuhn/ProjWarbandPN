@@ -161,16 +161,16 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
       
       (agent_get_wielded_item,":item_id",":agent_id",0),
       (try_begin),
-        (this_or_next|eq,":item_id","itm_sapper_axe_rus"),
         (this_or_next|eq,":item_id","itm_sapper_axe"),
         (this_or_next|eq,":item_id","itm_russian_peasant_axe"),
-        (eq,":item_id","itm_russian_peasant_2handed_axe"),
+        (this_or_next|eq,":item_id","itm_woodcutter_axe"),
+        (eq,":item_id","itm_heavy_woodcutter_axe"),
 
         (neq,":prop_kind","spr_earthwork1_destructible"), # not for earth prop.
         
         (val_mul,":damage",2),
       (else_try),
-        (eq,":item_id","itm_construction_hammer"), #Only constructable with hammer
+        (eq,":item_id","itm_repair_hammer"), #Only constructable with hammer
         
         (agent_get_troop_id,":troop_id",":agent_id"),
         (eq,":troop_id", "trp_sapper"),
@@ -3567,10 +3567,10 @@ scene_props = [
   ("pn_buy_austrian_infantry_briquet", spr_buy_item_flags(10), "Austrian_infantry_briquet", "bo_pw_weapon", spr_buy_item_triggers  ("itm_austrian_infantry_briquet", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
   ("pn_buy_austrian_jaeger_bayonet", spr_buy_item_flags(10), "Austrian_jaeger_bayonet", "bo_pw_weapon", spr_buy_item_triggers  ("itm_austrian_jaeger_bayonet", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
   ("pn_buy_austrian_jaeger_bayonet_invis", spr_buy_item_flags(10), "Austrian_jaeger_bayonet", "bo_pw_weapon", spr_buy_item_triggers  ("itm_austrian_jaeger_bayonet_invis", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
-  ("pn_buy_russian_briquet_1807_black", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_russian_briquet_1807_black", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
-  ("pn_buy_russian_briquet_1807_black_blackbelt", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_russian_briquet_1807_black_blackbelt", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
-  ("pn_buy_russian_briquet_1807_landwehr", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_russian_briquet_1807_landwehr", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
-  ("pn_buy_russian_peasant_axe_landwehr", spr_buy_item_flags(10), "Russian_peasant_axe", "bo_pw_weapon", spr_buy_item_triggers("itm_russian_peasant_axe_landwehr", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
+  ("pn_buy_prussian_briquet_1807_black", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_prussian_briquet_1807_black", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
+  ("pn_buy_prussian_briquet_1807_black_blackbelt", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_prussian_briquet_1807_black_blackbelt", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
+  ("pn_buy_prussian_briquet_1807_landwehr", spr_buy_item_flags(10), "Russian_briquet_1807", "bo_pw_weapon", spr_buy_item_triggers  ("itm_prussian_briquet_1807_landwehr", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
+  ("pn_buy_prussian_peasant_axe_landwehr", spr_buy_item_flags(10), "Russian_peasant_axe", "bo_pw_weapon", spr_buy_item_triggers("itm_prussian_peasant_axe_landwehr", resources=["itm_iron_bar_short", "itm_iron_bar"], engineer=4)),
 
   # TRAINING
   ("pn_buy_training_officer_sword", spr_buy_item_flags(3), "training_officer_sword", "bo_pw_weapon", spr_buy_item_triggers("itm_training_officer_sword", resources=["itm_wood_pole_short"], engineer=1)),
@@ -3588,7 +3588,6 @@ scene_props = [
 
   # BULLETS
   ("pn_buy_bullets", spr_buy_item_flags(1), "cartridge_box_mesh", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bullets", resources=[], engineer=1)),
-  ("pn_buy_pistol_ammo", spr_buy_item_flags(1), "cartridge_box_mesh", "bo_pw_weapon_small", spr_buy_item_triggers("itm_pistol_ammo", resources=[], engineer=1)),
 
   # ROCKETS
   ("pn_buy_rockets", spr_buy_item_flags(10), "rocket", "bo_pw_weapon", spr_buy_item_triggers("itm_rockets", resources=["itm_iron_piece", "itm_wood_pole_short"], engineer=5)),
@@ -3601,20 +3600,18 @@ scene_props = [
   ("pn_buy_russian_cossack_pike", spr_buy_item_flags(5), "Russian_cossack_pike", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_cossack_pike", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_lancer_pike", spr_buy_item_flags(5), "Russian_lancer_pike", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_lancer_pike", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_opolcheniye_pike", spr_buy_item_flags(5), "Russian_opolcheniye_pike", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_opolcheniye_pike", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
-  ("pn_buy_russian_peasant_kosa", spr_buy_item_flags(5), "Russian_peasant_kosa", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_kosa", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
+  ("pn_buy_cheap_scythe", spr_buy_item_flags(5), "Russian_peasant_kosa", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_cheap_scythe", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_fork", spr_buy_item_flags(5), "Russian_peasant_fork", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_fork", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_pitchfork", spr_buy_item_flags(5), "Russian_peasant_pitchfork", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_pitchfork", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_sap", spr_buy_item_flags(5), "Russian_peasant_sap", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_sap", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_birch_trunk", spr_buy_item_flags(5), "Birch_trunk", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_birch_trunk", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
-  ("pn_buy_russian_peasant_kosa2", spr_buy_item_flags(5), "Russian_peasant_kosa2", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_kosa2", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_club", spr_buy_item_flags(5), "Russian_peasant_club", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_club", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_birch_club", spr_buy_item_flags(5), "Russian_peasant_birch_club", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_birch_club", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_pike", spr_buy_item_flags(5), "Russian_peasant_pike", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_pike", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_kuvalda", spr_buy_item_flags(5), "Russian_peasant_kuvalda", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_kuvalda", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
-  ("pn_buy_russian_peasant_2handed_axe", spr_buy_item_flags(5), "Russian_peasant_2handed_axe", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_2handed_axe", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
+  ("pn_buy_heavy_woodcutter_axe", spr_buy_item_flags(5), "Russian_peasant_2handed_axe", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_heavy_woodcutter_axe", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
   ("pn_buy_russian_peasant_rogatina", spr_buy_item_flags(5), "Russian_peasant_rogatina", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_russian_peasant_rogatina", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
-  ("pn_buy_sapper_axe_ship", spr_buy_item_flags(5), "sapper_axe", "bo_pw_weapon_big", spr_buy_item_triggers  ("itm_sapper_axe_ship", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
-  ("pn_buy_sapper_axe_rus_ship", spr_buy_item_flags(5), "Russian_sappeur_axe", "bo_pw_weapon_big", spr_buy_item_triggers("itm_sapper_axe_rus_ship", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
+  ("pn_buy_cheap_sapper_axe", spr_buy_item_flags(5), "Russian_sappeur_axe", "bo_pw_weapon_big", spr_buy_item_triggers("itm_cheap_sapper_axe", resources=["itm_iron_piece", "itm_wood_pole"], engineer=5)),
 
   # ARTY
   ("pn_buy_cannon_lighter", spr_buy_item_flags(3), "lighter", "bo_pw_weapon_small", spr_buy_item_triggers("itm_cannon_lighter", resources=["itm_iron_piece", "itm_wood_pole"], engineer=3)),
@@ -3636,8 +3633,6 @@ scene_props = [
 
   # SAPPER
   ("pn_buy_sapper_axe", spr_buy_item_flags(4), "sapper_axe", "bo_pw_weapon", spr_buy_item_triggers("itm_sapper_axe", resources=["itm_wood_pole", "itm_linen_cloth"], engineer=1)),
-  ("pn_buy_sapper_axe_rus", spr_buy_item_flags(4), "Russian_sappeur_axe", "bo_pw_weapon", spr_buy_item_triggers("itm_sapper_axe_rus", resources=["itm_wood_pole", "itm_linen_cloth"], engineer=1)),
-  ("pn_buy_construction_hammer", spr_buy_item_flags(4), "sapper_hammer", "bo_pw_weapon", spr_buy_item_triggers("itm_construction_hammer", resources=["itm_wood_pole", "itm_linen_cloth"], engineer=1)),
   ("pn_buy_shovel", spr_buy_item_flags(4), "shovel", "bo_pw_weapon", spr_buy_item_triggers("itm_shovel", resources=["itm_wood_pole", "itm_linen_cloth"], engineer=1)),
   ("pn_buy_shovel_undig", spr_buy_item_flags(4), "shovel", "bo_pw_weapon", spr_buy_item_triggers("itm_shovel_undig", resources=["itm_wood_pole", "itm_linen_cloth"], engineer=1)),
 
@@ -3660,8 +3655,7 @@ scene_props = [
   ("pn_buy_french_gap_body_colours", spr_buy_item_flags(6), "french_GRaP_body_flagman", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_gap_body_colours", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_gap_body_ranker", spr_buy_item_flags(6), "french_GRaP_body_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_gap_body_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_gap_body_officer", spr_buy_item_flags(6), "french_GRaP_body_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_gap_body_officer", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_french_art_ranker_body", spr_buy_item_flags(6), "french_art_ranker_body", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_art_ranker_body", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_french_art_ranker_body_alt", spr_buy_item_flags(6), "french_art_ranker_body_alt", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_art_ranker_body_alt", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_french_art_ranker_body", spr_buy_item_flags(6), "french_art_ranker_body_alt", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_art_ranker_body", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_art_officer_body", spr_buy_item_flags(6), "french_art_officer_body", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_art_officer_body", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_vistula_body_ranker", spr_buy_item_flags(6), "french_vistula_body_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_vistula_body_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_french_vistula_body_colours", spr_buy_item_flags(6), "french_vistula_body_flagcarrier", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_french_vistula_body_colours", resources=["itm_linen_cloth"], tailoring=2)),
@@ -4645,10 +4639,10 @@ scene_props = [
   ("code_spawn_marker",0,"0","0", []),
 
   # Do not touch at this first record's order
-  ("pn_change_troop_peasant",spr_use_time(15),"wooden_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
+  ("pn_change_troop_peasant",spr_use_time(15),"Russian_peasant_pitchfork","bo_pw_weapon_big", spr_change_troop_triggers("trp_peasant", cost=50, after_respawn=True, use_string="str_troop_become")),
 
   ## CIVIL TROOPS
-  ("pn_change_troop_serf",spr_use_time(30),"trident","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
+  ("pn_change_troop_serf",spr_use_time(30),"Russian_peasant_fork","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pn_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
   ("pn_change_troop_craftsman",spr_use_time(50),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_craftsman", cost=800)),
   ("pn_change_troop_healer",spr_use_time(60),"package","bobaggage", spr_change_troop_triggers("trp_healer", cost=1000)),
@@ -4668,14 +4662,14 @@ scene_props = [
   ("pn_change_troop_line_infantry",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_line_infantry", cost=2000)),
   ("pn_change_troop_light_infantry",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_light_infantry", cost=3500)),
   ("pn_change_troop_grenadier",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_grenadier", cost=3500)),
-  ("pn_change_troop_infantry_musician",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_musician", cost=1500)),
+  ("pn_change_troop_infantry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_infantry_musician", cost=1500)),
   ("pn_change_troop_infantry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_officer", cost=5000)),
 
   # Cavalry
   ("pn_change_troop_dragoon",spr_use_time(40),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_dragoon", cost=2000)),
   ("pn_change_troop_lancer",spr_use_time(60),"arena_lance","bo_pw_weapon_big", spr_change_troop_triggers("trp_lancer", cost=3500)),
   ("pn_change_troop_hussar",spr_use_time(60),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_hussar", cost=3500)),
-  ("pn_change_troop_cavalry_musician",spr_use_time(40),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
+  ("pn_change_troop_cavalry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
   ("pn_change_troop_cuirassier",spr_use_time(80),"training_heavy_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cuirassier", cost=4500)),
   ("pn_change_troop_cavalry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cavalry_officer", cost=5000)),
 

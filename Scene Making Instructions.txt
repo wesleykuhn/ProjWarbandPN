@@ -1,0 +1,46 @@
+* BUYABLE ITEMS *
+-All the PN buyable items starts with "pn_buy_" name.
+
+* SHIPS *
+-All the controllable ships starts with "pn_ship_" name. Don't use the names that ends with "cd", 
+	"sail" or "sail_off".
+-There are two types of NW ships: With Ramp and normal. Those with ramp has "with_ramp" on its name. 
+	When placing those with ramp, do tests to see where the ramp you start (Because, frigate 
+	is so huge, that you will need to place it on the side of a plataform).
+-All the cannons, except "mm_cannon_12pdr" and "mm_cannon_howitzer" can be used on ships. You are
+	limited to place at maximum 9 cannon/rockets per ship. To attach the cannons on ships you 
+	need to see the same Var 2 as for each other (ship and cannon).
+	Ex: If you assign 4 in Var 2 for the ship the cannon needs to be 4 also. WARNING: Aways 
+	test if the cannnon is attached right or if it's moving right with the ship!
+-Set the Z position (altitude) to 0, else they will bug on reset.
+
+* CANNONS *
+-Do not use the cannons that has "wood", "limber", "wheel", "barrel" or "plataform" on name. Use 
+	the normal cannons (with the complete set of equipaments: Limber, Wheels, etc).
+-There's a very boring bug which makes a tiny barrier in front of a "Mortar" placed on scene. So,
+	make tests to check if it will cause problems.
+
+* HORSES *
+-Horses that has "Artellery" in name spawns with cannons. So, don't place them like they are
+	normal horses.
+
+* TREES *
+-All the trees that are usable (player can cut down) starts with "mm_tree_" name and DOESN'T has
+	"_vegetation" on name. The trees that has vegetation on name aren't usable!
+
+* BEELS *
+-To place an usable bell use the bell's rope Scene Prop. It's the rope that will make the sound, not 
+	the bell.
+
+* HOUSES *
+-Houses that are complete (comes with walls, roof and floor), DOESN'T spawn with windows! You need
+	to place it manually.
+-The Scene Props that starts with "mm_house_wall_*" on name, wich has a space for window, starts with
+ 	window Automatically. So DO NOT place window on it. Except those that has "d", "dd" or 
+	"ddd" on name.
+-For manually adding windows you can use the Var no 1, of the scene obj. By using you it you can 
+place various types of window, wich are: 1 = Rich type glass 
+			                 2 = Broken normal type glass
+                                         3 = Broken rich type glass
+            			         4 = Don't spawn any window
+

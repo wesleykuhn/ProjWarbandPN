@@ -85,7 +85,6 @@ troops = [
   #   - Cavalry Officer
   #   - Artillery
   #   - Artillery Officer
-  #   - Sailor
   #   - Captain
   #   - Noble
 
@@ -97,11 +96,11 @@ troops = [
   #   - Sargeant
 
   ["peasant","Peasant","a peasant",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_coarse_tunic","itm_ragged_shirt","itm_old_knife","itm_hatchet"],
+   ["itm_old_coarse_tunic","itm_ragged_shirt","itm_old_knife","itm_russian_peasant_axe"],
    str_8|agi_8|pw_attr,wpex(50,30,30,0,0,30),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_2|knows_tailoring_1|knows_riding_1,default_face_1,default_face_2],
 
   ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_shirt","itm_hatchet","itm_blunt_sickle","itm_old_knife"],
+   ["itm_ragged_shirt","itm_russian_peasant_axe","itm_blunt_sickle","itm_old_knife"],
    str_5|agi_5|pw_attr,wpex(30,30,30,0,0,50),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_5|knows_engineer_1|knows_tailoring_1|knows_herding_3|knows_riding_1,default_face_1,default_face_2],
 
   ["militia","Militia","a militia",tf_guarantee_all,0,0,"fac_commoners",
@@ -142,7 +141,7 @@ troops = [
    str_11|agi_11|pw_attr,wpex(70,0,70,0,50,0),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
 
   ["infantry_officer","Infantry Officer","an infantry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,50,100,0,90,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
   # PN INFANTRY END
 
@@ -176,7 +175,7 @@ troops = [
    str_12|agi_12|pw_attr,wpex(120,0,20,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_1|knows_riding_5,default_face_1,default_face_2],
 
   ["cavalry_officer","Cavalry Officer","a cavalry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,70,100,0,90,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
   # PN CAVALRY END
 
@@ -206,7 +205,7 @@ troops = [
    str_15|agi_13|pw_attr,wpex(90,0,50,0,50,100),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_5|knows_sailing_7|knows_engineer_1,default_face_1,default_face_2],
 
   ["captain","Captain","a captain",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_12|pw_attr,wpex(120,50,50,0,100,20),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_athletics_3|knows_sailing_9|knows_riding_1|knows_engineer_1,default_face_1,default_face_2],
   # PN NAVAL END
 
@@ -220,7 +219,7 @@ troops = [
 
   # PN Le Emperor
   ["lord","Emperor","the Emperor",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_pistol_ammo", "itm_spyglass"],
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_spyglass"],
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN
@@ -253,7 +252,7 @@ troops = [
 
   #Sapper and Enginner
   ["sapper","Sapper","a sapper",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2", "itm_sapper_axe_rus", "itm_shovel"],
+   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2", "itm_cheap_sapper_axe", "itm_shovel"],
    str_15|agi_10|pw_attr,wpex(110,20,110,0,20,20),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
