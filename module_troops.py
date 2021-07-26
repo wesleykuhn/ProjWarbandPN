@@ -138,7 +138,7 @@ troops = [
 
   ["infantry_musician","Infantry Musician","an infantry musician",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
-   str_11|agi_11|pw_attr,wpex(70,0,70,0,50,0),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
+   str_12|agi_13|pw_attr,wpex(70,0,70,0,50,0),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
 
   ["infantry_officer","Infantry Officer","an infantry officer",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
@@ -168,7 +168,7 @@ troops = [
 
   ["dragoon","Dragoon","a dragoon",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
-   str_13|agi_13|pw_attr,wpex(120,0,120,0,120,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_4,default_face_1,default_face_2],
+   str_13|agi_13|pw_attr,wpex(120,0,120,0,120,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_3,default_face_1,default_face_2],
 
   ["cavalry_musician","Cavalry Musician","a cavalry musician",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
@@ -218,8 +218,8 @@ troops = [
    str_10|agi_14|pw_attr,wpex(50,35,40,0,10,40),knows_pw|knows_power_strike_1|knows_athletics_5|knows_labouring_2|knows_herding_5,default_face_1,default_face_2],
 
   # PN Le Emperor
-  ["lord","Emperor","the Emperor",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_spyglass"],
+  ["lord","Majesty","the majesty",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_cane"],
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN

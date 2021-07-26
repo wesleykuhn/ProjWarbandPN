@@ -1002,7 +1002,7 @@ all_items_begin = "itm_tattered_headcloth"
 all_items_end = "itm_all_items_end"
 
 all_pn_items_begin = "itm_flag_france_45e"
-all_pn_items_end = "itm_arty_horse_howitzer_prussian"
+all_pn_items_end = "itm_admin_musket"
 
 wielded_items_begin = "itm_club"
 wielded_items_end = "itm_all_items_end"

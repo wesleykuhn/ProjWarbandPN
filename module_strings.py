@@ -290,7 +290,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("freeze", "freeze / thaw"),
   ("teleport_to", "teleport to"),
   ("teleport_behind", "teleport behind"),
-  ("propose_as_lord", "propose as lord"),
+  ("propose_as_lord", "propose as Majesty"),
   ("send_message_to", "send the message to"),
   ("give_take_door_key", "give / take away door key"),
   ("give_take_money_chest_key", "give / take away money chest key"),
@@ -303,7 +303,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("choose_poll_scene", "Change the scene"),
   ("choose_poll_kick", "Kick a player"),
   ("choose_poll_ban", "Ban a player"),
-  ("choose_poll_faction_lord", "Change your faction's lord"),
+  ("choose_poll_faction_lord", "Change your faction's Majesty"),
   ("choose_a_scene", "Choose a scene:"),
   ("faction_admin", "Faction Administration"),
   ("change_faction_banner", "Change faction banner"),
@@ -346,7 +346,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("poll_change_scene", "Change scene to {s1}"),
   ("poll_kick_player", "Kick player {s1}"),
   ("poll_ban_player", "Ban player {s1}"),
-  ("poll_faction_lord", "Make {s1} the lord of {s2}"),
+  ("poll_faction_lord", "Make {s1} the Majesty of {s2}"),
   ("poll_log", "Player {s3} started a poll: {s0}"),
   ("poll_existing", "Another poll is already in progress."),
   ("poll_invalid", "Invalid poll."),
@@ -634,6 +634,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("already_to_many_barricades", "Your team already spawned too many defenses this round."),
   ("already_to_many_ammobox", "Your team already spawned too many ammoboxes this round."),
   ("cannon_is_already_in_use", "This cannon is already being used."),
+  ("cant_carry_inv_full", "You cannot carry more items! Your inventory is full."),
 
   ("invalid_flag_selection","Select a flag controlled by your team."),
   ("invalid_prop_select","Not enough build points!"),
@@ -643,8 +644,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("server_s0", "[SERVER]: {s0}"),
 
   ("sit","Sit"),
-  ("cant_sit","You cannot sit on it!"),
-  ("sit_in_use","Someone is already sitting on it!"),
+  ("cant_sit","You cannot sit there!"),
+  ("sit_in_use","Someone is already sitting there!"),
 
   # PN END ***************************************************************************
 
@@ -872,17 +873,17 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("you_have_been_outlawed", "You have been outlawed!"),
   ("your_outlaw_rating_now_reg1", "Your outlaw rating is now {reg1}."),
   ("scene_error_this_faction_is_not_active", "Scene error: this faction is not active!"),
-  ("you_are_not_lord_of_s1", "You are not the Emperor of the {s1}."),
-  ("you_are_now_lord_of_s1", "You are now the Emperor of the {s1}."),
-  ("s10_now_lord_of_s1", "{s10} is now the Emperor of the {s1}."),
+  ("you_are_not_lord_of_s1", "You are not the Majesty of the {s1}."),
+  ("you_are_now_lord_of_s1", "You are now the Majesty of the {s1}."),
+  ("s10_now_lord_of_s1", "{s10} is now the Majesty of the {s1}."),
   ("s10_now_known_as_s1", "The {s10} are now known as the {s1}."),
   ("banner_used_by_s1", "That banner is used by the {s1}."),
   ("s1_doesnt_need_merc", "The {s1} doesn't need mercenaries."),
   ("s1_reign_supreme", "The {s1} reign supreme!"),
   ("s1_now_hostile_towards_s10", "The {s1} are now hostile towards the {s10}."),
   ("s1_and_s10_made_peace", "The {s1} and the {s10} have made peace."),
-  ("lord_of_s1_withdraws_offer_of_peace", "The lord of the {s1} withdraws the offer of peace."),
-  ("lord_of_s1_offers_peace", "The Emperor of the {s1} offers peace."),
+  ("lord_of_s1_withdraws_offer_of_peace", "The Majesty of the {s1} withdraws the offer of peace."),
+  ("lord_of_s1_offers_peace", "The Majesty of the {s1} offers peace."),
 
   ("not_riding_necessary_horse", "You are not riding the necessary horse."),
   ("already_attached_cart", "Already attached to another cart."),
@@ -930,14 +931,18 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("game_type_4_info", "Exporting resources only transfers money to the castle chest, with no personal reward, and resource stockpiles have no cost for buying or selling."),
   ("game_type_5_info", "After dying or disconnecting, you will be reset to a peasant commoner with no money."),
   ("pw_welcome", "{s10}\
-^^Game Type: {s11}\
+^^Persistent Napoleonic Unique Controls\
 ^-----------------------------------------------------------\
-^{s12}\
+^B - Surrender\
+^O - Orders Menu\
+^V - War Cry\
+^Shift - Walk Mode On/Off\
+^Hold Shift - Slow Walk Mode On\
 ^^General Information\
 ^-----------------------------------------------------------\
 ^When you first join the game, you start in the commoners faction as a peasant; to train as another troop type and join a faction at the same time, go to one of the castles and use a training station.\
  You can only join another faction as a commoner, or to become a commoner. The outlaws faction can be joined by training as one, but you will also get transferred to it after multiple team kills.\
- Troop type, faction, gold, and outlaw rating are saved if you crash or disconnect from the game, and when you rejoin your previous stats will be given back. At peasant, ruffian, or brigand training stations, clicking use will switch faction to commoners or outlaws without respawning, keeping your previous class until you die; but after that you will respawn as the targeted troop, unless your previous troop type was peasant or serf. You can also switch factions by just clicking use if you are using the targeted troop type already, or at the mercenary training stations (which are enabled only when the faction owns no castles).\
+ Troop type, faction, gold, and outlaw rating are saved if you crash or disconnect from the game, and when you rejoin your previous stats will be given back. At peasant, rebel, or pirate training stations, clicking use will switch faction to commoners or outlaws without respawning, keeping your previous class until you die; but after that you will respawn as the targeted troop, unless your previous troop type was peasant or serf. You can also switch factions by just clicking use if you are using the targeted troop type already, or at the mercenary training stations (which are enabled only when the faction owns no castles).\
  For a certain period after a player spawns they will be invulnerable to attack, and also unable to attack others; when this period is over the default weapons will be given.\
 ^^To buy items from stockpiles, sheath your weapons and tap the use button (rather than hold it down); to sell, hold the item in your hand and tap use. When bought, items are spawned right on top of the stockpile, so you might have to aim around until the 'Equip' overlay shows.\
  If the item requires higher stats or skills than your troop has, damage dealt, movement speed, accuracy, reload speed, and damage recieved might be affected in a bad way; probably making the items effectively worse than other ones with lower stats that your troop meets requirements for.\
@@ -953,7 +958,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
  Certain animals can be herded then slaughtered for hides and meat, using the correct tools; the hides can be tanned into leather in tannery pools, then cut into smaller pieces if needed; the meat can be cooked to give more nutrition, or salted to preserve for stockpiling or export.\
  The herding crook can be used to move animals away from your character in the default mode, and with the alternate mode to stop and attach them to a nearby heard; animals will periodically go back to following the herd leader, so you should try detect which one that is and concentrate on herding it. The animals will not reproduce unless there are at least two adults in the herd.\
  Higher labouring skill sometimes means that less resources are required when processing food, because less is spoiled.\
-^^To sail a ship requires two players (or one player moving around a lot): using the up and down arrow keys near the main mast will change the forward or backward movement; using the left and right arrow keys near the rudder will steer the ship, as long as the steering player doesn't move away; up or down keys at the rudder will center it. Your level of sailing skill determines how fast you can sail.\
+^^To sail a ship, except the longboat, requires two players (or one player moving around a lot): using the up and down arrow keys near the main mast will change the forward or backward movement; using the left and right arrow keys near the rudder will steer the ship, as long as the steering player doesn't move away; up or down keys at the rudder will center it. Your level of sailing skill determines how fast you can sail.\
  When the ramp is resting on the deck, using will move it away from the player, extending over the side, then using once more will move it back to the center; if the ship is not moving the ramp will angle down near ground level. The up arrow key can be used to climb up the side of the ship from close beside the middle section of the hull.\
  Ships will be damaged when colliding with the ground, large objects in the water, or other ships, but they can be repaired with wood by engineers; otherwise, after enough damage they will sink.\
  If you stay under water for too long you will drown - more quickly the faster you move.\
@@ -961,16 +966,17 @@ We apologize sincerely if you contributed your suggestions and feedback but were
  Armor can also be looted off bodies for some time after their death, from very close range; to do it you must aim at the blood splat and press the target control, then transfer between the inventory slots that appear. You probably want to change the target key to something more easily accessible than the default.\
 ^^Carts are attached by using from the front side with no items wielded in your hands, and the inventory is accessed by using from the other side; detaching can be done by using again. Alternatively, the action menu can be used to attach or detach carts.\
 ^^The money bag window (which is toggled with the native inventory key) can be used to drop money bag items, or access money chests. The value of the last money bag picked up is used when dropping one or pressing attack to get the money, rather than the particular bag you have wielded (due to game engine limitations).\
- To deposit gold in a chest you must be near it, and to withdraw you also either need to be the lord of the associated faction or have been given the key, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked; holders of the faction keys for castle chests can relock them by clicking use. Locked teleport doors work in a very similar way.\
+ To deposit gold in a chest you must be near it, and to withdraw you also either need to be the majesty of the associated faction or have been given the key, break the chest open with a weapon, or use a lock pick to open it (looting skill makes success more likely). To tell if a chest is unlocked, press and release the use button: if you hear a click sound it is locked, but if no sound it is unlocked; holders of the faction keys for castle chests can relock them by clicking use. Locked teleport doors work in a very similar way.\
  When you die, a bag with a small percentage of your money will be dropped, along with all your equipped items.\
 ^^Troops with the wound treatment skill can heal other badly wounded players by hitting them with the surgeon's scalpel, up to a certain percentage of full health, based on skill; while resting on beds can be used by less wounded troops to heal fully - each type of bed can have a different minimum health required - which requires and uses up food eaten.\
  Players hit with a poisoned dagger will lose health slowly over time until they die, unless a doctor treats them with a healing herb leaf.\
-^^Enemy castles can be captured for your faction by using a primary flag pole (probably on top of the castle keep) while holding a your faction's banner item; some castles might require secondary points to be captured first, either all of them, at least one, or a combination of both. Lords can also give away their own castles peacefully by using the other faction's banner on a primary capture point. The banner and name of a faction can be changed by the lord; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
-^^To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the lord can send messages that are displayed in big letters in the same way, with right shift.\
+^^Enemy castles can be captured for your faction by using a primary flag pole (probably on top of the castle keep) while holding a your faction's banner item; some castles might require secondary points to be captured first, either all of them, at least one, or a combination of both. Rulers can also give away their own castles peacefully by using the other faction's banner on a primary capture point. The banner and name of a faction can be changed by the majesty; when the banner is changed, armor on players of that faction will be updated, but hand banners will not.\
+^^To shout with the local chat messages, hold down right shift while pressing enter. With faction chat messages, the majesty can send messages that are displayed in big letters in the same way, with right shift.\
  A normal player can only send admin chat messages that are visible to other admins on the server; admins can also send messages to specific players after selecting from the list brought up with F11 (press escape to cancel the list and target everyone), and can also hold right shift when sending to send announcements to all players or warnings to a specific player.\
  As admin, holding down right shift while voting overrides the poll. The agent selected by pressing the target key with shift held down (if any) will be used as the target for admin tools and chat."),
   ("pw_editor_welcome", "Press F1 for editing information."),
   ("pw_editor_info", "General editing information^-----------------------------------------------------------^^\
+* For informations about PN scene editing, please contant the developer.^\
 * Scripted scene props (starting with pw) do not work in this mode, only on a dedicated server.^\
 * Make sure the first few scene props placed are not scripted (start with pw): instance id 0 can't be handled by some scripts.^\
 * Factions are numbered from 0 - 9, with commoners = 0, outlaws = 1, and the 4 castle factions starting from 2.^\

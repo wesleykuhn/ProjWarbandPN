@@ -6914,6 +6914,32 @@ scripts.extend([("game_start", []), # single player only, not used
 
            (neg|scene_prop_slot_eq, ":instance_id", slot_scene_prop_cannon_limber_locked, 1),
 
+           # If agent inventory is already full dont take the rocket
+           (assign, ":empty_slot_found", 0),
+           (try_for_range, ":equipment_slot", ek_item_0, ek_head),
+             (eq, ":empty_slot_found", 0),
+             (agent_get_item_slot, ":item_id", ":using_agent", ":equipment_slot"),
+             (try_begin),
+               (eq, ":item_id", -1),
+               (assign, ":empty_slot_found", 1),
+             (else_try),
+               (item_get_slot, ":item_class", ":item_id", slot_item_multiplayer_item_class),
+               (eq, ":item_class", multi_item_class_type_bullet),
+               (agent_get_ammo_for_slot, ":ammo_count", ":using_agent", ":equipment_slot"),
+               (eq, ":ammo_count", 0),
+               (val_add, ":equipment_slot", 1),
+               (assign, ":empty_slot_found", 1),
+             (try_end),
+           (try_end),
+
+           (try_begin),
+             (eq, ":empty_slot_found", 0),
+             (agent_get_player_id, ":player_id", ":using_agent"),
+             (player_is_active, ":player_id"),
+             (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cant_carry_inv_full"),
+           (try_end),
+
+           (eq, ":empty_slot_found", 1),
            (call_script, "script_clean_up_prop_instance_with_childs", ":cannon_instance"),
 
            (agent_equip_item,":using_agent","itm_rocket_placement"),
@@ -12900,10 +12926,16 @@ scripts.extend([("game_start", []), # single player only, not used
         (position_move_z,pos18,14),
         (position_rotate_z,pos18,-90),
         (copy_position,pos49,pos18), # pos49 is prop pos.
+
+        (assign, ":is_a_cannon", 0),
+        (try_begin),
+          (is_between, ":horse_item_id", "itm_arty_horse_cannon_french", "itm_arty_horse_howitzer_french"),
+          (assign, ":is_a_cannon", 1),
+        (try_end),
            
         # Spawn the cannon, If horse1 a 12 pounder, if horse2 a howitzer.
         (try_begin),
-          (item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon), #debug eh por isso que nao spawna howertz
+          (eq, ":is_a_cannon", 1),
           (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_12pdr_wood", 0, 0, 0),
         (else_try),
           (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_howitzer_wood", 0, 0, 0),
