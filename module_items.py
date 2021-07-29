@@ -1548,13 +1548,13 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2213, weight(2.7)
 ## Rifles
 # Russian
 ["russian_rifle_1805", "Russian Rifle", [("Russian_rifle_1805",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5)|difficulty(0)|spd_rtng(18) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(88),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5)|difficulty(11)|spd_rtng(18) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(88),imodbits_none,[]],
 ["russian_rifle_1805_melee", "Russian Rifle", [("Russian_rifle_1805",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket|itp_can_knock_down,itc_musket_melee|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(74)|swing_damage(23 , blunt) | thrust_damage(22 ,  blunt),imodbits_none ],
 
 # British
 ["british_baker_rifle", "British Baker Rifle", [("baker_rifle",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5)|difficulty(0)|spd_rtng(18) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(88),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5)|difficulty(11)|spd_rtng(18) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(88),imodbits_none,[]],
 ["british_baker_rifle_melee", "British Baker Rifle", [("baker_rifle",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket|itp_can_knock_down,itc_musket_melee|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(85)|swing_damage(23 , blunt) | thrust_damage(22 ,  blunt),imodbits_none ],
 
@@ -1568,44 +1568,44 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5
 ## Muskets
 # French
 ["french_charleville", "French Charleville Mousquet", [("french_charleville",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee,
- itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2631 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(77),imodbits_none,[]],
+ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2631 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(77),imodbits_none,[]],
 ["french_charleville_melee", "French Charleville Mousquet", [("french_charleville",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(84) | weapon_length(138)|swing_damage(42 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(84) | weapon_length(138)|swing_damage(42 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 ["french_versailles", "French Versailles Mousquet", [("french_versailles",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
 itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["french_versailles_melee", "French Versailles Mousquet", [("french_versailles",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 # British
 ["british_brown_bess", "British Brown Bess Musket", [("brown_bess_musket",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["british_brown_bess_melee", "British Brown Bess Musket", [("brown_bess_musket",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ], 
 
 # Russian
 ["russian_musket_1808", "Russian Musket", [("Russian_musket_1808",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["russian_musket_1808_melee", "Russian Musket", [("Russian_musket_1808",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 # Austrian
 ["austrian_musket", "Austrian Musket", [("austrian_musket",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["austrian_musket_melee", "Austrian Musket", [("austrian_musket",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 # Prussian
 ["prussian_potsdam", "Prussian Potsdam Musket", [("potsdam_musket",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["prussian_potsdam_melee", "Prussian Potsdam Musket", [("potsdam_musket",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 # Rhine
 ["prussian_musket_1806", "Prussian Kuhfuss Musket", [("prussian_kuhfuss",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(11)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["prussian_musket_1806_melee", "Prussian Kuhfuss Musket", [("prussian_kuhfuss",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+ 180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
 
 ## Swords
 # French
@@ -2532,6 +2532,63 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  159, weight(3)|body_armor(12)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
 ["pn_dress4", "Yellow Dress", [("empire_dress4",0)], itp_type_body_armor|itp_covers_legs, 0,
  159, weight(3)|body_armor(12)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+
+## Ottoman clothing
+# Head
+["ottoman_female_cap_red", "Ottoman Women's Red Cap", [("sayazn_female_peasant_cap",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
+ 122, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+["ottoman_female_cap_green", "Ottoman Women's Green Cap", [("sayazn_female_peasant_cap_2",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
+ 122, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+["ottoman_female_veil_white", "Ottoman White Veil", [("sayazn_new_veil",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
+ 233, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+["ottoman_female_veil_black", "Ottoman Black Veil", [("sayazn_new_veil_black",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
+ 233, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+["ottoman_female_veil_brown", "Ottoman Brown Veil", [("sayazn_new_veil_c",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
+ 233, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+# Body
+["ottoman_dress_a", "Ottoman Beige and White Dress", [("sayazn_peasant_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 87, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_dress_b", "Ottoman Beige Dress", [("sayazn_peasant_dress_2",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 91, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_dress_c", "Ottoman Dark Gray Dress", [("sayazn_peasant_dress_3",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 128, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_dress_d", "Ottoman Green Dress", [("sayazn_peasant_dress_4",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 91, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_lady_dress_a", "Ottoman Black and Brown Lady Dress", [("sayazn_sarranid_lady_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 549, weight(4)|body_armor(15)|leg_armor(4)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_lady_dress_b", "Ottoman Brown Lady Dress", [("sayazn_sarranid_lady_dress_b",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 549, weight(4)|body_armor(15)|leg_armor(4)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_lady_dress_c", "Ottoman Black Lady Dress", [("sayazn_sarranid_lady_dress_black",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 549, weight(4)|body_armor(15)|leg_armor(4)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_lady_dress_d", "Ottoman Blue and Red Dress", [("sayazn_sarranid_lady_dress_c",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 549, weight(4)|body_armor(15)|leg_armor(4)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_female_waistcoat_a", "Ottoman Women Waistcoat", [("sayazn_waistcoat_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 288, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_female_waistcoat_b", "Ottoman Women Waistcoat", [("sayazn_waistcoat_dress_2",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 288, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_female_waistcoat_c", "Ottoman Women Waistcoat", [("sayazn_waistcoat_dress_3",0)], itp_type_body_armor|itp_covers_legs, 0,
+ 288, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_men_shirt_a", "Ottoman White Men Shirt", [("sayazn_shirt_man",0)], itp_type_body_armor,0,
+ 77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_shirt_b", "Ottoman Yellow Men Shirt", [("sayazn_shirt_man_2",0)], itp_type_body_armor,0,
+ 77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_shirt_c", "Ottoman Dark Gray Men Shirt", [("sayazn_shirt_man_3",0)], itp_type_body_armor,0,
+ 77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_shirt_d", "Ottoman Black Men Shirt", [("sayazn_shirt_man_4",0)], itp_type_body_armor,0,
+ 77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_shirt_e", "Ottoman Blue Men Shirt", [("sayazn_shirt_man_5",0)], itp_type_body_armor,0,
+ 77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_waistcoat_a", "Ottoman Men Waistcoat", [("sayazn_waistcoat_man",0)], itp_type_body_armor,0,
+ 249, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_waistcoat_b", "Ottoman Men Waistcoat", [("sayazn_waistcoat_man_2",0)], itp_type_body_armor,0,
+ 249, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_waistcoat_c", "Ottoman Men Waistcoat", [("sayazn_waistcoat_man_3",0)], itp_type_body_armor,0,
+ 249, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["ottoman_men_waistcoat_d", "Ottoman Men Waistcoat", [("sayazn_waistcoat_man_4",0)], itp_type_body_armor,0,
+ 249, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+# Foot
+["ottoman_sandals_female", "Ottoman Women Sandals", [("sayazn_sandals_white",0)], itp_type_foot_armor|itp_attach_armature, 0,
+ 61, weight(1)|leg_armor(1)|difficulty(0), imodbits_cloth|imodbit_female],
 
 ## Hats
 # Neutral

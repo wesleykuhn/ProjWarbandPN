@@ -168,6 +168,8 @@ skins = [
    ],
    [(voice_die,"snd_woman_die"),
     (voice_hit,"snd_woman_hit"),
+    (voice_grunt,"snd_woman_grunt"),
+    (voice_grunt_long,"snd_woman_grunt"),
     (voice_yell,"snd_woman_yell"),
    ],
    "skel_human", 1.0, "psys_game_blood","psys_game_blood_2",

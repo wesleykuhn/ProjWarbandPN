@@ -324,6 +324,7 @@ admin_action_kill_player                        = 4
 admin_action_fade_player_out                    = 5
 admin_action_freeze_player                      = 6
 admin_action_teleport_to_player                 = 7
+admin_action_teleport_player_here               = 20
 admin_action_teleport_behind_player             = 8
 admin_action_teleport_forwards                  = 9
 admin_action_get_armor                          = 10

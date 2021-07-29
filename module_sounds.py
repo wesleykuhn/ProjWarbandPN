@@ -25,7 +25,7 @@ sounds = [
 
  ("footstep_grass", sf_priority_1|sf_vol_4,["footstep_1.wav","footstep_2.wav","footstep_3.wav","footstep_4.wav"]),
  ("footstep_wood", sf_priority_1|sf_vol_6,["footstep_wood_1.wav","footstep_wood_2.wav","footstep_wood_4.wav"]),
- ("footstep_water", sf_priority_1|sf_vol_3,["water_walk_1.wav","water_walk_2.wav","water_walk_3.wav","water_walk_4.wav"]),
+ ("footstep_water", sf_priority_1|sf_vol_2,["water_walk_1.wav","water_walk_2.wav","water_walk_3.wav","water_walk_4.wav"]),
  ("footstep_horse", sf_priority_3|sf_vol_8, ["drum_3.ogg"]),
  ("footstep_horse_1b",sf_priority_8|sf_vol_8, ["s_footstep_horse_4b.wav","s_footstep_horse_4f.wav","s_footstep_horse_5b.wav","s_footstep_horse_5f.wav"]),
  ("footstep_horse_1f",sf_priority_8|sf_vol_8, ["s_footstep_horse_2b.wav","s_footstep_horse_2f.wav","s_footstep_horse_3b.wav","s_footstep_horse_3f.wav"]),
@@ -53,7 +53,7 @@ sounds = [
  ("throw_knife", sf_priority_10|sf_vol_5, ["throw_knife_1.ogg"]),
  ("throw_stone",sf_vol_7, ["throw_stone_1.wav"]),
 
- ("reload_crossbow",sf_priority_1|sf_vol_2, ["reload_musket.wav"]),
+ ("reload_crossbow",sf_priority_1|sf_vol_1, ["reload_musket.wav"]),
  ("reload_crossbow_continue",sf_priority_3|sf_vol_2, []),
  ("pull_bow",sf_vol_4, []),
  ("pull_arrow",sf_vol_5, []),
@@ -148,7 +148,7 @@ sounds = [
  ("cut_wood_scratch", sf_priority_6|sf_vol_10, ["wooden_hit_high_armor_low_damage_1.ogg","wooden_hit_high_armor_low_damage_2b.ogg"]),
  ("mining_hit", sf_priority_9|sf_vol_10, ["hit_wood_metal_7.ogg","hit_metal_metal_1.ogg","hit_metal_metal_2.ogg","hit_metal_metal_4.ogg","hit_metal_metal_5.ogg"]),
  ("mining_scratch", sf_priority_6|sf_vol_10, ["hit_metal_metal_3.ogg","hit_metal_metal_6.ogg"]),
- ("repair_wood", sf_priority_9|sf_vol_10, ["hit_wood_wood_2.ogg","hit_wood_wood_3.ogg","hit_wood_wood_4.ogg","hit_wood_metal_4.ogg","hit_wood_metal_5.ogg"]),
+ ("repair_wood", sf_priority_9|sf_vol_10, ["hammer1.wav","hammer3.wav","hammer2.wav","hit_wood_wood_2.ogg","hit_wood_wood_3.ogg","hit_wood_wood_4.ogg","hit_wood_metal_4.ogg","hit_wood_metal_5.ogg"]),
  ("saw_wood", sf_priority_7|sf_vol_10, ["d_saw_short3.ogg"]),
  ("blacksmith", sf_priority_7|sf_vol_10, ["d_blacksmith2.ogg"]),
  ("damage_ship", sf_priority_9|sf_vol_10, ["shield_broken.ogg"]),
@@ -158,8 +158,6 @@ sounds = [
  ("horse_neigh", sf_priority_8|sf_vol_10, ["horse_exterior_whinny_01.ogg","horse_exterior_whinny_02.ogg","horse_exterior_whinny_03.ogg","horse_exterior_whinny_04.ogg","horse_exterior_whinny_05.ogg","horse_whinny.ogg"]),
  ("pull_flax", sf_priority_6|sf_vol_3, ["draw_other.ogg"]),
  ("lance_break", sf_priority_12|sf_vol_10, ["shield_broken.ogg"]),
-
- # PN START *******************************************************************************************************************************
 
  ("bolt_pass_by",0, ["bulletpass1.wav","bulletpass2.wav","bulletpass3.wav","bulletpass4.wav"]),
  ("bullet_pass_by",0, ["bulletpass1.wav","bulletpass2.wav","bulletpass3.wav","bulletpass4.wav"]),
@@ -304,18 +302,18 @@ sounds = [
   "man_pain_21.wav","man_pain_22.wav","man_pain_23.wav","man_pain_24.wav"
  ]),
 
- ("musket", sf_priority_15|sf_vol_15,["musket2.wav","musket3.wav","musket4.wav","musket5.wav","musket_shot01.wav","musket_shot02.wav","musket_shot03.wav","musket_shot04.wav","musket_shot05.wav"]),
- ("rifle", sf_priority_15|sf_vol_15, ["rifle.wav"]),
- ("pistol", sf_priority_15|sf_vol_15,["musket1.wav"]),
- ("cannon", sf_priority_15|sf_vol_15, ["canon01.ogg","canon02.ogg","canon03.ogg","canon04.ogg","canon05.ogg","canon06.ogg"]),
- ("rocket_launch", sf_priority_15|sf_vol_15, ["rocket_launch.wav","rocket_launch2.wav","rocket_launch1.wav"]),
+ ("musket", sf_priority_15|sf_vol_10,["musket2.wav","musket3.wav","musket4.wav","musket5.wav","musket_shot01.wav","musket_shot02.wav","musket_shot03.wav","musket_shot04.wav","musket_shot05.wav"]),
+ ("rifle", sf_priority_15|sf_vol_10, ["rifle.wav"]),
+ ("pistol", sf_priority_15|sf_vol_10,["musket1.wav"]),
+ ("cannon", sf_priority_15|sf_vol_12, ["canon01.ogg","canon02.ogg","canon03.ogg","canon04.ogg","canon05.ogg","canon06.ogg"]),
+ ("rocket_launch", sf_priority_15|sf_vol_10, ["rocket_launch.wav","rocket_launch2.wav","rocket_launch1.wav"]),
  ("cannon_hit", sf_priority_7|sf_vol_10, ["cannon_hit.ogg","cannon_hit2.ogg"]),
  ("cannon_hit_ground",sf_priority_7|sf_vol_9, ["cannonhitground.ogg"]),
  ("cannon_hit_wall",sf_priority_10|sf_vol_15, ["walls_destroy1.ogg","walls_destroy2.ogg"]),
  ("cannon_hit_wood_wall",sf_priority_10|sf_vol_15, ["wallhit_wood.wav"]),
  ("cannon_fuse",sf_vol_3, ["fuse.ogg"]),
- ("cannon_ball",sf_vol_3, ["cannonball.ogg"]),
- ("cannon_hit_ship",sf_priority_7|sf_vol_10, ["wallhit_wood.ogg", "cannon_hit2.ogg"]),
+ ("cannon_ball",sf_vol_1, ["cannonball.ogg"]),
+ ("cannon_hit_ship",sf_priority_7|sf_vol_10, ["wallhit_wood.wav", "cannon_hit2.ogg"]),
  ("explosion",sf_priority_15|sf_vol_15, ["shell1.ogg","shell2.ogg","shell3.ogg"]),
  
  ("glass_break",sf_priority_7|sf_vol_10, ["glass.ogg"]),
@@ -329,9 +327,8 @@ sounds = [
  ("cannonball_loop",sf_priority_15|sf_vol_5|sf_looping, ["ball_loop.wav"]),
  ("rocket_loop",sf_priority_15|sf_vol_6|sf_looping, ["fuse.wav"]),
 
- ("hammer",sf_vol_7, ["hammer1.wav","hammer3.wav","hammer2.wav"]),
- ("shovel",sf_vol_7, ["shovel1.wav","shovel2.wav","shovel4.wav","shovel3.wav"]),
- ("ramrod",sf_vol_15, ["ramrod.ogg"]),
+ ("shovel",sf_vol_5, ["shovel1.wav","shovel2.wav","shovel4.wav","shovel3.wav"]),
+ ("ramrod",sf_vol_5, ["ramrod.ogg"]),
 
  ("door_open",sf_vol_5, ["door_open.ogg"]),
  ("door_close",sf_vol_5, ["door_close.ogg"]),
@@ -340,7 +337,7 @@ sounds = [
  #Ambience #
  ("ambient_birds",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["bird1_notmany.wav"]),
  ("ambient_birds_many",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["birds1_many.wav"]),
- ("ambient_ocean",sf_vol_10|sf_priority_15|sf_looping|sf_start_at_random_pos, ["oceanwaves.wav"]),
+ ("ambient_ocean",sf_vol_15|sf_priority_15|sf_looping|sf_start_at_random_pos, ["oceanwaves.wav"]),
  ("ambient_crickets_many",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["crickets_many.wav"]),
  ("ambient_crickets_few",sf_vol_6|sf_priority_15|sf_looping|sf_start_at_random_pos, ["crickets.wav"]),  
  ("ambient_river",sf_vol_11|sf_priority_15|sf_looping|sf_start_at_random_pos, ["river.wav"]),

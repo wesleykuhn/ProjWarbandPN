@@ -8106,7 +8106,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (try_begin),
             (le, ":cur_dist", ":range"),
             (eq, ":is_mortar", 1),
-            (call_script, "script_handle_pn_cannons_damage_on_props", ":wall_type", ":wall_id", -1, cannon_ammo_type_bomb),
+            (call_script, "script_handle_pn_cannons_damage_on_props", ":wall_type", ":wall_id", ":shooter_agent_no", cannon_ammo_type_bomb),
           (try_end),
         (try_end),
       (try_end),
@@ -8329,6 +8329,29 @@ scripts.extend([("game_start", []), # single player only, not used
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
 
+      # PN Bots setup
+      (set_cheer_at_no_enemy, 0),
+      # Merchants
+      (try_begin),
+        (neg|entry_point_is_auto_generated, 5), # Entry point was placed
+        (entry_point_get_position, pos54, 5),  
+        (set_spawn_position, pos54),
+        # Merchant 1
+        (spawn_agent, "trp_bot_merchant_1"),
+        (agent_set_team, reg0, team_spawn_invulnerable),
+        # Merchant 2
+        (position_move_x, pos54, -80),
+        (position_move_y, pos54, -50),
+        (position_rotate_z, pos54, -10),
+        (spawn_agent, "trp_bot_merchant_2"),
+        (agent_set_team, reg0, team_spawn_invulnerable),
+        (agent_set_position, reg0, pos54),
+
+        (display_message, "@Entry Point 5 detected! Merchants bots added successfully to the game!"),
+      (try_end),
+
+      #(call_script, "script_spawn_bandits_group"), # bandits bots spawn check and execution
+
       (try_for_range,":prop_type", pn_hittable_props_begin, pn_hittable_props_end),
         (try_for_prop_instances, ":cur_instance_id", ":prop_type"),
           (call_script, "script_multiplayer_server_initialise_destructable_prop_slots", ":cur_instance_id", ":prop_type"),
@@ -8401,6 +8424,33 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
     (try_end),
   ]),
+
+  ("spawn_bandits_group",
+    [
+      (try_begin),
+        (multiplayer_is_server),
+        (neg|entry_point_is_auto_generated, 6),
+
+        (store_random_in_range, ":random_no", 3, 7),
+        (set_fixed_point_multiplier, 100),
+        (entry_point_get_position, pos54, 6),
+        (set_spawn_position, pos54),
+
+        (try_for_range, ":counter", 0, ":random_no"),
+          (try_begin),
+            (gt, ":counter", 0),
+            (position_move_x, pos54, 40),
+          (try_end),
+
+          (spawn_agent, "trp_bot_bandit"),
+          (agent_set_team, reg0, team_spectators),
+        (try_end),
+
+        (assign, reg24, ":random_no"),
+        (display_message, "@Entry Point 6 detected! {reg24} bandits bots were spawned!"),
+      (try_end),
+    ]
+  ),
 
   # script_get_prop_center
   ("get_prop_center",
@@ -9000,8 +9050,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_script_param, ":cannon_shot_type", 4),
 
       (try_begin),
-        (this_or_next|multiplayer_is_server),
-        (neg|game_in_multiplayer_mode),
+        (multiplayer_is_server),
         (neq, ":hitted_prop_type", -1),
         (neq, ":hitted_prop_instance", -1),
 
@@ -9050,9 +9099,9 @@ scripts.extend([("game_start", []), # single player only, not used
           (neq, ":hit_effect_type", -1),
           (try_begin),
             (eq, ":hit_effect_type", pn_effect_type_wood),
-            (prop_instance_get_position, pos56, ":hitted_prop_instance"),
-            (copy_position, pos60, pos56),
-            (call_script, "script_multiplayer_server_play_sound_at_position", "snd_cannon_hit_ship"),
+            (prop_instance_get_position, pos62, ":hitted_prop_instance"),
+            (copy_position, pos0, pos62),
+            (call_script, "script_play_sound_at_position", "snd_cannon_hit_ship"),
             (call_script, "script_multiplayer_server_spawn_particle_at_position", "psys_woodwallhit_particles", 90),
           (try_end),
         (try_end),
@@ -9063,7 +9112,7 @@ scripts.extend([("game_start", []), # single player only, not used
    # script_multiplayer_server_spawn_particle_at_position
   # Input: arg1 = particle_effect_id
   # Input: arg2 = burst_strength
-  # Input: pos60 = position with rotation for particle.
+  # Input: pos62 = position with rotation for particle.
   # Output: 
   ("multiplayer_server_spawn_particle_at_position",
    [
@@ -9078,20 +9127,20 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (try_begin),
         (neg|multiplayer_is_dedicated_server),
-        (particle_system_burst_no_sync,":particle_effect_id",pos60,":burst_strength"),
+        (particle_system_burst_no_sync,":particle_effect_id",pos62,":burst_strength"),
       (try_end),
       
       (try_begin),
         (multiplayer_is_server),
         
         (set_fixed_point_multiplier, 100),
-        (position_get_x,":x_value",pos60),
-        (position_get_y,":y_value",pos60),
-        (position_get_z,":z_value",pos60),
+        (position_get_x,":x_value",pos62),
+        (position_get_y,":y_value",pos62),
+        (position_get_z,":z_value",pos62),
         
-        (position_get_rotation_around_z,":z_rot",pos60),
-        (position_get_rotation_around_x,":x_rot",pos60),
-        (position_get_rotation_around_y,":y_rot",pos60),
+        (position_get_rotation_around_z,":z_rot",pos62),
+        (position_get_rotation_around_x,":x_rot",pos62),
+        (position_get_rotation_around_y,":y_rot",pos62),
         
         # Make rotation positive for transfer if needed.
         (try_begin),
@@ -10706,7 +10755,7 @@ scripts.extend([("game_start", []), # single player only, not used
        (assign,":sound_id","snd_rocket_launch"),
      (try_end),
      
-     (copy_position,pos60,pos12), # pos60 is particle pos
+     (copy_position,pos62,pos12), # pos62 is particle pos
      (try_begin),
        (gt,":smoke_type",-1),
        (call_script,"script_multiplayer_server_spawn_particle_at_position",":smoke_type",":smoke_strength"),
@@ -22583,19 +22632,27 @@ scripts.extend([("cf_process_wood",
         (try_end),
       (else_try),
         (player_slot_eq, ":admin_player_id", slot_player_admin_no_teleport_self, 0),
+        (this_or_next | eq, ":admin_action", admin_action_teleport_player_here),
         (this_or_next | eq, ":admin_action", admin_action_teleport_to_player),
         (eq, ":admin_action", admin_action_teleport_behind_player),
         (agent_is_active, ":admin_agent_id"),
         (try_begin),
+          (eq, ":admin_action", admin_action_teleport_player_here),
+          (agent_get_position, pos1, ":admin_agent_id"),
+          (position_move_y, pos1, 100),
+          (agent_set_position, ":target_agent_id", pos1),
+        (else_try),
           (eq, ":admin_action", admin_action_teleport_to_player),
           (agent_get_position, pos1, ":target_agent_id"),
           (position_move_y, pos1, 100),
+          (agent_set_position, ":admin_agent_id", pos1),
         (else_try),
           (eq, ":admin_action", admin_action_teleport_behind_player),
           (agent_get_position, pos1, ":target_agent_id"),
           (position_move_y, pos1, -200),
+          (agent_set_position, ":admin_agent_id", pos1),
         (try_end),
-        (agent_set_position, ":admin_agent_id", pos1),
+        #(agent_set_position, ":admin_agent_id", pos1), changed to test the bring player new tool
       (else_try),
         (assign, ":admin_action", -1),
       (try_end), # end of tools that target another agent

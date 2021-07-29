@@ -42,6 +42,21 @@ def wp_melee(x):
 reserved = 0
 no_scene = 0
 
+rhodok_face_younger_1 = 0x0000000009002003140000000000000000000000001c80400000000000000000
+rhodok_face_young_1   = 0x0000000449002003140000000000000000000000001c80400000000000000000
+rhodok_face_middle_1  = 0x0000000849002003140000000000000000000000001c80400000000000000000
+rhodok_face_old_1     = 0x0000000cc9002003140000000000000000000000001c80400000000000000000
+rhodok_face_older_1   = 0x0000000fc9002003140000000000000000000000001c80400000000000000000
+
+rhodok_face_younger_2 = 0x00000000000062c76ddcdf7feefbffff00000000001efdbc0000000000000000
+rhodok_face_young_2   = 0x00000003c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
+rhodok_face_middle_2  = 0x00000007c00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
+rhodok_face_old_2     = 0x0000000bc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
+rhodok_face_older_2   = 0x0000000fc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
+
+bot_custom_face_1 = 0x000000000010200036db6db6db6db6db00000000001db6db0000000000000000
+bot_custom_face_2 = 0x0000000fff1076e96baeb6db6db6d92d00000000001f6db60000000000000000
+
 default_face_1 = 0x0000000400000001124000000020000000000000001c00800000000000000000
 default_face_2 = 0x0000000cbf00230c4deeffffffffffff00000000001efff90000000000000000
 
@@ -304,6 +319,22 @@ troops = [
   ["custom_string_40","Use","{!}custom_string_40",tf_hero|tf_inactive,0,reserved,"fac_commoners",[],def_attrib,0,knows_pw,0],
   ["custom_strings_end","{!}custom_strings_end","{!}custom_strings_end", 0, 0, 0, "fac_commoners", [], 0, 0, 0, 0, 0],
   # End NW Gambiarra
+
+  # PN Bots begin
+  ["bot_merchant_1", "(BOT)Fakir", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_fur_coat", "itm_leather_boots", "itm_peasant_hat2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
+
+  ["bot_merchant_2", "(BOT)Muhtar", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_leather_jacket", "itm_hide_boots", "itm_top_hat"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
+
+  ["bot_bandit", "(BOT)Bandit", "{!}bot_bandit", tf_guarantee_all, 0, 0, "fac_commoners",
+   ["itm_peasant_hat", "itm_peasant_hat2", "itm_peasant_hat3", "itm_neutral_militia_uniform", "itm_neutral_coat1", "itm_neutral_coat2", 
+   "itm_old_hide_boots", "itm_neutral_old_pistol_1766", "itm_bullets", "itm_russian_peasant_axe", "itm_woodcutter_axe", "itm_hatchet"], 
+   str_13|agi_15|pw_attr, wpex(100,20,100,90,100,70), 
+   knows_pw|knows_ironflesh_2|knows_power_strike_3|knows_athletics_4|knows_power_draw_2|knows_power_throw_3,default_face_1,default_face_2],
+  # PN Bots end
 
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],
   ["mission_data","mission_data","mission_data",0,0,0,0,[],0,0,0,0,0],

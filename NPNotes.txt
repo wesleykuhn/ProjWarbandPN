@@ -5,8 +5,8 @@
 # Merchants #
 -They Can't be killed. 
 -Verify if exists the entry_point number 5 before call this.
--Their calling show be something like: (add_visitors_to_current_scene, 5,"trp_merchant_bot", 1, team_spawn_invulnerable, -1).
--The number '1' is the amount of bots. If you create more than one they will start side by side. You can create a way to take all 
+-Their calling should be something like: (add_visitors_to_current_scene, 5,"trp_merchant_bot", 5, team_spawn_invulnerable, -1).
+-The number '5' is the amount of bots. If you create more than one they will start side by side. You can create a way to take all 
 agents, check if they are 'trp_merchant_bot' and move them, using (agent_set_position,*). 
 Where '5' is the spawn entry point target. This entry point needs to be on a far place, where players will trade with those bots. 
 -This trade is sample. Just put the 'pw_export_*' stuff on front of those merchants. 

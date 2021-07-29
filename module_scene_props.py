@@ -177,7 +177,7 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
         
         (neq,":prop_kind","spr_earthwork1_destructible"), # not for earth prop.
         
-        (assign,":hit_sound","snd_hammer"),
+        (assign,":hit_sound","snd_repair_wood"),
         (assign,":apply_dmg",0),
 
         (assign,":old_health",":health"),
