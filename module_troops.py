@@ -101,7 +101,6 @@ troops = [
   #   - Artillery
   #   - Artillery Officer
   #   - Captain
-  #   - Noble
 
   # TROOPS UNUSED BY PN
   #   - Footman
@@ -238,11 +237,11 @@ troops = [
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN
-  ["ruffian","Pirate","a pirate",tf_guarantee_all,0,0,"fac_commoners",
+  ["pirate","Pirate","a pirate",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_club","itm_spiked_club"],
    str_13|agi_13|pw_attr,wpex(100,0,50,0,100,70),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_looting_6|knows_sailing_8,default_face_1,default_face_2],
   
-  ["brigand","Rebel","a rebel",tf_guarantee_all,0,0,"fac_commoners",
+  ["rebel","Rebel","a rebel",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_knife","itm_blunt_falchion"],
    str_13|agi_11|pw_attr,wpex(70,0,70,45,100,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_power_draw_2|knows_athletics_4|knows_riding_3|knows_looting_4,default_face_1,default_face_2],
   # PN BANDITS END

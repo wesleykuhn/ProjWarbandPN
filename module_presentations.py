@@ -5510,16 +5510,13 @@ presentations.extend([
         (agent_get_troop_id,":troop_id",":my_agent"),
         (gt,":troop_id",-1),
         
-        (this_or_next|eq,":troop_id", "trp_artillerist"),
-        (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
-        (eq, ":troop_id", "trp_godlike_hero"),
+        (troop_get_slot, ":trp_use_cannons", ":troop_id", slot_troop_can_use_cannon),
+        (eq, ":trp_use_cannons", 1),
         
         (agent_get_position,pos17,":my_agent"), #pos17 hold agent position
         
         (try_begin), #For normal artillery
-          (this_or_next|eq,":troop_id", "trp_artillerist"),
-          (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
-          (eq, ":troop_id", "trp_godlike_hero"),
+          (eq, ":trp_use_cannons", 1),
       
           ### TAKE AMMO ###
           (try_begin),
@@ -5765,9 +5762,8 @@ presentations.extend([
             (overlay_set_display, "$g_presentation_obj_arty_icon_take_control", 0),
           (try_end),
         (else_try), #For rocket artillery
-          (this_or_next|eq,":troop_id", "trp_artillerist"), #debug, se nao funcionar criar tropa de rocketeiros
-          (this_or_next|eq,":troop_id", "trp_artillerist_officer"),
-          (eq, ":troop_id", "trp_godlike_hero"),
+          (troop_get_slot, ":trp_use_cannons", ":my_agent", slot_troop_can_use_cannon),
+          (eq, ":trp_use_cannons", 1),
             
           ### LOAD AMMO ###
           (try_begin),

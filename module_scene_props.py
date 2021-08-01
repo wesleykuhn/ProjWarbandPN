@@ -3584,7 +3584,7 @@ scene_props = [
   ("pn_buy_horn", spr_buy_item_flags(14), "horn", "bo_pw_weapon_small", spr_buy_item_triggers("itm_horn", resources=["itm_wood_pole_short"], engineer=6)),
   ("pn_buy_trumpet", spr_buy_item_flags(14), "trumpet", "bo_pw_weapon_small", spr_buy_item_triggers("itm_trumpet", resources=["itm_wood_pole_short"], engineer=6)),
   ("pn_buy_bugle", spr_buy_item_flags(14), "bugle", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bugle", resources=["itm_wood_pole_short"], engineer=6)),
-  ("pn_buy_bagpipe", spr_buy_item_flags(14), "mm_invisible", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bagpipe", resources=["itm_wood_pole_short"], engineer=6)),
+  #("pn_buy_bagpipe", spr_buy_item_flags(14), "mm_invisible", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bagpipe", resources=["itm_wood_pole_short"], engineer=6)),
 
   # BULLETS
   ("pn_buy_bullets", spr_buy_item_flags(1), "cartridge_box_mesh", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bullets", resources=[], engineer=1)),
@@ -3707,8 +3707,8 @@ scene_props = [
   ("pn_buy_british_highland_sarge", spr_buy_item_flags(6), "british_highland_sarge", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_sarge", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_british_highland_officer", spr_buy_item_flags(6), "british_highland_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_officer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_british_highland_drummer", spr_buy_item_flags(6), "british_highland_drummer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_drummer", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_british_highland_piper", spr_buy_item_flags(6), "british_highland_piper", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_piper", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_british_highland_piper_2", spr_buy_item_flags(6), "british_highland_piper_2", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_piper_2", resources=["itm_linen_cloth"], tailoring=2)),
+  #("pn_buy_british_highland_piper", spr_buy_item_flags(6), "british_highland_piper", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_piper", resources=["itm_linen_cloth"], tailoring=2)),
+  #("pn_buy_british_highland_piper_2", spr_buy_item_flags(6), "british_highland_piper_2", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_highland_piper_2", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_british_guard_ranker", spr_buy_item_flags(6), "british_guard_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_guard_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_british_guard_sarge", spr_buy_item_flags(6), "british_guard_sarge", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_guard_sarge", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_british_guard_officer", spr_buy_item_flags(6), "british_guard_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_british_guard_officer", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3919,10 +3919,10 @@ scene_props = [
   ("pn_buy_westphalian_guard_drummer", spr_buy_item_flags(6), "west_gr_drummer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_westphalian_guard_drummer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_westphalian_guard_fifer", spr_buy_item_flags(6), "west_gr_fifer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_westphalian_guard_fifer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_saxon_king", spr_buy_item_flags(6), "saxonyking", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_saxon_king", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_nassau_jaeger_ranker", spr_buy_item_flags(6), "nassau_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_jaeger_ranker", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_nassau_jaeger_nco", spr_buy_item_flags(6), "nassau_nco", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_jaeger_nco", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_nassau_jaeger_officer", spr_buy_item_flags(6), "nassau_off", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_jaeger_officer", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_nassau_jaeger_trumpet", spr_buy_item_flags(6), "nassau_trumpeter", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_jaeger_trumpet", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_nassau_hussar_ranker", spr_buy_item_flags(6), "nassau_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_hussar_ranker", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_nassau_hussar_nco", spr_buy_item_flags(6), "nassau_nco", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_hussar_nco", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_nassau_hussar_officer", spr_buy_item_flags(6), "nassau_off", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_hussar_officer", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_nassau_hussar_trumpet", spr_buy_item_flags(6), "nassau_trumpeter", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_nassau_hussar_trumpet", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_wurttemberg_inf_ranker", spr_buy_item_flags(6), "wurttemberg_private", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_wurttemberg_inf_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_wurttemberg_inf_flagcarrier", spr_buy_item_flags(6), "wurttemberg_NCO", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_wurttemberg_inf_flagcarrier", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_wurttemberg_inf_officer", spr_buy_item_flags(6), "wurttemberg_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_wurttemberg_inf_officer", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3946,17 +3946,48 @@ scene_props = [
   ("pn_buy_baden_dragoon_nco", spr_buy_item_flags(6), "baden_dragoon_NCO", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_baden_dragoon_nco", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_baden_dragoon_trumpet", spr_buy_item_flags(6), "baden_dragoon_trumpeter", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_baden_dragoon_trumpet", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_baden_dragoon_officer", spr_buy_item_flags(6), "baden_dragoon_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_baden_dragoon_officer", resources=["itm_linen_cloth"], tailoring=2)),
+  
   ("pn_buy_neutral_militia_uniform", spr_buy_item_flags(6), "rus_militia_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_militia_uniform", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_shirt_1", spr_buy_item_flags(6), "civil_shirt_1", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_shirt_1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_shirt_2", spr_buy_item_flags(6), "civil_shirt_2", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_shirt_2", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_neutral_shirt_3", spr_buy_item_flags(6), "waistcoat_black", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_shirt_3", resources=["itm_linen_cloth"], tailoring=2)),  
   ("pn_buy_neutral_coat1", spr_buy_item_flags(6), "rus_partizan", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_coat1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_coat2", spr_buy_item_flags(6), "rus_partizan1", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_neutral_coat2", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_pants_grey", spr_buy_item_flags(6), "british_rifle_pants_grey", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_neutral_pants_grey", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_militia_pants1", spr_buy_item_flags(6), "rus_militia_ranker_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_neutral_militia_pants1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_neutral_militia_pants2", spr_buy_item_flags(6), "rus_militia_ranker_pants1", "bo_pw_armor_foot", spr_buy_item_triggers("itm_neutral_militia_pants2", resources=["itm_linen_cloth"], tailoring=2)),
 
+  ("pn_buy_ottoman_female_cap_red", spr_buy_item_flags(3), "sayazn_female_peasant_cap", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_cap_red", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_cap_green", spr_buy_item_flags(3), "sayazn_female_peasant_cap_2", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_cap_green", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_veil_white", spr_buy_item_flags(3), "sayazn_new_veil", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_veil_white", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_veil_black", spr_buy_item_flags(3), "sayazn_new_veil_black", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_veil_black", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_veil_brown", spr_buy_item_flags(3), "sayazn_new_veil_c", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_veil_brown", resources=["itm_linen_cloth"], tailoring=2)),
+
+  ("pn_buy_ottoman_dress_a", spr_buy_item_flags(6), "sayazn_peasant_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_a", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_dress_b", spr_buy_item_flags(6), "sayazn_peasant_dress_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_b", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_dress_c", spr_buy_item_flags(6), "sayazn_peasant_dress_3", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_c", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_dress_d", spr_buy_item_flags(6), "sayazn_peasant_dress_4", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_d", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_lady_dress_a", spr_buy_item_flags(6), "sayazn_sarranid_lady_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_lady_dress_a", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_lady_dress_b", spr_buy_item_flags(6), "sayazn_sarranid_lady_dress_b", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_lady_dress_b", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_lady_dress_c", spr_buy_item_flags(6), "sayazn_sarranid_lady_dress_black", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_lady_dress_c", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_lady_dress_d", spr_buy_item_flags(6), "sayazn_sarranid_lady_dress_c", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_lady_dress_d", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_waistcoat_a", spr_buy_item_flags(6), "sayazn_waistcoat_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_female_waistcoat_a", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_waistcoat_b", spr_buy_item_flags(6), "sayazn_waistcoat_dress_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_female_waistcoat_b", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_female_waistcoat_c", spr_buy_item_flags(6), "sayazn_waistcoat_dress_3", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_female_waistcoat_c", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_shirt_a", spr_buy_item_flags(6), "sayazn_shirt_man", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_shirt_a", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_shirt_b", spr_buy_item_flags(6), "sayazn_shirt_man_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_shirt_b", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_shirt_c", spr_buy_item_flags(6), "sayazn_shirt_man_3", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_shirt_c", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_shirt_d", spr_buy_item_flags(6), "sayazn_shirt_man_4", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_shirt_d", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_shirt_e", spr_buy_item_flags(6), "sayazn_shirt_man_5", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_shirt_e", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_waistcoat_a", spr_buy_item_flags(6), "sayazn_waistcoat_man", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_waistcoat_a", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_waistcoat_b", spr_buy_item_flags(6), "sayazn_waistcoat_man_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_waistcoat_b", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_waistcoat_c", spr_buy_item_flags(6), "sayazn_waistcoat_man_3", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_waistcoat_c", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_ottoman_men_waistcoat_d", spr_buy_item_flags(6), "sayazn_waistcoat_man_4", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_men_waistcoat_d", resources=["itm_linen_cloth"], tailoring=2)),
+
+  ("pn_buy_ottoman_sandals_female", spr_buy_item_flags(2), "sayazn_sandals_white", "bo_pw_armor_foot", spr_buy_item_triggers("itm_ottoman_sandals_female", resources=["itm_linen_cloth"], tailoring=2)),
+
   # HATS
-    ("pn_buy_rus_opol_hat_ranker", spr_buy_item_flags(4), "rus_opol_hat", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_rus_opol_hat_ranker", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_rus_opol_hat_ranker", spr_buy_item_flags(4), "rus_opol_hat", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_rus_opol_hat_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_rus_opol_hat_officer", spr_buy_item_flags(4), "rus_opol_captain_hat", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_rus_opol_hat_officer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_rus_pavlovsk_ranker", spr_buy_item_flags(4), "rus_pavlovsk_ranker", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_rus_pavlovsk_ranker", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_rus_kyiv_dragoons_all", spr_buy_item_flags(4), "rus_kyiv_dragoons_all", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_rus_kyiv_dragoons_all", resources=["itm_linen_cloth"], tailoring=2)),
@@ -4642,8 +4673,8 @@ scene_props = [
   ("pn_change_troop_herdsman",spr_use_time(40),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=900)),
 
   ## BANDITS
-  ("pn_change_troop_pirate",spr_use_time(40),"pirate_hat","bo_pw_weapon", spr_change_troop_triggers("trp_ruffian", cost=800, after_respawn=True, use_string="str_troop_become")),
-  ("pn_change_troop_rebel",spr_use_time(50),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_brigand", cost=500, after_respawn=True, use_string="str_troop_become")),
+  ("pn_change_troop_pirate",spr_use_time(40),"pirate_hat","bo_pw_weapon", spr_change_troop_triggers("trp_pirate", cost=800, after_respawn=True, use_string="str_troop_become")),
+  ("pn_change_troop_rebel",spr_use_time(50),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_rebel", cost=500, after_respawn=True, use_string="str_troop_become")),
 
   ## MILITARY TROOPS
   # Infatry
@@ -5820,42 +5851,51 @@ scene_props = [
         (agent_get_player_id,":player_id",":agent_id"),
         (player_is_active,":player_id"),
         (prop_instance_is_valid,":instance_id"),
-        (assign,":in_use",0),
-        (try_for_agents, ":cur_agent"),
-          (agent_is_active,":cur_agent"),
-          (agent_is_alive,":cur_agent"),
-          (agent_get_slot,":cur_inst",":cur_agent",slot_agent_used_prop_instance),
-          (eq,":cur_inst",":instance_id"), # same prop
-          (neq,":cur_agent",":agent_id"), # and not meself
-          (assign,":in_use",1),
-        (try_end),
+
+        (agent_get_troop_id, ":agent_troop", ":agent_id"),
+        (troop_get_slot, ":trp_play_musics", ":agent_troop", slot_troop_can_play_musics),
         (try_begin),
-          (eq,":in_use",0),
-          (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
+          (neq, ":trp_play_musics", 1),
+          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_dont_know_piano"),
+        (else_try),
+          (assign,":in_use",0),
+          (try_for_agents, ":cur_agent"),
+            (agent_is_active,":cur_agent"),
+            (agent_is_alive,":cur_agent"),
+            (agent_get_slot,":cur_inst",":cur_agent",slot_agent_used_prop_instance),
+            (eq,":cur_inst",":instance_id"), # same prop
+            (neq,":cur_agent",":agent_id"), # and not meself
+            (assign,":in_use",1),
+          (try_end),
           (try_begin),
-            (agent_get_horse, ":player_horse", ":agent_id"),
-            (le, ":player_horse", 0),
+            (eq,":in_use",0),
+            (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
             (try_begin),
-              (set_fixed_point_multiplier, 100),
-              (agent_get_position,pos33,":agent_id"),
-              (prop_instance_get_position, pos40, ":instance_id"),
-              (position_move_y,pos40,-200),
-              (get_distance_between_positions,":dist",pos33,pos40),
-              (lt, ":dist", 280),
-              (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
-              (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
-              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_return_server_action, server_action_force_music_selection, ":prop_kind"),
+              (agent_get_horse, ":player_horse", ":agent_id"),
+              (le, ":player_horse", 0),
+              (try_begin),
+                (set_fixed_point_multiplier, 100),
+                (agent_get_position,pos33,":agent_id"),
+                (prop_instance_get_position, pos40, ":instance_id"),
+                (position_move_y,pos40,-200),
+                (get_distance_between_positions,":dist",pos33,pos40),
+                (lt, ":dist", 280),
+                (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
+                (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
+                (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_return_server_action, server_action_force_music_selection, ":prop_kind"),
+              (else_try),
+                (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano_angle"),
+              (try_end),
             (else_try),
-              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano_angle"),
+              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano"),
             (try_end),
           (else_try),
-            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano"),
+            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_piano_in_use"),
           (try_end),
-        (else_try),
-          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_piano_in_use"),
-        (try_end)
+        (try_end),
       ]),
     ]),
+
     ("mm_organ",spr_use_time(0),"organ","bo_organ",
     [
       (ti_on_scene_prop_use,
@@ -5867,54 +5907,60 @@ scene_props = [
         (agent_is_alive,":agent_id"),
         (agent_get_player_id,":player_id",":agent_id"),
         (player_is_active,":player_id"),
-        
         (prop_instance_is_valid,":instance_id"),
-        
-        (assign,":in_use",0),
-        (try_for_agents, ":cur_agent"),
-          (agent_is_active,":cur_agent"),
-          (agent_is_alive,":cur_agent"),
-          (agent_get_slot,":cur_inst",":cur_agent",slot_agent_used_prop_instance),
-          (eq,":cur_inst",":instance_id"), # same prop
-          (neq,":cur_agent",":agent_id"), # and not meself
-          (assign,":in_use",1),
-        (try_end),
-        
-        # not in use by a other player.
+
+        (agent_get_troop_id, ":agent_troop", ":agent_id"),
+        (troop_get_slot, ":trp_play_musics", ":agent_troop", slot_troop_can_play_musics),
         (try_begin),
-          (eq,":in_use",0),
+          (neq, ":trp_play_musics", 1),
+          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_dont_know_organ"),
+        (else_try),
+          (assign,":in_use",0),
+          (try_for_agents, ":cur_agent"),
+            (agent_is_active,":cur_agent"),
+            (agent_is_alive,":cur_agent"),
+            (agent_get_slot,":cur_inst",":cur_agent",slot_agent_used_prop_instance),
+            (eq,":cur_inst",":instance_id"), # same prop
+            (neq,":cur_agent",":agent_id"), # and not meself
+            (assign,":in_use",1),
+          (try_end),
           
-          # Always stop first.
-          (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
-          
-          # not on horseback
+          # not in use by a other player.
           (try_begin),
-            (agent_get_horse, ":player_horse", ":agent_id"),
-            (le, ":player_horse", 0),
+            (eq,":in_use",0),
             
+            # Always stop first.
+            (call_script,"script_multiplayer_server_agent_stop_music",":agent_id"),
+            
+            # not on horseback
             (try_begin),
+              (agent_get_horse, ":player_horse", ":agent_id"),
+              (le, ":player_horse", 0),
               
-              (set_fixed_point_multiplier, 100),
-              
-              (agent_get_position,pos33,":agent_id"),
-              (prop_instance_get_position, pos40, ":instance_id"),
-              
-              (position_move_y,pos40,-200),
-              (get_distance_between_positions,":dist",pos33,pos40),
-              
-              (lt, ":dist", 280),
-              (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
-              (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
-              
-              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_return_server_action, server_action_force_music_selection, ":prop_kind"),
+              (try_begin),
+                
+                (set_fixed_point_multiplier, 100),
+                
+                (agent_get_position,pos33,":agent_id"),
+                (prop_instance_get_position, pos40, ":instance_id"),
+                
+                (position_move_y,pos40,-200),
+                (get_distance_between_positions,":dist",pos33,pos40),
+                
+                (lt, ":dist", 280),
+                (prop_instance_get_scene_prop_kind,":prop_kind",":instance_id"),
+                (agent_set_slot, ":agent_id", slot_agent_used_prop_instance, ":instance_id"),
+                
+                (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_return_server_action, server_action_force_music_selection, ":prop_kind"),
+              (else_try),
+                (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano_angle"),
+              (try_end),
             (else_try),
-              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano_angle"),
+              (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano"),
             (try_end),
           (else_try),
-            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cannot_use_piano"),
+            (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_piano_in_use"),
           (try_end),
-        (else_try),
-          (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_piano_in_use"),
         (try_end),
       ]),
     ]),

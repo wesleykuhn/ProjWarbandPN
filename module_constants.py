@@ -81,6 +81,9 @@ slot_player_character_language        = 59
 
 # PN START *********************************
 
+pn_drummers_uniforms_begin          = "itm_french_45e_body_drummer"
+pn_drummers_uniforms_end            = "itm_british_infantry_ranker"
+
 pn_hittable_props_begin             = "spr_table_tavern"
 pn_hittable_props_end               = "spr_mm_ambience_sound_global_wind_snow"
 
@@ -798,6 +801,9 @@ slot_troop_class                      = 52
 slot_troop_class_type                 = 53
 slot_troop_rank                       = 54
 slot_troop_rank_type                  = 55
+
+slot_troop_can_use_cannon             = 56
+slot_troop_can_play_musics            = 57
 
 slot_player_array_size                = 0
 slot_player_array_begin               = 1

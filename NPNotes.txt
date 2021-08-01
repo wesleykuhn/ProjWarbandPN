@@ -21,3 +21,71 @@ Where '5' is the spawn entry point target. This entry point needs to be on a far
 -Should be spawn between 3-7.
 -They can only have a main weapon.
 -When dead, they can drop between 700-6000 gold.
+
+** Items weigth/armor criteria **
+# ARMOR
+# Bolsa hussar + 3 foot
+# Botoes de hussar + 4 body
+# Cinta + 1 body
+# Colar de metal + 2 body
+# Cuirass frances + 21
+# Cuirass simples + 15
+# Drumm + 2 foot
+# Ombreiras + 2 body
+# Saco dormir + 4 body
+# WEIGHT
+# Agua + 1
+# Bolsa hussar + 2
+# Bolsa media + 1
+# Bolsa pequena + 0.5
+# Cinta + 0.2
+# Colar de metal + 0.5
+# Cuirass + 4
+# Drumm + 3
+# Hussar jaqueta + 2
+# Mochila + 2
+# Ombreiras pano + 0.2
+# Ombreiras ferro + 0.5
+# Polvora + 0.3
+# Saco dormir + 4
+
+** Uniforms price criteria **
+#### Sapper +950
+#### Doctor +740
+#### Infantry/Artillery +800 ----
+# Militia +0
+# Line +250
+# Light +410
+# Rifleman +550
+# Grenadier +680
+#### Rank -------------
+# Ranker +0
+# Sarg +200
+# Colors + 800
+# Officer +1000
+#### Cavalry +1500 --------------
+# Cossack/Militia +0
+# Dragoon +450
+# Lancer +600
+# Hussar +800
+# Cuirassier +1500
+# Carabinner +1800
+#### Rank ----------------------
+# Ranker +0
+# Sarg +400
+# Colors + 800
+# Officer +1000
+#### Generals/Emperors +5200
+
+#### Infantry/Artillery/Poors +250 ----
+#### Cavalry/Royal +400 ---------------
+#### Kind ----------------------------
+# Pure cloth +0
+# Hat +50
+# Shakko +100
+# Bispo + 200
+# Bearskin +300
+# Bicorne +350
+# Capzka +400
+# British police +800
+# French Curassier style +1200
