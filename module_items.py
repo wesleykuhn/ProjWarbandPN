@@ -1500,7 +1500,7 @@ itm_wall_banner("fac_8", "b"),
  1212 , weight(1.5)|difficulty(0)|spd_rtng(30) | shoot_speed(200) | thrust_damage(63 ,pierce)|max_ammo(1)|accuracy(25),imodbits_none, []],
 
  # Neutral
-["neutral_old_pistol_1766", "Old Pistol", [("french_pistol_1766",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
+["french_old_pistol_1766", "Old Pistol", [("french_pistol_1766",0)], itp_type_pistol|itp_primary|itp_cant_reload_while_moving_mounted ,itcf_shoot_pistol|itcf_reload_pistol|itcf_carry_pistol_front_left ,
  931 , weight(1.5)|difficulty(0)|spd_rtng(28) | shoot_speed(200) | thrust_damage(50 ,pierce)|max_ammo(1)|accuracy(20),imodbits_none, []],
 
  # Russian
@@ -1772,7 +1772,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  1084 , weight(2.3)|difficulty(11)|spd_rtng(76) | weapon_length(185)|swing_damage(25 ,  pierce) | thrust_damage(28 ,  pierce),imodbits_polearm ],
 
 # Other
-["neutral_lance", "Lance", [("saxon_ulan_pike",0)],itp_has_upper_stab| itp_couchable|itp_type_polearm|itp_offset_lance|itp_no_parry| itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_is_pike|itp_no_blur, itc_lance|itcf_carry_spear,
+["rhine_lance", "Lance", [("saxon_ulan_pike",0)],itp_has_upper_stab| itp_couchable|itp_type_polearm|itp_offset_lance|itp_no_parry| itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_is_pike|itp_no_blur, itc_lance|itcf_carry_spear,
  1284 , weight(2.5)|difficulty(12)|spd_rtng(76) | weapon_length(185)|swing_damage(25 ,  pierce) | thrust_damage(30 ,  pierce),imodbits_polearm ], 
 
 # Other polearms and two handed
@@ -2494,26 +2494,72 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["saxon_king", "Saxon King's Outfit", [("saxonyking",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  4850 , weight(5.6)|head_armor(6)|body_armor(21)|leg_armor(6)|difficulty(11) ,imodbits_cloth ],
 
-# Neutral All Cloths Kinds
-["neutral_militia_uniform", "Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor |itp_covers_legs ,0,
+## Neutral All Cloths Kinds
+# Head
+["civil_emperor_crown", "Gold Crown", [("pn_crown",0)], itp_type_head_armor|itp_doesnt_cover_hair, 0,
+ 5799, weight(0.4)|head_armor(1), imodbits_cloth],
+["civil_peasant_hat", "Peasant's Green and Red Hat", [("rus_random_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
+ ,0, 71 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
+["civil_militia_hat", "Militia's Hat", [("rus_random_hat1",0)],  itp_type_head_armor |itp_covers_hair 
+ ,0, 124 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
+["civil_top_hat", "Top Hat", [("partizan_hat_1",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
+ ,0, 299 , weight(0.5)|head_armor(8) ,imodbits_cloth ],
+["civil_peasant_hat2", "Peasant's Red Hat", [("partizan_hat_2",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
+ ,0, 60 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
+["civil_peasant_hat3", "Peasant's Square Hat", [("partizan_hat_3",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
+ ,0, 83 , weight(0.6)|head_armor(8) ,imodbits_cloth ],
+["civil_betsy_ross", "Colonial Women Cap", [("betsy_ross",0)],  itp_type_head_armor |itp_covers_hair ,0, 
+ 55 , weight(0.1)|head_armor(2) ,imodbits_cloth|imodbit_female ],
+["civil_fur_hat", "Fur Hat", [("arena_helmetb",0)],  itp_type_head_armor |itp_doesnt_cover_hair ,0, 
+ 402 , weight(0.8)|head_armor(18) ,imodbits_cloth ],
+["civil_outlaw_mask", "Black Hat with Mask", [("OutlawMask",0)],  itp_type_head_armor |itp_doesnt_cover_hair ,0, 
+ 299 , weight(0.9)|head_armor(10) ,imodbits_cloth ],
+["civil_pirates_headscarf_a", "Pirate Red Head Scarf", [("pirates_headscarf_a",0)],  itp_type_head_armor |itp_doesnt_cover_hair ,0, 
+ 33 , weight(0.1)|head_armor(2) ,imodbits_cloth ],
+# Body
+["civil_militia_uniform", "Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor |itp_covers_legs ,0,
  420 , weight(5.2)|head_armor(4)|body_armor(16)|leg_armor(10)|difficulty(8) ,imodbits_cloth ],
-["neutral_shirt_1", "Noble White Shirt", [("civil_shirt_1",0)], itp_type_body_armor|itp_covers_legs,0,
- 814, weight(3)|head_armor(4)|body_armor(13)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
-["neutral_shirt_2", "Noble Brown Shirt", [("civil_shirt_2",0)], itp_type_body_armor|itp_covers_legs,0,
- 886, weight(3)|head_armor(4)|body_armor(13)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
-["neutral_shirt_3", "Black Waistcoat", [("waistcoat_black",0)], itp_type_body_armor|itp_covers_legs,0,
- 602, weight(2.6)|head_armor(0)|body_armor(10)|leg_armor(3)|difficulty(0) ,imodbits_cloth ],
-["neutral_coat1", "Coat", [("rus_partizan",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+["civil_coat1", "Coat", [("rus_partizan",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  365 , weight(4.2)|head_armor(4)|body_armor(15)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
-["neutral_coat2", "Coat", [("rus_partizan1",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+["civil_coat2", "Coat", [("rus_partizan1",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  344 , weight(4.2)|head_armor(4)|body_armor(15)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
-
-["neutral_pants_grey", "Noble Gray Pants", [("british_rifle_pants_grey",0)],  itp_type_foot_armor | itp_attach_armature,0,
- 571 , weight(1.25)|head_armor(4)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["neutral_militia_pants1", "Militia Boots", [("rus_militia_ranker_pants",0)],  itp_type_foot_armor | itp_attach_armature,0,
- 348 , weight(1.25)|head_armor(4)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
-["neutral_militia_pants2", "Militia Pants", [("rus_militia_ranker_pants1",0)],  itp_type_foot_armor | itp_attach_armature,0,
- 151 , weight(1.25)|head_armor(4)|body_armor(0)|leg_armor(30)|difficulty(0) ,imodbits_cloth ],
+["civil_shirt_1", "Noble White Shirt", [("civil_shirt_1",0)], itp_type_body_armor|itp_covers_legs,0,
+ 814, weight(3)|head_armor(4)|body_armor(13)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
+["civil_shirt_2", "Noble Brown Shirt", [("civil_shirt_2",0)], itp_type_body_armor|itp_covers_legs,0,
+ 886, weight(3)|head_armor(4)|body_armor(13)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
+["civil_shirt_3", "Black Waistcoat", [("waistcoat_black",0)], itp_type_body_armor|itp_covers_legs,0,
+ 602, weight(2.6)|head_armor(0)|body_armor(10)|leg_armor(3)|difficulty(0) ,imodbits_cloth ],
+["civil_gentleman_cloth_a", "Glentleman Grey Outfit", [("1700_gentleman_e",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 998 , weight(6.2)|head_armor(4)|body_armor(13)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
+["civil_arena_armorb", "Fur Cloth", [("arena_armorb",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 211 , weight(3.7)|head_armor(0)|body_armor(14)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["civil_gentleman_outfit_blue", "Gentleman Blue Outfit", [("civilian_outfit_blue",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 1471 , weight(3.5)|head_armor(1)|body_armor(15)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["civil_gentleman_outfit_brown", "Gentleman Brown Outfit", [("civilian_outfit_brown",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 1471 , weight(3.5)|head_armor(1)|body_armor(13)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["civil_gentleman_outfit_red", "Gentleman Red Outfit", [("civilian_outfit_red",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 1471 , weight(3.5)|head_armor(1)|body_armor(13)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["civil_coat_a", "Brown Coat", [("coat_a",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 523 , weight(3)|head_armor(1)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
+["civil_colonial_grey_dress", "Colonial Grey Dress", [("colonial_grey_dress",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth ],
+["civil_colonial_red_dress", "Colonial Red Dress", [("colonial_red_dress",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth ],
+["civil_peasant_shirt_1", "Farmer Shirt", [("peasant_shirt_1",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 86 , weight(2)|head_armor(0)|body_armor(6)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
+["civil_pirate_captain_uniform", "Pirate Captain Uniform", [("pirates_uniform",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 850 , weight(5)|head_armor(0)|body_armor(15)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+["civil_waistcoat_custom_4", "Grey Waistcoat", [("waistcoat_custom_4",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+ 602 , weight(2.6)|head_armor(0)|body_armor(10)|leg_armor(3)|difficulty(0) ,imodbits_cloth ],
+# Foot
+["civil_noble_pants_grey", "Noble Gray Pants", [("british_rifle_pants_grey",0)],  itp_type_foot_armor | itp_attach_armature,0,
+ 886 , weight(1.25)|head_armor(0)|body_armor(0)|leg_armor(22)|difficulty(0) ,imodbits_cloth ],
+["civil_militia_pants1", "Militia Boots", [("rus_militia_ranker_pants",0)],  itp_type_foot_armor | itp_attach_armature,0,
+ 649 , weight(1.25)|head_armor(0)|body_armor(0)|leg_armor(20)|difficulty(0) ,imodbits_cloth ],
+["civil_militia_pants2", "Militia Pants", [("rus_militia_ranker_pants1",0)],  itp_type_foot_armor |itp_attach_armature,0,
+ 288 , weight(1)|head_armor(0)|body_armor(0)|leg_armor(14)|difficulty(0) ,imodbits_cloth ],
+["civil_noble_shoes", "Noble Shoes", [("civilian_shoes",0)],  itp_type_foot_armor |itp_attach_armature,0,
+ 699 , weight(0.5)|head_armor(0)|body_armor(0)|leg_armor(8)|difficulty(0) ,imodbits_cloth ],
 
 ## Ottoman clothing
 # Head
@@ -2527,6 +2573,22 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  233, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
 ["ottoman_female_veil_brown", "Ottoman Brown Veil", [("sayazn_new_veil_c",0)],  itp_type_head_armor|itp_covers_hair|itp_attach_armature, 0,
  233, weight(0.1)|head_armor(1) ,imodbits_cloth|imodbit_female],
+["ottoman_nizam_i_cedit_hat", "Ottoman Nizam Hat", [("nizam_i_cedit_hat",0)],  itp_type_head_armor, 0,
+ 312, weight(0.3)|head_armor(6)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_a", "Ottoman Cloth Turban", [("turban_a",0)],  itp_type_head_armor, 0,
+ 72, weight(0.2)|head_armor(5)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_b", "Ottoman Royal White Hat", [("turban_b",0)],  itp_type_head_armor, 0,
+ 551, weight(0.5)|head_armor(10)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_c", "Ottoman Green Turban", [("turban_c",0)],  itp_type_head_armor, 0,
+ 312, weight(0.3)|head_armor(6)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_d", "Ottoman Royal Red Hat", [("turban_d",0)],  itp_type_head_armor, 0,
+ 551, weight(0.5)|head_armor(10)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_e", "Ottoman Black Turban", [("turban_e",0)],  itp_type_head_armor, 0,
+ 312, weight(0.3)|head_armor(6)|difficulty(0) ,imodbits_cloth],
+["ottoman_turban_f", "Ottoman Black Turban", [("turban_f",0)],  itp_type_head_armor, 0,
+ 312, weight(0.3)|head_armor(6)|difficulty(0) ,imodbits_cloth],
+["ottoman_janissaries_hat", "Ottoman Janissary White Turban", [("janissaries_hat",0)],  itp_type_head_armor, 0,
+ 550, weight(0.3)|head_armor(6)|difficulty(0) ,imodbits_cloth],
 # Body
 ["ottoman_dress_a", "Ottoman Beige and White Dress", [("sayazn_peasant_dress",0)], itp_type_body_armor|itp_covers_legs, 0,
  87, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
@@ -2550,6 +2612,18 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  288, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
 ["ottoman_female_waistcoat_c", "Ottoman Women Waistcoat", [("sayazn_waistcoat_dress_3",0)], itp_type_body_armor|itp_covers_legs, 0,
  288, weight(3)|body_armor(11)|leg_armor(2)|difficulty(0), imodbits_cloth|imodbit_female],
+["ottoman_azzar_robe_a", "Ottoman Azzar Green Robe", [("azzar_robe_a",0)], itp_type_body_armor|itp_covers_legs,0,
+ 712, weight(6)|body_armor(13)|leg_armor(2)|difficulty(5) ,imodbits_cloth ],
+["ottoman_bashi_bazouk_robe_b", "Ottoman Bashi Bazouk Robe", [("bashi_bazouk_robe_b",0)], itp_type_body_armor|itp_covers_legs,0,
+ 645, weight(4)|body_armor(13)|leg_armor(2)|difficulty(5) ,imodbits_cloth ],
+["ottoman_beylik_robe_a", "Ottoman Beylik Robe", [("beylik_robe_a",0)], itp_type_body_armor|itp_covers_legs,0,
+ 712, weight(6)|body_armor(13)|leg_armor(2)|difficulty(5) ,imodbits_cloth ],
+["ottoman_cemaat_janissary_robe_a", "Ottoman Cemaat Janissary Robe", [("cemaat_janissary_robe_a",0)], itp_type_body_armor|itp_covers_legs,0,
+ 645, weight(4)|body_armor(13)|leg_armor(2)|difficulty(5) ,imodbits_cloth ],
+["ottoman_cemaat_janissary_robe_b", "Ottoman Cemaat Janissary Robe", [("cemaat_janissary_robe_b",0)], itp_type_body_armor|itp_covers_legs,0,
+ 712, weight(4)|body_armor(13)|leg_armor(2)|difficulty(5) ,imodbits_cloth ],
+["ottoman_palestinian_robe_a", "Ottoman Palestinian Robe", [("palestinian_robe_a",0)], itp_type_body_armor|itp_covers_legs,0,
+ 599, weight(6.5)|body_armor(17)|leg_armor(10)|difficulty(8) ,imodbits_cloth ],
 ["ottoman_men_shirt_a", "Ottoman White Men Shirt", [("sayazn_shirt_man",0)], itp_type_body_armor,0,
  77, weight(3)|body_armor(7)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
 ["ottoman_men_shirt_b", "Ottoman Yellow Men Shirt", [("sayazn_shirt_man_2",0)], itp_type_body_armor,0,
@@ -2571,11 +2645,12 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 # Foot
 ["ottoman_sandals_female", "Ottoman Women Sandals", [("sayazn_sandals_white",0)], itp_type_foot_armor|itp_attach_armature, 0,
  61, weight(1)|leg_armor(1)|difficulty(0), imodbits_cloth|imodbit_female],
-
-## Hats
-# Neutral
-["emperor_crown", "Crown", [("pn_crown",0)], itp_type_head_armor|itp_doesnt_cover_hair, 0,
- 5799, weight(0.4)|head_armor(1), imodbits_cloth],
+["ottoman_deli_boots", "Ottoman Deli Boots", [("deli_boots",0)], itp_type_foot_armor|itp_attach_armature, 0,
+ 701, weight(1.5)|leg_armor(22)|difficulty(0), imodbits_cloth],
+["ottoman_nizam_boots", "Ottoman Nizam Boots", [("nizam_i_cedit_boots",0)], itp_type_foot_armor|itp_attach_armature, 0,
+ 400, weight(1.25)|leg_armor(16)|difficulty(0), imodbits_cloth],
+["ottoman_ottoman_boots_b", "Ottoman Desert Boots", [("ottoman_boots_b",0)], itp_type_foot_armor|itp_attach_armature, 0,
+ 132, weight(0.8)|leg_armor(8)|difficulty(0), imodbits_cloth],
 
 # Russian
 ["rus_opol_hat_ranker", "Russian Opolocheniye Hat", [("rus_opol_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair  
@@ -2644,18 +2719,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
 ["rus_uhlan_czapka_trumpeter", "Russian Uhlan Trumpeter Czapka", [("czapka_trump_uhlan",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
  ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
-
-# Neutral
-["peasant_hat", "Peasant's Green and Red Hat", [("rus_random_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
- ,0, 71 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
-["militia_hat", "Militia's Hat", [("rus_random_hat1",0)],  itp_type_head_armor |itp_covers_hair 
- ,0, 124 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
-["top_hat", "Top Hat", [("partizan_hat_1",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
- ,0, 299 , weight(0.5)|head_armor(8) ,imodbits_cloth ],
-["peasant_hat2", "Peasant's Red Hat", [("partizan_hat_2",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
- ,0, 60 , weight(0.3)|head_armor(8) ,imodbits_cloth ],
-["peasant_hat3", "Peasant's Square Hat", [("partizan_hat_3",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
- ,0, 83 , weight(0.6)|head_armor(8) ,imodbits_cloth ],
 
 # French
 ["french_dragoon_helmet", "French Dragoon Helmet", [("french_dragons_dlG_ranker",0)],  

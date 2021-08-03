@@ -139,23 +139,23 @@ troops = [
 
   # PN INFANTRY BEGIN
   ["line_infantry","Line Infantry","a line infantry",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
    str_13|agi_13|pw_attr,wpex(50,0,140,0,120,50),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
 
   ["light_infantry","Light Infantry","a light infantry",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets", "itm_training_light_sabre"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets", "itm_training_light_sabre"],
    str_11|agi_15|pw_attr,wpex(50,0,100,0,150,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_5|knows_riding_1|knows_sailing_1|knows_engineer_1,default_face_1,default_face_2],
 
   ["grenadier","Grenadier","a grenadier",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
    str_15|agi_11|pw_attr,wpex(50,0,160,0,120,160),knows_pw|knows_ironflesh_5|knows_power_strike_3|knows_athletics_3|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
 
   ["infantry_musician","Infantry Musician","an infantry musician",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
    str_12|agi_13|pw_attr,wpex(70,0,70,0,50,0),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
 
   ["infantry_officer","Infantry Officer","an infantry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,50,100,0,90,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
   # PN INFANTRY END
 
@@ -169,27 +169,27 @@ troops = [
 
   # PN CAVALRY BEGIN
   ["lancer","Lancer","a lancer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_neutral_lance"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_rhine_lance"],
    str_12|agi_13|pw_attr,wpex(100,0,160,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
 
   ["hussar","Hussar","a hussar",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
    str_12|agi_15|pw_attr,wpex(160,0,50,0,70,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
 
   ["cuirassier","Cuirassier","a cuirassier",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_heavy_sword"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_heavy_sword"],
    str_15|agi_10|pw_attr,wpex(160,70,20,0,70,20),knows_pw|knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
 
   ["dragoon","Dragoon","a dragoon",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
    str_13|agi_13|pw_attr,wpex(120,0,120,0,120,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_3,default_face_1,default_face_2],
 
   ["cavalry_musician","Cavalry Musician","a cavalry musician",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
    str_12|agi_12|pw_attr,wpex(120,0,20,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_1|knows_riding_5,default_face_1,default_face_2],
 
   ["cavalry_officer","Cavalry Officer","a cavalry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,70,100,0,90,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
   # PN CAVALRY END
 
@@ -219,7 +219,7 @@ troops = [
    str_15|agi_13|pw_attr,wpex(90,0,50,0,50,100),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_5|knows_sailing_7|knows_engineer_1,default_face_1,default_face_2],
 
   ["captain","Captain","a captain",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_neutral_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
    str_14|agi_12|pw_attr,wpex(120,50,50,0,100,20),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_athletics_3|knows_sailing_9|knows_riding_1|knows_engineer_1,default_face_1,default_face_2],
   # PN NAVAL END
 
@@ -233,7 +233,7 @@ troops = [
 
   # PN Le Emperor
   ["lord","Majesty","the majesty",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_2","itm_neutral_pants_grey","itm_cane"],
+   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_cane"],
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN
@@ -252,11 +252,11 @@ troops = [
 
   # PN ARTILLERY START
   ["artillerist","Artillerist","an artillerist",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2", "itm_training_light_sabre"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2", "itm_training_light_sabre"],
    str_15|agi_9|pw_attr,wpex(70,0,50,0,70,20),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_3|knows_riding_1|knows_engineer_1,default_face_1,default_face_2],
 
   ["artillerist_officer","Artillerist Officer","an artillerist officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_shirt_1","itm_neutral_pants_grey", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_1","itm_civil_noble_pants_grey", "itm_training_officer_sword", "itm_spyglass"],
    str_15|agi_9|pw_attr,wpex(120,30,50,0,90,20),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
   # PN ARTILLERY END
 
@@ -266,7 +266,7 @@ troops = [
 
   #Sapper and Enginner
   ["sapper","Sapper","a sapper",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_neutral_militia_uniform","itm_neutral_militia_pants2", "itm_cheap_sapper_axe", "itm_shovel"],
+   ["itm_civil_militia_uniform","itm_civil_militia_pants2", "itm_cheap_sapper_axe", "itm_shovel"],
    str_15|agi_10|pw_attr,wpex(110,20,110,0,20,20),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
@@ -321,16 +321,16 @@ troops = [
 
   # PN Bots begin
   ["bot_merchant_1", "(BOT)Fakir", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_fur_coat", "itm_leather_boots", "itm_peasant_hat2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   ["itm_fur_coat", "itm_leather_boots", "itm_civil_peasant_hat2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
    knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
 
   ["bot_merchant_2", "(BOT)Muhtar", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_leather_jacket", "itm_hide_boots", "itm_top_hat"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   ["itm_leather_jacket", "itm_hide_boots", "itm_civil_top_hat"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
    knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
 
   ["bot_bandit", "(BOT)Bandit", "{!}bot_bandit", tf_guarantee_all, 0, 0, "fac_commoners",
-   ["itm_peasant_hat", "itm_peasant_hat2", "itm_peasant_hat3", "itm_neutral_militia_uniform", "itm_neutral_coat1", "itm_neutral_coat2", 
-   "itm_old_hide_boots", "itm_neutral_old_pistol_1766", "itm_bullets", "itm_russian_peasant_axe", "itm_woodcutter_axe", "itm_hatchet"], 
+   ["itm_civil_peasant_hat", "itm_civil_peasant_hat2", "itm_civil_peasant_hat3", "itm_civil_militia_uniform", "itm_civil_coat1", "itm_civil_coat2", 
+   "itm_old_hide_boots", "itm_french_old_pistol_1766", "itm_bullets", "itm_russian_peasant_axe", "itm_woodcutter_axe", "itm_hatchet"], 
    str_13|agi_15|pw_attr, wpex(100,20,100,90,100,70), 
    knows_pw|knows_ironflesh_2|knows_power_strike_3|knows_athletics_4|knows_power_draw_2|knows_power_throw_3,default_face_1,default_face_2],
   # PN Bots end

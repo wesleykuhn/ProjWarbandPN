@@ -11314,9 +11314,9 @@ scripts.extend([("game_start", []), # single player only, not used
     (troop_get_slot, reg0, "trp_temp_array", ":random_slot"),]),
 
   ("store_profile_troop_equipment", # store random body and leg armor items for the profile selection presentation
-   [(call_script, "script_get_random_equipment", "itm_neutral_coat1", "itm_neutral_pants_grey"),
+   [(call_script, "script_get_random_equipment", "itm_civil_militia_uniform", "itm_civil_shirt_1"),
     (assign, "$g_profile_troop_body_item", reg0),
-    (call_script, "script_get_random_equipment", "itm_neutral_pants_grey", "itm_ottoman_female_cap_red"),
+    (call_script, "script_get_random_equipment", "itm_civil_militia_pants1", "itm_civil_noble_shoes"),
     (assign, "$g_profile_troop_foot_item", reg0)]),
 
   ("add_troop_to_cur_tableau_for_profile", # setup the tableau for the profile selection presentation
