@@ -3292,6 +3292,13 @@ scene_props = [
   ("pw_silver_mine",spr_resource_flags(),"pw_silver_vein","bo_pw_gold_vein", spr_hit_mine_triggers("itm_silver_nugget", resource_hp=150, random_hp=100, hardness=5)),
   ("pw_salt_mine",spr_resource_flags(),"pw_salt_mine","bo_pw_salt_mine", spr_hit_mine_triggers("itm_salt_sack", resource_hp=30, random_hp=20, hardness=5)),
 
+  #PN Copper Begin
+  ("pn_copper_mine",spr_resource_flags(),"pn_copper_vein_a2","bo_pn_copper_vein_a2", spr_hit_mine_triggers("itm_copper_ore", resource_hp=90, hardness=4)),
+  ("pn_copper_mine_a",spr_resource_flags(),"pn_copper_vein_a1","bo_pn_copper_vein_a1", spr_hit_mine_triggers("itm_copper_ore", resource_hp=115, hardness=4)),
+  ("pn_copper_mine_b",spr_resource_flags(),"pn_copper_vein_b","bo_pn_copper_vein_b", spr_hit_mine_triggers("itm_copper_ore", resource_hp=75, hardness=5)),
+  ("pn_copper_mine_small",spr_resource_flags(),"pn_copper_vein_a1","bo_pn_copper_vein_a1", spr_hit_mine_triggers("itm_copper_ore_small", resource_hp=60, hardness=4)),
+  #PN Copper End
+
   ("pw_stockpile_wood_block",spr_use_time(1),"pw_wood_heap_a","bo_wood_heap_a", spr_stockpile_resource_triggers("itm_wood_block")),
   ("pw_stockpile_wood_branch",spr_use_time(1),"wood_heap_b","bo_wood_heap_b", spr_stockpile_resource_triggers("itm_branch")),
   ("pw_stockpile_wood_pole",spr_use_time(1),"pw_wood_pole","bo_pw_weapon_big", spr_stockpile_resource_triggers("itm_wood_pole")),
@@ -3301,6 +3308,11 @@ scene_props = [
   ("pw_stockpile_iron_ore_small",spr_use_time(1),"pw_iron_ore_small","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore_small")),
   ("pw_stockpile_iron_ore",spr_use_time(1),"pw_iron_ore","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_iron_ore")),
   ("pw_stockpile_iron_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_iron_bar")),
+  #PN Copper Begin
+  ("pw_stockpile_copper_ore_small",spr_use_time(1),"pn_copper_ore_small","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_copper_ore_small")),
+  ("pw_stockpile_copper_ore",spr_use_time(1),"pn_copper_ore","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_copper_ore")),
+  ("pw_stockpile_copper_bar",spr_use_time(1),"pw_chest_c","bo_pw_chest_c", spr_stockpile_resource_triggers("itm_copper_bar")),
+  #PN Copper End
   ("pw_stockpile_flour_sack",spr_use_time(1),"mill_flour_sack_desk_a","bo_mill_flour_sack_desk_a_fixed", spr_stockpile_resource_triggers("itm_flour_sack")),
   ("pw_stockpile_salt_sack",spr_use_time(1),"pw_salt_sack","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt_sack")),
   ("pw_stockpile_salt",spr_use_time(1),"pw_salt","bo_pw_weapon_small", spr_stockpile_resource_triggers("itm_salt")),
@@ -3327,6 +3339,13 @@ scene_props = [
   ("pw_export_iron_bar_short",spr_use_time(10),"pw_iron_bar_short","bo_pw_weapon_small", spr_export_item_triggers("itm_iron_bar_short")),
   ("pw_export_iron_bar",spr_use_time(13),"pw_iron_bar","bo_pw_weapon_small", spr_export_item_triggers("itm_iron_bar")),
   ("pw_export_iron_bar_long",spr_use_time(16),"pw_iron_bar_long","bo_pw_weapon_small", spr_export_item_triggers("itm_iron_bar_long")),
+  #PN Copper begin
+  ("pn_export_copper_ore_small",spr_use_time(10),"pn_copper_ore_small","bo_pw_weapon_small", spr_export_item_triggers("itm_copper_ore_small")),
+  ("pn_export_copper_ore",spr_use_time(14),"pn_copper_ore","bo_pw_weapon_small", spr_export_item_triggers("itm_copper_ore")),
+  ("pw_export_copper_bar_short",spr_use_time(10),"pn_copper_bar_short","bo_pw_weapon_small", spr_export_item_triggers("itm_copper_bar_short")),
+  ("pw_export_copper_bar",spr_use_time(13),"pn_copper_bar","bo_pw_weapon_small", spr_export_item_triggers("itm_copper_bar")),
+  ("pw_export_copper_bar_long",spr_use_time(16),"pn_copper_bar_long","bo_pw_weapon_small", spr_export_item_triggers("itm_copper_bar_long")),
+  #PN Copper End
   ("pw_export_gold_nugget",spr_use_time(7),"pw_gold_nugget","bo_pw_weapon_small", spr_export_item_triggers("itm_gold_nugget")),
   ("pw_export_gold_bar",spr_use_time(15),"pw_gold_bar","bo_pw_weapon_small", spr_export_item_triggers("itm_gold_bar")),
   ("pw_export_silver_nugget",spr_use_time(7),"pw_silver_nugget","bo_pw_weapon_small", spr_export_item_triggers("itm_silver_nugget")),
@@ -3947,7 +3966,7 @@ scene_props = [
   ("pn_buy_baden_dragoon_trumpet", spr_buy_item_flags(6), "baden_dragoon_trumpeter", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_baden_dragoon_trumpet", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_baden_dragoon_officer", spr_buy_item_flags(6), "baden_dragoon_officer", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_baden_dragoon_officer", resources=["itm_linen_cloth"], tailoring=2)),
   
-  # Civilian stuff
+  # Civil head
   ("pn_buy_civil_emperor_crown", spr_buy_item_flags(20), "pn_crown", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_emperor_crown", resources=["itm_gold_nugget"], engineer=5)),
   ("pn_buy_civil_betsy_ross", spr_buy_item_flags(4), "betsy_ross", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_betsy_ross", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_fur_hat", spr_buy_item_flags(4), "arena_helmetb", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_fur_hat", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3958,7 +3977,7 @@ scene_props = [
   ("pn_buy_civil_top_hat", spr_buy_item_flags(4), "partizan_hat_1", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_civil_top_hat", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_peasant_hat2", spr_buy_item_flags(4), "partizan_hat_2", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_civil_peasant_hat2", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_peasant_hat3", spr_buy_item_flags(4), "partizan_hat_3", "bo_pw_armor_head", spr_buy_item_triggers  ("itm_civil_peasant_hat3", resources=["itm_linen_cloth"], tailoring=2)),
-  
+  #Civil body
   ("pn_buy_civil_militia_uniform", spr_buy_item_flags(6), "rus_militia_ranker", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_civil_militia_uniform", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_shirt_1", spr_buy_item_flags(6), "civil_shirt_1", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_civil_shirt_1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_shirt_2", spr_buy_item_flags(6), "civil_shirt_2", "bo_pw_armor_body", spr_buy_item_triggers  ("itm_civil_shirt_2", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3976,13 +3995,13 @@ scene_props = [
   ("pn_buy_civil_peasant_shirt_1", spr_buy_item_flags(6), "peasant_shirt_1", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_peasant_shirt_1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_pirate_captain_uniform", spr_buy_item_flags(6), "pirates_uniform", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_pirate_captain_uniform", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_waistcoat_custom_4", spr_buy_item_flags(6), "waistcoat_custom_4", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_waistcoat_custom_4", resources=["itm_linen_cloth"], tailoring=2)),
-
+  #Civil boots
   ("pn_buy_civil_noble_pants_grey", spr_buy_item_flags(6), "british_rifle_pants_grey", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_noble_pants_grey", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_noble_shoes", spr_buy_item_flags(6), "civilian_shoes", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_noble_shoes", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_militia_pants1", spr_buy_item_flags(6), "rus_militia_ranker_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_militia_pants1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_militia_pants2", spr_buy_item_flags(6), "rus_militia_ranker_pants1", "bo_pw_armor_foot", spr_buy_item_triggers("itm_civil_militia_pants2", resources=["itm_linen_cloth"], tailoring=2)),
 
-  #Ottoman stuff
+  #Ottoman head
   ("pn_buy_ottoman_female_cap_red", spr_buy_item_flags(3), "sayazn_female_peasant_cap", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_cap_red", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_female_cap_green", spr_buy_item_flags(3), "sayazn_female_peasant_cap_2", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_cap_green", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_female_veil_white", spr_buy_item_flags(3), "sayazn_new_veil", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_veil_white", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3996,7 +4015,7 @@ scene_props = [
   ("pn_buy_ottoman_turban_e", spr_buy_item_flags(3), "turban_e", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_turban_e", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_turban_f", spr_buy_item_flags(3), "turban_f", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_turban_f", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_janissaries_hat", spr_buy_item_flags(3), "janissaries_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_janissaries_hat", resources=["itm_linen_cloth"], tailoring=2)),
-
+  #Ottoman Body
   ("pn_buy_ottoman_dress_a", spr_buy_item_flags(6), "sayazn_peasant_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_a", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_dress_b", spr_buy_item_flags(6), "sayazn_peasant_dress_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_b", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_dress_c", spr_buy_item_flags(6), "sayazn_peasant_dress_3", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_dress_c", resources=["itm_linen_cloth"], tailoring=2)),
@@ -4023,7 +4042,7 @@ scene_props = [
   ("pn_buy_ottoman_cemaat_janissary_robe_a", spr_buy_item_flags(6), "cemaat_janissary_robe_a", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_cemaat_janissary_robe_a", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_cemaat_janissary_robe_b", spr_buy_item_flags(6), "cemaat_janissary_robe_b", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_cemaat_janissary_robe_b", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_palestinian_robe_a", spr_buy_item_flags(6), "palestinian_robe_a", "bo_pw_armor_body", spr_buy_item_triggers("itm_ottoman_palestinian_robe_a", resources=["itm_linen_cloth"], tailoring=2)),
-
+  #Ottoman boots
   ("pn_buy_ottoman_sandals_female", spr_buy_item_flags(2), "sayazn_sandals_white", "bo_pw_armor_foot", spr_buy_item_triggers("itm_ottoman_sandals_female", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_deli_boots", spr_buy_item_flags(4), "deli_boots", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_ottoman_deli_boots", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_ottoman_nizam_boots", spr_buy_item_flags(4), "nizam_i_cedit_boots", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_ottoman_nizam_boots", resources=["itm_linen_cloth"], tailoring=2)),
@@ -4357,11 +4376,9 @@ scene_props = [
   ("pn_buy_kgl_horse_britain", spr_buy_item_flags(12), "british_kgl_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_kgl_horse_britain", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_heavydragoon_horse_britain", spr_buy_item_flags(12), "british_iniskilling_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_heavydragoon_horse_britain", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_heavy_horse_britain", spr_buy_item_flags(12), "british_rhg_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_heavy_horse_britain", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
-
   ("pn_buy_light_horse_prussia", spr_buy_item_flags(12), "prussian_cuirassier_horse1", "bo_pw_horse", spr_buy_item_triggers  ("itm_light_horse_prussia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_medium_horse_prussia", spr_buy_item_flags(12), "prussian_dragoon_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_medium_horse_prussia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_heavy_horse_prussia", spr_buy_item_flags(12), "prussian_cuirassier_horse1", "bo_pw_horse", spr_buy_item_triggers  ("itm_heavy_horse_prussia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
-  
   ("pn_buy_cossack_horse_russia", spr_buy_item_flags(12), "russian_cossack_horse4", "bo_pw_horse", spr_buy_item_triggers  ("itm_cossack_horse_russia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_lancer_horse_russia", spr_buy_item_flags(12), "russian_lancer_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_lancer_horse_russia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_hussar_horse_russia", spr_buy_item_flags(12), "russian_hussar_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_hussar_horse_russia", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
