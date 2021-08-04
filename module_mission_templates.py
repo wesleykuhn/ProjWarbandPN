@@ -171,7 +171,6 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (call_script, "script_setup_ship_collision_props"),
     (call_script, "script_setup_scene_props_after_mission_start"),
     (call_script, "script_multiplayer_mm_after_mission_start_common"),
-    #(call_script, "script_multiplayer_mm_reset_stuff"), #debug this is disable because I think it's not necessary here
     (init_position, pos1),
     (set_spawn_position, pos1), # spawn a respawn position marker scene prop for each possible player
     (server_get_max_num_players, "$g_spawn_marker_count"),
@@ -784,31 +783,6 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
     (str_store_troop_name, s0, "trp_last_chat_message"),
     (multiplayer_send_string_to_server, ":event", s0),
     ])
-
-# PN START *******************************************************************************************************************
-
-#multiplayer_daytime_cicle_check = (5, 0, 0, [], # server: update the current daytime every five minutes
-#   [
-#     (try_begin),
-#       (multiplayer_is_server),
-#       (assign, ":cur_dt", "$g_cur_daytime"),
-#       (try_begin),
-#         (eq, ":cur_dt", 23),
-#         (assign, ":cur_dt", 0),
-#       (else_try),
-#         (val_add, ":cur_dt", 1),
-#       (try_end),
-#       (assign, "$g_cur_daytime", ":cur_dt"),
-#(store_add, ":sky_box", ":cur_dt", 1), #debug
-#(set_skybox, ":sky_box", ":sky_box"), #debug
-#(assign, reg24, ":sky_box"),
-#(display_message, "@New skybox: {reg24}"), #debug
-#       (try_for_players, ":player_id", 1),
-#         (player_is_active,":player_id"),
-#         (multiplayer_send_int_to_player, ":player_id", multiplayer_event_set_daytime, ":cur_dt"),
-#       (try_end),
-#     (try_end),
-#   ])
 
 multiplayer_client_surrender = (
   0, 0.5, 0.1, [

@@ -81,6 +81,12 @@ slot_player_character_language        = 59
 
 # PN START *********************************
 
+pn_art_horse_only_begin             = "itm_arty_horse_french"
+pn_art_horse_only_end               = "itm_hussar_horse_french"
+
+pn_art_with_horse_begin             = "itm_arty_horse_cannon_french"
+pn_art_with_horse_end               = "itm_admin_musket"
+
 pn_drummers_uniforms_begin          = "itm_french_45e_body_drummer"
 pn_drummers_uniforms_end            = "itm_british_infantry_ranker"
 

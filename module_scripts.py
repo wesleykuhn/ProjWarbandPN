@@ -7030,8 +7030,7 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (prop_instance_get_position, pos49, ":wood_limber_instance"),
       (position_get_rotation_around_z,":cur_z_rot",pos49),
-      
-     # pos49 is prop pos.
+
       (position_move_y,pos49,-220),
       (position_move_z,pos49,34),
       (call_script,"script_find_or_create_scene_prop_instance",":cannon_limber_kind_id",0,0,0),
@@ -7058,8 +7057,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_ammo_type),
       (call_script,"script_copy_prop_slot",":cannon_limber_instance",":cannon_instance_id",scene_prop_slot_just_fired),
       (scene_prop_set_slot,":cannon_limber_instance", scene_prop_slot_is_active,1),
-      
-
       (try_begin),
         (gt,":cannon_wheels_instance",-1),
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_parent_prop, ":cannon_limber_instance"),
@@ -7067,8 +7064,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_y_value, ":cannon_wheel_y"),
         (scene_prop_set_slot,":cannon_wheels_instance", scene_prop_slot_is_active,1),
       (try_end),
-      
-     
       (assign, reg0, 1),
     (try_end),
    ]),
@@ -13073,28 +13068,26 @@ scripts.extend([("game_start", []), # single player only, not used
       (neg|agent_is_human, ":agent_id"),
       (agent_get_item_id, ":horse_item_id", ":agent_id"),
       (gt,":horse_item_id",-1),
-      (this_or_next|item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_cannon), # Hoorah we have a Arty horse.
-      (item_slot_eq,":horse_item_id",slot_item_multiplayer_item_class, multi_item_class_type_horse_howitzer),
+      
+      (this_or_next|is_between,":horse_item_id",pn_art_with_horse_begin, pn_art_with_horse_end),
+      (is_between, ":horse_item_id", pn_art_horse_only_begin, pn_art_horse_only_end),
+
       (call_script,"script_attach_limber_to_horse",":agent_id"),
       (assign,":limber_wood_instance",reg0),
-         
+
       (try_begin),
-        (this_or_next|eq,"$g_spawn_with_artillery",1),# 1 = Spawn for all
-        (eq,"$g_spawn_with_artillery",2),# 2 = Spawn with cannons only
-           
+        (neg|is_between, ":horse_item_id", pn_art_horse_only_begin, pn_art_horse_only_end), #is not art with cannon horse
         (prop_instance_get_position, pos18, ":limber_wood_instance"),
         (position_move_y,pos18,-220),
         (position_move_z,pos18,14),
         (position_rotate_z,pos18,-90),
-        (copy_position,pos49,pos18), # pos49 is prop pos.
+        (copy_position,pos49,pos18),
 
         (assign, ":is_a_cannon", 0),
         (try_begin),
           (is_between, ":horse_item_id", "itm_arty_horse_cannon_french", "itm_arty_horse_howitzer_french"),
           (assign, ":is_a_cannon", 1),
         (try_end),
-           
-        # Spawn the cannon, If horse1 a 12 pounder, if horse2 a howitzer.
         (try_begin),
           (eq, ":is_a_cannon", 1),
           (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_12pdr_wood", 0, 0, 0),
@@ -13102,9 +13095,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_cannon_howitzer_wood", 0, 0, 0),
         (try_end),
         (assign,":cannon_instance",reg0),
-         
         (call_script,"script_limber_cannon_to_horse",":limber_wood_instance",":cannon_instance"),
-        
         (call_script, "script_clean_up_prop_instance", ":cannon_instance"),
       (try_end),
     (try_end),
@@ -15067,38 +15058,46 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
     (agent_slot_eq, ":horse_agent_id", slot_agent_horse_last_rider, ":agent_id"),
     (agent_get_rider, ":rider_agent_id", ":horse_agent_id"),
     (assign, ":error_string_id", "str_dismount_to_sell"),
-    (try_begin), # only allow selling horses that were last ridden by the player, are not badly
-                 # wounded, and are close enough to the stockpile
-      (neq, ":rider_agent_id", ":agent_id"),
-      (assign, ":error_string_id", -1),
-      (eq, ":rider_agent_id", -1),
-      (assign, ":error_string_id", "str_horse_too_wounded_to_sell"),
-      (store_agent_hit_points, ":horse_hit_points", ":horse_agent_id", 0),
-      (gt, ":horse_hit_points", 50),
-      (assign, ":error_string_id", -1),
-      (store_mission_timer_a, ":time"),
-      (player_get_slot, ":last_action_time", ":player_id", slot_player_last_action_time),
-      (store_sub, ":interval", ":time", ":last_action_time"),
-      (ge, ":interval", repeat_action_min_interval),
-      (assign, reg0, 0),
-      (agent_get_position, pos20, ":agent_id"),
-      (agent_get_position, pos21, ":horse_agent_id"),
-      (get_sq_distance_between_positions, ":sq_distance", pos20, pos21),
-      (le, ":sq_distance", sq(max_distance_to_use)),
-      (assign, ":error_string_id", 0),
-      (assign, reg0, 1),
-      (player_set_slot, ":player_id", slot_player_last_action_time, ":time"),
+
+    (try_begin),
+      # Players cant sell cannons or artillery horses
+      (is_between, ":horse_item_id", pn_art_with_horse_begin, pn_art_with_horse_end),
+      (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, "str_cant_sell_cannons", preset_message_error),
     (else_try),
-      (gt, ":error_string_id", 0),
-      (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, ":error_string_id", preset_message_error),
+      (try_begin), # only allow selling horses that were last ridden by the player, are not badly
+                 # wounded, and are close enough to the stockpile
+        (neq, ":rider_agent_id", ":agent_id"),
+        (assign, ":error_string_id", -1),
+        (eq, ":rider_agent_id", -1),
+        (assign, ":error_string_id", "str_horse_too_wounded_to_sell"),
+        (store_agent_hit_points, ":horse_hit_points", ":horse_agent_id", 0),
+        (gt, ":horse_hit_points", 50),
+        (assign, ":error_string_id", -1),
+        (store_mission_timer_a, ":time"),
+        (player_get_slot, ":last_action_time", ":player_id", slot_player_last_action_time),
+        (store_sub, ":interval", ":time", ":last_action_time"),
+        (ge, ":interval", repeat_action_min_interval),
+        (assign, reg0, 0),
+        (agent_get_position, pos20, ":agent_id"),
+        (agent_get_position, pos21, ":horse_agent_id"),
+        (get_sq_distance_between_positions, ":sq_distance", pos20, pos21),
+        (le, ":sq_distance", sq(max_distance_to_use)),
+        (assign, ":error_string_id", 0),
+        (assign, reg0, 1),
+        (player_set_slot, ":player_id", slot_player_last_action_time, ":time"),
+      (else_try),
+        (gt, ":error_string_id", 0),
+        (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, ":error_string_id", preset_message_error),
+      (try_end),
+      (eq, ":error_string_id", 0),
+      (agent_fade_out, ":horse_agent_id"),
+      (call_script, "script_scene_prop_get_gold_value", ":instance_id", ":item_id", 0),
+      (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", reg0),
+      (store_mul, ":gold_value", reg0, ":horse_hit_points"),
+      (val_div, ":gold_value", 100),
+      (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),
     (try_end),
-    (eq, ":error_string_id", 0),
-    (agent_fade_out, ":horse_agent_id"),
-    (call_script, "script_scene_prop_get_gold_value", ":instance_id", ":item_id", 0),
-    (call_script, "script_calculate_stockpile_taxed_price", ":instance_id", reg0),
-    (store_mul, ":gold_value", reg0, ":horse_hit_points"),
-    (val_div, ":gold_value", 100),
-    (call_script, "script_player_adjust_gold", ":player_id", ":gold_value", 1),]),
+  ]),
 
   ("cf_export_item", # server: handle players exporting an item out of the game world
    [(store_script_param, ":agent_id", 1), # must be valid
