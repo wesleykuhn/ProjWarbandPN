@@ -891,17 +891,17 @@ items = [
 
 #PN Copper begin
 ["copper_ore_small", "Small Copper Ore", [("pn_copper_ore_small",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
- 600, weight(30)|spd_rtng(60)|swing_damage(7,blunt)|thrust_damage(7,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
+ 480, weight(30)|spd_rtng(60)|swing_damage(7,blunt)|thrust_damage(7,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
 ["copper_ore", "Copper Ore", [("pn_copper_ore",0)], itp_type_polearm|itp_two_handed|itp_primary, itcf_carry_bow_back,
- 1275, weight(60)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
+ 1020, weight(60)|spd_rtng(50)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(50), imodbits_none, [itm_class(item_class_iron, 0)]],
 ["copper_piece", "Copper Piece", [("pn_copper_piece",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_bow_back,
- 150, weight(5)|spd_rtng(80)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_iron, 325)]],
+ 120, weight(5)|spd_rtng(80)|swing_damage(5,blunt)|thrust_damage(5,blunt)|weapon_length(20), imodbits_none, [itm_class(item_class_iron, 325)]],
 ["copper_bar_short", "Short Copper Bar", [("pn_copper_bar_short",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_bow_back,
- 330, weight(10)|spd_rtng(70)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(25), imodbits_none, [itm_class(item_class_iron, 750)]],
+ 264, weight(10)|spd_rtng(70)|swing_damage(10,blunt)|thrust_damage(10,blunt)|weapon_length(25), imodbits_none, [itm_class(item_class_iron, 750)]],
 ["copper_bar", "Copper Bar", [("pn_copper_bar",0)], itp_type_one_handed_wpn|itp_primary, itc_scimitar|itcf_carry_bow_back,
- 675, weight(20)|spd_rtng(60)|swing_damage(15,blunt)|thrust_damage(10,blunt)|weapon_length(60), imodbits_none, [itm_class(item_class_iron, 1500)]],
+ 540, weight(20)|spd_rtng(60)|swing_damage(15,blunt)|thrust_damage(10,blunt)|weapon_length(60), imodbits_none, [itm_class(item_class_iron, 1500)]],
 ["copper_bar_long", "Long Copper Bar", [("pn_copper_bar_long",0)], itp_type_polearm|itp_two_handed|itp_primary, itc_parry_polearm|itcf_carry_bow_back,
- 1500, weight(40)|spd_rtng(50)|swing_damage(20,blunt)|thrust_damage(10,blunt)|weapon_length(100), imodbits_none, [itm_class(item_class_iron, 3000)]],
+ 1200, weight(40)|spd_rtng(50)|swing_damage(20,blunt)|thrust_damage(10,blunt)|weapon_length(100), imodbits_none, [itm_class(item_class_iron, 3000)]],
 #Pn Copper end
 
 ["gold_nugget", "Gold Nugget", [("pw_gold_nugget",0)], itp_type_one_handed_wpn|itp_primary, itc_dagger|itcf_carry_pistol_front_left,
@@ -963,8 +963,6 @@ items = [
  65, weight(0.75)|difficulty(0)|spd_rtng(75)|weapon_length(100)|swing_damage(6, cut)|thrust_damage(0, cut), imodbits_none, [itm_class(item_class_grain_harvesting)]],
 ["sickle", "Sickle", [("pw_sickle",0)], itp_type_one_handed_wpn|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_slashright_onehanded|itcf_carry_dagger_front_right,
  136, weight(0.5)|difficulty(0)|spd_rtng(80)|weapon_length(100)|swing_damage(10, cut)|thrust_damage(0, cut), imodbits_none, [itm_class(item_class_grain_harvesting)]],
-["russian_peasant_serp","Sickle", [("Russian_peasant_serp",0)], itp_type_one_handed_wpn|itp_primary|itp_cant_use_on_horseback|itp_no_parry, itcf_slashright_onehanded|itcf_carry_dagger_front_right,
- 136, weight(0.5)|difficulty(0)|spd_rtng(96) | weapon_length(45)|swing_damage(10 , cut) | thrust_damage(0 , cut), imodbits_none, [itm_class(item_class_grain_harvesting)]],
 ["cheap_scythe", "Cheap Scythe", [("Russian_peasant_kosa",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry|itp_unbalanced|itp_cant_use_on_horseback, itcf_slashleft_polearm|itcf_carry_spear,
  482 , weight(2.7)|difficulty(0)|spd_rtng(78) | weapon_length(170)|swing_damage(21 , cut) | thrust_damage(0, cut),imodbits_polearm, [itm_class(item_class_grain_harvesting)]],
 ["scythe", "Scythe", [("pw_scythe",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_no_parry|itp_unbalanced|itp_cant_use_on_horseback, itcf_slashleft_polearm|itcf_carry_spear,
@@ -1628,7 +1626,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["french_art_off_sword","French Artillery Officer Sword", [("Artillery_officer_sword",0),("Artillery_officer_sword_in_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_longsword|itcf_carry_sword_left_hip|itcf_show_holster_when_drawn, 
  976 , weight(1.5)|difficulty(8)|spd_rtng(92) | weapon_length(108)|swing_damage(32 , cut) | thrust_damage(29 ,  pierce),imodbits_sword_high ],
 ["french_carabineer_sword","French Carabineer Sword", [("Carabineer_sword",0),("Carabineer_sword_in_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_longsword|itcf_carry_sword_left_hip|itcf_show_holster_when_drawn, 
- 1098 , weight(3.0)|difficulty(8)|spd_rtng(91) | weapon_length(111)|swing_damage(36 , cut) | thrust_damage(32 ,  pierce),imodbits_sword_high ],
+ 1298 , weight(3.0)|difficulty(8)|spd_rtng(92) | weapon_length(111)|swing_damage(36 , cut) | thrust_damage(32 ,  pierce),imodbits_sword_high ],
 ["french_briquet_garde","French Garde Briquet Sabre", [("Garde_briquet",0),("Guard_briquet_in_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_longsword|itcf_carry_sword_left_hip|itcf_show_holster_when_drawn, 
  671 , weight(0)|difficulty(5)|spd_rtng(95) | weapon_length(77)|swing_damage(22 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 ["french_light_cav_sabre_garde","French Light Cavalry Garde Sabre", [("Garde_light_cav_sabre",0),("Garde_light_cav_sabre_in_scabbard",ixmesh_carry)], itp_type_one_handed_wpn|itp_primary, itc_longsword|itcf_carry_sword_left_hip|itcf_show_holster_when_drawn, 
@@ -1723,13 +1721,13 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 
 # Training weapons
 ["training_officer_sword","Officer Training Sword", [("training_officer_sword",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_attack|itp_wooden_parry, itc_longsword|itcf_carry_sword_left_hip,
- 98 , weight(1.5)|difficulty(0)|spd_rtng(95)|weapon_length(100)|swing_damage(17, cut)|thrust_damage(17, pierce),imodbits_sword_high ],
+ 98 , weight(1.5)|difficulty(0)|spd_rtng(95)|weapon_length(100)|swing_damage(8, cut)|thrust_damage(8, pierce),imodbits_sword_high ],
 ["training_heavy_sword","Heavy Training Sword", [("training_heavy_sword",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_attack|itp_wooden_parry, itc_longsword|itcf_carry_sword_left_hip,
- 73 , weight(3.0)|difficulty(0)|spd_rtng(91)|weapon_length(111)|swing_damage(16, cut)|thrust_damage(16, pierce),imodbits_sword_high ],
+ 73 , weight(3.0)|difficulty(0)|spd_rtng(91)|weapon_length(111)|swing_damage(7, cut)|thrust_damage(7, pierce),imodbits_sword_high ],
 ["training_light_sabre","Light Training Sabre", [("training_light_sabre",0)], itp_type_one_handed_wpn|itp_primary|itp_wooden_attack|itp_wooden_parry, itc_longsword|itcf_carry_sword_left_hip,
- 66 , weight(2.0)|difficulty(0)|spd_rtng(93)|weapon_length(102)|swing_damage(15, cut)|thrust_damage(15, pierce),imodbits_sword_high ],
+ 66 , weight(2.0)|difficulty(0)|spd_rtng(93)|weapon_length(102)|swing_damage(6, cut)|thrust_damage(6, pierce),imodbits_sword_high ],
 ["training_musket", "Training Musket", [("training_musket",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm|itp_primary|itp_is_pike|itp_wooden_attack|itp_wooden_parry|itp_no_blur, itc_spear|itcf_carry_spear,
- 66, weight(0)|difficulty(0)|spd_rtng(85)|weapon_length(138)|swing_damage(15, pierce)|thrust_damage(15, pierce), imodbits_none ],
+ 66, weight(0)|difficulty(0)|spd_rtng(85)|weapon_length(138)|swing_damage(6, pierce)|thrust_damage(6, pierce), imodbits_none ],
 
 # Instruments
 ["drumstick_right","Drum Stick", [("drumstick_right",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_quiver_right_vertical,
@@ -1848,8 +1846,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  510, weight(1.0)|difficulty(0)|spd_rtng(95)|weapon_length(90)|swing_damage(8, blunt)|thrust_damage(8, blunt), imodbits_sword_high ],
 ["cane_melee", "Drill Cane", [("drill_cane",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_wooden_attack|itp_primary, itc_longsword,
  510, weight(1.0)|difficulty(0)|spd_rtng(95)|weapon_length(90)|swing_damage(10, blunt)|thrust_damage(10, blunt), imodbits_sword_high ],
-["bandages","Bandages", [("bandage",0)], itp_type_one_handed_wpn|itp_primary|itp_no_parry, itcf_carry_pistol_front_left, 
- 195 , weight(1.6)|difficulty(0)|spd_rtng(65) | weapon_length(25)|swing_damage(10 , blunt) | thrust_damage(0 ,  pierce),imodbits_sword_high ],
 
 #Sapper Items
 ["sapper_axe", "Sapper Axe", [("sapper_axe",0)], itp_type_polearm| itp_cant_use_on_horseback|itp_primary|itp_penalty_with_shield|itp_wooden_parry|itp_two_handed|itp_bonus_against_shield, itc_cut_two_handed|itc_parry_polearm|itcf_carry_axe_back,
@@ -3402,28 +3398,27 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ## Artillery Horses
 # cannon
 ["arty_horse_cannon_french","French Cannon Artillery Horse", [("french_carabineer_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 25000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_british","British Cannon Artillery Horse", [("british_iniskilling_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 25000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_russian","Russian Cannon Artillery Horse", [("russian_dragoon_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 25000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_austrian","Austrian Cannon Artillery Horse", [("austrian_hussard_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 25000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_prussian","Prussian Cannon Artillery Horse", [("prussian_cuirassier_horse1",0)], itp_type_horse|itp_is_carriage, 0,
- 25000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 
 # howitzer
 ["arty_horse_howitzer_french","French Howitzer Artillery Horse", [("french_carabineer_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_british","British Howitzer Artillery Horse", [("british_iniskilling_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_russian","Russian Howitzer Artillery Horse", [("russian_dragoon_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_austrian","Austrian Howitzer Artillery Horse", [("austrian_hussard_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_prussian","Prussian Howitzer Artillery Horse", [("prussian_cuirassier_horse1",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
-
+ 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
 # PN END ****************************************************************************************************
 
 ["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_musket|itp_primary|itp_two_handed|itp_next_item_as_melee ,

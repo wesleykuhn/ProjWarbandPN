@@ -1,5 +1,6 @@
 * BUYABLE ITEMS *
--All the PN buyable items starts with "pn_buy_" name.
+-All the PN buyable items starts with "pn_buy_" name. The civil/neutral items starts with 
+	"pn_buy_civil_*".
 
 * SHIPS *
 -All the controllable ships starts with "pn_ship_" name. Don't use the names that ends with "cd", 
@@ -43,4 +44,3 @@ place various types of window, wich are: 1 = Rich type glass
 			                 2 = Broken normal type glass
                                          3 = Broken rich type glass
             			         4 = Don't spawn any window
-

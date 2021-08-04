@@ -9069,7 +9069,7 @@ scripts.extend([("game_start", []), # single player only, not used
           (assign, ":damage", 1000), # round shot
         (else_try),
           (eq, ":cannon_shot_type", cannon_ammo_type_shell),
-          (assign, ":damage", 1000), # shell shot
+          (assign, ":damage", 1500), # shell shot
         (else_try),
           (eq, ":cannon_shot_type", cannon_ammo_type_bomb),
           (assign, ":damage", 2000), # bomb shot
@@ -23476,7 +23476,7 @@ scripts.extend([("scene_fill_chests_starting_inventory",
           ["itm_wine_barrel"] + ["itm_cooked_meat"] * 4, ["itm_bread"] * 13,
           ["itm_wine_barrel"] * 2 + ["itm_cooked_meat"] * 4 + ["itm_cooked_fish"] * 5 + ["itm_bread"] * 8),
 
-        chest_load_out(10, ["itm_straw_hat", "itm_russian_peasant_serp", "itm_carrot"], ["itm_hood_c", "itm_russian_peasant_knife", "itm_fish"], ["itm_wrapping_boots", "itm_club", "itm_grapes"]),
+        chest_load_out(10, ["itm_straw_hat", "itm_sickle", "itm_carrot"], ["itm_hood_c", "itm_russian_peasant_knife", "itm_fish"], ["itm_wrapping_boots", "itm_club", "itm_grapes"]),
         chest_load_out(11, ["itm_linen_tunic", "itm_hide_boots"], ["itm_red_shirt", "itm_woolen_hose"], ["itm_rough_tunic", "itm_wrapping_boots"], ["itm_tunic_with_green_cape"]),
         chest_load_out(12, ["itm_tabard", "itm_hide_boots"] * 3, ["itm_black_robe", "itm_wrapping_boots"] * 5, ["itm_rough_tunic", "itm_wrapping_boots"] * 4),
         chest_load_out(13, ["itm_tabard", "itm_ankle_boots", "itm_pelt_coat", "itm_hide_boots", "itm_rawhide_coat", "itm_fur_coat", "itm_butchering_knife"],
@@ -23491,8 +23491,8 @@ scripts.extend([("scene_fill_chests_starting_inventory",
           ["itm_tunic_with_green_cape", "itm_nomad_boots", "itm_heavy_woodcutter_axe"] * 2, ["itm_woolen_cap", "itm_pelt_coat", "itm_ankle_boots", "itm_hunting_bow", "itm_arrows"],
           ["itm_surgeon_coif", "itm_surgeon_coat", "itm_blue_hose", "itm_surgeon_scalpel"], ["itm_leather_jacket", "itm_khergit_leather_boots", "itm_herding_crook"] * 3),
         chest_load_out(17, ["itm_leather_apron", "itm_nomad_boots"] * 5 + ["itm_bucket", "itm_scythe", "itm_woodcutter_axe", "itm_butchering_knife", "itm_broom"],
-          ["itm_coarse_tunic", "itm_wrapping_boots"] * 6 + ["itm_russian_peasant_serp", "itm_bucket", "itm_mining_pick", "itm_fishing_net", "itm_cleaver", "itm_russian_peasant_knife"],
-          ["itm_tunic_with_green_cape", "itm_nomad_boots"] * 4 + ["itm_small_mining_pick", "itm_herding_crook", "itm_butchering_knife", "itm_russian_peasant_serp"]),
+          ["itm_coarse_tunic", "itm_wrapping_boots"] * 6 + ["itm_sickle", "itm_bucket", "itm_mining_pick", "itm_fishing_net", "itm_cleaver", "itm_russian_peasant_knife"],
+          ["itm_tunic_with_green_cape", "itm_nomad_boots"] * 4 + ["itm_small_mining_pick", "itm_herding_crook", "itm_butchering_knife", "itm_sickle"]),
         chest_load_out(18, ["itm_coarse_tunic", "itm_nomad_boots", "itm_russian_peasant_knife"], ["itm_leather_jacket", "itm_khergit_leather_boots", "itm_lock_pick"],
           ["itm_coarse_tunic", "itm_wrapping_boots", "itm_club"] + ["itm_broom"] * 6, ["itm_pilgrim_hood", "itm_pilgrim_disguise", "itm_wrapping_boots", "itm_quarter_staff"],
           ["itm_gold_bar"], ["itm_silver_bar"], ["itm_coarse_tunic", "itm_hunter_boots", "itm_poisoned_dagger"], ["itm_tunic_with_green_cape", "itm_nomad_boots", "itm_dagger"]),
@@ -23518,7 +23518,7 @@ scripts.extend([("scene_fill_chests_starting_inventory",
 
         chest_load_out(30, ["itm_khergit_lady_hat_b", "itm_khergit_lady_dress_b", "itm_khergit_leather_boots", "itm_russian_peasant_knife", "itm_bread"],
           ["itm_khergit_lady_hat", "itm_khergit_lady_dress", "itm_khergit_leather_boots", "itm_russian_peasant_knife", "itm_cooked_fish"]),
-        chest_load_out(31, ["itm_sarranid_head_cloth", "itm_sarranid_lady_dress", "itm_woolen_hose", "itm_russian_peasant_serp", "itm_bread"],
+        chest_load_out(31, ["itm_sarranid_head_cloth", "itm_sarranid_lady_dress", "itm_woolen_hose", "itm_sickle", "itm_bread"],
           ["itm_sarranid_head_cloth_b", "itm_sarranid_lady_dress_b", "itm_woolen_hose", "itm_bucket", "itm_grapes"]),
         chest_load_out(32, ["itm_bride_crown", "itm_bride_dress", "itm_bride_shoes"]),
         chest_load_out(33, ["itm_lady_dress_ruby", "itm_lady_dress_green", "itm_lady_dress_blue", "itm_wimple_a", "itm_wimple_b", "itm_barbette"],
