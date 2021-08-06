@@ -1542,6 +1542,17 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2213 , weight(2.7
 ["french_dragoon_musket_melee", "French Dragoon Musket", [("french_dragoon_musket",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(9)|spd_rtng(86) | weapon_length(115)|swing_damage(20 , blunt) | thrust_damage(12,  blunt),imodbits_none ],
 
+# Ottoman
+["ottoman_musket_a", "Turkish Musket", [("ottoman_musket_a",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 1992 , weight(3.3)|difficulty(9)|spd_rtng(25) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(63),imodbits_none,[]],
+["ottoman_musket_a_melee", "Turkish Musket", [("ottoman_musket_a",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
+ 180 , weight(0)|difficulty(9)|spd_rtng(80) | weapon_length(115)|swing_damage(18 , blunt) | thrust_damage(12,  blunt),imodbits_none ],
+
+["ottoman_musket_b", "Turkish Old Musket", [("ottoman_musket_e",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 1433 , weight(4.8)|difficulty(9)|spd_rtng(21) | shoot_speed(250) | thrust_damage(83 ,pierce)|max_ammo(1)|accuracy(55),imodbits_none,[]],
+["ottoman_musket_b_melee", "Turkish Old Musket", [("ottoman_musket_e",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
+ 180 , weight(0)|difficulty(9)|spd_rtng(60) | weapon_length(115)|swing_damage(14 , blunt) | thrust_damage(10,  blunt),imodbits_none ],
+
 # Russian
 ["russian_dragoon_musket", "Russian Dragoon Musket", [("Russian_dragoon_musket",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
 itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2213 , weight(2.7)|difficulty(9)|spd_rtng(25) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(72),imodbits_none,[]],

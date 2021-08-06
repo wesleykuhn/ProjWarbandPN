@@ -79,7 +79,29 @@ slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
 slot_player_character_language        = 59
 
-# PN START *********************************
+# PN UNORDERED STUFF START *********************************
+pn_trade_route_ivory_income         = 6700
+pn_trade_route_spices_income        = 4480
+pn_trade_route_sugar_income         = 3360
+pn_trade_route_cotton_income        = 3360
+pn_trade_route_tea_income           = 3080
+pn_trade_route_tobacco_income       = 3080
+pn_trade_route_fur_income           = 2520
+pn_trade_route_coffee_income        = 2240
+
+pn_trade_route_0                    = 0
+pn_trade_route_1                    = 1
+pn_trade_route_2                    = 2
+pn_trade_route_3                    = 3
+pn_trade_route_4                    = 4
+pn_trade_route_5                    = 5
+pn_trade_route_6                    = 6
+pn_trade_route_7                    = 7
+pn_trade_route_8                    = 8
+pn_trade_route_9                    = 9
+
+pn_trade_routes_props_begin         = "spr_pn_trade_route_coffee_capture_point"
+pn_trade_routes_props_end           = "spr_custom_button_instant"
 
 pn_art_horse_only_begin             = "itm_arty_horse_french"
 pn_art_horse_only_end               = "itm_hussar_horse_french"
@@ -522,10 +544,6 @@ slot_animal_herd_manager_starving     = 101
 slot_animal_carcass_meat_count        = 100
 slot_animal_carcass_hide_count        = 101
 
-########################################################
-##  SCENE PROP SLOTS  *PN*     #########################
-########################################################
-
 # PN CANNONS ON SHIPS - This one is for you daddy ;(
 slot_scene_prop_num_linked_cannons  = 55
 slot_scene_prop_ship_cannon_0       = 56
@@ -568,115 +586,118 @@ slot_scene_prop_cannon_stored_mov_x          = 86
 slot_scene_prop_cannon_stored_mov_y          = 87
 slot_scene_prop_cannon_stored_mov_z          = 88
 slot_scene_prop_cannon_stored_rot_z          = 89
-slot_scene_prop_cannon_ship_unpushed          = 90
+slot_scene_prop_cannon_ship_unpushed         = 90
 
-scene_prop_open_or_close_slot       = 691
-scene_prop_smoke_effect_done        = 692
-scene_prop_slot_is_spawned          = 693
-scene_prop_slot_in_use              = 694
-scene_prop_slot_x_value             = 695
-scene_prop_slot_y_value             = 696
-scene_prop_slot_z_value             = 697
-scene_prop_slot_x_rot               = 698
-scene_prop_slot_y_rot               = 699
-scene_prop_slot_z_rot               = 700
-scene_prop_slot_z_rotation_limit    = 701
-scene_prop_slot_x_scale             = 702
-scene_prop_slot_y_scale             = 703
-scene_prop_slot_z_scale             = 704
-scene_prop_slot_is_scaled           = 705
-scene_prop_slot_x_extra             = 706
-scene_prop_slot_y_extra             = 707
-scene_prop_slot_z_extra             = 708
-scene_prop_slot_time                = 709
-scene_prop_slot_bounces             = 710
-scene_prop_slot_times_hit           = 711
-scene_prop_slot_owner_team          = 712
-scene_prop_slot_time_left           = 713
-scene_prop_slot_has_ball            = 714
-scene_prop_slot_is_loaded           = 715
-scene_prop_slot_is_active           = 716
-scene_prop_slot_just_fired          = 717
-scene_prop_slot_health              = 718
-scene_prop_slot_max_health          = 719
-scene_prop_slot_displayed_particle  = 720
-scene_prop_slot_ammo_type           = 721
-scene_prop_slot_ignore_inherit_movement = 722
-scene_prop_slot_float_ground        = 723
-scene_prop_slot_ground_offset       = 724
-scene_prop_slot_spawned_at          = 725
-scene_prop_slot_is_not_pushed_back  = 726
-scene_prop_slot_just_pushed_back    = 727
+slot_scene_prop_trade_route_owning_faction   = 189
+slot_scene_prop_trade_route_type             = 190
+
+scene_prop_open_or_close_slot       = 91
+scene_prop_smoke_effect_done        = 92
+scene_prop_slot_is_spawned          = 93
+scene_prop_slot_in_use              = 94
+scene_prop_slot_x_value             = 95
+scene_prop_slot_y_value             = 96
+scene_prop_slot_z_value             = 97
+scene_prop_slot_x_rot               = 98
+scene_prop_slot_y_rot               = 99
+scene_prop_slot_z_rot               = 102
+scene_prop_slot_z_rotation_limit    = 103
+scene_prop_slot_x_scale             = 104
+scene_prop_slot_y_scale             = 105
+scene_prop_slot_z_scale             = 106
+scene_prop_slot_is_scaled           = 107
+scene_prop_slot_x_extra             = 108
+scene_prop_slot_y_extra             = 109
+scene_prop_slot_z_extra             = 110
+scene_prop_slot_time                = 111
+scene_prop_slot_bounces             = 112
+scene_prop_slot_times_hit           = 113
+scene_prop_slot_owner_team          = 114
+scene_prop_slot_time_left           = 115
+scene_prop_slot_has_ball            = 116
+scene_prop_slot_is_loaded           = 117
+scene_prop_slot_is_active           = 118
+scene_prop_slot_just_fired          = 119
+scene_prop_slot_health              = 120
+scene_prop_slot_max_health          = 121
+scene_prop_slot_displayed_particle  = 122
+scene_prop_slot_ammo_type           = 123
+scene_prop_slot_ignore_inherit_movement = 124
+scene_prop_slot_float_ground        = 125
+scene_prop_slot_ground_offset       = 126
+scene_prop_slot_spawned_at          = 127
+scene_prop_slot_is_not_pushed_back  = 128
+scene_prop_slot_just_pushed_back    = 129
 
 # under here slots that need -1 as default
-scene_prop_slot_replaced_by         = 728
-scene_prop_slot_replacing           = 729
-scene_prop_slot_last_hit_by         = 730
-scene_prop_slot_user_agent          = 731
-scene_prop_slot_controller_agent    = 734
-scene_prop_slot_carrier_agent       = 735
-scene_prop_slot_linked_prop         = 736
+scene_prop_slot_replaced_by         = 130
+scene_prop_slot_replacing           = 131
+scene_prop_slot_last_hit_by         = 132
+scene_prop_slot_user_agent          = 133
+scene_prop_slot_controller_agent    = 134
+scene_prop_slot_carrier_agent       = 135
+scene_prop_slot_linked_prop         = 136
 
-scene_prop_slot_sound_effect        = 737
-scene_prop_slot_particle_effect1    = 738
-scene_prop_slot_particle_effect2    = 739
-scene_prop_slot_particle_effect3    = 740
-scene_prop_slot_particle_effect4    = 741
+scene_prop_slot_sound_effect        = 137
+scene_prop_slot_particle_effect1    = 138
+scene_prop_slot_particle_effect2    = 139
+scene_prop_slot_particle_effect3    = 140
+scene_prop_slot_particle_effect4    = 141
 
-scene_prop_slot_parent_prop         = 742
-scene_prop_slot_child_prop1         = 743
-scene_prop_slot_child_prop2         = 744
-scene_prop_slot_child_prop3         = 745
-scene_prop_slot_child_prop4         = 746
-scene_prop_slot_child_prop5         = 747
-scene_prop_slot_child_prop6         = 748
-scene_prop_slot_child_prop7         = 749
-scene_prop_slot_child_prop8         = 750
-scene_prop_slot_child_prop9         = 751
-scene_prop_slot_child_prop10        = 752
-scene_prop_slot_child_prop11        = 753
-scene_prop_slot_child_prop12        = 754
-scene_prop_slot_child_prop13        = 755
-scene_prop_slot_child_prop14        = 756
-scene_prop_slot_child_prop15        = 757
-scene_prop_slot_child_prop16        = 758
+scene_prop_slot_parent_prop         = 142
+scene_prop_slot_child_prop1         = 143
+scene_prop_slot_child_prop2         = 144
+scene_prop_slot_child_prop3         = 145
+scene_prop_slot_child_prop4         = 146
+scene_prop_slot_child_prop5         = 147
+scene_prop_slot_child_prop6         = 148
+scene_prop_slot_child_prop7         = 149
+scene_prop_slot_child_prop8         = 150
+scene_prop_slot_child_prop9         = 151
+scene_prop_slot_child_prop10        = 152
+scene_prop_slot_child_prop11        = 153
+scene_prop_slot_child_prop12        = 154
+scene_prop_slot_child_prop13        = 155
+scene_prop_slot_child_prop14        = 156
+scene_prop_slot_child_prop15        = 157
+scene_prop_slot_child_prop16        = 158
 
 scene_prop_slots_begin              = scene_prop_open_or_close_slot
-scene_prop_slots_end                = 759
+scene_prop_slots_end                = 159
 
 scene_prop_slots_defmin_begin       = scene_prop_slot_replaced_by
 
-scene_prop_slot_destruct_wall_height            = 760
-scene_prop_slot_destruct_wall_width             = 761
-scene_prop_slot_destruct_wall_length            = 762
-scene_prop_slot_destruct_move_height_to_center  = 763
-scene_prop_slot_destruct_move_width_to_center   = 764
-scene_prop_slot_destruct_move_length_to_center  = 765
-scene_prop_slot_destruct_rotate_z_90            = 766
-scene_prop_slot_destruct_wall_height_offset     = 767
-scene_prop_slot_destruct_wall_width_offset      = 768
-scene_prop_slot_destruct_wall_length_offset     = 769
-scene_prop_slot_destruct_inverse_width_movement = 770
-scene_prop_slot_destruct_max_length             = 771
-scene_prop_slot_destruct_smoke_strength         = 772
+scene_prop_slot_destruct_wall_height            = 160
+scene_prop_slot_destruct_wall_width             = 161
+scene_prop_slot_destruct_wall_length            = 162
+scene_prop_slot_destruct_move_height_to_center  = 163
+scene_prop_slot_destruct_move_width_to_center   = 164
+scene_prop_slot_destruct_move_length_to_center  = 165
+scene_prop_slot_destruct_rotate_z_90            = 166
+scene_prop_slot_destruct_wall_height_offset     = 167
+scene_prop_slot_destruct_wall_width_offset      = 168
+scene_prop_slot_destruct_wall_length_offset     = 169
+scene_prop_slot_destruct_inverse_width_movement = 170
+scene_prop_slot_destruct_max_length             = 171
+scene_prop_slot_destruct_smoke_strength         = 172
 
-scene_prop_slot_destruct_smoke_type             = 773
-scene_prop_slot_destruct_smoke_type2            = 774
-scene_prop_slot_destruct_particles_type         = 775
-scene_prop_slot_destruct_sound_id               = 776
-scene_prop_slot_destruct_pile_prop_begin        = 777
-scene_prop_slot_destruct_pile_prop_end          = 778
+scene_prop_slot_destruct_smoke_type             = 173
+scene_prop_slot_destruct_smoke_type2            = 174
+scene_prop_slot_destruct_particles_type         = 175
+scene_prop_slot_destruct_sound_id               = 176
+scene_prop_slot_destruct_pile_prop_begin        = 177
+scene_prop_slot_destruct_pile_prop_end          = 178
 
-scene_prop_slot_destruct_next_stage_1           = 779
-scene_prop_slot_destruct_next_stage_2           = 780
-scene_prop_slot_destruct_next_stage_3           = 781
-scene_prop_slot_destruct_next_stage_4           = 782
-scene_prop_slot_destruct_next_stage_5           = 783
-scene_prop_slot_destruct_next_stage_6           = 784
-scene_prop_slot_destruct_next_stage_7           = 785
-scene_prop_slot_destruct_next_stage_8           = 786
-scene_prop_slot_destruct_next_stage_9           = 787
-scene_prop_slot_destruct_next_stage_10          = 788
+scene_prop_slot_destruct_next_stage_1           = 179
+scene_prop_slot_destruct_next_stage_2           = 180
+scene_prop_slot_destruct_next_stage_3           = 181
+scene_prop_slot_destruct_next_stage_4           = 182
+scene_prop_slot_destruct_next_stage_5           = 183
+scene_prop_slot_destruct_next_stage_6           = 184
+scene_prop_slot_destruct_next_stage_7           = 185
+scene_prop_slot_destruct_next_stage_8           = 186
+scene_prop_slot_destruct_next_stage_9           = 187
+scene_prop_slot_destruct_next_stage_10          = 188
 
 ########################################################
 ##  ITEM SLOTS             #############################

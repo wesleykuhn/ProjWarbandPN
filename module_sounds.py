@@ -16,6 +16,7 @@ sounds = [
  ("quest_cancelled", sf_2d|sf_priority_9|sf_vol_7, ["quest_cancelled.ogg"]),
  ("rain", sf_2d|sf_priority_2|sf_vol_3|sf_looping, ["rain_1.ogg"]),
  ("snow",sf_2d|sf_priority_15|sf_vol_4|sf_looping, ["snow.wav"]),
+ ("trade_gold_received", sf_2d|sf_priority_6|sf_vol_5, ["coins_dropped_1.ogg"]),
  ("money_received", sf_priority_5|sf_vol_4, ["coins_dropped_1.ogg"]),
  ("money_paid", sf_priority_5|sf_vol_4, ["coins_dropped_2.ogg"]),
  ("sword_clash_1", sf_priority_3|sf_vol_9,["sword_clank_metal_09.wav","sword_clank_metal_09b.wav","sword_clank_metal_10.wav","sword_clank_metal_10b.wav","sword_clank_metal_12.wav","sword_clank_metal_12b.wav","sword_clank_metal_13.wav","sword_clank_metal_13b.wav","weapon_sabre01.wav","weapon_sabre02.wav","weapon_sabre03.wav"]),

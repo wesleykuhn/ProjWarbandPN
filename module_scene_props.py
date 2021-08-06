@@ -1393,6 +1393,15 @@ def spr_capture_castle_triggers():
       ]),
     spr_call_script_use_trigger("script_cf_use_capture_point", 1)]
 
+# Point to capture trade routes using a faction banner.
+def spr_capture_trade_route_triggers():
+  return [spr_call_script_start_use_trigger("script_cf_use_trade_route_capture_point", 0),
+    (ti_on_scene_prop_cancel_use,
+     [(store_trigger_param_2, ":instance_id"),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
+      ]),
+    spr_call_script_use_trigger("script_cf_use_trade_route_capture_point", 1)]
+
 def spr_chest_flags(use_time=1):
   return sokf_destructible|spr_use_time(max(use_time, 1))
 
@@ -3531,7 +3540,10 @@ scene_props = [
   ("pn_buy_austrian_musket", spr_buy_item_flags(22), "austrian_musket", "bo_pw_weapon_big", spr_buy_item_triggers("itm_austrian_musket", resources=["itm_iron_piece", "itm_iron_bar", "itm_iron_bar_short", "itm_wood_pole_short"], engineer=5)),
   ("pn_buy_prussian_potsdam", spr_buy_item_flags(22), "potsdam_musket", "bo_pw_weapon_big", spr_buy_item_triggers("itm_prussian_potsdam", resources=["itm_iron_piece", "itm_iron_bar", "itm_iron_bar_short", "itm_wood_pole_short"], engineer=5)),
   ("pn_buy_prussian_musket_1806", spr_buy_item_flags(22), "prussian_kuhfuss", "bo_pw_weapon_big", spr_buy_item_triggers("itm_prussian_musket_1806", resources=["itm_iron_piece", "itm_iron_bar", "itm_iron_bar_short", "itm_wood_pole_short"], engineer=5)),
+  ("pn_buy_ottoman_musket_a", spr_buy_item_flags(18), "ottoman_musket_a", "bo_pw_weapon_big", spr_buy_item_triggers("itm_ottoman_musket_a", resources=["itm_iron_piece", "itm_iron_bar", "itm_iron_bar_short", "itm_wood_pole_short"], engineer=5)),
+  ("pn_buy_ottoman_musket_b", spr_buy_item_flags(12), "ottoman_musket_e", "bo_pw_weapon_big", spr_buy_item_triggers("itm_ottoman_musket_b", resources=["itm_iron_piece", "itm_iron_bar", "itm_wood_pole_short"], engineer=5)),
   
+
   # SWORDS
   # Briquet/Dagger       - (3)  itm_iron_piece                   - Engineer=1
   # Little sabre/sword   - (5)  itm_iron_bar_short               - Engineer=2
@@ -4381,6 +4393,14 @@ scene_props = [
   ("pn_buy_lightcav_horse_rhine", spr_buy_item_flags(12), "baden_dragoon_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_lightcav_horse_rhine", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_cuirassier_horse_rhine", spr_buy_item_flags(12), "westphalian_cuirassier_horse", "bo_pw_horse", spr_buy_item_triggers  ("itm_cuirassier_horse_rhine", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
   ("pn_buy_garde_du_corps_horse_rhine", spr_buy_item_flags(12), "garde_du_corps_horse_rank", "bo_pw_horse", spr_buy_item_triggers  ("itm_garde_du_corps_horse_rhine", resources=["itm_saddle", "itm_wheat_sheaf"], herding=1)),
+
+  #ARTY HORSES
+  ("pn_buy_arty_horse_french", spr_buy_item_flags(2), "french_carabineer_horse", "bo_pw_weapon_big", spr_buy_item_triggers("itm_arty_horse_french", resources=["itm_wood_pole", "itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_arty_horse_british", spr_buy_item_flags(2), "british_iniskilling_horse", "bo_pw_weapon_big", spr_buy_item_triggers("itm_arty_horse_british", resources=["itm_wood_pole", "itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_arty_horse_russian", spr_buy_item_flags(2), "russian_dragoon_horse", "bo_pw_weapon_big", spr_buy_item_triggers("itm_arty_horse_russian", resources=["itm_wood_pole", "itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_arty_horse_austrian", spr_buy_item_flags(2), "austrian_hussard_horse", "bo_pw_weapon_big", spr_buy_item_triggers("itm_arty_horse_austrian", resources=["itm_wood_pole", "itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_arty_horse_prussian", spr_buy_item_flags(2), "prussian_cuirassier_horse1", "bo_pw_weapon_big", spr_buy_item_triggers("itm_arty_horse_prussian", resources=["itm_wood_pole", "itm_linen_cloth"], tailoring=2)),
+
 
   # ARTY MISC
   ("pn_buy_rockets", spr_buy_item_flags(10), "rocket", "bo_pw_weapon", spr_buy_item_triggers("itm_rockets", resources=["itm_iron_piece", "itm_wood_pole"], engineer=7)),
@@ -6558,6 +6578,15 @@ scene_props = [
       (call_script,"script_explosion_at_position",":attacker_agent_no",300,500,0)
    ]),
   ]),
+
+  ("pn_trade_route_coffee_capture_point",spr_use_time(15),"pn_trade_route_coffee_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_cotton_capture_point",spr_use_time(15),"pn_trade_route_cotton_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_fur_capture_point",spr_use_time(15),"pn_trade_route_fur_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_ivory_capture_point",spr_use_time(15),"pn_trade_route_ivory_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_spices_capture_point",spr_use_time(15),"pn_trade_route_spices_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_sugar_capture_point",spr_use_time(15),"pn_trade_route_sugar_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_tea_capture_point",spr_use_time(15),"pn_trade_route_tea_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
+  ("pn_trade_route_tobacco_capture_point",spr_use_time(15),"pn_trade_route_tobacco_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
 
   ("custom_button_instant",spr_use_time(0),"0","cannon_button_collision", [
     (ti_on_scene_prop_use,

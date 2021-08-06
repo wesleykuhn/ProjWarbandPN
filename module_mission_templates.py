@@ -178,7 +178,6 @@ after_mission_start_setup = (ti_after_mission_start, 0, 0, [], # spawn and move 
     (try_for_range, ":unused", 0, "$g_spawn_marker_count"),
       (spawn_scene_prop, "spr_code_spawn_marker"),
     (try_end),
-    (assign, "$g_spawned_bot_count", 0),
     (call_script, "script_check_name_server"),
     ])
 
@@ -784,6 +783,36 @@ chat_resend_check = (0.3, 0.3, 0, [(troop_slot_eq, "trp_last_chat_message", slot
     (multiplayer_send_string_to_server, ":event", s0),
     ])
 
+multiplayer_pay_trade_routes = (0, 0, 600, [], # server: Every 10 minutes the facctions receive a payment, direct in money chest.
+  [
+    (try_begin),
+      (multiplayer_is_server),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_0_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_1_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_2_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_3_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_4_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_5_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_6_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_7_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_8_instance"),
+      (call_script, "script_check_and_pay_trade_route", "$g_trade_route_9_instance"),
+      # Send message to the lords of factions that own trade route
+      (try_for_players, ":cur_player", 1),
+        (player_is_active, ":cur_player"),
+        (player_slot_eq, ":cur_player", slot_player_is_lord, 1),
+        (player_get_slot, ":player_fac_id", ":cur_player", slot_player_faction_id),
+        (call_script, "script_check_faction_has_trade_route", ":player_fac_id"),
+        (assign, ":fac_own_trade", reg23),
+        (try_begin),
+          (eq, ":fac_own_trade", 1),
+          (multiplayer_send_int_to_player, ":cur_player", server_event_play_sound, "snd_trade_gold_received"),
+          (multiplayer_send_2_int_to_player, ":cur_player", server_event_preset_message, "str_fac_received_trade_gold", preset_message_green),
+        (try_end),
+      (try_end),
+    (try_end),
+  ])
+
 multiplayer_client_surrender = (
   0, 0.5, 0.1, [
   (neg|multiplayer_is_dedicated_server),
@@ -988,7 +1017,6 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
     ##end drinking bottle break script
   ])
 
-# This is the taunt:
 multiplayer_client_voice_warcry = (
   0, 0, 1, [(key_clicked, key_v),],
   [
@@ -2674,6 +2702,7 @@ def common_triggers(self):
     chat_overlay_toggled,
     chat_resend_check,
 
+    multiplayer_pay_trade_routes,
     multiplayer_client_surrender,
     multiplayer_client_walking,
     multiplayer_client_spyglass,

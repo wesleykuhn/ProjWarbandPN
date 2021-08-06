@@ -144,7 +144,7 @@ troops = [
 
   ["light_infantry","Light Infantry","a light infantry",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets", "itm_training_light_sabre"],
-   str_11|agi_15|pw_attr,wpex(50,0,100,0,150,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_5|knows_riding_1|knows_sailing_1|knows_engineer_1,default_face_1,default_face_2],
+   str_11|agi_15|pw_attr,wpex(50,0,100,0,150,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_6|knows_riding_1|knows_sailing_1|knows_engineer_1,default_face_1,default_face_2],
 
   ["grenadier","Grenadier","a grenadier",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
@@ -327,12 +327,6 @@ troops = [
   ["bot_merchant_2", "(BOT)Muhtar", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
    ["itm_leather_jacket", "itm_hide_boots", "itm_civil_top_hat"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
    knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
-
-  ["bot_bandit", "(BOT)Bandit", "{!}bot_bandit", tf_guarantee_all, 0, 0, "fac_commoners",
-   ["itm_civil_peasant_hat", "itm_civil_peasant_hat2", "itm_civil_peasant_hat3", "itm_civil_militia_uniform", "itm_civil_coat1", "itm_civil_coat2", 
-   "itm_old_hide_boots", "itm_french_old_pistol_1766", "itm_bullets", "itm_russian_peasant_axe", "itm_woodcutter_axe", "itm_hatchet"], 
-   str_13|agi_15|pw_attr, wpex(100,20,100,90,100,70), 
-   knows_pw|knows_ironflesh_2|knows_power_strike_3|knows_athletics_4|knows_power_draw_2|knows_power_throw_3,default_face_1,default_face_2],
   # PN Bots end
 
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],

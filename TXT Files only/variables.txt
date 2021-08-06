@@ -1269,7 +1269,6 @@ g_next_scene
 g_next_game_type
 g_victory_condition_time
 g_spawn_marker_count
-g_spawned_bot_count
 g_loop_player_id
 g_loop_player_check_outlaw
 g_loop_player_check_outlaw_time

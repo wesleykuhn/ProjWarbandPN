@@ -2097,6 +2097,90 @@ scripts.extend([("game_start", []), # single player only, not used
       (eq,":scene_prop_id","spr_mm_build_church_rope"),
       (str_store_string, s0, "str_play_bell"),
 
+    (else_try),
+      (is_between, ":scene_prop_id", pn_trade_routes_props_begin, pn_trade_routes_props_end),
+      (multiplayer_send_int_to_server, client_event_request_trade_route_faction_owner, ":instance_id"),
+      (prop_instance_get_variation_id_2, ":var_2", ":instance_id"),
+      # Route income and product
+      (try_begin),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_coffee_capture_point"),
+        (assign, reg10, pn_trade_route_coffee_income),
+        (str_store_string, s16, "str_coffee"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_cotton_capture_point"),
+        (assign, reg10, pn_trade_route_cotton_income),
+        (str_store_string, s16, "str_cotton"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_fur_capture_point"),
+        (assign, reg10, pn_trade_route_fur_income),
+        (str_store_string, s16, "str_fur"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_ivory_capture_point"),
+        (assign, reg10, pn_trade_route_ivory_income),
+        (str_store_string, s16, "str_ivory"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_spices_capture_point"),
+        (assign, reg10, pn_trade_route_spices_income),
+        (str_store_string, s16, "str_spices"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_sugar_capture_point"),
+        (assign, reg10, pn_trade_route_sugar_income),
+        (str_store_string, s16, "str_sugar"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_tea_capture_point"),
+        (assign, reg10, pn_trade_route_tea_income),
+        (str_store_string, s16, "str_tea"),
+      (else_try),
+        (eq, ":scene_prop_id", "spr_pn_trade_route_tobacco_capture_point"),
+        (assign, reg10, pn_trade_route_tobacco_income),
+        (str_store_string, s16, "str_tobacco"),
+      (else_try),
+        (assign, reg10, 0),
+        (str_store_string, s16, "str_trade_route_invalid"),
+      (try_end),
+      # Route name
+      (try_begin),
+        (eq, ":var_2", 0),
+        (str_store_string, s13, "str_trade_route_name_0"),
+      (else_try),
+        (eq, ":var_2", 1),
+        (str_store_string, s13, "str_trade_route_name_1"),
+      (else_try),
+        (eq, ":var_2", 2),
+        (str_store_string, s13, "str_trade_route_name_2"),
+      (else_try),
+        (eq, ":var_2", 3),
+        (str_store_string, s13, "str_trade_route_name_3"),
+      (else_try),
+        (eq, ":var_2", 4),
+        (str_store_string, s13, "str_trade_route_name_4"),
+      (else_try),
+        (eq, ":var_2", 5),
+        (str_store_string, s13, "str_trade_route_name_5"),
+      (else_try),
+        (eq, ":var_2", 6),
+        (str_store_string, s13, "str_trade_route_name_6"),
+      (else_try),
+        (eq, ":var_2", 7),
+        (str_store_string, s13, "str_trade_route_name_7"),
+      (else_try),
+        (eq, ":var_2", 8),
+        (str_store_string, s13, "str_trade_route_name_8"),
+      (else_try),
+        (eq, ":var_2", 9),
+        (str_store_string, s13, "str_trade_route_name_9"),
+      (try_end),
+      # Route owner
+      (scene_prop_get_slot, ":owning_faction", ":instance_id", slot_scene_prop_trade_route_owning_faction),
+      (try_begin),
+        (this_or_next|eq, ":owning_faction", 0),
+        (eq, ":owning_faction", 1),
+        (str_store_string, s12, "str_no_one"),
+      (else_try),
+        (str_store_faction_name, s12, ":owning_faction"),
+      (try_end),
+      (str_store_string, s0, "str_trade_route_details"),
+
     (else_try), #custom_buttons:
       (is_between, ":scene_prop_id", "spr_custom_button_instant", "spr_custom_buttons_end"),
       (prop_instance_get_variation_id,":var_1", ":instance_id"),
@@ -2478,6 +2562,45 @@ scripts.extend([("game_start", []), # single player only, not used
             (try_end),
           (try_end),
         (try_end),
+
+      (else_try),
+        (eq, ":event_type", server_event_faction_captured_trade_route),
+        (store_script_param, ":faction_id", 3),
+        (store_script_param, ":trade_route_prop_var_2", 4),
+        (str_store_faction_name, s15, ":faction_id"),
+        (try_begin),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_0),
+          (str_store_string, s18, "str_trade_route_name_0"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_1),
+          (str_store_string, s18, "str_trade_route_name_1"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_2),
+          (str_store_string, s18, "str_trade_route_name_2"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_3),
+          (str_store_string, s18, "str_trade_route_name_3"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_4),
+          (str_store_string, s18, "str_trade_route_name_4"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_5),
+          (str_store_string, s18, "str_trade_route_name_5"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_6),
+          (str_store_string, s18, "str_trade_route_name_6"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_7),
+          (str_store_string, s18, "str_trade_route_name_7"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_8),
+          (str_store_string, s18, "str_trade_route_name_8"),
+        (else_try),
+          (eq, ":trade_route_prop_var_2", pn_trade_route_9),
+          (str_store_string, s18, "str_trade_route_name_9"),
+        (try_end),
+        (call_script, "script_preset_message", "str_s15_captured_trade_s18", preset_message_faction_castle | preset_message_log | preset_message_big, ":faction_id", 0),
+
       (else_try), # set a troop slot on the client, from the server
         (eq, ":event_type", server_event_troop_set_slot),
         (store_script_param, ":troop_id", 3),
@@ -2846,11 +2969,6 @@ scripts.extend([("game_start", []), # single player only, not used
             (prop_instance_clear_attached_missiles, ":linked_instance_id_2"),
           (try_end),
         (try_end),
-
-      #(else_try),
-      #  (eq, ":event_type", multiplayer_event_set_daytime),
-      #  (store_script_param, ":value", 3),
-      #  (call_script,"script_multiplayer_client_set_scene_day_time",":value"),
       (try_end),
 
   ###################################################################################################################
@@ -2942,6 +3060,16 @@ scripts.extend([("game_start", []), # single player only, not used
           (prop_instance_is_valid, ":instance_id"),
           (call_script, "script_cf_control_ship", ":sender_player_id", ":instance_id", ":forwards", ":rotation"),
         (try_end),
+
+      (else_try), # reply with the current details of a trade route
+        (eq, ":event_type", client_event_request_trade_route_faction_owner),
+        (store_script_param, ":instance_id", 3),
+        (try_begin),
+          (prop_instance_is_valid, ":instance_id"),
+          (scene_prop_get_slot, ":owner_facction", ":instance_id", slot_scene_prop_trade_route_owning_faction),
+          (multiplayer_send_3_int_to_player, ":sender_player_id", server_event_scene_prop_set_slot, ":instance_id", slot_scene_prop_trade_route_owning_faction, ":owner_facction"),
+        (try_end),
+
       (else_try), # reply with the current stock count of a scene prop
         (eq, ":event_type", client_event_request_stock_count),
         (store_script_param, ":instance_id", 3),
@@ -4103,23 +4231,11 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":effect_type", 2),
     (store_script_param, ":effect_id", 3), # 0 = all 
     (store_script_param, ":handle", 4),
-    
-    
-    # (assign,reg22,":prop_instance_id"),
-    # (assign,reg23,":effect_type"),
-    # (assign,reg24,":effect_id"),
-    # (assign,reg25,":handle"),
-    # (display_message,"@in params:  prop_instance_id: {reg22}  effect_type: {reg23}  effect_id: {reg24}  handle: {reg25}"),
-    
-    
     (try_begin),
       (prop_instance_is_valid,":prop_instance_id"),
       (is_between,":effect_type",prop_effect_types_begin,prop_effect_types_end),
       (gt,":effect_id",-1), 
       (is_between,":handle",prop_effect_handles_begin,prop_effect_handles_end),
-      
-      # (display_message,"@params are fine."),
-      
       (assign,":need_to_update",0),
       (try_begin),
         (eq,":effect_type",prop_effect_type_stop_all),
@@ -8331,9 +8447,9 @@ scripts.extend([("game_start", []), # single player only, not used
       # The rest is only for servers setting up the props and stuff.
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
+
       # PN Bots setup
       (set_cheer_at_no_enemy, 0),
-      # Merchants
       (try_begin),
         (neg|entry_point_is_auto_generated, 5), # Entry point was placed
         (entry_point_get_position, pos54, 5),  
@@ -8348,11 +8464,10 @@ scripts.extend([("game_start", []), # single player only, not used
         (spawn_agent, "trp_bot_merchant_2"),
         (agent_set_team, reg0, team_spawn_invulnerable),
         (agent_set_position, reg0, pos54),
-
         (display_message, "@Entry Point 5 detected! Merchants bots added successfully to the game!"),
       (try_end),
 
-      #(call_script, "script_spawn_bandits_group"), # bandits bots spawn check and execution
+      (call_script, "script_setup_trade_routes"),
 
       (try_for_range,":prop_type", pn_hittable_props_begin, pn_hittable_props_end),
         (try_for_prop_instances, ":cur_instance_id", ":prop_type"),
@@ -8426,33 +8541,6 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
     (try_end),
   ]),
-
-  ("spawn_bandits_group",
-    [
-      (try_begin),
-        (multiplayer_is_server),
-        (neg|entry_point_is_auto_generated, 6),
-
-        (store_random_in_range, ":random_no", 3, 7),
-        (set_fixed_point_multiplier, 100),
-        (entry_point_get_position, pos54, 6),
-        (set_spawn_position, pos54),
-
-        (try_for_range, ":counter", 0, ":random_no"),
-          (try_begin),
-            (gt, ":counter", 0),
-            (position_move_x, pos54, 40),
-          (try_end),
-
-          (spawn_agent, "trp_bot_bandit"),
-          (agent_set_team, reg0, team_spectators),
-        (try_end),
-
-        (assign, reg24, ":random_no"),
-        (display_message, "@Entry Point 6 detected! {reg24} bandits bots were spawned!"),
-      (try_end),
-    ]
-  ),
 
   # script_get_prop_center
   ("get_prop_center",
@@ -10075,8 +10163,6 @@ scripts.extend([("game_start", []), # single player only, not used
           (assign, reg22, ":wood_instance"),
           (assign, reg23, ":ship_instance_id"),
           (assign, reg24, ":num_cannons_ship"),
-          (display_message, "@Cannon with instance equals to {reg22}, successfully attached to ship {reg23}, as its cannon {reg24}/8"),
-
           (scene_prop_set_slot, ":wood_instance", slot_scene_prop_cannon_ship_moving, 0),
 
           (call_script, "script_setup_ship_cannon_relative_dist", ":wood_instance", ":ship_instance_id"),
@@ -11897,7 +11983,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign, "$g_game_ended", 0),
     (assign, "$g_victory_condition_time", 0),
     (assign, "$g_spawn_marker_count", 0),
-    (assign, "$g_spawned_bot_count", 0),
     (assign, "$g_overflow_gold_value", 0),
     (assign, "$g_loop_player_id", 0),
     (assign, "$g_loop_player_check_outlaw", 0),
@@ -11970,6 +12055,15 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":flags", 2),
     (store_script_param, "$g_preset_message_value_1", 3),
     (store_script_param, "$g_preset_message_value_2", 4),
+
+    # Why not some sounds when receiving a certain server announce?
+    (try_begin),
+      (eq, "$g_preset_message_string_id", "str_s1_captured_s2"),
+      (play_sound, "snd_team_scored_a_point"),
+    (else_try),
+      (eq, "$g_preset_message_string_id", "str_s15_captured_trade_s18"),
+      (play_sound, "snd_your_flag_taken"),
+    (try_end),
 
     (assign, ":color", ":flags"), # unpack the color from the flags parameter
     (val_and, ":color", preset_message_color_mask),
@@ -12415,7 +12509,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (store_script_param, ":agent_id", 2),
     #(store_script_param, ":troop_id", 3), # used in Native, but unused in this
     #mod
-
     (try_begin),
       (agent_is_active, ":agent_id"),
       (agent_get_player_id, ":player_id", ":agent_id"),
@@ -14187,6 +14280,256 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
       (assign, ":castle_no", -1),
     (try_end),
     (gt, ":castle_no", -1),]),
+
+  # Trade routes begin
+  ("setup_trade_routes",
+    [
+      #Reset the global variables
+      (assign, "$g_trade_route_0_instance", -1),
+      (assign, "$g_trade_route_1_instance", -1),
+      (assign, "$g_trade_route_2_instance", -1),
+      (assign, "$g_trade_route_3_instance", -1),
+      (assign, "$g_trade_route_4_instance", -1),
+      (assign, "$g_trade_route_5_instance", -1),
+      (assign, "$g_trade_route_6_instance", -1),
+      (assign, "$g_trade_route_7_instance", -1),
+      (assign, "$g_trade_route_8_instance", -1),
+      (assign, "$g_trade_route_9_instance", -1),
+
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_coffee_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_cotton_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_fur_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_ivory_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_spices_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_sugar_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_tea_capture_point"),
+      (call_script, "script_setup_trade_route", "spr_pn_trade_route_tobacco_capture_point"),
+    ]
+  ),
+
+  ("setup_trade_route",
+    [
+      (store_script_param, ":trade_route_prop_id", 1),
+      (try_for_prop_instances, ":instance_id", ":trade_route_prop_id"),
+        (prop_instance_get_variation_id_2, ":var_2", ":instance_id"),
+
+        #Store the resource of the trade route
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_trade_route_type, ":trade_route_prop_id"),
+
+        #Commoners start controlling it
+        (scene_prop_set_slot, ":instance_id", slot_scene_prop_trade_route_owning_faction, "fac_commoners"),
+        (try_begin),
+          (eq, ":var_2", 0),
+          (eq, "$g_trade_route_0_instance", -1),
+          (assign, "$g_trade_route_0_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 1),
+          (eq, "$g_trade_route_1_instance", -1),
+          (assign, "$g_trade_route_1_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 2),
+          (eq, "$g_trade_route_2_instance", -1),
+          (assign, "$g_trade_route_2_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 3),
+          (eq, "$g_trade_route_3_instance", -1),
+          (assign, "$g_trade_route_3_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 4),
+          (eq, "$g_trade_route_4_instance", -1),
+          (assign, "$g_trade_route_4_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 5),
+          (eq, "$g_trade_route_5_instance", -1),
+          (assign, "$g_trade_route_5_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 6),
+          (eq, "$g_trade_route_6_instance", -1),
+          (assign, "$g_trade_route_6_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 7),
+          (eq, "$g_trade_route_7_instance", -1),
+          (assign, "$g_trade_route_7_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 8),
+          (eq, "$g_trade_route_8_instance", -1),
+          (assign, "$g_trade_route_8_instance", ":instance_id"),
+        (else_try),
+          (eq, ":var_2", 9),
+          (eq, "$g_trade_route_9_instance", -1),
+          (assign, "$g_trade_route_9_instance", ":instance_id"),
+        (else_try),
+          (display_message, "@ERROR: There's a trade route pole with duplicated or invalid (0-7) var 2. Please fix it!"),
+        (try_end),
+      (try_end),
+    ]
+  ),
+
+  ("check_and_pay_trade_route",
+    [
+      (store_script_param, ":trade_pole_instance", 1),
+      (try_begin),
+        (neq, ":trade_pole_instance", -1),
+        # Getting price
+        (assign, ":value_pay", 0),
+        (try_begin),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_coffee_capture_point"),
+          (assign, ":value_pay", pn_trade_route_coffee_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_cotton_capture_point"),
+          (assign, ":value_pay", pn_trade_route_cotton_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_fur_capture_point"),
+          (assign, ":value_pay", pn_trade_route_fur_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_ivory_capture_point"),
+          (assign, ":value_pay", pn_trade_route_ivory_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_spices_capture_point"),
+          (assign, ":value_pay", pn_trade_route_spices_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_sugar_capture_point"),
+          (assign, ":value_pay", pn_trade_route_sugar_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_tea_capture_point"),
+          (assign, ":value_pay", pn_trade_route_tea_income),
+        (else_try),
+          (scene_prop_slot_eq, ":trade_pole_instance", slot_scene_prop_trade_route_type, "spr_pn_trade_route_tobacco_capture_point"),
+          (assign, ":value_pay", pn_trade_route_tobacco_income),
+        (try_end),
+
+        (scene_prop_get_slot, ":faction_id", ":trade_pole_instance", slot_scene_prop_trade_route_owning_faction),
+        (gt, ":faction_id", 1),
+        (lt, ":faction_id", 10),
+        (gt, ":value_pay", 0),
+
+        # Loop through all money chests and deposit on the first to find
+        (try_for_prop_instances, ":chest_instance", "spr_pw_castle_money_chest"),
+          (gt, ":chest_instance", 0),
+          # Get faction id of chest
+          (call_script, "script_scene_prop_get_owning_faction", ":chest_instance"),
+          (assign, ":chest_fac", reg0),
+          (eq, ":faction_id", ":chest_fac"),
+          # Get current gold on it
+          (scene_prop_get_slot, ":chest_gold", ":chest_instance", slot_scene_prop_stock_count),
+          (val_add, ":chest_gold", ":value_pay"),
+          # Pays
+          (scene_prop_set_slot, ":chest_instance", slot_scene_prop_stock_count, ":chest_gold"),
+        (try_end),
+      (try_end),
+    ]
+  ),
+
+  # Input <= [int] faction to check id
+  # Output => [bool] reg23
+  ("check_faction_has_trade_route",
+    [
+      (store_script_param, ":faction_id", 1),
+
+      (assign, ":result", 0),
+      (try_begin),
+        (neq, "$g_trade_route_0_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_0_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_1_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_1_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_2_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_2_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_3_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_3_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_4_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_4_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_5_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_5_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_6_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_6_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_7_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_7_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_8_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_8_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (else_try),
+        (neq, "$g_trade_route_9_instance", -1),
+        (scene_prop_slot_eq, "$g_trade_route_9_instance", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+        (assign, ":result", 1),
+      (try_end),
+      (assign, reg23, ":result"),
+    ]
+  ),
+
+  ("cf_use_trade_route_capture_point", # server: after an agent uses a capture point scene prop, capture the trade route if checks succeed
+    [
+      (store_script_param, ":agent_id", 1), # must be valid
+      (store_script_param, ":instance_id", 2), # must be valid
+      (store_script_param, ":completed", 3), # 1 if completed using the scene prop
+
+      (agent_get_player_id, ":player_id", ":agent_id"),
+      (player_is_active, ":player_id"),
+      (this_or_next | neq, ":completed", 1),
+      (neg | scene_prop_slot_eq, ":instance_id", slot_scene_prop_disabled, ":player_id"), # player started using when not hostile
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
+
+      (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
+      (scene_prop_get_slot, ":cur_faction_id", ":instance_id", slot_scene_prop_trade_route_owning_faction),
+      (neq, ":cur_faction_id", ":player_faction_id"),
+
+      # No commoners or outlaws
+      (gt, ":player_faction_id", 1),
+      (lt, ":player_faction_id", 10),
+
+      (gt, ":cur_faction_id", -1),
+      (lt, ":cur_faction_id", 10),
+
+      (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
+      (faction_get_slot, ":banner_item_id", ":player_faction_id", slot_faction_banner_mesh),
+      (val_sub, ":banner_item_id", banner_meshes_begin),
+      (val_add, ":banner_item_id", banner_items_begin),
+      (eq, ":wielded_item_id", ":banner_item_id"),
+
+      (item_get_slot, ":difficulty", ":wielded_item_id", slot_item_difficulty),
+      (agent_get_troop_id, ":troop_id", ":agent_id"),
+      (store_attribute_level, ":strength", ":troop_id", ca_strength),
+      (ge, ":strength", ":difficulty"),
+
+      (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
+      (call_script, "script_capture_trade_route", ":player_faction_id", ":instance_id"),
+    ]
+  ),
+
+  ("capture_trade_route", # server: perform capture of the castle by the faction, without checking
+                     # anything
+   [(store_script_param, ":faction_id", 1),
+    (store_script_param, ":trade_route_pole_instace", 2),
+
+    (try_begin),
+      (neq, ":trade_route_pole_instace", -1),
+      (is_between, ":faction_id", castle_factions_begin, factions_end),
+      (scene_prop_set_slot, ":trade_route_pole_instace", slot_scene_prop_trade_route_owning_faction, ":faction_id"),
+      (prop_instance_get_variation_id_2, ":var_2", ":trade_route_pole_instace"),
+      (get_max_players, ":num_players"),
+      (try_for_range, ":player_id", 1, ":num_players"),
+        (player_is_active, ":player_id"),
+        # Only message the players about the event
+        (multiplayer_send_3_int_to_player, ":player_id", server_event_faction_captured_trade_route, ":faction_id", ":var_2"),
+      (try_end),
+    (try_end),
+  ]),
+  #Trade routes end
 
   ("cf_victory_condition_met", # server: check if a victory condition for the mission has been met; if so,
                                # reg0 = victorious faction id
@@ -22208,37 +22551,6 @@ scripts.extend([("cf_process_wood",
     (music_set_situation, ":situation"),
     (val_div, "$g_recent_nearby_deaths_factor", 3),
     (val_mul, "$g_recent_nearby_deaths_factor", 2),]),
-
-  #("check_spawn_bots", # server: check if more testing bots should be spawned
-  # [(store_script_param, ":dead_agent_id", 1),
-
-  #  (try_begin),
-  #    (multiplayer_is_server),
-  #    (try_begin),
-  #      (le, ":dead_agent_id", -1),
-  #      (store_sub, ":bots_to_spawn", "$g_bot_count", "$g_spawned_bot_count"),
-  #      (val_max, "$g_spawned_bot_count", "$g_bot_count"),
-  #    (else_try),
-  #      (assign, ":bots_to_spawn", 0),
-  #      (agent_is_human, ":dead_agent_id"),
-  #      (agent_get_player_id, ":player_id", ":dead_agent_id"),
-  #      (neg | player_is_active, ":player_id"),
-  #      (try_begin),
-  #        (le, "$g_spawned_bot_count", "$g_bot_count"),
-  #        (assign, ":bots_to_spawn", 1),
-  #      (else_try),
-  #        (val_sub, "$g_spawned_bot_count", 1),
-  #      (try_end),
-  #    (try_end),
-  #    (ge, ":bots_to_spawn", 1),
-  #    (store_current_scene, ":current_scene"),
-  #    (modify_visitors_at_site, ":current_scene"),
-  #    (try_for_range, ":unused", 0, ":bots_to_spawn"),
-  #      (store_random_in_range, ":entry_point", 0, 5),
-  #      (store_random_in_range, ":troop_id", playable_troops_begin, "trp_godlike_hero"),
-  #      (add_visitors_to_current_scene, ":entry_point", ":troop_id", 1, 0, -1),
-  #    (try_end),
-  #  (try_end),]),
 
   ("cf_client_agent_is_inactive", # clients: try to check that the agent is not moving or fighting
    [(assign, ":action", 0),
