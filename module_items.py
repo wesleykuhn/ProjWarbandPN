@@ -2532,6 +2532,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  299 , weight(0.9)|head_armor(10) ,imodbits_cloth ],
 ["civil_pirates_headscarf_a", "Pirate Red Head Scarf", [("pirates_headscarf_a",0)],  itp_type_head_armor |itp_doesnt_cover_hair ,0, 
  33 , weight(0.1)|head_armor(2) ,imodbits_cloth ],
+["pirate_hat", "Pirate Hat", [("pirate_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 347 , weight(0.5)|head_armor(10) ,imodbits_cloth ],
 # Body
 ["civil_militia_uniform", "Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor |itp_covers_legs ,0,
  420 , weight(5.2)|head_armor(4)|body_armor(16)|leg_armor(10)|difficulty(8) ,imodbits_cloth ],
@@ -3100,16 +3101,12 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["badner_helmet_trumpeter", "Badner Dragoon Trumpeter Helmet", [("baden_dragoon_helmet_trumpeter",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 1200 , weight(2)|head_armor(30)|difficulty(12) ,imodbits_cloth ],    
 ["berg_pioneer_bearskin", "Berg Pionner Bearskin", [("berg_pioneer_bearskin",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
- ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],    
-
-# Pirates
-["pirate_hat", "Pirate Hat", [("pirate_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 347 , weight(0.5)|head_armor(10) ,imodbits_cloth ],
+ ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],
 
 # Descalco = (0.2) - 8
 # Couro Curta = (1) - 16
 # Couro Media = (1.25) - 22
 # Couro Grande = (1.5) - 28
-
 ## Boots
 # French
 ["french_voltigeur_pants", "French Voltigeur Pants", [("french_voltigeur_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
