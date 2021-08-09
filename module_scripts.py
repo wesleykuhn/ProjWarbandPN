@@ -7398,7 +7398,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_script_param, ":new_value", 3),
 
       (try_begin),
-        (neg|scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_cannon_ship_id, -1),
+        (neg|scene_prop_slot_eq, ":cannon_instance", slot_scene_prop_ship_id, -1),
 
         (scene_prop_set_slot, ":cannon_instance",  ":slot_no", ":new_value"),
         (call_script, "script_set_ship_cannon_parts_slot", ":cannon_instance", slot_scene_prop_cannon_wheels, ":slot_no", ":new_value"),
@@ -7442,7 +7442,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_begin),
         (neq, ":cannon_instance", -1),
 
-        (scene_prop_get_slot,":ship_instance",":cannon_instance", slot_scene_prop_cannon_ship_id),
+        (scene_prop_get_slot,":ship_instance",":cannon_instance", slot_scene_prop_ship_id),
         (neq, ":ship_instance", -1),
 
         (prop_instance_get_position, pos54, ":ship_instance"),
@@ -8452,18 +8452,18 @@ scripts.extend([("game_start", []), # single player only, not used
       (set_cheer_at_no_enemy, 0),
       (try_begin),
         (neg|entry_point_is_auto_generated, 5), # Entry point was placed
-        (entry_point_get_position, pos54, 5),  
-        (set_spawn_position, pos54),
+        (entry_point_get_position, pos64, 5),  
+        (set_spawn_position, pos64),
         # Merchant 1
         (spawn_agent, "trp_bot_merchant_1"),
         (agent_set_team, reg0, team_spawn_invulnerable),
         # Merchant 2
-        (position_move_x, pos54, -80),
-        (position_move_y, pos54, -50),
-        (position_rotate_z, pos54, -10),
+        (position_move_x, pos64, -80),
+        (position_move_y, pos64, -50),
+        (position_rotate_z, pos64, -10),
         (spawn_agent, "trp_bot_merchant_2"),
         (agent_set_team, reg0, team_spawn_invulnerable),
-        (agent_set_position, reg0, pos54),
+        (agent_set_position, reg0, pos64),
         (display_message, "@Entry Point 5 detected! Merchants bots added successfully to the game!"),
       (try_end),
 
@@ -9189,8 +9189,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (neq, ":hit_effect_type", -1),
           (try_begin),
             (eq, ":hit_effect_type", pn_effect_type_wood),
-            (prop_instance_get_position, pos62, ":hitted_prop_instance"),
-            (copy_position, pos0, pos62),
+            (prop_instance_get_position, pos65, ":hitted_prop_instance"),
+            (copy_position, pos0, pos65),
             (call_script, "script_play_sound_at_position", "snd_cannon_hit_ship"),
             (call_script, "script_multiplayer_server_spawn_particle_at_position", "psys_woodwallhit_particles", 90),
           (try_end),
@@ -9202,7 +9202,7 @@ scripts.extend([("game_start", []), # single player only, not used
    # script_multiplayer_server_spawn_particle_at_position
   # Input: arg1 = particle_effect_id
   # Input: arg2 = burst_strength
-  # Input: pos62 = position with rotation for particle.
+  # Input: pos65 = position with rotation for particle.
   # Output: 
   ("multiplayer_server_spawn_particle_at_position",
    [
@@ -9217,20 +9217,20 @@ scripts.extend([("game_start", []), # single player only, not used
       
       (try_begin),
         (neg|multiplayer_is_dedicated_server),
-        (particle_system_burst_no_sync,":particle_effect_id",pos62,":burst_strength"),
+        (particle_system_burst_no_sync,":particle_effect_id",pos65,":burst_strength"),
       (try_end),
       
       (try_begin),
         (multiplayer_is_server),
         
         (set_fixed_point_multiplier, 100),
-        (position_get_x,":x_value",pos62),
-        (position_get_y,":y_value",pos62),
-        (position_get_z,":z_value",pos62),
+        (position_get_x,":x_value",pos65),
+        (position_get_y,":y_value",pos65),
+        (position_get_z,":z_value",pos65),
         
-        (position_get_rotation_around_z,":z_rot",pos62),
-        (position_get_rotation_around_x,":x_rot",pos62),
-        (position_get_rotation_around_y,":y_rot",pos62),
+        (position_get_rotation_around_z,":z_rot",pos65),
+        (position_get_rotation_around_x,":x_rot",pos65),
+        (position_get_rotation_around_y,":y_rot",pos65),
         
         # Make rotation positive for transfer if needed.
         (try_begin),
@@ -10022,7 +10022,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
       (assign, reg0, 1),
 
-      (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_ship_id, -1),
+      (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_ship_id, -1),
       (scene_prop_set_slot, ":cannon_wood", slot_scene_prop_cannon_ship_moving, -1),
 
       (try_begin), # Attaching cannon to the ships with same var 2
@@ -10120,7 +10120,7 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_get_slot, ":num_cannons_ship", ":ship_instance_id", slot_scene_prop_num_linked_cannons),
         (lt, ":num_cannons_ship", 9),
 
-        (scene_prop_set_slot, ":wood_instance", slot_scene_prop_cannon_ship_id, ":ship_instance_id"),
+        (scene_prop_set_slot, ":wood_instance", slot_scene_prop_ship_id, ":ship_instance_id"),
 
         (assign, ":fail", 0),
         (try_begin),
@@ -17046,6 +17046,8 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
       (assign, ":fail", 1),
       (gt, reg0, 0),
     (else_try),
+      (prop_instance_get_position, pos56, ":instance_id"),
+      (call_script, "script_multiplayer_server_play_sound_at_position", "snd_door_lock"),
       (multiplayer_send_3_int_to_player, ":player_id", server_event_preset_message, "str_door_locked_by_s1", preset_message_faction | preset_message_fail_sound, ":faction_id"),
     (try_end),
     (eq, ":fail", 0),
@@ -18182,9 +18184,13 @@ scripts.extend([("cf_process_wood",
       (gt, reg0, 0),
     (else_try),
       (eq, ":fail_string_id", "str_door_bolted"),
+      (prop_instance_get_position, pos56, ":instance_id"),
+      (call_script, "script_multiplayer_server_play_sound_at_position", "snd_door_lock"),
       (multiplayer_send_2_int_to_player, ":player_id", server_event_preset_message, ":fail_string_id", preset_message_error),
     (else_try),
       (eq, ":fail_string_id", "str_door_locked_by_s1"),
+      (prop_instance_get_position, pos56, ":instance_id"),
+      (call_script, "script_multiplayer_server_play_sound_at_position", "snd_door_lock"),
       (multiplayer_send_3_int_to_player, ":player_id", server_event_preset_message, ":fail_string_id", preset_message_faction | preset_message_fail_sound, ":faction_id"),
     (try_end),
     (eq, ":fail_string_id", 0),
@@ -20568,11 +20574,7 @@ scripts.extend([("cf_process_wood",
               (agent_get_player_id, ":player_id", ":agent_id"),
               (try_begin),
                 (player_is_active, ":player_id"),
-                (player_get_gender, ":gender", ":player_id"),
-                (eq, ":gender", tf_female),
-                (agent_play_sound, ":agent_id", "snd_woman_drown"),
-              (else_try),
-                (agent_play_sound, ":agent_id", "snd_man_drown"),
+                (agent_play_sound, ":agent_id", "snd_gurgle"),
               (try_end),
             (else_try),
               (item_slot_eq, ":horse_item_id", slot_item_animal_adult_item_id, 0),
@@ -20586,7 +20588,14 @@ scripts.extend([("cf_process_wood",
         (agent_set_slot, ":agent_id", slot_agent_drowning_count, 0),
         (try_begin),
           (agent_is_human, ":agent_id"),
-          (agent_play_sound, ":agent_id", "snd_man_cough"),
+          (agent_get_player_id, ":player_id", ":agent_id"),
+          (player_get_gender, ":gender", ":player_id"),
+          (try_begin),
+            (eq, ":gender", tf_female),
+            (agent_play_sound, ":agent_id", "snd_woman_cough"),
+          (else_try),
+            (agent_play_sound, ":agent_id", "snd_man_cough"),
+          (try_end),
         (else_try),
           (agent_play_sound, ":agent_id", "snd_horse_snort"),
         (try_end),
@@ -20600,17 +20609,6 @@ scripts.extend([("cf_process_wood",
   ("setup_ship", # server: spawn the necessary parts for a ship at mission start
    [(store_script_param, ":hull_instance_id", 1), # must be valid
 
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_num_linked_cannons, 0),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_0, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_1, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_2, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_3, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_4, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_5, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_6, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_7, -1),
-    (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_8, -1),
-
     (troop_get_slot, ":ship_array_count", "trp_ship_array", 0),
     (val_add, ":ship_array_count", 1),
     (troop_set_slot, "trp_ship_array", ":ship_array_count", ":hull_instance_id"),
@@ -20623,6 +20621,17 @@ scripts.extend([("cf_process_wood",
       (store_script_param, ":ramp_scene_prop_id", 4),
       (store_script_param, ":hold_scene_prop_id", 5),
       (prop_instance_get_position, pos1, ":hull_instance_id"),
+
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_num_linked_cannons, 0),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_0, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_1, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_2, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_3, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_4, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_5, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_6, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_7, -1),
+      (scene_prop_set_slot, ":hull_instance_id", slot_scene_prop_ship_cannon_8, -1),
 
       (try_begin),
         (gt, ":sail_scene_prop_id", -1),
@@ -21407,7 +21416,7 @@ scripts.extend([("cf_process_wood",
         #(try_end),
         
 
-        # Why dont we move our cannons also? :)
+        # Why dont we move our cannons also?
         (copy_position, pos51, pos3),
         (assign, reg34, ":rotate_cannons"),
         (assign, reg35, ":rotate_cannons_value"),
@@ -23110,7 +23119,6 @@ scripts.extend([("cf_process_wood",
           (position_move_y, pos1, -200),
           (agent_set_position, ":admin_agent_id", pos1),
         (try_end),
-        #(agent_set_position, ":admin_agent_id", pos1), changed to test the bring player new tool
       (else_try),
         (assign, ":admin_action", -1),
       (try_end), # end of tools that target another agent

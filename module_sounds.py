@@ -142,8 +142,7 @@ sounds = [
  ("failure", sf_2d|sf_priority_6|sf_vol_5, ["cue_failure.ogg"]),
  ("man_yawn", sf_priority_6|sf_vol_10, ["man_yawn_1.ogg"]),
  ("man_cough", sf_priority_6|sf_vol_10, ["man_cough_1.ogg","man_cough_2.ogg","man_cough_3.ogg"]),
- ("man_drown", sf_priority_9|sf_vol_10, ["man_stun_1.ogg","man_ugh_7.ogg","man_ugh_13.ogg","man_ugh_17.ogg"]),
- ("woman_drown", sf_priority_9|sf_vol_10, ["woman_hit_b_2.ogg","woman_hit_2.ogg"]),
+ ("woman_cough", sf_priority_6|sf_vol_10, ["woman_exercise_6.wav", "woman_exercise_8.wav"]),
  ("cut_wood", sf_priority_9|sf_vol_10, ["shield_hit_cut_3.ogg","shield_hit_cut_5.ogg"]),
  ("cut_wood_break", sf_priority_10|sf_vol_10, ["shield_hit_cut_4.ogg"]),
  ("cut_wood_scratch", sf_priority_6|sf_vol_10, ["wooden_hit_high_armor_low_damage_1.ogg","wooden_hit_high_armor_low_damage_2b.ogg"]),
@@ -324,6 +323,9 @@ sounds = [
  ("bandaging",sf_priority_7|sf_vol_10, ["bandaging1.ogg","bandaging1_1.ogg"]),
  ("church_bell",sf_priority_15|sf_vol_15, ["churchbells.wav"]),
  ("boat_sinking",sf_priority_7|sf_vol_13|sf_stream_from_hd, ["boat_sinking.ogg"]),
+
+ ("gurgle", sf_priority_5|sf_vol_7, ["gurgle1.wav", "gurgle2.wav", "gurgle3.wav", "gurgle4.wav", "gurgle5.wav", 
+  "gurgle6.wav", "gurgle7.wav", "gurgle8.wav", "gurgle9.wav", "gurgle10.wav"]),
 
  ("cannonball_loop",sf_priority_15|sf_vol_5|sf_looping, ["ball_loop.wav"]),
  ("rocket_loop",sf_priority_15|sf_vol_6|sf_looping, ["fuse.wav"]),

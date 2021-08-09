@@ -72,7 +72,7 @@ def init_heraldic_item(tableau):
 # When adding a new banner texture, remember to add an entry to module_meshes in the correct place, and set an appropriate background color in module_scripts.
 def itm_faction_banner(banner_id):
   return ["pw_banner_pole_" + banner_id, "Banner", [("pw_banner_pole",0)], itp_type_polearm|itp_two_handed|itp_primary|itp_wooden_parry, itc_parry_polearm|itcf_carry_spear,
-   1200, weight(7.0)|difficulty(14)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none,
+   1200, weight(7.0)|difficulty(11)|spd_rtng(70)|weapon_length(250)|swing_damage(10, blunt)|thrust_damage(5, blunt), imodbits_none,
    [(ti_on_init_item, [(cur_item_set_tableau_material, "tableau_faction_banner_pole", "mesh_banner_" + banner_id)])]]
 
 # Template for castle capture point banner items (display only, not allowing pickup).
@@ -1542,17 +1542,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2213 , weight(2.7
 ["french_dragoon_musket_melee", "French Dragoon Musket", [("french_dragoon_musket",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(9)|spd_rtng(86) | weapon_length(115)|swing_damage(20 , blunt) | thrust_damage(12,  blunt),imodbits_none ],
 
-# Ottoman
-["ottoman_musket_a", "Turkish Musket", [("ottoman_musket_a",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 1992 , weight(3.3)|difficulty(9)|spd_rtng(25) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(63),imodbits_none,[]],
-["ottoman_musket_a_melee", "Turkish Musket", [("ottoman_musket_a",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(80) | weapon_length(115)|swing_damage(18 , blunt) | thrust_damage(12,  blunt),imodbits_none ],
-
-["ottoman_musket_b", "Turkish Old Musket", [("ottoman_musket_e",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
-itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 1433 , weight(4.8)|difficulty(9)|spd_rtng(21) | shoot_speed(250) | thrust_damage(83 ,pierce)|max_ammo(1)|accuracy(55),imodbits_none,[]],
-["ottoman_musket_b_melee", "Turkish Old Musket", [("ottoman_musket_e",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
- 180 , weight(0)|difficulty(9)|spd_rtng(60) | weapon_length(115)|swing_damage(14 , blunt) | thrust_damage(10,  blunt),imodbits_none ],
-
 # Russian
 ["russian_dragoon_musket", "Russian Dragoon Musket", [("Russian_dragoon_musket",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
 itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2213 , weight(2.7)|difficulty(9)|spd_rtng(25) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(72),imodbits_none,[]],
@@ -1601,6 +1590,17 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 3181 , weight(3.5
 itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0)|difficulty(0)|spd_rtng(23) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(75),imodbits_none,[]],
 ["french_versailles_melee", "French Versailles Mousquet", [("french_versailles",0)], itp_cant_use_on_horseback|itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
  180 , weight(0)|difficulty(11)|spd_rtng(85) | weapon_length(138)|swing_damage(40 ,  pierce) | thrust_damage(45 ,  pierce),imodbits_none ],
+
+# Ottoman
+["ottoman_musket_a", "Ottoman Jezail Musket", [("ottoman_musket_a",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2944 , weight(3.3)|difficulty(9)|spd_rtng(20) | shoot_speed(250) | thrust_damage(100 ,pierce)|max_ammo(1)|accuracy(80),imodbits_none,[]],
+["ottoman_musket_a_melee", "Ottoman Jezail Musket", [("ottoman_musket_a",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
+ 180 , weight(0)|difficulty(9)|spd_rtng(80) | weapon_length(115)|swing_damage(20 , blunt) | thrust_damage(12,  blunt),imodbits_none ],
+
+["ottoman_musket_b", "Ottoman Old Musket", [("ottoman_musket_e",0)], itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_while_moving_mounted|itp_cant_reload_while_moving|itp_next_item_as_melee ,
+itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 1233 , weight(4.8)|difficulty(9)|spd_rtng(17) | shoot_speed(250) | thrust_damage(90 ,pierce)|max_ammo(1)|accuracy(65),imodbits_none,[]],
+["ottoman_musket_b_melee", "Ottoman Old Musket", [("ottoman_musket_e",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_no_blur|itp_offset_musket,itc_musket_melee|itcf_carry_crossbow_back,
+ 180 , weight(0)|difficulty(9)|spd_rtng(75) | weapon_length(115)|swing_damage(14 , blunt) | thrust_damage(10,  blunt),imodbits_none ],
 
 # British
 ["british_brown_bess", "British Brown Bess Musket", [("brown_bess_musket",0)], itp_cant_use_on_horseback|itp_type_musket |itp_primary|itp_two_handed|itp_cant_reload_on_horseback|itp_cant_reload_while_moving|itp_next_item_as_melee ,
@@ -3103,6 +3103,11 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["berg_pioneer_bearskin", "Berg Pionner Bearskin", [("berg_pioneer_bearskin",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],
 
+# Armor 8 - Cheap
+# Armor 16 - 400
+# Armor 22 - 886
+# Armor 28 - 1353
+
 # Descalco = (0.2) - 8
 # Couro Curta = (1) - 16
 # Couro Media = (1.25) - 22
@@ -3151,13 +3156,8 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
 ["french_equipage_batallion_pants", "French Equipage Batallion Pants", [("french_equipage_batallion_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
-["french_sailor_pants", "French Sailor Pants", [("french_sailor_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 38 , weight(0.2)|leg_armor(8) ,imodbits_cloth ],
-["french_sailor_pants_female", "French Woman Sailor Pants", [("french_sailor_pants_fem",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 38 , weight(0.2)|leg_armor(8) ,imodbits_cloth ],
 ["french_surgeon_pants", "French Surgeon Pants", [("french_surgeon_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
-
 # Russian
 ["rus_infantry_pants1", "Russian Infantry Gaiters", [("rus_musketeer_pants1",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
@@ -3189,7 +3189,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
   400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
 ["rus_uhlan_pants", "Russian Uhlan Pants", [("russian_uhlan_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
-
 # Austrian
 ["austrian_infantry_pants", "Austrian Infantry Pants", [("austrian_infantry_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
@@ -3242,11 +3241,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
 ["british_captain_legs", "British Captain Pants", [("british_captain_legs",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
-["sailor_pants", "British Sailor Pants", [("sailor_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 38 , weight(0.2)|leg_armor(8) ,imodbits_cloth ],
-["sailor_pants_female", "British Woman Sailor Pants", [("sailor_pants_fem",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 38 , weight(0.2)|leg_armor(8) ,imodbits_cloth ],
-
 # Prussian
 ["prussian_infantry_pants", "Prussian Infantry Pants", [("prussian_infantry_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
@@ -3268,12 +3262,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
 ["prussian_freikorps_pants", "Prussian Freikorps Pants", [("prussian_lutzov_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
-
-# Armor 8 - Cheap
-# Armor 16 - 400
-# Armor 22 - 886
-# Armor 28 - 1353
-
 # Rhine
 ["bavarian_infantry_pants", "Bavarian Infantry Pants", [("bavarian_infantry_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
@@ -3329,20 +3317,19 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 # Carabineer - 3411, hit_points(150)|body_armor(20)|difficulty(5)|horse_speed(39)|horse_maneuver(50)|horse_charge(28)
 # Cuirassier/Heavy - 4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)
 
-## Horses
-# French
 ## Artillery Horses only
 ["arty_horse_french","French Artillery Horse", [("french_carabineer_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 1359,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_british","British Artillery Horse", [("british_iniskilling_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 1359,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_russian","Russian Artillery Horse", [("russian_dragoon_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 1359,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_austrian","Austrian Artillery Horse", [("austrian_hussard_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 1359,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_prussian","Prussian Artillery Horse", [("prussian_cuirassier_horse1",0)], itp_type_horse|itp_is_carriage, 0,
- 1359,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
- 
+ 1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
+
+# Normal Horses
 ["hussar_horse_french","French Hussar Horse",[("french_hussards_horse",0)], itp_type_horse, 0,
  1922, hit_points(135)|body_armor(20)|difficulty(5)|horse_speed(43)|horse_maneuver(52)|horse_charge(22)|horse_scale(104),imodbits_none],
 ["lancer_horse_french","French Lancer Horse",[("french_lancier_polonais_horse",0)], itp_type_horse, 0,
@@ -3355,7 +3342,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)|horse_scale(108),imodbits_none],
 ["carabineer_horse_french","French Carabineer Horse",[("french_carabineer_horse",0)], itp_type_horse, 0,
  3411, hit_points(150)|body_armor(20)|difficulty(5)|horse_speed(39)|horse_maneuver(50)|horse_charge(28)|horse_scale(108),imodbits_none],
-
 # British
 ["lightdragoon_horse_britain","British Light Dragoon Horse",[("british_ld_horse3",0)], itp_type_horse, 0,
  1318, hit_points(100)|body_armor(20)|difficulty(3)|horse_speed(42)|horse_maneuver(46)|horse_charge(10)|horse_scale(104),imodbits_none],
@@ -3365,7 +3351,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  3411, hit_points(150)|body_armor(20)|difficulty(5)|horse_speed(39)|horse_maneuver(50)|horse_charge(28)|horse_scale(108),imodbits_none],
 ["heavy_horse_britain","British Horse Guard Horse", [("british_rhg_horse",0)], itp_type_horse, 0,
  4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)|horse_scale(108),imodbits_none],
-
 # Prussian
 ["light_horse_prussia","Prussian Light Horse",[("prussian_cuirassier_horse1",0)], itp_type_horse, 0,
  2412, hit_points(125)|body_armor(20)|difficulty(5)|horse_speed(45)|horse_maneuver(52)|horse_charge(26)|horse_scale(104),imodbits_none],
@@ -3373,7 +3358,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  1434, hit_points(110)|body_armor(20)|difficulty(3)|horse_speed(40)|horse_maneuver(47)|horse_charge(12)|horse_scale(106),imodbits_none],
 ["heavy_horse_prussia","Prussian Heavy Horse",[("prussian_cuirassier_horse1",0)], itp_type_horse, 0,
  4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)|horse_scale(108),imodbits_none],
-
 # Russian
 ["cossack_horse_russia","Russian Cossack Horse",[("russian_cossack_horse4",0)], itp_type_horse, 0,
  1582, hit_points(110)|body_armor(18)|difficulty(5)|horse_speed(46)|horse_maneuver(52)|horse_charge(20)|horse_scale(104),imodbits_none],
@@ -3385,7 +3369,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  1434, hit_points(110)|body_armor(20)|difficulty(3)|horse_speed(40)|horse_maneuver(47)|horse_charge(12)|horse_scale(106),imodbits_none],
 ["heavy_horse_russia","Russian Chevalier Guard Horse",[("russian_chevalier_guard_horse",0)], itp_type_horse, 0,
  4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)|horse_scale(108),imodbits_none],
-
 # Austrian
 ["lancer_horse_austria","Austrian Lancer Horse",[("austrian_lancer_horse",0)], itp_type_horse, 0,
  1770, hit_points(125)|body_armor(20)|difficulty(5)|horse_speed(45)|horse_maneuver(50)|horse_charge(26)|horse_scale(104),imodbits_none],
@@ -3395,7 +3378,6 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  1434, hit_points(110)|body_armor(20)|difficulty(3)|horse_speed(40)|horse_maneuver(47)|horse_charge(12)|horse_scale(106),imodbits_none],
 ["heavy_horse_austria","Austrian Cuirassier Horse",[("austrian_cuirassier_horse",0)], itp_type_horse, 0,
  4799, hit_points(170)|body_armor(20)|difficulty(5)|horse_speed(38)|horse_maneuver(50)|horse_charge(32)|horse_scale(108),imodbits_none],
-
 # Rhine
 ["lancer_horse_rhine","Rhine Ulan Horse",[("saxon_ulan_horse",0)], itp_type_horse, 0,
  1770, hit_points(125)|body_armor(20)|difficulty(5)|horse_speed(45)|horse_maneuver(50)|horse_charge(26)|horse_scale(104),imodbits_none],
@@ -3411,26 +3393,26 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ## Artillery Horses with Cannons/Howitzers
 # cannon
 ["arty_horse_cannon_french","French Cannon With Artillery Horse", [("french_carabineer_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(16)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_british","British Cannon With Artillery Horse", [("british_iniskilling_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(16)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_russian","Russian Cannon With Artillery Horse", [("russian_dragoon_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(16)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_austrian","Austrian Cannon With Artillery Horse", [("austrian_hussard_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(16)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_cannon_prussian","Prussian Cannon With Artillery Horse", [("prussian_cuirassier_horse1",0)], itp_type_horse|itp_is_carriage, 0,
- 30000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 35000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(16)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 # howitzer
 ["arty_horse_howitzer_french","French Howitzer With Artillery Horse", [("french_carabineer_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 28000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_british","British Howitzer With Artillery Horse", [("british_iniskilling_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 28000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_russian","Russian Howitzer With Artillery Horse", [("russian_dragoon_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 28000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_austrian","Austrian Howitzer With Artillery Horse", [("austrian_hussard_horse",0)], itp_type_horse|itp_is_carriage, 0,
- 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 28000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 ["arty_horse_howitzer_prussian","Prussian Howitzer With Artillery Horse", [("prussian_cuirassier_horse1",0)], itp_type_horse|itp_is_carriage, 0,
- 35000,hit_points(200)|body_armor(10)|difficulty(1)|horse_speed(22)|horse_maneuver(10)|horse_charge(6)|horse_scale(116),imodbits_none],
+ 28000,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 # PN END ****************************************************************************************************
 
 ["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_musket|itp_primary|itp_two_handed|itp_next_item_as_melee ,

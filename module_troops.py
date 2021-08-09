@@ -225,11 +225,11 @@ troops = [
 
   ["traveler","Traveler","a traveler",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_coarse_tunic","itm_old_hide_boots","itm_tattered_wrapping_boots","itm_old_knife"],
-   str_10|agi_13|pw_attr,wpex(60,40,50,10,20,60),knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5|knows_sailing_7|knows_riding_3|knows_labouring_1|knows_herding_1|knows_tailoring_2,default_face_1,default_face_2],
+   str_10|agi_13|pw_attr,wpex(60,40,50,10,20,60),knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5|knows_sailing_5|knows_riding_3|knows_labouring_1|knows_herding_1|knows_tailoring_2,default_face_1,default_face_2],
 
   ["herdsman","Herdsman","a herdsman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_old_coarse_tunic","itm_ragged_shirt","itm_tattered_wrapping_boots","itm_old_knife"],
-   str_10|agi_14|pw_attr,wpex(50,35,40,0,10,40),knows_pw|knows_power_strike_1|knows_athletics_5|knows_labouring_2|knows_herding_5,default_face_1,default_face_2],
+   str_10|agi_14|pw_attr,wpex(50,35,40,0,10,40),knows_pw|knows_power_strike_1|knows_athletics_5|knows_riding_5|knows_labouring_2|knows_herding_5|knows_tailoring_1,default_face_1,default_face_2],
 
   # PN Le Emperor
   ["lord","Majesty","the majesty",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",

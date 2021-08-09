@@ -446,6 +446,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("s15_captured_trade_s18", "The {s15} have taken control of the {s18} trade route!"),
   ("fac_received_trade_gold", "Your faction receives the income from trade route(s)!"),
 
+  ("cant_climb_mast", "Your class doesn't know how to climb on the mast!"),
+
   ("character_language", "Choose Character Nationality"),
   ("character_language_french", "French"),
   ("character_language_english", "British"),

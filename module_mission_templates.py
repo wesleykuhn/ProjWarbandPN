@@ -1224,7 +1224,7 @@ multiplayer_agent_unwield_item_common = (
         (position_rotate_x,pos25,90),
       (try_end),
       (set_spawn_position,pos25),
-      (spawn_item,":item_id",0,300), # remove after 5 minutes
+      (spawn_item,":item_id",0), # remove after 5 minutes
       
       (assign, ":end_cond", ek_head),
       (try_for_range,":equipment_slot",ek_item_0,":end_cond"),

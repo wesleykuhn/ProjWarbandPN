@@ -14,6 +14,7 @@
 	Ex: If you assign 4 in Var 2 for the ship the cannon needs to be 4 also. WARNING: Aways 
 	test if the cannnon is attached right or if it's moving right with the ship!
 -Set the Z position (altitude) to 0, else they will bug on reset.
+-Do not use the scene_prop "spr_pn_ship_frigate_climb_master_inv"! Or you will get bad bugs.
 
 * CANNONS *
 -Do not use the cannons that has "wood", "limber", "wheel", "barrel" or "plataform" on name. Use 
@@ -44,3 +45,17 @@ place various types of window, wich are: 1 = Rich type glass
 			                 2 = Broken normal type glass
                                          3 = Broken rich type glass
             			         4 = Don't spawn any window
+
+* TRADE ROUTES *
+-They are separated by product type, ex: spr_pn_trade_route_coffee_capture_point and 
+	pn_trade_route_ivory_capture_point. The limit of trade routes placement is 10. The var number 2 
+	defines the identification of the trade route: 0 = Boston
+		     				       1 = Savannah
+		     				       2 = Santos
+		     				       3 = Calcutta
+		     				       4 = Cameroons
+		     				       5 = Tunis
+		     				       6 = Izmir
+		     				       7 = Trabzon
+		     				       8 = Ochamchira
+		     				       9 = Tianjin
