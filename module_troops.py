@@ -110,153 +110,167 @@ troops = [
   #   - Sargeant
 
   ["peasant","Peasant","a peasant",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_coarse_tunic","itm_ragged_shirt","itm_old_knife","itm_russian_peasant_axe"],
-   str_8|agi_8|pw_attr,wpex(50,30,30,0,0,30),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_2|knows_tailoring_1|knows_riding_1,default_face_1,default_face_2],
+    ["itm_leather_vest_plain","itm_civil_coat1", "itm_civil_coat2", "itm_civil_fur_cloth_a", "itm_civil_peasant_shirt_1",
+      "itm_leather_boots", "itm_hide_boots", "itm_hunter_boots", "itm_old_knife", "itm_russian_peasant_axe", "itm_hatchet", "itm_russian_peasant_knife",
+      "itm_knife", "itm_cheap_scythe", "itm_small_mining_pick"],
+    str_8|agi_8|pw_attr,wpex(50,30,30,0,0,30),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_2|knows_tailoring_1|knows_riding_1,default_face_1,default_face_2
+  ],
 
   ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_shirt","itm_russian_peasant_axe","itm_blunt_sickle","itm_old_knife"],
+   ["itm_fur_coat","itm_leather_vest_plain","itm_civil_coat1", "itm_civil_coat2", "itm_civil_fur_cloth_a", "itm_civil_peasant_shirt_1",
+      "itm_leather_boots", "itm_hide_boots", "itm_hunter_boots", "itm_old_knife", "itm_russian_peasant_axe", "itm_hatchet", "itm_russian_peasant_knife",
+      "itm_knife", "itm_cheap_scythe", "itm_small_mining_pick", "itm_fishing_spear"],
    str_5|agi_5|pw_attr,wpex(30,30,30,0,0,50),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_5|knows_engineer_1|knows_tailoring_2|knows_herding_3|knows_riding_1,default_face_1,default_face_2],
 
   ["militia","Militia","a militia",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_blunt_falchion"],
-   str_11|agi_10|pw_attr,wpex(50,0,70,0,70,20),knows_pw|knows_ironflesh_2|knows_power_strike_1|knows_power_draw_2|knows_athletics_1|knows_riding_1|knows_labouring_1|knows_herding_2,default_face_1,default_face_2],
+    ["itm_civil_peasant_hat", "itm_civil_militia_hat", "itm_civil_peasant_hat2", "itm_civil_peasant_hat3", "itm_civil_fur_hat",
+      "itm_civil_militia_uniform", "itm_civil_coat1", "itm_civil_coat2", "itm_civil_militia_pants1", "itm_civil_militia_pants2", 
+      "itm_russian_peasant_pitchfork", "itm_russian_peasant_club", "itm_russian_peasant_birch_club", "itm_russian_peasant_pike", "itm_russian_peasant_rogatina"],
+    str_11|agi_10|pw_attr,wpex(70,40,70,40,70,20),knows_pw|knows_ironflesh_2|knows_power_strike_1|knows_power_draw_1|knows_athletics_1|knows_engineer_1|knows_riding_1|knows_labouring_2|knows_herding_2,default_face_1,default_face_2
+  ],
 
   ["huntsman","Huntsman","a huntsman",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_crude_bow","itm_bent_arrows"],
-   str_9|agi_9|pw_attr,wpex(60,35,50,100,100,50),knows_pw|knows_ironflesh_1|knows_power_strike_1|knows_power_draw_2|knows_athletics_1|knows_riding_1|knows_labouring_1|knows_herding_3,default_face_1,default_face_2],
+   ["itm_civil_fur_hat", "itm_leather_jacket", "itm_civil_fur_cloth_a", "itm_hunter_boots", "itm_short_bow", "itm_arrows"],
+   str_11|agi_9|pw_attr,wpex(60,35,50,100,100,50),knows_pw|knows_ironflesh_1|knows_power_strike_1|knows_power_draw_2|knows_athletics_4|knows_riding_1|knows_labouring_2|knows_herding_3,default_face_1,default_face_2],
 
   ["craftsman","Craftsman","a craftsman",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_stained_felt_hat_b","itm_old_coarse_tunic"],
-   str_8|agi_8|pw_attr,wpex(50,30,30,20,20,20),knows_pw|knows_power_strike_2|knows_riding_1|knows_engineer_2|knows_labouring_1|knows_tailoring_3,default_face_1,default_face_2],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
+   str_8|agi_8|pw_attr,wpex(50,30,30,20,20,20),knows_pw|knows_power_strike_2|knows_riding_1|knows_engineer_3|knows_labouring_1|knows_tailoring_5,default_face_1,default_face_2],
 
   ["healer","Healer","a healer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_linen_tunic"],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
    str_8|agi_8|pw_attr,wpex(40,10,20,0,0,5),knows_pw|knows_riding_1|knows_wound_treatment_1|knows_labouring_1|knows_tailoring_2|knows_herding_1,default_face_1,default_face_2],
 
+  # (!) NOT USED
   ["footman","Footman","a footman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_crude_spear","itm_rusty_sword","itm_chipped_falchion"],
    str_15|agi_14|pw_attr,wpex(100,100,130,10,45,80),knows_pw|knows_ironflesh_5|knows_power_strike_4|knows_power_throw_2|knows_shield_1|knows_athletics_5|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
 
   # PN INFANTRY BEGIN
   ["line_infantry","Line Infantry","a line infantry",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_musket"],
    str_13|agi_13|pw_attr,wpex(50,0,140,0,120,50),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
 
   ["light_infantry","Light Infantry","a light infantry",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets", "itm_training_light_sabre"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_musket"],
    str_11|agi_15|pw_attr,wpex(50,0,100,0,150,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_6|knows_riding_1|knows_sailing_1|knows_engineer_1,default_face_1,default_face_2],
 
   ["grenadier","Grenadier","a grenadier",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_musket"],
    str_15|agi_11|pw_attr,wpex(50,0,160,0,120,160),knows_pw|knows_ironflesh_5|knows_power_strike_3|knows_athletics_3|knows_riding_1|knows_sailing_1,default_face_1,default_face_2],
 
   ["infantry_musician","Infantry Musician","an infantry musician",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2","itm_training_musket","itm_bullets"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_musket"],
    str_12|agi_13|pw_attr,wpex(70,0,70,0,50,0),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_3|knows_riding_1,default_face_1,default_face_2],
 
   ["infantry_officer","Infantry Officer","an infantry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_1", "itm_civil_noble_pants_grey", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,50,100,0,90,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
   # PN INFANTRY END
 
+  # (!) NOT USED
   ["archer","Archer","an archer",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_tattered_headcloth","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_crude_bow","itm_bent_arrows","itm_blunt_falchion"],
    str_14|agi_14|pw_attr,wpex(90,60,70,150,50,50),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_power_draw_4|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
-  
+  # (!) NOT USED
   ["crossbowman","Crossbowman","a crossbowman",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_flimsy_crossbow","itm_crude_bolts","itm_blunt_falchion"],
    str_14|agi_14|pw_attr,wpex(90,60,60,50,150,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_4|knows_riding_2|knows_sailing_3,default_face_1,default_face_2],
 
   # PN CAVALRY BEGIN
   ["lancer","Lancer","a lancer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_rhine_lance"],
+   ["itm_civil_shirt_2", "itm_civil_noble_pants_grey", "itm_rhine_lance"],
    str_12|agi_13|pw_attr,wpex(100,0,160,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
 
   ["hussar","Hussar","a hussar",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_2", "itm_civil_noble_pants_grey", "itm_training_light_sabre"],
    str_12|agi_15|pw_attr,wpex(160,0,50,0,70,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
 
   ["cuirassier","Cuirassier","a cuirassier",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_heavy_sword"],
+   ["itm_civil_shirt_2", "itm_civil_noble_pants_grey", "itm_training_heavy_sword"],
    str_15|agi_10|pw_attr,wpex(160,70,20,0,70,20),knows_pw|knows_ironflesh_5|knows_power_strike_3|knows_athletics_2|knows_riding_5,default_face_1,default_face_2],
 
   ["dragoon","Dragoon","a dragoon",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_2", "itm_civil_noble_pants_grey", "itm_training_heavy_sword"],
    str_13|agi_13|pw_attr,wpex(120,0,120,0,120,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_3,default_face_1,default_face_2],
 
   ["cavalry_musician","Cavalry Musician","a cavalry musician",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey","itm_training_light_sabre"],
+   ["itm_civil_shirt_2", "itm_civil_noble_pants_grey", "itm_training_light_sabre"],
    str_12|agi_12|pw_attr,wpex(120,0,20,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_1|knows_riding_5,default_face_1,default_face_2],
 
   ["cavalry_officer","Cavalry Officer","a cavalry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_gentleman_outfit_brown", "itm_leather_boots_b", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,70,100,0,90,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
   # PN CAVALRY END
 
+  # (!) NOT USED
   ["man_at_arms","Man at Arms","a man at arms",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_old_tabard","itm_old_hide_boots","itm_rusty_sword","itm_worn_sword","itm_old_shield"],
    str_15|agi_15|pw_attr,wpex(105,120,110,20,50,30),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_shield_1|knows_athletics_2|knows_riding_4,default_face_1,default_face_2],
-  
+  # (!) NOT USED
   ["sergeant","Sergeant","a sergeant",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_stained_felt_hat_b","itm_old_tabard","itm_old_hide_boots","itm_rusty_sword","itm_worn_sword","itm_old_shield"],
    str_15|agi_15|pw_attr,wpex(110,125,110,20,60,40),knows_pw|knows_ironflesh_5|knows_power_strike_4|knows_shield_2|knows_athletics_5|knows_riding_2,default_face_1,default_face_2],
   
   ["engineer","Engineer","an engineer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_stained_felt_hat_b","itm_tattered_headcloth","itm_old_coarse_tunic","itm_ragged_leather_apron","itm_old_hide_boots","itm_tattered_wrapping_boots","itm_old_knife"],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots", "itm_repair_hammer"],
    str_10|agi_12|pw_attr,wpex(90,50,60,30,65,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2|knows_looting_1|knows_sailing_4,default_face_1,default_face_2],
   
   ["master_smith","Master Smith","a master smith",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_stained_felt_hat_b","itm_old_tabard","itm_ragged_leather_apron","itm_old_hide_boots","itm_rusty_sword","itm_worn_sword"],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots", "itm_repair_hammer"],
    str_12|agi_12|pw_attr,wpex(100,55,70,30,70,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_engineer_7|knows_riding_2|knows_looting_2|knows_sailing_4,default_face_1,default_face_2],
   
   ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_linen_tunic","itm_ripped_woolen_hose"],
+   ["itm_civil_gentleman_cloth_a", "itm_leather_boots"],
    str_10|agi_10|pw_attr,wpex(70,40,50,10,20,30),knows_pw|knows_athletics_2|knows_power_strike_2|knows_wound_treatment_5|knows_riding_2,default_face_1,default_face_2],
 
   # PN NAVAL START
   ["sailor","Sailor","a sailor",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_stained_felt_hat_b","itm_ragged_woolen_cap","itm_old_coarse_tunic","itm_old_tabard","itm_club","itm_chipped_falchion"],
+   ["itm_fur_coat", "itm_leather_boots"],
    str_15|agi_13|pw_attr,wpex(90,0,50,0,50,100),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_5|knows_sailing_7|knows_engineer_1,default_face_1,default_face_2],
 
   ["captain","Captain","a captain",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_french_old_pistol_1766","itm_bullets", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_1", "itm_civil_noble_pants_grey", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
    str_14|agi_12|pw_attr,wpex(120,50,50,0,100,20),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_athletics_3|knows_sailing_9|knows_riding_1|knows_engineer_1,default_face_1,default_face_2],
   # PN NAVAL END
 
   ["traveler","Traveler","a traveler",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_coarse_tunic","itm_old_hide_boots","itm_tattered_wrapping_boots","itm_old_knife"],
+   ["itm_fur_coat", "itm_leather_boots"],
    str_10|agi_13|pw_attr,wpex(60,40,50,10,20,60),knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5|knows_sailing_5|knows_riding_3|knows_labouring_1|knows_herding_1|knows_tailoring_2,default_face_1,default_face_2],
 
   ["herdsman","Herdsman","a herdsman",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_coarse_tunic","itm_ragged_shirt","itm_tattered_wrapping_boots","itm_old_knife"],
+   ["itm_leather_vest_plain", "itm_civil_coat1", "itm_civil_coat2", "itm_civil_fur_cloth_a", "itm_civil_peasant_shirt_1",
+      "itm_leather_boots", "itm_hide_boots", "itm_hunter_boots", "itm_russian_peasant_knife"],
    str_10|agi_14|pw_attr,wpex(50,35,40,0,10,40),knows_pw|knows_power_strike_1|knows_athletics_5|knows_riding_5|knows_labouring_2|knows_herding_5|knows_tailoring_1,default_face_1,default_face_2],
 
   # PN Le Emperor
   ["lord","Majesty","the majesty",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_2","itm_civil_noble_pants_grey","itm_cane"],
+   ["itm_civil_emperor_crown", "itm_civil_gentleman_outfit_blue", "itm_leather_boots_b", "itm_cane"],
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN
   ["pirate","Pirate","a pirate",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_club","itm_spiked_club"],
+   ["itm_fur_coat", "itm_leather_boots", "itm_civil_pirates_headscarf_a"],
    str_13|agi_13|pw_attr,wpex(100,0,50,0,100,70),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_looting_6|knows_sailing_8,default_face_1,default_face_2],
   
   ["rebel","Rebel","a rebel",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_old_knife","itm_blunt_falchion"],
-   str_13|agi_11|pw_attr,wpex(70,0,70,45,100,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_power_draw_2|knows_athletics_4|knows_riding_3|knows_looting_4,default_face_1,default_face_2],
+   ["itm_civil_peasant_hat", "itm_civil_militia_hat", "itm_civil_peasant_hat2", "itm_civil_peasant_hat3", "itm_civil_fur_hat",
+      "itm_civil_militia_uniform", "itm_civil_coat1", "itm_civil_coat2", "itm_civil_militia_pants1", "itm_civil_militia_pants2", 
+      "itm_russian_peasant_pitchfork", "itm_russian_peasant_club", "itm_russian_peasant_birch_club", "itm_russian_peasant_pike", "itm_russian_peasant_rogatina"],
+   str_12|agi_12|pw_attr,wpex(70,0,70,45,100,20),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_power_draw_2|knows_athletics_4|knows_riding_3|knows_looting_4,default_face_1,default_face_2],
   # PN BANDITS END
 
   ["mercenary","Mercenary","a mercenary",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_ragged_woolen_cap","itm_stained_felt_hat_b","itm_tattered_headcloth","itm_old_coarse_tunic","itm_old_tabard","itm_tattered_wrapping_boots","itm_old_hide_boots","itm_chipped_falchion","itm_rusty_sword","itm_crude_spear","itm_old_shield","itm_flimsy_crossbow","itm_crude_bolts"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_musket"],
    str_13|agi_14|pw_attr,wpex(50,0,100,0,120,50),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_1|knows_engineer_1|knows_sailing_1|knows_tailoring_1,default_face_1,default_face_2],
 
   # PN ARTILLERY START
   ["artillerist","Artillerist","an artillerist",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2", "itm_training_light_sabre"],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_light_sabre"],
    str_15|agi_9|pw_attr,wpex(70,0,50,0,70,20),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_3|knows_riding_1|knows_engineer_1,default_face_1,default_face_2],
 
   ["artillerist_officer","Artillerist Officer","an artillerist officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_1","itm_civil_noble_pants_grey", "itm_training_officer_sword", "itm_spyglass"],
+   ["itm_civil_shirt_1", "itm_civil_noble_pants_grey", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
    str_15|agi_9|pw_attr,wpex(120,30,50,0,90,20),knows_pw|knows_ironflesh_4|knows_power_strike_3|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
   # PN ARTILLERY END
 
@@ -266,11 +280,11 @@ troops = [
 
   #Sapper and Enginner
   ["sapper","Sapper","a sapper",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_militia_uniform","itm_civil_militia_pants2", "itm_cheap_sapper_axe", "itm_shovel"],
-   str_15|agi_10|pw_attr,wpex(110,20,110,0,20,20),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_light_sabre"],
+   str_15|agi_10|pw_attr,wpex(100,140,100,0,70,80),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_red_shirt","itm_linen_tunic","itm_woolen_hose","itm_invisible_sword"],
+   ["itm_french_sapper_bearskin", "itm_prussian_freikorps_officer", "itm_prussian_freikorps_pants", "itm_officer_gloves"],
    str_30|agi_30|pw_attr,wpex(300,300,300,300,300,300),knows_pw|knows_ironflesh_10|knows_power_strike_10|knows_power_draw_10|knows_power_throw_10|knows_shield_10|knows_athletics_10|knows_riding_10|knows_engineer_10|knows_wound_treatment_10|knows_looting_10|knows_labouring_10|knows_sailing_10|knows_tailoring_10|knows_herding_10,default_face_1,default_face_2],
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],

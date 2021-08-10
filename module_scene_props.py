@@ -3980,13 +3980,14 @@ scene_props = [
   ("pn_buy_pirate_hat", spr_buy_item_flags(3), "pirate_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_pirate_hat", resources=["itm_leather_piece"], tailoring=2)),
   #Civil body
   ("pn_buy_civil_militia_uniform", spr_buy_item_flags(4), "rus_militia_ranker", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_militia_uniform", resources=["itm_linen_cloth"], tailoring=1)),
+  ("pn_buy_civil_inf_uniform_a", spr_buy_item_flags(4), "neutral_uniform_a", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_inf_uniform_a", resources=["itm_linen_cloth"], tailoring=1)),
   ("pn_buy_civil_coat1", spr_buy_item_flags(4), "rus_partizan", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_coat1", resources=["itm_linen_cloth"], tailoring=1)),
   ("pn_buy_civil_coat2", spr_buy_item_flags(4), "rus_partizan1", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_coat2", resources=["itm_linen_cloth"], tailoring=1)),
   ("pn_buy_civil_shirt_1", spr_buy_item_flags(4), "civil_shirt_1", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_shirt_1", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_shirt_2", spr_buy_item_flags(4), "civil_shirt_2", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_shirt_2", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_shirt_3", spr_buy_item_flags(4), "waistcoat_black", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_shirt_3", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_gentleman_cloth_a", spr_buy_item_flags(6), "1700_gentleman_e", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_gentleman_cloth_a", resources=[("itm_linen_cloth", 2)], tailoring=2)),
-  ("pn_buy_civil_arena_armorb", spr_buy_item_flags(4), "arena_armorb", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_arena_armorb", resources=["itm_leather_roll"], tailoring=2)),
+  ("pn_buy_civil_fur_cloth_a", spr_buy_item_flags(4), "arena_armorb", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_fur_cloth_a", resources=["itm_leather_roll"], tailoring=2)),
   ("pn_buy_civil_gentleman_outfit_blue", spr_buy_item_flags(5), "civilian_outfit_blue", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_gentleman_outfit_blue", resources=["itm_linen_cloth", "itm_linen_cloth_small"], tailoring=2)),
   ("pn_buy_civil_gentleman_outfit_brown", spr_buy_item_flags(5), "civilian_outfit_brown", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_gentleman_outfit_brown", resources=["itm_linen_cloth", "itm_linen_cloth_small"], tailoring=2)),
   ("pn_buy_civil_gentleman_outfit_red", spr_buy_item_flags(5), "civilian_outfit_red", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_gentleman_outfit_red", resources=["itm_linen_cloth", "itm_linen_cloth_small"], tailoring=2)),
@@ -3994,13 +3995,16 @@ scene_props = [
   ("pn_buy_civil_colonial_grey_dress", spr_buy_item_flags(4), "colonial_grey_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_colonial_grey_dress", resources=["itm_linen_cloth", "itm_linen_cloth_small"], tailoring=2)),
   ("pn_buy_civil_colonial_red_dress", spr_buy_item_flags(4), "colonial_red_dress", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_colonial_red_dress", resources=["itm_linen_cloth", "itm_linen_cloth_small"], tailoring=2)),
   ("pn_buy_civil_peasant_shirt_1", spr_buy_item_flags(2), "peasant_shirt_1", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_peasant_shirt_1", resources=["itm_linen_cloth"], tailoring=1)),
-  ("pn_buy_civil_pirate_captain_uniform", spr_buy_item_flags(4), "pirates_uniform", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_pirate_captain_uniform", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_civil_pirate_black_uniform", spr_buy_item_flags(4), "pirates_uniform", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_pirate_black_uniform", resources=["itm_linen_cloth"], tailoring=2)),
+  ("pn_buy_civil_pirate_brown_uniform", spr_buy_item_flags(4), "pirates_uniform2", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_pirate_brown_uniform", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_civil_waistcoat_custom_4", spr_buy_item_flags(4), "waistcoat_custom_4", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_waistcoat_custom_4", resources=["itm_linen_cloth"], tailoring=2)),
   # Civil boots
   ("pn_buy_civil_noble_pants_grey", spr_buy_item_flags(4), "british_rifle_pants_grey", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_noble_pants_grey", resources=["itm_linen_cloth", ("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_civil_militia_pants1", spr_buy_item_flags(2), "rus_militia_ranker_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_militia_pants1", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_civil_militia_pants2", spr_buy_item_flags(2), "rus_militia_ranker_pants1", "bo_pw_armor_foot", spr_buy_item_triggers("itm_civil_militia_pants2", resources=["itm_linen_cloth_small", "itm_leather_piece"], tailoring=2)),
   ("pn_buy_civil_noble_shoes", spr_buy_item_flags(2), "civilian_shoes", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_noble_shoes", resources=["itm_linen_cloth_small", "itm_leather_piece"], tailoring=2)),
+  ("pn_buy_civil_leather_boots_b", spr_buy_item_flags(3), "leather_boots_b", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_leather_boots_b", resources=[("itm_leather_piece", 2)], tailoring=2)),
+  ("pn_buy_civil_inf_pants_a", spr_buy_item_flags(3), "british_coldstream_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_inf_pants_a", resources=["itm_leather_piece", "itm_linen_cloth"], tailoring=2)),
 
   #Ottoman head
   ("pn_buy_ottoman_female_cap_red", spr_buy_item_flags(1), "sayazn_female_peasant_cap", "bo_pw_armor_head", spr_buy_item_triggers("itm_ottoman_female_cap_red", resources=["itm_linen_cloth_small"], tailoring=1)),
@@ -4630,7 +4634,6 @@ scene_props = [
   ("pw_buy_pike",spr_buy_item_flags(5),"spear_a_3m","bo_pw_weapon_big", spr_buy_item_triggers("itm_pike", resources=["itm_wood_pole", "itm_iron_piece"], engineer=3)),
   ("pw_buy_bec_de_corbin_a",spr_buy_item_flags(9),"bec_de_corbin_a","bo_pw_weapon", spr_buy_item_triggers("itm_bec_de_corbin_a", resources=["itm_wood_pole", "itm_iron_bar_short"], engineer=4)),
   ("pw_buy_bishop_crosier",spr_buy_item_flags(12),"pw_bishop_crosier","bo_pw_weapon_big", spr_buy_item_triggers("itm_bishop_crosier", resources=["itm_wood_pole","itm_gold_bar"], engineer=6)),
-  ("pw_buy_hunting_bow",spr_buy_item_flags(2),"hunting_bow","bo_pw_weapon", spr_buy_item_triggers("itm_hunting_bow", resources=["itm_wood_pole_short"], engineer=2)),
   ("pw_buy_short_bow",spr_buy_item_flags(3),"short_bow","bo_pw_weapon", spr_buy_item_triggers("itm_short_bow", resources=["itm_wood_pole_short"], engineer=2)),
   ("pw_buy_nomad_bow",spr_buy_item_flags(3),"nomad_bow","bo_pw_weapon", spr_buy_item_triggers("itm_nomad_bow", resources=["itm_wood_pole_short"], engineer=3)),
   ("pw_buy_long_bow",spr_buy_item_flags(4),"long_bow","bo_pw_weapon", spr_buy_item_triggers("itm_long_bow", resources=["itm_wood_pole"], engineer=3)),
@@ -4745,13 +4748,13 @@ scene_props = [
   ## CIVIL TROOPS
   ("pn_change_troop_serf",spr_use_time(30),"Russian_peasant_pitchfork","bo_pw_weapon_big", spr_change_troop_triggers("trp_serf", cost=150)),
   ("pn_change_troop_huntsman",spr_use_time(30),"short_bow","bo_pw_weapon", spr_change_troop_triggers("trp_huntsman", cost=500)),
-  ("pn_change_troop_craftsman",spr_use_time(50),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_craftsman", cost=800)),
+  ("pn_change_troop_craftsman",spr_use_time(25),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_craftsman", cost=800)),
   ("pn_change_troop_healer",spr_use_time(60),"package","bobaggage", spr_change_troop_triggers("trp_healer", cost=1000)),
-  ("pn_change_troop_engineer",spr_use_time(80),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_engineer", cost=2500)),
-  ("pn_change_troop_master_smith",spr_use_time(120),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_master_smith", cost=7500)),
-  ("pn_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=3500)),
+  ("pn_change_troop_engineer",spr_use_time(40),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_engineer", cost=2000)),
+  ("pn_change_troop_master_smith",spr_use_time(60),"pw_repair_hammer","bo_pw_weapon_small", spr_change_troop_triggers("trp_master_smith", cost=4000)),
+  ("pn_change_troop_doctor",spr_use_time(100),"package","bobaggage", spr_change_troop_triggers("trp_doctor", cost=4500)),
   ("pn_change_troop_traveler",spr_use_time(70),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_traveler", cost=1300, use_string="str_troop_become")),
-  ("pn_change_troop_herdsman",spr_use_time(40),"quarter_staff","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=900)),
+  ("pn_change_troop_herdsman",spr_use_time(40),"pn_crook_shepperd","bo_pw_weapon_big", spr_change_troop_triggers("trp_herdsman", cost=800)),
 
   ## BANDITS
   ("pn_change_troop_pirate",spr_use_time(40),"pirate_hat","bo_pw_weapon", spr_change_troop_triggers("trp_pirate", cost=800, after_respawn=True, use_string="str_troop_become")),
@@ -4759,7 +4762,7 @@ scene_props = [
 
   ## MILITARY TROOPS
   # Infatry
-  ("pn_change_troop_militia",spr_use_time(5),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_militia", cost=500)),
+  ("pn_change_troop_militia",spr_use_time(3),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_militia", cost=300, use_string="str_troop_militia_become")),
   ("pn_change_troop_line_infantry",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_line_infantry", cost=2000)),
   ("pn_change_troop_light_infantry",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_light_infantry", cost=3500)),
   ("pn_change_troop_grenadier",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_grenadier", cost=3500)),
@@ -4767,20 +4770,20 @@ scene_props = [
   ("pn_change_troop_infantry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_officer", cost=5000)),
 
   # Cavalry
-  ("pn_change_troop_dragoon",spr_use_time(40),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_dragoon", cost=2000)),
+  ("pn_change_troop_dragoon",spr_use_time(40),"training_light_sabre","bo_pw_weapon_small", spr_change_troop_triggers("trp_dragoon", cost=2000)),
   ("pn_change_troop_lancer",spr_use_time(60),"arena_lance","bo_pw_weapon_big", spr_change_troop_triggers("trp_lancer", cost=3500)),
-  ("pn_change_troop_hussar",spr_use_time(60),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_hussar", cost=3500)),
+  ("pn_change_troop_hussar",spr_use_time(60),"training_light_sabre","bo_pw_weapon_small", spr_change_troop_triggers("trp_hussar", cost=3500)),
   ("pn_change_troop_cavalry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
-  ("pn_change_troop_cuirassier",spr_use_time(80),"training_heavy_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cuirassier", cost=4500)),
-  ("pn_change_troop_cavalry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_cavalry_officer", cost=5000)),
+  ("pn_change_troop_cuirassier",spr_use_time(80),"training_heavy_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_cuirassier", cost=4500)),
+  ("pn_change_troop_cavalry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_officer", cost=5000)),
 
   # Naval
-  ("pn_change_troop_sailor",spr_use_time(30),"training_light_sabre","bo_pw_weapon", spr_change_troop_triggers("trp_sailor", cost=1500)),
-  ("pn_change_troop_captain",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_captain", cost=5000)),
+  ("pn_change_troop_sailor",spr_use_time(30),"training_light_sabre","bo_pw_weapon_small", spr_change_troop_triggers("trp_sailor", cost=1500)),
+  ("pn_change_troop_captain",spr_use_time(80),"training_officer_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_captain", cost=5000)),
 
   # Artillery
-  ("pn_change_troop_artillerist",spr_use_time(60),"training_lighter","bo_pw_weapon", spr_change_troop_triggers("trp_artillerist", cost=3500)),
-  ("pn_change_troop_artillerist_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon", spr_change_troop_triggers("trp_artillerist_officer", cost=5000)),
+  ("pn_change_troop_artillerist",spr_use_time(60),"training_lighter","bo_pw_weapon_small", spr_change_troop_triggers("trp_artillerist", cost=3500)),
+  ("pn_change_troop_artillerist_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_artillerist_officer", cost=5000)),
 
   # Especial
   ("pn_change_troop_emperor",spr_use_time(100),"pn_crown","bo_pw_weapon_small", spr_change_troop_triggers("trp_lord", cost=1000, use_string="str_troop_assume_role")),

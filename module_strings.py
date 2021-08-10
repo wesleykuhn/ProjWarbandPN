@@ -881,6 +881,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("troop_assume_role", "Assume the role of {s1} of the {s2}"),
   ("troop_become", "Become {s1} with the {s2}"),
   ("troop_become_for", "Become {s1} for the {s2}"),
+  ("troop_militia_become", "Become {s1} to defend {s2} with your life!"),
   ("troop_cost", "{s0}^Cost: {reg10}"),
   ("troop_strength_agility", "{s0}^Strength: {reg10}^Agility: {reg11}"),
   ("troop_weapon_proficiencies", "{s0}^One handed: {reg10}^Firearms: {reg14}^Polearms: {reg12}^Throwing: {reg15}^Can use cannons? {s12}^Can play musics? {s13}"),
