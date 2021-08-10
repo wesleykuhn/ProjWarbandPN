@@ -284,7 +284,7 @@ troops = [
    str_15|agi_10|pw_attr,wpex(100,140,100,0,70,80),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_french_sapper_bearskin", "itm_prussian_freikorps_officer", "itm_prussian_freikorps_pants", "itm_officer_gloves"],
+   ["itm_french_artillery_bearskin_officer", "itm_admin_uniform", "itm_prussian_freikorps_pants", "itm_officer_gloves"],
    str_30|agi_30|pw_attr,wpex(300,300,300,300,300,300),knows_pw|knows_ironflesh_10|knows_power_strike_10|knows_power_draw_10|knows_power_throw_10|knows_shield_10|knows_athletics_10|knows_riding_10|knows_engineer_10|knows_wound_treatment_10|knows_looting_10|knows_labouring_10|knows_sailing_10|knows_tailoring_10|knows_herding_10,default_face_1,default_face_2],
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],

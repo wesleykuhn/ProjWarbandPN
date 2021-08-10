@@ -3422,11 +3422,13 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 # PN END ****************************************************************************************************
 
 ["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_musket|itp_primary|itp_two_handed|itp_next_item_as_melee,
- itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 99999 , weight(1)|difficulty(30)|spd_rtng(80)|shoot_speed(250)|thrust_damage(255, pierce)|max_ammo(10)|accuracy(150), imodbits_none, []],
+ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 0 , weight(1)|difficulty(30)|spd_rtng(80)|shoot_speed(250)|thrust_damage(255, pierce)|max_ammo(10)|accuracy(150), imodbits_none, []],
 ["admin_musket_melee", "Admin Musket", [("french_versailles",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
- 99999 , weight(1)|difficulty(30)|spd_rtng(120) | weapon_length(138)|swing_damage(255 , pierce) | thrust_damage(255, pierce), imodbits_none ],
+ 0 , weight(1)|difficulty(30)|spd_rtng(120) | weapon_length(138)|swing_damage(255 , pierce) | thrust_damage(255, pierce), imodbits_none ],
 ["admin_horse", "Admin Horse", [("plated_charger_black",0)], itp_type_horse, 0,
  0, hit_points(500)|body_armor(100)|difficulty(0)|horse_speed(400)|horse_maneuver(100)|horse_charge(50)|horse_scale(130), imodbit_spirited],
+["admin_uniform", "PN Admin Uniform", [("admin_uniform", 0)], itp_type_body_armor|itp_covers_legs, 0,
+ 0, weight(1)|head_armor(60)|body_armor(60)|leg_armor(60)|difficulty(30), imodbits_none],
 ["invisible_head", "Invisible Head", [("invisible",0)], itp_type_head_armor|itp_covers_head, 0,
  0, weight(1)|head_armor(80)|difficulty(30), imodbits_none],
 ["invisible_body", "Invisible Body", [("invisible",0)], itp_type_body_armor|itp_covers_legs, 0,
