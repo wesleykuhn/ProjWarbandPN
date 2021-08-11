@@ -457,6 +457,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("character_language_pirate", "I'm a pirate!"),
 
   ("need_bagpiper_uniform", "You need a Bagpipe to play! Equip a Bagpiper Uniform."),
+  ("char_lang_cant_bagpipe", "Only Brits know how to play the bagpipes!"),
   ("need_drummer_gloves", "You need a Drummer Gloves to play!"),
   ("need_drummer_uniform", "You need a Drum to play! Equip a Drummer Uniform."),
   ("dont_know_piano", "Your class does not know how to play a piano!"),
@@ -1103,9 +1104,9 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("scene_name_1", "Default Scene"),
   ("scene_name_2", "Blank Scene 2"),
   ("scene_name_3", "Blank Scene 3"),
-  ("scene_name_4", "Sea Battle Test"),
-  ("scene_name_5", "Blank Scene 5"),
-  ("scene_name_6", "Developer's Scene"),
+  ("scene_name_4", "Blank Scene 4"),
+  ("scene_name_5", "Kuhn's Scene"),
+  ("scene_name_6", "Blank Scene 6"),
   ("scene_name_7", "Blank Scene 7"),
   ("scene_name_8", "Blank Scene 8"),
   ("scene_name_9", "Blank Scene 9"),
@@ -1181,8 +1182,8 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_62", "Gibraltar"),
   ("castle_name_63", "Granada"),
   ("castle_name_64", "Marseilles"),
-  ("castle_name_65", "Zurich"),
-  ("castle_name_66", "Monte Negro"),
+  ("castle_name_65", "Malta"),
+  ("castle_name_66", "Cagliari"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]

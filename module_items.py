@@ -1749,7 +1749,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  506 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 ["bugle","Bugle", [("bugle",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
  506 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
-["bagpipe","Bagpipe Flute", [("mm_invisible",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
+["bagpipe","Bagpipe Flute", [("mm_fife",0.5)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
  701 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 
 # Ammo

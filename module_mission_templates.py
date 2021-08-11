@@ -817,11 +817,8 @@ multiplayer_client_surrender = (
   0, 0.5, 0.1, [
   (neg|multiplayer_is_dedicated_server),
   (key_clicked, key_b),
+  (call_script, "script_cf_no_input_presentation_active"),
   (try_begin),
-    (neg|is_presentation_active, "prsnt_escape_menu"),
-    (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
-    (neg|is_presentation_active, "prsnt_admin_message"),
-    (neg|is_presentation_active, "prsnt_chat_box"),
     (call_script,"script_client_get_my_agent"),
     (assign,":agent_id",reg0),
     (agent_is_active,":agent_id"),
@@ -840,28 +837,19 @@ multiplayer_client_surrender = (
     (try_end),
   ])
 
-multiplayer_client_walking = (
-  0, 0, 0.1, [
-  (game_key_clicked, gk_zoom),
-  ],
+multiplayer_client_walking = (0, 0, 0.1, [(game_key_clicked, gk_zoom),(call_script, "script_cf_no_input_presentation_active")],
   [
     (try_begin),
-      (neg|is_presentation_active, "prsnt_escape_menu"),
-      (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
-      (neg|is_presentation_active, "prsnt_admin_message"),
-      (neg|is_presentation_active, "prsnt_chat_box"),
-      (try_begin),
-        (neg|is_zoom_disabled),
-        (multiplayer_get_my_player, ":player_id"),
-        (player_is_active, ":player_id"),
-        (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_has_cheat),
-      (else_try),
-        (call_script,"script_client_get_my_agent"),
-        (assign,":agent_id",reg0),
-        (agent_is_active,":agent_id"),
-        (agent_is_alive,":agent_id"),
-        (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_toggle_walk),
-      (try_end),
+      (neg|is_zoom_disabled),
+      (multiplayer_get_my_player, ":player_id"),
+      (player_is_active, ":player_id"),
+      (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_has_cheat),
+    (else_try),
+      (call_script,"script_client_get_my_agent"),
+      (assign,":agent_id",reg0),
+      (agent_is_active,":agent_id"),
+      (agent_is_alive,":agent_id"),
+      (multiplayer_send_int_to_server, multiplayer_event_send_player_action, player_action_toggle_walk),
     (try_end),
 ])
 
@@ -913,10 +901,8 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
         (agent_get_horse,":horse",":hit_agent_no"),
         (agent_is_active,":horse"),
         (agent_is_alive,":hit_agent_no"),
-
         (store_trigger_param_3,":damage"),
         (ge,":damage",10),
-           
         (neg|agent_is_non_player,":hit_agent_no"), #Only do this to players
         (neg|agent_slot_eq,":hit_agent_no",slot_agent_has_fallen_off_horse,1), #Apparently there's some bug if you fall off twice
 
@@ -1018,7 +1004,7 @@ multiplayer_server_agent_hit_common = (ti_on_agent_hit, 0, 0, [],
   ])
 
 multiplayer_client_voice_warcry = (
-  0, 0, 1, [(key_clicked, key_v),],
+  0, 0, 1, [(key_clicked, key_v),(call_script, "script_cf_no_input_presentation_active")],
   [
     (store_mission_timer_a, ":current_time"),
     (store_sub, ":elapsed_time", ":current_time", "$g_last_voice_command_at"),
@@ -1038,12 +1024,6 @@ multiplayer_client_voice_warcry = (
       
       (val_add,":wait_time",5), # add two due to lag...  changed to 5.
       (gt, ":elapsed_time", ":wait_time"), # last command more then x seconds ago. 
-
-      # not in some presentation?
-      (neg|is_presentation_active, "prsnt_escape_menu"),
-      (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
-      (neg|is_presentation_active, "prsnt_admin_message"),
-      (neg|is_presentation_active, "prsnt_chat_box"), #custom_chat:
       
       (assign, ":voice_type", -1),
       (try_begin),
@@ -1059,26 +1039,19 @@ multiplayer_client_voice_warcry = (
     (try_end),
 ])
 
-multiplayer_client_voice_orders = (
-  0, 0.5, 0.1,[(key_clicked, key_o)],
-  [
-    (neg|multiplayer_is_dedicated_server),
-    (try_begin),
-      (neg|is_presentation_active, "prsnt_escape_menu"),
-      (neg|is_presentation_active, "prsnt_game_multiplayer_admin_panel"),
-      (neg|is_presentation_active, "prsnt_admin_message"),
-      (neg|is_presentation_active, "prsnt_chat_box"),
-
-      (call_script,"script_client_get_my_agent"),
-      (assign,":agent_id",reg0),
-      (agent_is_active,":agent_id"),
-      (agent_is_alive,":agent_id"),
-      (start_presentation,"prsnt_orders_menu"),
-    (try_end),
+multiplayer_client_voice_orders = (0, 0.5, 0.1,[(key_clicked, key_o),(call_script, "script_cf_no_input_presentation_active")],
+[
+  (neg|multiplayer_is_dedicated_server),
+  (try_begin),
+    (call_script,"script_client_get_my_agent"),
+    (assign,":agent_id",reg0),
+    (agent_is_active,":agent_id"),
+    (agent_is_alive,":agent_id"),
+    (start_presentation,"prsnt_orders_menu"),
+  (try_end),
 ])
 
-multiplayer_client_music_and_sapper = (
-  0, 0, 0, [(neg|multiplayer_is_dedicated_server),(game_key_clicked, gk_defend),],
+multiplayer_client_music_and_sapper = (0, 0, 0, [(neg|multiplayer_is_dedicated_server),(game_key_clicked, gk_defend)],
   [
     (try_begin),
       (call_script, "script_client_get_my_agent"),
@@ -1121,16 +1094,23 @@ multiplayer_client_music_and_sapper = (
             (try_end),
           (else_try),
             (assign, ":can_play", 1),
-            
-            # (try_begin),
-                # If Bagpipe, check if the player has the bagpipe uniform
-            #   (eq, ":item_id", "itm_bagpipe"),
-            #   (neg|agent_has_item_equipped, ":player_agent", "itm_british_highland_piper"),
-            #   (neg|agent_has_item_equipped, ":player_agent", "itm_british_highland_piper_2"),
-            #   (assign, ":can_play", 0),
-            #   (call_script, "script_preset_message", "str_need_bagpiper_uniform", preset_message_error, 0, 0),
-            # (try_end),
-
+            (try_begin),
+              #If Bagpipe, check if the player has the bagpipe uniform
+              (eq, ":item_id", "itm_bagpipe"),
+              (multiplayer_send_int_to_server, client_event_request_character_language),
+              (try_begin),
+                (neg|agent_has_item_equipped, ":player_agent", "itm_british_highland_piper"),
+                (neg|agent_has_item_equipped, ":player_agent", "itm_british_highland_piper_2"),
+                (assign, ":can_play", 0),
+                (call_script, "script_preset_message", "str_need_bagpiper_uniform", preset_message_error, 0, 0),
+              (else_try),
+                # Only pirates and british knows how to play bagpipes
+                (agent_get_slot, ":char_lang", ":player_agent", slot_agent_character_language),
+                (neq, ":char_lang", player_character_language_english),
+                (assign, ":can_play", 0),
+                (call_script, "script_preset_message", "str_char_lang_cant_bagpipe", preset_message_error, 0, 0),
+              (try_end),
+            (try_end),
             (try_begin),
               # If Drumm, checks if the player has the gloves and uniform of drummer
               (eq, ":item_id", "itm_drumstick_right"),
@@ -1149,7 +1129,6 @@ multiplayer_client_music_and_sapper = (
                 (call_script, "script_preset_message", "str_need_drummer_uniform", preset_message_error, 0, 0),
               (try_end),
             (try_end),
-
             (try_begin),
               (eq, ":can_play", 1),
               (neg|is_presentation_active, "prsnt_multiplayer_music"),
@@ -1166,31 +1145,28 @@ multiplayer_client_music_and_sapper = (
     (try_end)
 ])
 
-multiplayer_agent_wield_item_common = (
-  ti_on_item_wielded, 0, 0, [
-      (this_or_next|multiplayer_is_server),
-      (neg|game_in_multiplayer_mode)],
-  [
-    (store_trigger_param_1,":agent_id"),
-    (store_trigger_param_2,":item_id"),
-    
+multiplayer_agent_wield_item_common = (ti_on_item_wielded, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode)],
+[
+  (store_trigger_param_1,":agent_id"),
+  (store_trigger_param_2,":item_id"),
+  
+  (try_begin),
+    (gt,":item_id",-1),
     (try_begin),
-      (gt,":item_id",-1),
-      (try_begin),
-        (call_script,"script_cf_agent_is_playing_piano",":agent_id"),
-        (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
-      (else_try),
-        (call_script,"script_cf_agent_is_taking_a_shit",":agent_id"),
-        (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
+      (call_script,"script_cf_agent_is_playing_piano",":agent_id"),
+      (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
+    (else_try),
+      (call_script,"script_cf_agent_is_taking_a_shit",":agent_id"),
+      (call_script,"script_multiplayer_server_agent_stop_music", ":agent_id"),
 
-      (else_try),
-        (call_script,"script_cf_agent_is_surrendering",":agent_id"),
-        (set_fixed_point_multiplier,100),
-        (agent_set_speed_modifier,":agent_id", 100),
-        (agent_set_slot,":agent_id",slot_agent_base_speed_mod,100),
-        (agent_set_horse_speed_factor, ":agent_id", 100),
-      (try_end),
+    (else_try),
+      (call_script,"script_cf_agent_is_surrendering",":agent_id"),
+      (set_fixed_point_multiplier,100),
+      (agent_set_speed_modifier,":agent_id", 100),
+      (agent_set_slot,":agent_id",slot_agent_base_speed_mod,100),
+      (agent_set_horse_speed_factor, ":agent_id", 100),
     (try_end),
+  (try_end),
 ])
 
 multiplayer_agent_unwield_item_common = (

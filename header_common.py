@@ -41,6 +41,7 @@ server_event_faction_captured_trade_route                   = 34
 
 # Add new events here: above if sent from the server, below if from clients.
 
+client_event_request_character_language                     = 79
 client_event_request_trade_route_faction_owner              = 80
 multiplayer_event_return_particle_at_pos                    = 81
 multiplayer_event_return_rejection                          = 82

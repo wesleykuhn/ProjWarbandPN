@@ -77,7 +77,6 @@ slot_player_admin_no_mute             = 55
 slot_player_admin_no_animals          = 56
 slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
-slot_player_character_language        = 59
 
 # PN UNORDERED STUFF START *********************************
 pn_trade_route_ivory_income         = 6700
