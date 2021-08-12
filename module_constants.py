@@ -574,7 +574,6 @@ slot_scene_prop_cannon_stored_mov_z          = 92
 slot_scene_prop_cannon_stored_rot_z          = 93
 slot_scene_prop_cannon_ship_unpushed         = 94
 
-scene_prop_open_or_close_slot           = 95
 scene_prop_smoke_effect_done            = 96
 scene_prop_slot_is_spawned              = 97
 scene_prop_slot_in_use                  = 98
@@ -645,7 +644,7 @@ scene_prop_slot_child_prop14        = 160
 scene_prop_slot_child_prop15        = 161
 scene_prop_slot_child_prop16        = 162
 
-scene_prop_slots_begin              = scene_prop_open_or_close_slot
+scene_prop_slots_begin              = scene_prop_smoke_effect_done
 scene_prop_slots_end                = 163
 
 scene_prop_slots_defmin_begin       = scene_prop_slot_replaced_by
@@ -662,7 +661,7 @@ scene_prop_slot_destruct_wall_width_offset      = 172
 scene_prop_slot_destruct_wall_length_offset     = 173
 scene_prop_slot_destruct_inverse_width_movement = 174
 scene_prop_slot_destruct_max_length             = 175
-scene_prop_slot_destruct_smoke_strength         = 176
+scene_prop_slot_destruct_smoke_strength         = 95
 
 scene_prop_slot_destruct_smoke_type             = 177
 scene_prop_slot_destruct_smoke_type2            = 178

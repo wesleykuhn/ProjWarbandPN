@@ -432,6 +432,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("trade_route_name_7", "Trabzon"),
   ("trade_route_name_8", "Ochamchira"),
   ("trade_route_name_9", "Tianjin"),
+  ("trade_route_details_menu", "-----------------------------------------------------------^{s13} Trade Route^Controlled by: {s12}.^Trading: {s16}.^Income: {reg10} / 10 minutes."),
   ("coffee", "Coffee"),
   ("cotton", "Cotton"),
   ("fur", "Fur"),
@@ -441,12 +442,12 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("tea", "Tea"),
   ("tobacco", "Tobacco"),
   ("trade_route_invalid", "Invalid Trade Route"),
-  ("trade_route_details", "{s13} Trade Route^^Controlled by: {s12}^Trading: {s16}^Income: {reg10} / 10 minutes^^Use"),
+  ("trade_route_details_pole", "{s13} Trade Route^^Controlled by: {s12}^Trading: {s16}^Income: {reg10} / 10 minutes^^Use"),
   ("no_one", "No one"),
   ("s15_captured_trade_s18", "The {s15} have taken control of the {s18} trade route!"),
   ("fac_received_trade_gold", "Your faction receives the income from trade route(s)!"),
-
-  ("cant_climb_mast", "Your class doesn't know how to climb on the mast!"),
+  ("menu_trade_routes", "Show Trade Routes Details"),
+  ("trade_routes_details", "Trade routes details:"),
 
   ("character_language", "Choose Character Nationality"),
   ("character_language_french", "French"),
@@ -463,7 +464,10 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("dont_know_piano", "Your class does not know how to play a piano!"),
   ("dont_know_organ", "Your class does not know how to play an organ!"),
 
+  ("cant_climb_mast", "Your class doesn't know how to climb on the mast!"),
   ("cant_sell_cannons", "Cannons/Howitzers and it's horse cannot be sold!"),
+  ("open_close", "Open/Close"),
+  ("enter_leave", "Enter/Leave"),
 
   ("comm_menu_follow_me", "1 - Follow Me"),
   ("comm_menu_hold_position", "2 - Hold This Position"),

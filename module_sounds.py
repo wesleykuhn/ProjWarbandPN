@@ -4,14 +4,14 @@ from header_sounds import *
 # Add your own sounds just before the animation sounds group, or before sounds_end.
 
 sounds = [
- ("click", sf_2d|sf_priority_9|sf_vol_3, ["drum_3.ogg"]),
+ ("click", sf_2d|sf_priority_9|sf_vol_3, ["drum_click.ogg"]),
  ("tutorial_1", sf_2d|sf_priority_9|sf_vol_7, ["tutorial_1.ogg"]),
  ("tutorial_2", sf_2d|sf_priority_9|sf_vol_7, ["tutorial_2.ogg"]),
  ("gong", sf_2d|sf_priority_9|sf_vol_7, ["s_cymbals.ogg"]),
  ("quest_taken", sf_2d|sf_priority_9|sf_vol_7, []),
  ("quest_completed", sf_2d|sf_priority_9|sf_vol_8, ["quest_completed.ogg"]),
  ("quest_succeeded", sf_2d|sf_priority_9|sf_vol_6, ["quest_succeeded.ogg"]),
- ("quest_concluded", sf_2d|sf_priority_9|sf_vol_7, ["drum_3.ogg"]),
+ ("quest_concluded", sf_2d|sf_priority_9|sf_vol_7, ["drum_3.wav"]),
  ("quest_failed", sf_2d|sf_priority_9|sf_vol_7, ["quest_failed.ogg"]),
  ("quest_cancelled", sf_2d|sf_priority_9|sf_vol_7, ["quest_cancelled.ogg"]),
  ("rain", sf_2d|sf_priority_2|sf_vol_3|sf_looping, ["rain_1.ogg"]),
@@ -20,14 +20,14 @@ sounds = [
  ("money_received", sf_priority_5|sf_vol_4, ["coins_dropped_1.ogg"]),
  ("money_paid", sf_priority_5|sf_vol_4, ["coins_dropped_2.ogg"]),
  ("sword_clash_1", sf_priority_3|sf_vol_9,["sword_clank_metal_09.wav","sword_clank_metal_09b.wav","sword_clank_metal_10.wav","sword_clank_metal_10b.wav","sword_clank_metal_12.wav","sword_clank_metal_12b.wav","sword_clank_metal_13.wav","sword_clank_metal_13b.wav","weapon_sabre01.wav","weapon_sabre02.wav","weapon_sabre03.wav"]),
- ("sword_clash_2", 0, ["drum_3.ogg"]),
- ("sword_clash_3", 0, ["drum_3.ogg"]),
+ ("sword_clash_2", 0, ["drum_3.wav"]),
+ ("sword_clash_3", 0, ["drum_3.wav"]),
  ("sword_swing", sf_priority_12|sf_vol_8, ["s_swordSwing.wav"]),
 
  ("footstep_grass", sf_priority_1|sf_vol_4,["footstep_1.wav","footstep_2.wav","footstep_3.wav","footstep_4.wav"]),
  ("footstep_wood", sf_priority_1|sf_vol_6,["footstep_wood_1.wav","footstep_wood_2.wav","footstep_wood_4.wav"]),
  ("footstep_water", sf_priority_1|sf_vol_2,["water_walk_1.wav","water_walk_2.wav","water_walk_3.wav","water_walk_4.wav"]),
- ("footstep_horse", sf_priority_3|sf_vol_8, ["drum_3.ogg"]),
+ ("footstep_horse", sf_priority_3|sf_vol_8, ["drum_3.wav"]),
  ("footstep_horse_1b",sf_priority_8|sf_vol_8, ["s_footstep_horse_4b.wav","s_footstep_horse_4f.wav","s_footstep_horse_5b.wav","s_footstep_horse_5f.wav"]),
  ("footstep_horse_1f",sf_priority_8|sf_vol_8, ["s_footstep_horse_2b.wav","s_footstep_horse_2f.wav","s_footstep_horse_3b.wav","s_footstep_horse_3f.wav"]),
  ("footstep_horse_2b", sf_priority_3|sf_vol_8, ["s_footstep_horse_2b.wav"]),
@@ -302,6 +302,7 @@ sounds = [
   "man_pain_21.wav","man_pain_22.wav","man_pain_23.wav","man_pain_24.wav"
  ]),
 
+ ("leader_rise", sf_2d|sf_priority_7|sf_vol_7,["happy_1.ogg"]),
  ("musket", sf_priority_15|sf_vol_10,["musket2.wav","musket3.wav","musket4.wav","musket5.wav","musket_shot01.wav","musket_shot02.wav","musket_shot03.wav","musket_shot04.wav","musket_shot05.wav"]),
  ("rifle", sf_priority_15|sf_vol_10, ["rifle.wav"]),
  ("pistol", sf_priority_15|sf_vol_10,["musket1.wav"]),
