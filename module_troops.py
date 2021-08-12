@@ -213,11 +213,11 @@ troops = [
    str_15|agi_15|pw_attr,wpex(110,125,110,20,60,40),knows_pw|knows_ironflesh_5|knows_power_strike_4|knows_shield_2|knows_athletics_5|knows_riding_2,default_face_1,default_face_2],
   
   ["engineer","Engineer","an engineer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots", "itm_repair_hammer"],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
    str_10|agi_12|pw_attr,wpex(90,50,60,30,65,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2|knows_looting_1|knows_sailing_4,default_face_1,default_face_2],
   
   ["master_smith","Master Smith","a master smith",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots", "itm_repair_hammer"],
+   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
    str_12|agi_12|pw_attr,wpex(100,55,70,30,70,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_engineer_7|knows_riding_2|knows_looting_2|knows_sailing_4,default_face_1,default_face_2],
   
   ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",
@@ -280,8 +280,8 @@ troops = [
 
   #Sapper and Enginner
   ["sapper","Sapper","a sapper",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_training_light_sabre"],
-   str_15|agi_10|pw_attr,wpex(100,140,100,0,70,80),knows_pw|knows_ironflesh_4|knows_power_strike_4|knows_athletics_3|knows_riding_2,default_face_1,default_face_2],
+   ["itm_civil_inf_uniform_a", "itm_civil_inf_pants_a", "itm_cheap_sapper_axe", "itm_shovel"],
+   str_15|agi_13|pw_attr,wpex(80,140,70,0,90,40),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_athletics_4|knows_riding_1|knows_engineer_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
    ["itm_french_artillery_bearskin_officer", "itm_admin_uniform", "itm_prussian_freikorps_pants", "itm_officer_gloves"],

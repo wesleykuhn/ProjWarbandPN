@@ -78,119 +78,122 @@ slot_player_admin_no_animals          = 56
 slot_player_admin_no_factions         = 57
 slot_player_admin_end                 = 58
 
-# PN UNORDERED STUFF START *********************************
-pn_trade_route_ivory_income         = 6700
-pn_trade_route_spices_income        = 4480
-pn_trade_route_sugar_income         = 3360
-pn_trade_route_cotton_income        = 3360
-pn_trade_route_tea_income           = 3080
-pn_trade_route_tobacco_income       = 3080
-pn_trade_route_fur_income           = 2520
-pn_trade_route_coffee_income        = 2240
-pn_trade_route_0                    = 0
-pn_trade_route_1                    = 1
-pn_trade_route_2                    = 2
-pn_trade_route_3                    = 3
-pn_trade_route_4                    = 4
-pn_trade_route_5                    = 5
-pn_trade_route_6                    = 6
-pn_trade_route_7                    = 7
-pn_trade_route_8                    = 8
-pn_trade_route_9                    = 9
-pn_trade_routes_props_begin         = "spr_pn_trade_route_coffee_capture_point"
-pn_trade_routes_props_end           = "spr_mm_hugo1"
+# ***********************************************************
+# PN OTHERS CONSTANTS STUFF *********************************
+# ***********************************************************
+pn_trade_route_ivory_income                 = 6700
+pn_trade_route_spices_income                = 4480
+pn_trade_route_sugar_income                 = 3360
+pn_trade_route_cotton_income                = 3360
+pn_trade_route_tea_income                   = 3080
+pn_trade_route_tobacco_income               = 3080
+pn_trade_route_fur_income                   = 2520
+pn_trade_route_coffee_income                = 2240
+pn_trade_route_0                            = 0
+pn_trade_route_1                            = 1
+pn_trade_route_2                            = 2
+pn_trade_route_3                            = 3
+pn_trade_route_4                            = 4
+pn_trade_route_5                            = 5
+pn_trade_route_6                            = 6
+pn_trade_route_7                            = 7
+pn_trade_route_8                            = 8
+pn_trade_route_9                            = 9
+pn_trade_routes_props_begin                 = "spr_pn_trade_route_coffee_capture_point"
+pn_trade_routes_props_end                   = "spr_mm_hugo1"
 
-pn_ship_climber_down_rel_z          = 100
-pn_ship_climber_down_rel_x          = -110
-pn_ship_climber_down_rel_y          = 0
-pn_ship_climber_up_rel_z            = 1983
-pn_ship_climber_up_rel_x            = 130
-pn_ship_climber_up_rel_y            = 0
+pn_ship_climber_down_rel_z                  = 100
+pn_ship_climber_down_rel_x                  = -110
+pn_ship_climber_down_rel_y                  = 0
+pn_ship_climber_up_rel_z                    = 1983
+pn_ship_climber_up_rel_x                    = 130
+pn_ship_climber_up_rel_y                    = 0
 
-pn_art_horse_only_begin             = "itm_arty_horse_french"
-pn_art_horse_only_end               = "itm_hussar_horse_french"
+pn_art_horse_only_begin                     = "itm_arty_horse_french"
+pn_art_horse_only_end                       = "itm_hussar_horse_french"
+pn_art_with_horse_begin                     = "itm_arty_horse_cannon_french"
+pn_art_with_horse_end                       = "itm_admin_musket"
 
-pn_art_with_horse_begin             = "itm_arty_horse_cannon_french"
-pn_art_with_horse_end               = "itm_admin_musket"
+pn_drummers_uniforms_begin                  = "itm_french_45e_body_drummer"
+pn_drummers_uniforms_end                    = "itm_british_infantry_ranker"
 
-pn_drummers_uniforms_begin          = "itm_french_45e_body_drummer"
-pn_drummers_uniforms_end            = "itm_british_infantry_ranker"
+pn_hittable_props_begin                     = "spr_table_tavern"
+pn_hittable_props_end                       = "spr_mm_ambience_sound_global_wind_snow"
 
-pn_hittable_props_begin             = "spr_table_tavern"
-pn_hittable_props_end               = "spr_mm_ambience_sound_global_wind_snow"
+pn_usable_not_dam_doors_small_begin         = "spr_pw_door_teleport_small_arch_a"
+pn_usable_not_dam_doors_small_end           = "spr_pw_door_teleport_arch_a"
+pn_usable_dam_doors_small_begin             = "spr_pw_door_rotate_a"
+pn_usable_dam_doors_small_end               = "spr_pw_door_rotate_e_left"
+pn_usable_dam_doors_medium_begin            = "spr_pw_door_rotate_e_left"
+pn_usable_dam_doors_medium_end              = "spr_pw_door_rotate_earth_left"
+pn_usable_dam_doors_huge_begin              = "spr_pw_door_rotate_earth_left"
+pn_usable_dam_doors_huge_end                = "spr_pw_wooden_bridge_a"
+pn_usable_dam_doors_begin                   = pn_usable_dam_doors_small_begin
+pn_usable_dam_doors_end                     = pn_usable_dam_doors_huge_end
 
-pn_usable_not_dam_doors_small_begin = "spr_pw_door_teleport_small_arch_a"
-pn_usable_not_dam_doors_small_end   = "spr_pw_door_teleport_arch_a"
+pn_trees_begin                              = "spr_pw_tree_a1"
+pn_trees_end                                = "spr_pw_stick_bush_2a"
 
-pn_usable_dam_doors_small_begin     = "spr_pw_door_rotate_a"
-pn_usable_dam_doors_small_end       = "spr_pw_door_rotate_e_left"
+pn_small_houses_one_floor_begin             = "spr_mm_house_basic13"
+pn_small_houses_one_floor_end               = "spr_mm_house_basic14"
+pn_small_houses_two_floor_begin             = "spr_mm_house_basic14"
+pn_small_houses_two_floor_end               = "spr_mm_house_basic12"
+pn_medium_houses_one_floor_begin            = "spr_mm_house_basic12"
+pn_medium_houses_one_floor_end              = "spr_mm_house_basic1"
+pn_medium_houses_two_floor_begin            = "spr_mm_house_basic1"
+pn_medium_houses_two_floor_end              = "spr_mm_house_basic4"
+pn_house_stairs_begin                       = "spr_mm_house_stair1"
+pn_house_stairs_end                         = "spr_mm_house_basic13"
 
-pn_usable_dam_doors_medium_begin    = "spr_pw_door_rotate_e_left"
-pn_usable_dam_doors_medium_end      = "spr_pw_door_rotate_earth_left"
+pn_effect_type_wood                         = 0
+pn_effect_type_bricks                       = 1
+pn_effect_type_earth                        = 2
 
-pn_usable_dam_doors_huge_begin      = "spr_pw_door_rotate_earth_left"
-pn_usable_dam_doors_huge_end        = "spr_pw_wooden_bridge_a"
+pn_sapper_build_price_stakes1               = 100
+pn_sapper_build_price_stakes2               = 80
+pn_sapper_build_price_sandbags              = 100
+pn_sapper_build_price_chevaux_de_frise      = 40
+pn_sapper_build_price_gabion                = 60
+pn_sapper_build_price_fence_1d              = 120
+pn_sapper_build_price_earthwork             = 80
+pn_sapper_buildings_on_scene_limit          = 99
 
-pn_usable_dam_doors_begin           = pn_usable_dam_doors_small_begin
-pn_usable_dam_doors_end             = pn_usable_dam_doors_huge_end
+player_character_language_french            = 1
+player_character_language_english           = 2
+player_character_language_austrian          = 3
+player_character_language_prussian          = 4
+player_character_language_russian           = 5
+player_character_language_pirate            = 6
 
-pn_trees_begin                      = "spr_pw_tree_a1"
-pn_trees_end                        = "spr_pw_stick_bush_2a"
+voice_type_cry                              = 1
+voice_type_surrender                        = 2
+voice_type_comm_ready                       = 3
+voice_type_comm_present                     = 4
+voice_type_comm_fire                        = 5
+voice_type_comm_charge                      = 6
+voice_type_comm_advance                     = 7
+voice_type_comm_hold                        = 8
+voice_type_comm_fire_at_will                = 9
+voice_type_comm_on_me                       = 10
+voice_type_comm_fall_back                   = 11
+voice_types_begin                           = voice_type_cry
+voice_types_end                             = 12
 
-pn_small_houses_one_floor_begin     = "spr_mm_house_basic13"
-pn_small_houses_one_floor_end       = "spr_mm_house_basic14"
+music_type_start                            = 1
+music_type_stop                             = 2
+music_type_toggle_together                  = 3
+music_types_begin                           = music_type_start
+music_types_end                             = 4
 
-pn_small_houses_two_floor_begin     = "spr_mm_house_basic14"
-pn_small_houses_two_floor_end       = "spr_mm_house_basic12"
+spyglass_type_start                         = 1
+spyglass_type_stop                          = 2
 
-pn_medium_houses_one_floor_begin    = "spr_mm_house_basic12"
-pn_medium_houses_one_floor_end      = "spr_mm_house_basic1"
+drinking_type_start                         = 1
+drinking_type_stop                          = 2
 
-pn_medium_houses_two_floor_begin    = "spr_mm_house_basic1"
-pn_medium_houses_two_floor_end      = "spr_mm_house_basic4"
-
-pn_house_stairs_begin               = "spr_mm_house_stair1"
-pn_house_stairs_end                 = "spr_mm_house_basic13"
-
-pn_effect_type_wood    = 0
-pn_effect_type_bricks  = 1
-
-player_character_language_french = 1
-player_character_language_english = 2
-player_character_language_austrian = 3
-player_character_language_prussian = 4
-player_character_language_russian = 5
-player_character_language_pirate = 6
-
-voice_type_cry                         = 1
-voice_type_surrender                   = 2
-voice_type_comm_ready                  = 3
-voice_type_comm_present                = 4
-voice_type_comm_fire                   = 5
-voice_type_comm_charge                 = 6
-voice_type_comm_advance                = 7
-voice_type_comm_hold                   = 8
-voice_type_comm_fire_at_will           = 9
-voice_type_comm_on_me                  = 10
-voice_type_comm_fall_back              = 11
-voice_types_begin                      = voice_type_cry
-voice_types_end                        = 12
-
-music_type_start                       = 1
-music_type_stop                        = 2
-music_type_toggle_together             = 3
-music_types_begin                      = music_type_start
-music_types_end                        = 4
-
-spyglass_type_start                    = 1
-spyglass_type_stop                     = 2
-
-drinking_type_start                    = 1
-drinking_type_stop                     = 2
-
-server_action_force_music_selection = 1
-server_actions_begin                = server_action_force_music_selection
-server_actions_end                  = 2
+server_action_force_music_selection         = 1
+server_actions_begin                        = server_action_force_music_selection
+server_actions_end                          = 2
 
 player_action_change_lang                   = 87
 player_action_voice                         = 88
@@ -207,160 +210,141 @@ player_action_custom_order_menu_interact    = 98
 player_actions_begin                        = player_action_voice
 player_actions_end                          = 99
 
-instrument_max_tracks = 20 #if adding more than 20 tracks in any list you need to increase this number
+# If adding more than 20 tracks in any list you need to increase this number
+instrument_max_tracks                   = 20 
+drum_sounds_britain_begin               = "snd_drum_britain_1"
+drum_sounds_britain_end                 = "snd_drum_france_1"
+drum_sounds_france_begin                = drum_sounds_britain_end
+drum_sounds_france_end                  = "snd_drum_prussia_1"
+drum_sounds_prussia_begin               = drum_sounds_france_end
+drum_sounds_prussia_end                 = "snd_drum_russia_1"
+drum_sounds_russia_begin                = drum_sounds_prussia_end
+drum_sounds_russia_end                  = "snd_drum_austria_1"
+drum_sounds_austria_begin               = drum_sounds_russia_end
+drum_sounds_austria_end                 = "snd_drum_highland_1"
+drum_sounds_highland_begin              = drum_sounds_austria_end
+drum_sounds_highland_end                = "snd_drum_signal_1"
+drum_sounds_calls_begin                 = drum_sounds_highland_end
+drum_sounds_calls_end                   = "snd_fife_britain_1"
+fife_sounds_britain_begin               = drum_sounds_calls_end
+fife_sounds_britain_end                 = "snd_fife_france_1"
+fife_sounds_france_begin                = fife_sounds_britain_end
+fife_sounds_france_end                  = "snd_fife_prussia_1"
+fife_sounds_prussia_begin               = fife_sounds_france_end
+fife_sounds_prussia_end                 = "snd_fife_russia_1"
+fife_sounds_russia_begin                = fife_sounds_prussia_end
+fife_sounds_russia_end                  = "snd_fife_austria_1"
+fife_sounds_austria_begin               = fife_sounds_russia_end
+fife_sounds_austria_end                 = "snd_bugle_britain_1"
+bugle_sounds_britain_begin              = fife_sounds_austria_end
+bugle_sounds_britain_end                = "snd_bugle_france_1"
+bugle_sounds_france_begin               = bugle_sounds_britain_end
+bugle_sounds_france_end                 = "snd_bugle_prussia_1"
+bugle_sounds_prussia_begin              = bugle_sounds_france_end
+bugle_sounds_prussia_end                = "snd_bugle_russia_1"
+bugle_sounds_russia_begin               = bugle_sounds_prussia_end
+bugle_sounds_russia_end                 = "snd_bugle_austria_1"
+bugle_sounds_austria_begin              = bugle_sounds_russia_end
+bugle_sounds_austria_end                = "snd_bugle_signal_1"
+bugle_sounds_calls_begin                = bugle_sounds_austria_end
+bugle_sounds_calls_end                  = "snd_bagpipes_britain_1"
+bagpipes_sounds_britain_begin           = bugle_sounds_calls_end
+bagpipes_sounds_britain_end             = "snd_bagpipes_extra_1"
+bagpipes_sounds_extra_begin             = bagpipes_sounds_britain_end
+bagpipes_sounds_extra_end               = "snd_piano_loop_1"
+drum_strings_britain_begin              = "str_drum_britain_1"
+drum_strings_france_begin               = "str_drum_france_1"
+drum_strings_prussia_begin              = "str_drum_prussia_1"
+drum_strings_russia_begin               = "str_drum_russia_1"
+drum_strings_austria_begin              = "str_drum_austria_1"
+drum_strings_highland_begin             = "str_drum_highland_1"
+drum_strings_calls_begin                = "str_drum_signal_1"
+fife_strings_britain_begin              = "str_fife_britain_1"
+fife_strings_france_begin               = "str_fife_france_1"
+fife_strings_prussia_begin              = "str_fife_prussia_1"
+fife_strings_russia_begin               = "str_fife_russia_1"
+fife_strings_austria_begin              = "str_fife_austria_1"
+bugle_strings_britain_begin             = "str_bugle_britain_1"
+bugle_strings_france_begin              = "str_bugle_france_1"
+bugle_strings_prussia_begin             = "str_bugle_prussia_1"
+bugle_strings_russia_begin              = "str_bugle_russia_1"
+bugle_strings_austria_begin             = "str_bugle_austria_1"
+bugle_strings_calls_begin               = "str_bugle_signal_1"
+bagpipes_strings_britain_begin          = "str_bagpipes_britain_1"
+bagpipes_strings_extra_begin            = "str_bagpipes_extra_1"
+piano_sounds_begin                      = "snd_piano_loop_1"
+piano_sounds_end                        = "snd_organ_loop_1"
+organ_sounds_begin                      = piano_sounds_end
+organ_sounds_end                        = "snd_instruments_end"
+piano_strings_begin                     = "str_piano_tune_1"
+organ_strings_begin                     = "str_organ_tune_1"
+instrument_sounds_begin                 = drum_sounds_britain_begin
+instruments_sounds_end                  = organ_sounds_end
 
-drum_sounds_britain_begin = "snd_drum_britain_1"
-drum_sounds_britain_end   = "snd_drum_france_1"
-drum_sounds_france_begin = drum_sounds_britain_end
-drum_sounds_france_end   = "snd_drum_prussia_1"
-drum_sounds_prussia_begin = drum_sounds_france_end
-drum_sounds_prussia_end   = "snd_drum_russia_1"
-drum_sounds_russia_begin = drum_sounds_prussia_end
-drum_sounds_russia_end   = "snd_drum_austria_1"
-drum_sounds_austria_begin = drum_sounds_russia_end
-drum_sounds_austria_end   = "snd_drum_highland_1"
-drum_sounds_highland_begin = drum_sounds_austria_end
-drum_sounds_highland_end   = "snd_drum_signal_1"
-drum_sounds_calls_begin = drum_sounds_highland_end
-drum_sounds_calls_end   = "snd_fife_britain_1"
-
-fife_sounds_britain_begin = drum_sounds_calls_end
-fife_sounds_britain_end   = "snd_fife_france_1"
-fife_sounds_france_begin = fife_sounds_britain_end
-fife_sounds_france_end   = "snd_fife_prussia_1"
-fife_sounds_prussia_begin = fife_sounds_france_end
-fife_sounds_prussia_end   = "snd_fife_russia_1"
-fife_sounds_russia_begin = fife_sounds_prussia_end
-fife_sounds_russia_end   = "snd_fife_austria_1"
-fife_sounds_austria_begin = fife_sounds_russia_end
-fife_sounds_austria_end   = "snd_bugle_britain_1"
-
-bugle_sounds_britain_begin = fife_sounds_austria_end
-bugle_sounds_britain_end   = "snd_bugle_france_1"
-bugle_sounds_france_begin = bugle_sounds_britain_end
-bugle_sounds_france_end   = "snd_bugle_prussia_1"
-bugle_sounds_prussia_begin = bugle_sounds_france_end
-bugle_sounds_prussia_end   = "snd_bugle_russia_1"
-bugle_sounds_russia_begin = bugle_sounds_prussia_end
-bugle_sounds_russia_end   = "snd_bugle_austria_1"
-bugle_sounds_austria_begin = bugle_sounds_russia_end
-bugle_sounds_austria_end   = "snd_bugle_signal_1"
-bugle_sounds_calls_begin = bugle_sounds_austria_end
-bugle_sounds_calls_end   = "snd_bagpipes_britain_1"
-
-bagpipes_sounds_britain_begin = bugle_sounds_calls_end
-bagpipes_sounds_britain_end   = "snd_bagpipes_extra_1"
-bagpipes_sounds_extra_begin = bagpipes_sounds_britain_end
-bagpipes_sounds_extra_end   = "snd_piano_loop_1"
-
-piano_sounds_begin = bagpipes_sounds_extra_end
-piano_sounds_end   = "snd_organ_loop_1"
-
-organ_sounds_begin = piano_sounds_end
-organ_sounds_end   = "snd_instruments_end"
-
-instrument_sounds_begin   = drum_sounds_britain_begin
-instruments_sounds_end    = organ_sounds_end
-
-drum_strings_britain_begin = "str_drum_britain_1"
-drum_strings_france_begin = "str_drum_france_1"
-drum_strings_prussia_begin = "str_drum_prussia_1"
-drum_strings_russia_begin = "str_drum_russia_1"
-drum_strings_austria_begin = "str_drum_austria_1"
-drum_strings_highland_begin = "str_drum_highland_1"
-drum_strings_calls_begin = "str_drum_signal_1"
-
-fife_strings_britain_begin = "str_fife_britain_1"
-fife_strings_france_begin = "str_fife_france_1"
-fife_strings_prussia_begin = "str_fife_prussia_1"
-fife_strings_russia_begin = "str_fife_russia_1"
-fife_strings_austria_begin = "str_fife_austria_1"
-
-bugle_strings_britain_begin = "str_bugle_britain_1"
-bugle_strings_france_begin = "str_bugle_france_1"
-bugle_strings_prussia_begin = "str_bugle_prussia_1"
-bugle_strings_russia_begin = "str_bugle_russia_1"
-bugle_strings_austria_begin = "str_bugle_austria_1"
-bugle_strings_calls_begin = "str_bugle_signal_1"
-bagpipes_strings_britain_begin = "str_bagpipes_britain_1"
-bagpipes_strings_extra_begin = "str_bagpipes_extra_1"
-
-piano_strings_begin   = "str_piano_tune_1"
-organ_strings_begin   = "str_organ_tune_1"
-mm_cannon_types_begin        = "spr_mm_cannon_12pdr"
-mm_cannon_types_end          = "spr_mm_cannonball_6pd"
-mm_cannon_wood_types_begin   = "spr_mm_cannon_12pdr_wood"
-mm_cannon_wood_types_end     = "spr_mm_cannon_12pdr_wheels"
-mm_cannon_wheel_types_begin  = "spr_mm_cannon_12pdr_wheels"
-mm_cannon_wheel_types_end    = "spr_mm_cannon_12pdr_barrel"
-mm_cannon_barrel_types_begin = "spr_mm_cannon_12pdr_barrel"
-mm_cannon_barrel_types_end   = "spr_mm_cannon_12pdr_limber_wheels"
-mm_unlimber_button_types_begin = "spr_mm_cannon_12pdr_limber"
-mm_unlimber_button_types_end   = "spr_mm_limber_button"
-mm_cannon_button_types_begin   = "spr_mm_limber_button"
-mm_cannon_button_types_end     = "spr_mm_round_button"
-mm_button_types_begin       = "spr_mm_cannon_12pdr_limber"
-mm_button_types_end         = "spr_mm_tunnel_wall"
-mm_explosive_props_begin       = "spr_crate_explosive_fra"
-mm_explosive_props_end         = "spr_mm_bird"
-
-cannon_ammo_type_round      = 1
-cannon_ammo_type_shell      = 2
-cannon_ammo_type_canister   = 3
-cannon_ammo_type_bomb       = 4
-cannon_ammo_type_rocket     = 5
-cannon_ammo_types_begin     = cannon_ammo_type_round
-cannon_ammo_types_end       = 6
-
+mm_cannon_types_begin                   = "spr_mm_cannon_12pdr"
+mm_cannon_types_end                     = "spr_mm_cannonball_6pd"
+mm_cannon_wood_types_begin              = "spr_mm_cannon_12pdr_wood"
+mm_cannon_wood_types_end                = "spr_mm_cannon_12pdr_wheels"
+mm_cannon_wheel_types_begin             = "spr_mm_cannon_12pdr_wheels"
+mm_cannon_wheel_types_end               = "spr_mm_cannon_12pdr_barrel"
+mm_cannon_barrel_types_begin            = "spr_mm_cannon_12pdr_barrel"
+mm_cannon_barrel_types_end              = "spr_mm_cannon_12pdr_limber_wheels"
+mm_unlimber_button_types_begin          = "spr_mm_cannon_12pdr_limber"
+mm_unlimber_button_types_end            = "spr_mm_limber_button"
+mm_cannon_button_types_begin            = "spr_mm_limber_button"
+mm_cannon_button_types_end              = "spr_mm_round_button"
+mm_button_types_begin                   = "spr_mm_cannon_12pdr_limber"
+mm_button_types_end                     = "spr_mm_tunnel_wall"
+cannon_ammo_type_round                  = 1
+cannon_ammo_type_shell                  = 2
+cannon_ammo_type_canister               = 3
+cannon_ammo_type_bomb                   = 4
+cannon_ammo_type_rocket                 = 5
+cannon_ammo_types_begin                 = cannon_ammo_type_round
+cannon_ammo_types_end                   = 6
 cannon_hit_effect_event_type_explosion  = 1
 cannon_hit_effect_event_type_ground     = 2
 cannon_hit_effect_event_type_water_ball = 3
 cannon_hit_effect_event_type_wall       = 4
-cannon_hit_effect_event_types_begin = cannon_hit_effect_event_type_explosion
-cannon_hit_effect_event_types_end = 5
+cannon_hit_effect_event_types_begin     = cannon_hit_effect_event_type_explosion
+cannon_hit_effect_event_types_end       = 5
+cannon_command_up                       = 1
+cannon_command_down                     = 2
+cannon_command_right                    = 3
+cannon_command_left                     = 4
+cannon_command_fire                     = 5
+cannon_command_stop_aim                 = 6
+cannon_commands_begin                   = cannon_command_up
+cannon_commands_end                     = 7
 
-cannon_command_up           = 1
-cannon_command_down         = 2
-cannon_command_right        = 3
-cannon_command_left         = 4
-cannon_command_fire         = 5
-cannon_command_stop_aim     = 6
-cannon_commands_begin         = cannon_command_up
-cannon_commands_end           = 7
+command_type_cannon            = 1
+command_type_ship              = 2
+command_types_begin            = command_type_cannon
+command_types_end              = 3
 
-command_type_cannon         = 1
-command_type_ship           = 2
-command_types_begin         = command_type_cannon
-command_types_end           = 3
+prop_effect_type_sound         = 1
+prop_effect_type_particle      = 2
+prop_effect_type_stop_all      = 3
+prop_effect_types_begin        = prop_effect_type_sound
+prop_effect_types_end          = 4
+prop_effect_handle_stop        = 0
+prop_effect_handle_start       = 1
+prop_effect_handles_begin      = prop_effect_handle_stop
+prop_effect_handles_end        = 2
 
-prop_effect_type_sound     = 1
-prop_effect_type_particle  = 2
-prop_effect_type_stop_all  = 3
+mm_destructible_props_begin    = "spr_mm_house_wall_1"
+mm_destructible_props_end      = "spr_mm_house_wall_2dd"
+mm_destroyed_props_begin       = "spr_mm_house_wall_2dd"
+mm_destroyed_props_end         = "spr_mm_wallgate"
 
-prop_effect_types_begin  = prop_effect_type_sound
-prop_effect_types_end    = 4
-
-prop_effect_handle_stop    = 0
-prop_effect_handle_start   = 1
-
-prop_effect_handles_begin  = prop_effect_handle_stop
-prop_effect_handles_end    = 2
-
-mm_destructible_props_begin  = "spr_mm_house_wall_1"
-mm_destructible_props_end    = "spr_mm_house_wall_2dd"
-
-mm_destroyed_props_begin     = "spr_mm_house_wall_2dd"
-mm_destroyed_props_end       = "spr_mm_wallgate"
-
-construct_costs_offset    = 50
-construct_button_offset   = construct_costs_offset + 20
-construct_display_offset  = construct_button_offset + 20
-construct_offset_end      = construct_display_offset + 20
-
+construct_costs_offset         = 50
+construct_button_offset        = construct_costs_offset + 20
+construct_display_offset       = construct_button_offset + 20
+construct_offset_end           = construct_display_offset + 20
 mm_construct_props_begin       = "spr_mm_stakes_construct"
 mm_construct_props_end         = "spr_mm_crator_small"
 mm_construct_props_strings     = "str_mm_stakes_construct"
-mm_construct_props_meshes     = "mesh_construct_mesh_stakes"
+mm_construct_props_meshes      = "mesh_construct_mesh_stakes"
 
 # PN END ***********************************
 
@@ -689,6 +673,17 @@ scene_prop_slot_destruct_pile_prop_end          = 182
 
 slot_scene_prop_trade_route_owning_faction      = 183
 slot_scene_prop_trade_route_type                = 184
+
+scene_prop_slot_destruct_next_stage_1           = 185
+scene_prop_slot_destruct_next_stage_2           = 186
+scene_prop_slot_destruct_next_stage_3           = 187
+scene_prop_slot_destruct_next_stage_4           = 188
+scene_prop_slot_destruct_next_stage_5           = 189
+scene_prop_slot_destruct_next_stage_6           = 190
+scene_prop_slot_destruct_next_stage_7           = 191
+scene_prop_slot_destruct_next_stage_8           = 192
+scene_prop_slot_destruct_next_stage_9           = 193
+scene_prop_slot_destruct_next_stage_10          = 194
 
 ########################################################
 ##  ITEM SLOTS             #############################

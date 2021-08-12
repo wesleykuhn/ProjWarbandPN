@@ -1749,7 +1749,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  506 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 ["bugle","Bugle", [("bugle",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
  506 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
-["bagpipe","Bagpipe Flute", [("mm_fife",0.5)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
+["bagpipe","Bagpipe Flute", [("mm_fife_small",0)], itp_type_one_handed_wpn|itp_wooden_parry|itp_primary, itcf_carry_sword_left_hip, 
  701 , weight(1.5)|difficulty(0)|spd_rtng(93) | weapon_length(102)|swing_damage(3 , cut) | thrust_damage(20 ,  pierce),imodbits_sword_high ],
 
 # Ammo
@@ -3422,7 +3422,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 # PN END ****************************************************************************************************
 
 ["admin_musket", "Admin Musket", [("french_versailles",0)], itp_type_musket|itp_primary|itp_two_handed|itp_next_item_as_melee,
- itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 0 , weight(1)|difficulty(30)|spd_rtng(80)|shoot_speed(250)|thrust_damage(255, pierce)|max_ammo(10)|accuracy(150), imodbits_none, []],
+ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 0 , weight(1)|difficulty(30)|spd_rtng(80)|shoot_speed(250)|thrust_damage(255, pierce)|max_ammo(255)|accuracy(150), imodbits_none, []],
 ["admin_musket_melee", "Admin Musket", [("french_versailles",0)], itp_has_upper_stab|itp_type_polearm |itp_primary|itp_is_pike|itp_no_blur,itc_spear|itcf_carry_crossbow_back,
  0 , weight(1)|difficulty(30)|spd_rtng(120) | weapon_length(138)|swing_damage(255 , pierce) | thrust_damage(255, pierce), imodbits_none ],
 ["admin_horse", "Admin Horse", [("plated_charger_black",0)], itp_type_horse, 0,

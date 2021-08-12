@@ -402,7 +402,6 @@ meshes = [
   ("pw_progress_bar_fill", 0, "pw_progress_bar_fill", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
   # PN START ***********************************************************************
-
   #Construct props stuff
   ("construct_mesh_stakes", 0, "ui_construct_cdf", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_stakes2", 0, "ui_construct_stakes", 0, 0, 0, 0, 0, 0, 1, 1, 1),
@@ -410,9 +409,7 @@ meshes = [
   ("construct_mesh_cdf_tri", 0, "ui_construct_cdf_tri", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_gabion", 0, "ui_construct_gabion", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_fence", 0, "ui_construct_fence", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  ("construct_mesh_plank", 0, "ui_construct_plank", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("construct_mesh_earthwork", 0, "ui_construct_dig", 0, 0, 0, 0, 0, 0, 1, 1, 1),
-  ("construct_mesh_explosives", 0, "ui_construct_crate", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
   #Bonus icons
   ("bonus_icon_melee", 0, "bonus_icon_melee", 0, 0, 0, 0, 0, 0, 1, 1, 1),

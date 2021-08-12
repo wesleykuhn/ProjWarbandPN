@@ -1076,8 +1076,11 @@ multiplayer_client_music_and_sapper = (0, 0, 0, [(neg|multiplayer_is_dedicated_s
         (agent_get_wielded_item,":item_id",":player_agent",0),
         (ge, ":item_id", 0),
         (try_begin),
-          (eq,":player_troop","trp_sapper"),
+          (this_or_next|eq,":player_troop","trp_sapper"),
+          (eq,":player_troop","trp_godlike_hero"),
           (eq, ":item_id", "itm_repair_hammer"),
+          (neg|is_presentation_active, "prsnt_multiplayer_construct"),
+          (start_presentation,"prsnt_multiplayer_construct"),
         (else_try),
           (troop_get_slot, ":trp_play_musics", ":player_troop", slot_troop_can_play_musics),
           (eq, ":trp_play_musics", 1),
@@ -2438,35 +2441,6 @@ multiplayer_server_move_church_bell = (
       (try_end),
   ])
 
-multiplayer_server_explosives  = (
-  1, 0, 0, [(this_or_next|multiplayer_is_server),(neg|game_in_multiplayer_mode),],
-  [
-    (try_for_range,":explosive_type", mm_explosive_props_begin, mm_explosive_props_end),
-      (try_for_prop_instances, ":instance_id", ":explosive_type"),
-        
-        (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
-        (gt,":cur_time",0),
-        (val_sub,":cur_time",1),
-        
-        (prop_instance_get_position, pos47, ":instance_id"), 
-        (try_begin),
-          (le,":cur_time",0),
-          
-          (scene_prop_get_slot,":agent_id",":instance_id",scene_prop_slot_user_agent),
-          
-          (call_script, "script_clean_up_prop_instance", ":instance_id"),
-          
-          (call_script,"script_explosion_at_position",":agent_id",270,370,0), # Input: shooter_agent_no, max_damage points, range in cm
-        (else_try),
-          (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
-          (set_fixed_point_multiplier,100),
-          (position_move_z,pos47,80),
-          (particle_system_burst, "psys_explosives_fuse_smoke", pos47, 60),
-        (try_end),
-      (try_end),
-    (try_end),
-])
-
 multiplayer_play_sounds_and_particles  = (
   1, 0, 0, [(neg|multiplayer_is_dedicated_server)],
   [
@@ -2695,7 +2669,6 @@ def common_triggers(self):
     multiplayer_server_cannonball_flight,
     multiplayer_agent_wield_item_common,
     multiplayer_server_move_church_bell,
-    multiplayer_server_explosives,
     multiplayer_play_sounds_and_particles,
     multiplayer_server_on_item_dropped,
 

@@ -158,7 +158,7 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
       (assign,":hit_particles_size",10),
       (assign,":apply_dmg",1),
       (assign,":update_dmg",1),
-      
+
       (agent_get_wielded_item,":item_id",":agent_id",0),
       (try_begin),
         (this_or_next|eq,":item_id","itm_sapper_axe"),
@@ -170,10 +170,11 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
         
         (val_mul,":damage",2),
       (else_try),
-        (eq,":item_id","itm_repair_hammer"), #Only constructable with hammer
+        (eq,":item_id","itm_repair_hammer"),
         
         (agent_get_troop_id,":troop_id",":agent_id"),
-        (eq,":troop_id", "trp_sapper"),
+        (this_or_next|eq,":troop_id", "trp_sapper"),
+        (eq,":troop_id", "trp_godlike_hero"),
         
         (neq,":prop_kind","spr_earthwork1_destructible"), # not for earth prop.
         
@@ -181,7 +182,7 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
         (assign,":apply_dmg",0),
 
         (assign,":old_health",":health"),
-        (val_add,":health",25), # 25 hitpoints per hit with hammer.
+        (val_add,":health",10), # 10 hitpoints per hit with hammer.
         (val_min,":health",":max_health"),
         
         (try_begin),
@@ -192,7 +193,7 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
         (try_begin),
           (ge,":health",":max_health"),
           
-          (is_between,":prop_kind","spr_mm_palisadedd","spr_crate_explosive"), # a construction object
+          (is_between,":prop_kind", "spr_mm_palisadedd", mm_construct_props_end), # a construction object
           
           (assign,":update_dmg",0),
           
@@ -232,16 +233,13 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
             (call_script, "script_find_or_create_scene_prop_instance", ":prop_to_spawn", 0, 1, 0),
           (try_end),
           (assign,":new_instance_no",reg0),
-          # init the new prop slots.
           (call_script,"script_multiplayer_server_initialise_destructable_prop_slots",":new_instance_no",":prop_to_spawn"),
         (try_end),
       (try_end),
      
       (try_begin), # with earth digs we have some specialll stuff.
-        (eq,":prop_kind","spr_earthwork1_destructible"),
-        
+        (eq, ":prop_kind", "spr_earthwork1_destructible"),
         (assign,":apply_dmg",0),
-        
         (try_begin),
           (neq,":item_id","itm_shovel"),
           (neq,":item_id","itm_shovel_undig"),
@@ -249,14 +247,19 @@ check_common_constructable_prop_on_hit_trigger = (ti_on_scene_prop_hit,
           (assign,":hit_smoke",-1),
           (assign,":hit_particles",-1),
         (try_end),
-        
-        (this_or_next|eq,":item_id","itm_shovel"),
-        (eq,":item_id","itm_shovel_undig"),
-          
-        (assign,":hit_sound","snd_shovel"),
-        
-        (call_script,"script_move_pioneer_ground",":instance_no",":item_id",":health",":max_health"),
-        (assign,":health",reg0),
+
+        (try_begin),
+          (this_or_next|eq,":item_id","itm_shovel"),
+          (eq,":item_id","itm_shovel_undig"),
+          (assign,":hit_sound","snd_shovel"),
+          (call_script,"script_move_pioneer_ground", ":instance_no", ":item_id", ":health", ":max_health"),
+          (assign, ":health", reg0),
+        (else_try),
+          (eq, ":health", 1),
+          (val_sub, "$g_scene_cur_sapper_buildings", 1),
+          (assign, ":hit_sound", "snd_body_fall_big"),
+          (call_script, "script_clean_up_prop_instance", ":instance_no"),
+        (try_end),
       (try_end),
       
       (try_begin), # not a pioneer
@@ -322,6 +325,8 @@ check_common_constructible_props_destroy_trigger = (ti_on_scene_prop_destroy,
       
       (particle_system_burst, "psys_dummy_straw", pos49, 20),
       (particle_system_burst, "psys_dummy_smoke", pos49, 50),
+
+      (val_sub, "$g_scene_cur_sapper_buildings", 1),
 
       (call_script, "script_clean_up_prop_instance", ":instance_no"),
     (try_end),
@@ -405,27 +410,6 @@ check_common_dummy_on_hit_trigger = (ti_on_scene_prop_hit,
         (particle_system_burst, "psys_dummy_smoke", pos1, 3),
         (particle_system_burst, "psys_dummy_straw", pos1, 10),
       (try_end),
-])
-
-check_common_explosive_crate_use_trigger = (ti_on_scene_prop_use,
-  [
-    (store_trigger_param_1, ":agent_id"),
-    (store_trigger_param_2, ":instance_id"),
-    
-    (try_begin),
-      (this_or_next|multiplayer_is_server),
-      (neg|game_in_multiplayer_mode),
-      
-      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
-      (le,":cur_time",0),
-      (scene_prop_set_slot,":instance_id", scene_prop_slot_time, 5), #Seconds until exploding
-      (scene_prop_set_slot,":instance_id", scene_prop_slot_user_agent, ":agent_id"), #User agent
-      
-      (scene_prop_enable_after_time, ":instance_id", 500),
-      
-      (prop_instance_get_position,pos56,":instance_id"),
-      (call_script,"script_multiplayer_server_play_sound_at_position","snd_crate_fuse"),
-    (try_end),
 ])
 
 check_mm_use_cannon_prop_start_trigger = (ti_on_scene_prop_start_use,
@@ -4763,17 +4747,18 @@ scene_props = [
   ## MILITARY TROOPS
   # Infatry
   ("pn_change_troop_militia",spr_use_time(3),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_militia", cost=300, use_string="str_troop_militia_become")),
+  ("pn_change_troop_infantry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_infantry_musician", cost=1500)),
   ("pn_change_troop_line_infantry",spr_use_time(40),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_line_infantry", cost=2000)),
   ("pn_change_troop_light_infantry",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_light_infantry", cost=3500)),
   ("pn_change_troop_grenadier",spr_use_time(60),"training_musket","bo_pw_weapon_big", spr_change_troop_triggers("trp_grenadier", cost=3500)),
-  ("pn_change_troop_infantry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_infantry_musician", cost=1500)),
+  ("pn_change_troop_sapper",spr_use_time(60),"shovel","bo_pw_weapon", spr_change_troop_triggers("trp_sapper", cost=3000)),
   ("pn_change_troop_infantry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_big", spr_change_troop_triggers("trp_infantry_officer", cost=5000)),
 
   # Cavalry
+  ("pn_change_troop_cavalry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
   ("pn_change_troop_dragoon",spr_use_time(40),"training_light_sabre","bo_pw_weapon_small", spr_change_troop_triggers("trp_dragoon", cost=2000)),
   ("pn_change_troop_lancer",spr_use_time(60),"arena_lance","bo_pw_weapon_big", spr_change_troop_triggers("trp_lancer", cost=3500)),
   ("pn_change_troop_hussar",spr_use_time(60),"training_light_sabre","bo_pw_weapon_small", spr_change_troop_triggers("trp_hussar", cost=3500)),
-  ("pn_change_troop_cavalry_musician",spr_use_time(40),"pn_drum","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_musician", cost=2000)),
   ("pn_change_troop_cuirassier",spr_use_time(80),"training_heavy_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_cuirassier", cost=4500)),
   ("pn_change_troop_cavalry_officer",spr_use_time(80),"training_officer_sword","bo_pw_weapon_small", spr_change_troop_triggers("trp_cavalry_officer", cost=5000)),
 
@@ -5596,67 +5581,53 @@ scene_props = [
   ("mm_woodenwallsnowy3d" ,sokf_static_movement,"woodenwallsnowy3d" ,"bo_woodenwallsnowy3d" , []),
 
   ("mm_stakes" ,sokf_static_movement|sokf_dont_move_agent_over,"stackes" ,"stackes_collision" , []),
-    ("mm_stakes_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "stackes" , "stackes_collision" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    ("mm_stakes2_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "mmstackes" , "bo_mmstackes" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    ("sandbags_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "sandbags" , "bo_sandbags" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    ("chevaux_de_frise_tri_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "chevaux_de_frise_tri" , "bo_chevaux_de_frise_tri" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    
-    ("gabiondeploy_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "gabiondeploy" , "bo_gabiondeploy" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    
-    ("mm_fence1", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "mmfence1", "bo_mmfence1" ,
-    [    
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    
-    ("plank_destructible2" ,sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible,"mm_plank1" ,"bo_mm_plank1" ,
+  ("mm_stakes_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "stackes" , "stackes_collision" , 
     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_constructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
-    
-    ("earthwork1_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "earthwork1" ,"bo_earthwork1" , 
-     [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_destructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  ("mm_stakes2_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "mmstackes" , "bo_mmstackes" , 
+    [
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  ("sandbags_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "sandbags" , "bo_sandbags" , 
+    [
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  ("chevaux_de_frise_tri_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "chevaux_de_frise_tri" , "bo_chevaux_de_frise_tri" , 
+    [
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  
+  ("gabiondeploy_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "gabiondeploy" , "bo_gabiondeploy" , 
+    [
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  
+  ("mm_fence1", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "mmfence1", "bo_mmfence1" ,
+  [    
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
+  
+  ("earthwork1_destructible", sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible, "earthwork1" ,"bo_earthwork1" , 
+    [
+      check_common_constructable_prop_on_hit_trigger,
+      check_common_destructible_props_destroy_trigger,
+      (ti_on_scene_prop_use,[]),
+  ]),
 
-    ("mm_destructible_pioneer_builds_end", 0,"0" ,"0" , []),
-    
-    ("plank_destructible" ,sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible,"mm_plank1" ,"bo_mm_plank1" ,
-    [
-       check_common_constructable_prop_on_hit_trigger,
-       check_common_constructible_props_destroy_trigger,
-       (ti_on_scene_prop_use,[]),
-    ]),
+  ("mm_destructible_pioneer_builds_end", 0,"0" ,"0" , []),
 
   ("mm_pontoon_bridge_short" ,sokf_static_movement|sokf_dont_move_agent_over,"pontoon_deploy_short" ,"bo_pontoon_deploy_short" , []),
   ("mm_pontoon_bridge_med" ,sokf_static_movement|sokf_dont_move_agent_over,"pontoon_deploy_med" ,"bo_pontoon_deploy_med" , []),
@@ -5668,11 +5639,6 @@ scene_props = [
     check_common_dummy_destroy_trigger,
     check_common_dummy_on_hit_trigger,
   ]),
-
-  ("crate_explosive_fra" ,sokf_static_movement|sokf_dont_move_agent_over|spr_use_time(2),"barreltriangulated_fra" ,"barreltriangulated_collision" , [check_common_explosive_crate_use_trigger,]),
-  ("crate_explosive_ger" ,sokf_static_movement|sokf_dont_move_agent_over|spr_use_time(2),"barreltriangulated_prus" ,"barreltriangulated_collision" , [check_common_explosive_crate_use_trigger,]),
-  ("crate_explosive_rus" ,sokf_static_movement|sokf_dont_move_agent_over|spr_use_time(2),"barreltriangulated_rus" ,"barreltriangulated_collision" , [check_common_explosive_crate_use_trigger,]),
-  ("crate_explosive_brit" ,sokf_static_movement|sokf_dont_move_agent_over|spr_use_time(2),"barreltriangulated_brit" ,"barreltriangulated_collision" , [check_common_explosive_crate_use_trigger,]),
 
   ("mm_bird",sokf_static_movement|sokf_destructible,"birdmodel" ,"bo_birdmodel",
      [
@@ -5838,7 +5804,7 @@ scene_props = [
       (ti_on_scene_prop_use,[]),
     ]),
 
-  ("mm_stakes_construct",sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible,"stackes_destroyed" ,"bo_stackes_destroyed" , [
+    ("mm_stakes_construct",sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible,"stackes_destroyed" ,"bo_stackes_destroyed" , [
       check_common_constructable_prop_on_hit_trigger,
       check_common_constructible_props_destroy_trigger,
       (ti_on_scene_prop_use,[]),
@@ -5868,15 +5834,11 @@ scene_props = [
       check_common_constructible_props_destroy_trigger,
       (ti_on_scene_prop_use,[]),
     ]),
-    ("plank_construct_dummy" ,sokf_static_movement|sokf_dont_move_agent_over|sokf_show_hit_point_bar|sokf_destructible,"mm_plank1" ,"bo_mm_plank1" , [
-      check_common_constructable_prop_on_hit_trigger,
-      (ti_on_scene_prop_use,[]),
-      ]),
     ("earthwork1_construct_dummy" ,sokf_static_movement,"earthwork1" ,"bo_earthwork1" , [  
       check_common_constructable_prop_on_hit_trigger,
       check_common_constructible_props_destroy_trigger,
-      (ti_on_scene_prop_use,[]),]),
-    ("crate_explosive" ,sokf_static_movement,"barreltriangulated" ,"barreltriangulated_collision" , []),
+      (ti_on_scene_prop_use,[]),
+    ]),
 
   ("mm_crator_small",sokf_static_movement,"crator_small","0", []),
   ("mm_crator_crator_medium_very_small",sokf_static_movement,"crator_medium_very_small","0", []),
@@ -6564,41 +6526,6 @@ scene_props = [
       (store_random_in_range,":cur_time",1,31),
       (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time")
     ]),
-  ]),
-
-  ("mm_sp_crate_explosive",sokf_static_movement|sokf_destructible,"barreltriangulated" ,"barreltriangulated_collision" , [
-  (ti_on_init_scene_prop,
-    [
-      (this_or_next|multiplayer_is_server), #In case someone wants them in a multi scene...
-      (neg|game_in_multiplayer_mode),
-      (store_trigger_param_1,":prop_id"),
-      (scene_prop_set_hit_points,":prop_id",70),
-      
-      (set_fixed_point_multiplier, 100),
-      (position_set_x, pos5, 1500),
-      (position_set_y, pos5, 80),
-      (position_set_z, pos5, 0),
-      (prop_instance_dynamics_set_properties, ":prop_id", pos5),
-      (position_set_x, pos5, 300),
-      (position_set_y, pos5, 300),
-      (position_set_z, pos5, 300),
-      (prop_instance_dynamics_set_omega, ":prop_id", pos5),
-    ]), 
-  (ti_on_scene_prop_hit,[]),
-  (ti_on_scene_prop_destroy,
-    [
-      (this_or_next|multiplayer_is_server), #In case someone wants them in a multi scene...
-      (neg|game_in_multiplayer_mode),
-      (store_trigger_param_1,":prop_id"),
-      (assign,":attacker_agent_no",-1),
-      (set_fixed_point_multiplier, 100),
-      (prop_instance_get_position,pos3,":prop_id"),
-      (copy_position,pos47,pos3),
-      (position_set_z,pos3,-3000),#patch1115 fix 29/1
-      (prop_instance_set_position,":prop_id",pos3),
-      (prop_instance_animate_to_position,":prop_id",pos3),
-      (call_script,"script_explosion_at_position",":attacker_agent_no",300,500,0)
-   ]),
   ]),
 
   ("custom_button_instant",spr_use_time(0),"0","cannon_button_collision", [
