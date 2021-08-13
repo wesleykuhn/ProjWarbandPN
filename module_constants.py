@@ -164,6 +164,8 @@ player_character_language_austrian          = 3
 player_character_language_prussian          = 4
 player_character_language_russian           = 5
 player_character_language_pirate            = 6
+player_character_language_begin             = player_character_language_french
+player_character_language_end               = player_character_language_pirate + 1
 
 voice_type_cry                              = 1
 voice_type_surrender                        = 2

@@ -2450,7 +2450,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_proficiency_level, reg10, ":troop_id", wpt_one_handed_weapon),
       (store_proficiency_level, reg12, ":troop_id", wpt_polearm),
       (store_proficiency_level, reg14, ":troop_id", wpt_firearm),
-      (store_proficiency_level, reg15, ":troop_id", wpt_throwing),
+      (store_proficiency_level, reg15, ":troop_id", wpt_two_handed_weapon),
 
       # Can use cannons
       (try_begin),
@@ -3259,6 +3259,7 @@ scripts.extend([("game_start", []), # single player only, not used
             (call_script, "script_display_faction_relation_change", ":faction_id", ":other_faction_id", ":previous_value", ":value"),
           (try_end),
         (try_end),
+
       (else_try), # set an agent slot on the client, from the server
         (eq, ":event_type", server_event_agent_set_slot),
         (store_script_param, ":agent_id", 3),
@@ -8897,7 +8898,7 @@ scripts.extend([("game_start", []), # single player only, not used
   # INPUT: arg1 = scene_prop_no
   # OUTPUT: none
   ("initialize_scene_prop_slots",
-   [
+    [
      (store_script_param, ":scene_prop_no", 1),
 
      (try_for_prop_instances, ":cur_instance_id", ":scene_prop_no"),
@@ -8908,7 +8909,8 @@ scripts.extend([("game_start", []), # single player only, not used
          (scene_prop_set_slot, ":cur_instance_id", ":cur_slot", 0),
        (try_end),
      (try_end),
-     ]),
+    ]
+  ),
 
   # script_multiplayer_mm_after_mission_start_common
   # Input: 
@@ -13727,8 +13729,12 @@ scripts.extend([("game_start", []), # single player only, not used
       (agent_is_human, ":agent_id"),
       (agent_is_alive, ":agent_id"),
       (player_is_active, ":player_id"),
-      (agent_set_slot, ":agent_id", slot_agent_character_language, player_character_language_french),
-      (multiplayer_send_3_int_to_player, ":player_id", server_event_agent_set_slot, ":agent_id", slot_agent_character_language, player_character_language_french),
+      # Char language
+      (try_begin),
+        (this_or_next|agent_slot_eq, ":agent_id", slot_agent_character_language, -1),
+        (agent_slot_eq, ":agent_id", slot_agent_character_language, 0),
+        (agent_set_slot, ":agent_id", slot_agent_character_language, player_character_language_french),
+      (try_end),
     (try_end),
     (try_begin),
       (player_is_active, ":player_id"),
@@ -24286,8 +24292,8 @@ scripts.extend([("cf_process_wood",
 
   ("initialize_animation_menu_strings", # set up the starting and ending string ids for the animation menu
    [(troop_set_slot, "trp_animation_menu_strings", 0, "str_menu_guestures"), # offset 0 is for the main menu to select sub menus
-    (troop_set_slot, "trp_animation_menu_strings", 0 + animation_menu_end_offset, "str_anim_cheer"),
-    (troop_set_slot, "trp_animation_menu_strings", 1, "str_anim_cheer"),
+    (troop_set_slot, "trp_animation_menu_strings", 0 + animation_menu_end_offset, "str_anim_stop"),
+    (troop_set_slot, "trp_animation_menu_strings", 1, "str_anim_stop"),
     (troop_set_slot, "trp_animation_menu_strings", 1 + animation_menu_end_offset, "str_anim_away_vile_beggar"),
     (troop_set_slot, "trp_animation_menu_strings", 2, "str_anim_away_vile_beggar"),
     (troop_set_slot, "trp_animation_menu_strings", 2 + animation_menu_end_offset, "str_anim_war_cry"),
@@ -24359,8 +24365,9 @@ scripts.extend([("cf_try_execute_animation", # clients, server: check if an agen
       (assign, ":add_to_chat", 0), # display the animation string in the local chat for near the player
       (try_begin), # the first script parameter is the name string id, which must be in the
                    # appropriate section of module_strings.py
+        animation_menu_entry("str_anim_stop", animation="anim_drum_end"),
         animation_menu_entry("str_anim_cheer", animation="anim_cheer", man_sound="snd_man_victory"),
-        animation_menu_entry("str_anim_clap", animation="anim_man_clap", woman_alt_animation="anim_woman_clap", prevent_if_wielding=1),
+        animation_menu_entry("str_anim_sit_ground_1", animation="anim_ground_sit", woman_alt_animation="anim_ground_sit_2", prevent_if_wielding=1),
         animation_menu_entry("str_anim_raise_sword", animation="anim_pose_raise_sword"),
         animation_menu_entry("str_anim_hands_on_hips", animation="anim_pose_hands_on_hips", prevent_if_wielding=1, prevent_if_moving=1),
         animation_menu_entry("str_anim_arms_crossed", animation="anim_pose_arms_crossed", prevent_if_wielding=1, prevent_if_moving=1),
