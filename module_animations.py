@@ -1706,7 +1706,7 @@ animations = [
 #["unused_human_anim_70", 0, 0, [1.0, "anim_human", 0, 1, 0]],
 #["unused_human_anim_71", 0, 0, [1.0, "anim_human", 0, 1, 0]],
 #["unused_human_anim_72", 0, 0, [1.0, "anim_human", 0, 1, 0]],
-["unused_human_anim_73", 0, 0, [1.0, "anim_human", 0, 1, 0]],
+#["unused_human_anim_73", 0, 0, [1.0, "anim_human", 0, 1, 0]],
 ["unused_human_anim_74", 0, 0, [1.0, "anim_human", 0, 1, 0]],
 ["unused_human_anim_75", 0, 0, [1.0, "anim_human", 0, 1, 0]],
 ["unused_human_anim_76", 0, 0, [1.0, "anim_human", 0, 1, 0]],
