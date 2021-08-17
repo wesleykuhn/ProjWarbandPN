@@ -2546,6 +2546,13 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
 
     (else_try),
+      (eq, ":scene_prop_id", "spr_pn_bank_deposit"),
+      (str_store_string, s0, "str_bank_deposit"),
+    (else_try),
+      (eq, ":scene_prop_id", "spr_pn_bank_withdraw"),
+      (str_store_string, s0, "str_bank_withdraw"),
+
+    (else_try),
       (is_between,":scene_prop_id","spr_mm_cannon_12pdr_limber","spr_mm_tunnel_wall"),
       (try_begin),
         (is_between, ":scene_prop_id", "spr_mm_12pdr_push_button", "spr_mm_round_button"),

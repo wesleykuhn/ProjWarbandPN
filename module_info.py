@@ -1,5 +1,5 @@
 # set this to your module directory, using forward slashes (/) not backward slashes (\):
-export_dir = "C:/Program Files (x86)/Steam/steamapps/common/MountBlade Warband/Modules/PN_0.9_Server"
+export_dir = "C:/Program Files (x86)/Steam/steamapps/common/MountBlade Warband/Modules/PN_0.9_Client"
 
 import os
 import sys

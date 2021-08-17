@@ -449,6 +449,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("menu_trade_routes", "Show Trade Routes Details"),
   ("trade_routes_details", "Trade routes details:"),
 
+  ("bank_deposit", "Deposit gold in bank"),
+  ("bank_withdraw", "Withdraw gold from bank"),
+
   ("character_language", "Choose Character Nationality"),
   ("character_language_french", "French"),
   ("character_language_english", "British"),

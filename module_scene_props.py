@@ -1434,6 +1434,24 @@ def spr_item_chest_triggers(inventory_count=6, max_item_length=100, use_string="
     spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
     spr_call_script_use_trigger("script_cf_use_inventory", probability)]
 
+def spr_client_bank_triggers(inventory_count=6, max_item_length=100, hit_points=1000, probability=100):
+  return [(ti_on_scene_prop_init,
+     [(store_trigger_param_1, ":instance_id"),
+      (scene_prop_set_hit_points, ":instance_id", spr_check_hit_points(hit_points)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_full_hit_points, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_next_resource_hp, hit_points),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_count, spr_check_inventory_count(inventory_count)),
+      (scene_prop_set_slot, ":instance_id", slot_scene_prop_inventory_max_length, max_item_length),
+      ]),
+    (ti_on_scene_prop_hit,
+     [(store_trigger_param_1, ":instance_id"),
+      (store_trigger_param_2, ":hit_damage"),
+      (call_script, "script_cf_hit_chest", ":instance_id", ":hit_damage", hit_points),
+      ]),
+    (ti_on_scene_prop_destroy, []),
+    spr_call_script_cancel_use_trigger("script_cf_pick_chest_lock", 0),
+    spr_call_script_use_trigger("script_cf_use_inventory", probability)]
+
 # Item storage without any lock.
 def spr_item_storage_triggers(inventory_count=6, max_item_length=100, use_string="str_access"):
   return [(ti_on_scene_prop_init,
@@ -5022,6 +5040,9 @@ scene_props = [
   ("mm_weather_fog", 0, "0", "0", []), # var1 = fog distance; meters x 10 where fog visibility ends 
   ("mm_weather_thunder", 0, "0", "0", []), # var1 = thunder type: 0 = none 1 = thunder only 2 = thunder & lighting, # var2 = thunder frequancy 0-100 ; the higher value the more thunder
   ("mm_weather_wind", 0, "0", "0", []), # var1 = flora_wind_strength in % 0-100; Default = 14 # var2 = water_wind_strength in % 0-100; Default = 14
+
+  ("pn_bank_deposit", sokf_invisible|spr_chest_flags(1), "pw_invisible_chest","bo_pw_invisible_chest", spr_client_bank_triggers(hit_points=2000, inventory_count=12, max_item_length=120)),
+  ("pn_bank_withdraw", sokf_invisible|spr_chest_flags(1), "pw_invisible_chest","bo_pw_invisible_chest", spr_client_bank_triggers(hit_points=2000, inventory_count=12, max_item_length=120)),
 
   ("pn_trade_route_coffee_capture_point",spr_use_time(15),"pn_trade_route_coffee_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
   ("pn_trade_route_cotton_capture_point",spr_use_time(15),"pn_trade_route_cotton_pole","bo_pw_castle_flag_post", spr_capture_trade_route_triggers()),
