@@ -63,3 +63,51 @@ place various types of window, wich are: 1 = Rich type glass
 * BANKS *
 -Bank system has two scene props wich players can interate with: "pn_bank_deposit" and "pn_bank_withdraw".
 	Each one does what the name suggests.
+
+* Global Looping NW Sounds *
+-If you want a sound looping, unstopable, you can just place the scene props:
+	"mm_ambience_sound_global_*". WARNING: They will play to every player, without stop! So, 
+	just use it when REALLY needed.
+
+* Local Looping NW Sounds *
+-If you want a looping sound only on a certain place, you can place the scene props:
+	"mm_ambience_sound_local_*". They will be played only when the player reach that area. They also
+	won't stop. WARNING: Don't place them close each other, they can start to play togheter and 
+	become a boring thing to hear xD. The best test you can do to see if it's good is use a headphone
+	and play the scene, with a medium volume (60%), if you enjoy then it's fine.
+
+* New PW Scene Ambience Sounds *
+-You can follow the same way when making a PW local sound. I added more sounds to the list. So, in the 
+	var 1 of the "pw_scene_ambient_sound" you can choose from the following IDs:
+	1 = Torch burning
+	2 = Dummy hitted
+	3 = Dummy destroyed
+	4 = Gourd destroyed
+	5 = Cow moo
+	6 = Cow slaughter
+	7 = Dog bark
+	8 = Own
+	9 = Chicken
+	10 = Carpenter, saw cutting
+	11 = Blacksmith, hammer hitting
+ 	12 = (NW) Some birds
+	13 = (NW) Many birds
+	14 = (NW) Ocean
+	15 = (NW) Many crickets
+	16 = (NW) Few crickets
+	17 = (NW) River
+	18 = (NW) Seagulls
+	19 = (NW) Flies
+	20 = (NW) Night forest ambience
+	21 = (NW) Heavy rain on the roof
+	22 = (NW) Heavy rain on the stone
+	23 = (NW) Windmill working
+	24 = (NW) Buzzard - [If you placed the mm_bird on the scene, this will be done auto]
+	25 = (NW) Crow
+	26 = (NW) Deep forest at night
+	27 = (NW) Beach
+	28 = (NW) Farmland
+	29 = (NW) Farmland evening
+	30 = (NW) Farmland empty
+	31 = (NW) City empty
+	32 = Snow
