@@ -47,8 +47,8 @@ place various types of window, wich are: 1 = Rich type glass
             			         4 = Don't spawn any window
 
 * TRADE ROUTES *
--They are separated by product type, ex: spr_pn_trade_route_coffee_capture_point and 
-	pn_trade_route_ivory_capture_point. The limit of trade routes placement is 10. The var number 2 
+-They are separated by product type, ex: "pn_trade_route_coffee_capture_point" and 
+	"pn_trade_route_ivory_capture_point". The limit of trade routes placement is 10. The var number 2 
 	defines the identification of the trade route: 0 = Boston
 		     				       1 = Savannah
 		     				       2 = Santos
@@ -59,3 +59,7 @@ place various types of window, wich are: 1 = Rich type glass
 		     				       7 = Trabzon
 		     				       8 = Ochamchira
 		     				       9 = Tianjin
+
+* BANKS *
+-Bank system has two scene props wich players can interate with: "pn_bank_deposit" and "pn_bank_withdraw".
+	Each one does what the name suggests.

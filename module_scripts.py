@@ -9013,6 +9013,31 @@ scripts.extend([("game_start", []), # single player only, not used
       (this_or_next|multiplayer_is_server),
       (neg|game_in_multiplayer_mode),
 
+      # init all scales.
+      (set_fixed_point_multiplier, 1000),
+      (try_for_range, ":prop_type", "spr_invalid_object", "spr_mm_weather_fog_color_red"),
+        (scene_prop_get_num_instances, ":num_instances_of_scene_prop", ":prop_type"),  
+        (try_for_range, ":cur_prop_instance", 0, ":num_instances_of_scene_prop"),
+          (scene_prop_get_instance, ":prop_instance_id", ":prop_type", ":cur_prop_instance"),
+          (prop_instance_get_scale, pos59, ":prop_instance_id"),
+          (position_get_scale_x, ":x_scale", pos59),
+          (position_get_scale_y, ":y_scale", pos59),
+          (position_get_scale_z, ":z_scale", pos59),  
+          (assign, ":is_scaled",0),
+          (try_begin),
+            (this_or_next|neq,":x_scale",1000),
+            (this_or_next|neq,":y_scale",1000),
+            (neq,":z_scale",1000),
+            (assign, ":is_scaled",1),
+          (try_end),
+          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_x_scale,":x_scale"),
+          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_y_scale,":y_scale"),
+          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_z_scale,":z_scale"),
+          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_is_scaled,":is_scaled"),
+        (try_end),
+      (try_end),
+      (set_fixed_point_multiplier, 100),
+
       # PN Bots setup
       (set_cheer_at_no_enemy, 0),
       (try_begin),
@@ -9106,6 +9131,50 @@ scripts.extend([("game_start", []), # single player only, not used
       (try_end),
     (try_end),
   ]),
+
+  #script_multiplayer_server_player_joined_common
+  # INPUT: arg1 = player_no
+  # OUTPUT: none
+  ("mm_server_player_joined",
+    [
+      (store_script_param, ":player_no", 1),
+      (try_begin),   
+        (multiplayer_is_server),
+        # send prop sizes, only cannons.    
+        (try_for_range,":prop_type", "spr_mm_cannon_aim_platform", "spr_mm_tunnel_wall"),
+          (neg|is_between,":prop_type", mm_unlimber_button_types_begin, mm_unlimber_button_types_end), # dont send those scales.
+          (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_temporary_object),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,1),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_scaled,1), # is scaled.
+            (scene_prop_get_slot,":x_scale",":cur_instance_id",scene_prop_slot_x_scale),
+            (scene_prop_get_slot,":y_scale",":cur_instance_id",scene_prop_slot_y_scale),
+            (scene_prop_get_slot,":z_scale",":cur_instance_id",scene_prop_slot_z_scale),
+            # at least one is above 0?
+            (this_or_next|gt,":x_scale",0),
+            (this_or_next|gt,":y_scale",0),
+            (gt,":z_scale",0),
+            # add 5000 to the values to support up to -5times scale and + 60 or 27 whatever.
+            (val_add,":x_scale",5000),
+            (val_add,":y_scale",5000),
+            (val_add,":z_scale",5000),
+            # define max value for the scales...
+            (val_clamp,":x_scale",0,65535),
+            (val_clamp,":y_scale",0,65535),
+            (val_clamp,":z_scale",0,32767),
+            # packing
+            (assign,":sendvar1",":cur_instance_id"),
+            (val_lshift, ":sendvar1", 16), 
+            (val_add,":sendvar1",":x_scale"),
+            (assign,":sendvar2",":z_scale"),
+            (val_lshift, ":sendvar2", 16), 
+            (val_add,":sendvar2",":y_scale"),
+            # and send it off.
+            (multiplayer_send_2_int_to_player, ":player_no", multiplayer_event_return_scale_object,":sendvar1",":sendvar2"),
+          (try_end),
+        (try_end),
+      (try_end),
+    ]
+  ),
 
   # script_get_prop_center
   ("get_prop_center",
