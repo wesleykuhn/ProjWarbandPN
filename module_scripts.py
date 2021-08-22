@@ -4219,31 +4219,26 @@ scripts.extend([("game_start", []), # single player only, not used
            (else_try),
              (eq,":action_type",player_action_toggle_walk),
              (agent_is_alive,":player_agent"),
-             (assign,":contine",1),
              (try_begin),
                (call_script, "script_cf_agent_is_playing_music", ":player_agent"), # is playing
-               (assign,":contine",0),
-             (try_end),
-             (eq,":contine",1),
-             (try_begin),
-               (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
-               (agent_set_animation,":player_agent","anim_surrender_end",1),
-             (try_end),
-
-             (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
-
-             (try_begin),
-               (this_or_next | eq,":value",350),
-               (eq,":value",100),
-               (assign,":value",55),
              (else_try),
-               (assign,":value",100),
-               (agent_set_horse_speed_factor, ":player_agent", 100),
+               (try_begin),
+                 (call_script, "script_cf_agent_is_surrendering", ":player_agent"), # is surrendering
+                 (agent_set_animation, ":player_agent", "anim_surrender_end", 1),
+               (try_end),
+               (agent_get_slot,":value",":player_agent",slot_agent_base_speed_mod),
+               (try_begin),
+                 (this_or_next | eq,":value",350),
+                 (eq,":value",100),
+                 (assign,":value",55),
+               (else_try),
+                 (assign,":value",100),
+                 (agent_set_horse_speed_factor, ":player_agent", 100),
+               (try_end),
+               (set_fixed_point_multiplier,100),
+               (agent_set_speed_modifier,":player_agent", ":value"),
+               (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
              (try_end),
-
-             (set_fixed_point_multiplier,100),
-             (agent_set_speed_modifier,":player_agent", ":value"),
-             (agent_set_slot,":player_agent",slot_agent_base_speed_mod,":value"),
 
            (else_try),
              (eq,":action_type",player_action_surrender),
@@ -11572,7 +11567,7 @@ scripts.extend([("game_start", []), # single player only, not used
    (try_end),
   ]),
 
-   # script_agent_take_cannonball
+  # script_agent_take_cannonball
   # Input: arg1 = agent_id
   # Output: reg0 = used_item
   ("agent_take_cannonball",
@@ -24444,7 +24439,10 @@ scripts.extend([("cf_try_execute_animation", # clients, server: check if an agen
         animation_menu_entry("str_anim_stop", animation="anim_drum_end"),
         animation_menu_entry("str_anim_cheer", animation="anim_cheer", man_sound="snd_man_victory"),
         animation_menu_entry("str_anim_sit_ground_1", animation="anim_ground_sit", woman_alt_animation="anim_ground_sit_2", prevent_if_wielding=1),
-        animation_menu_entry("str_anim_raise_sword", animation="anim_pose_raise_sword"),
+        animation_menu_entry("str_anim_sit_chair", animation="anim_sitting_1", upper_body_only=0, prevent_if_moving=1),
+        animation_menu_entry("str_anim_salute_sword", animation="anim_salute_sword"),
+        animation_menu_entry("str_anim_cane_idle", animation="anim_cane_idle", prevent_if_moving=1),
+        animation_menu_entry("str_anim_salute", animation="anim_salute", prevent_if_moving=1, upper_body_only=0, prevent_if_wielding=1),
         animation_menu_entry("str_anim_hands_on_hips", animation="anim_pose_hands_on_hips", prevent_if_wielding=1, prevent_if_moving=1),
         animation_menu_entry("str_anim_arms_crossed", animation="anim_pose_arms_crossed", prevent_if_wielding=1, prevent_if_moving=1),
         animation_menu_entry("str_anim_stand_still", animation="anim_stand_lord", woman_alt_animation="anim_stand_lady", prevent_if_moving=1),
@@ -24544,6 +24542,12 @@ scripts.extend([("cf_try_execute_animation", # clients, server: check if an agen
         (try_end),
         (try_begin),
           (gt, ":animation", -1),
+          (try_begin),
+            (eq, ":animation", "anim_drum_end"),
+            (agent_get_animation, ":cur_anim", ":agent_id", 0),
+            (eq, ":cur_anim", "anim_sitting_1"),
+            (assign, ":upper_body_only", 0),
+          (try_end),
           (agent_set_animation, ":agent_id", ":animation", ":upper_body_only"),
         (try_end),
         (try_begin),

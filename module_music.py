@@ -71,7 +71,7 @@ tracks = [
  ("outdoor_beautiful_land", "saint_saens_danse_macabre.ogg", mtf_sit_travel, mtf_sit_town|mtf_sit_tavern),
  ("retreat", "retreat.ogg", mtf_sit_killed|mtf_persist_until_finished, 0),
  ("siege_attempt", "dvorak_symphony_9_4.ogg", mtf_sit_siege, mtf_sit_fight|mtf_sit_ambushed),
- ("tavern_1", "travel_swadian.ogg", mtf_sit_tavern, mtf_sit_town|mtf_sit_travel),
+ ("tavern_1", "colonel_bogey_march.ogg", mtf_sit_tavern, mtf_sit_town|mtf_sit_travel),
  ("tavern_2", "vivaldi_summer_allegro_adagio.ogg", mtf_sit_tavern, mtf_sit_town|mtf_sit_travel),
  ("town_khergit", "handel_queen_of_sheba.mp3", mtf_culture_3|mtf_sit_town, mtf_culture_all|mtf_sit_tavern|mtf_sit_travel),
  ("town_neutral", "mozart_symphony_40_molto_allegro.ogg", mtf_sit_town, mtf_sit_tavern|mtf_sit_travel),

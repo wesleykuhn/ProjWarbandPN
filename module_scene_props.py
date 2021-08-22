@@ -1635,7 +1635,6 @@ scene_props = [
   ("shelves",0,"shelves","boshelves", []),
   ("table_tavern",0,"table_tavern","botable_tavern", []),
   ("table_castle_a",0,"table_castle_a","bo_table_castle_a", []),
-  ("chair_castle_a",0,"chair_castle_a","bo_chair_castle_a", []),
 
   ("pillow_a",0,"pillow_a","bo_pillow", []),
   ("pillow_b",0,"pillow_b","bo_pillow", []),
@@ -2029,8 +2028,15 @@ scene_props = [
   ("banner_kingdom_e", 0, "banner_kingdom_e", "0", []),
   ("banner_kingdom_f", 0, "banner_kingdom_f", "0", []),
 
-  ("tavern_chair_a",0,"tavern_chair_a","bo_tavern_chair_a", []),
-  ("tavern_chair_b",0,"tavern_chair_b","bo_tavern_chair_b", []),
+  ("chair_castle_a", 0,"chair_castle_a","bo_chair_castle_a", []),
+  ("tavern_chair_a", 0,"tavern_chair_a","bo_tavern_chair_a", []),
+  ("tavern_chair_b", 0,"tavern_chair_b","bo_tavern_chair_b", []),
+  ("gothic_chair", 0,"gothic_chair","bogothic_chair", []),
+  ("chair_trunk_a", 0,"chair_trunk_a","bo_chair_trunk_a", []),
+  ("chair_trunk_b", 0,"chair_trunk_b","bo_chair_trunk_b", []),
+  ("chair_trunk_c", 0,"chair_trunk_c","bo_chair_trunk_c", []),
+  ("chair_trestle", 0,"chair_trestle","bo_chair_trestle", []),
+  ("mm_chair1" , 0, "chair1", "chair_collision", []),
   ("tavern_table_a",0,"tavern_table_a","bo_tavern_table_a", []),
   ("tavern_table_b",0,"tavern_table_b","bo_tavern_table_b", []),
   ("fireplace_a",0,"fireplace_a","bo_fireplace_a", []),
@@ -2046,7 +2052,6 @@ scene_props = [
   ("counter_tavern",0,"counter_tavern","bocounter_tavern", []),
   ("cup",0,"cup","0", []),
   ("dish_metal",0,"dish_metal","0", []),
-  ("gothic_chair",0,"gothic_chair","bogothic_chair", []),
   ("gothic_stool",0,"gothic_stool","bogothic_stool", []),
   ("grate",0,"grate","bograte", []),
   ("jug",0,"jug","0", []),
@@ -2092,13 +2097,8 @@ scene_props = [
   ("washtub_b",0,"washtub_b","bo_washtub_b", []),
 
   ("table_trunk_a",0,"table_trunk_a","bo_table_trunk_a", []),
-  ("chair_trunk_a",0,"chair_trunk_a","bo_chair_trunk_a", []),
-  ("chair_trunk_b",0,"chair_trunk_b","bo_chair_trunk_b", []),
-  ("chair_trunk_c",0,"chair_trunk_c","bo_chair_trunk_c", []),
-
   ("table_trestle_long",0,"table_trestle_long","bo_table_trestle_long", []),
   ("table_trestle_small",0,"table_trestle_small","bo_table_trestle_small", []),
-  ("chair_trestle",0,"chair_trestle","bo_chair_trestle", []),
 
   ("wheel",0,"wheel","bo_wheel", []),
   ("ladder",sokf_type_ladder,"ladder","boladder", []),
@@ -5896,8 +5896,6 @@ scene_props = [
   ("mm_restroom" ,0,"restroom" ,"restroom_collision" , []),
   ("mm_sign" ,0,"sign" ,"sign_collision" , []),
   ("mm_bed" ,0,"bed" ,"bed_collision" , []),
-  #("mm_chair1" ,spr_use_time(1),"chair1" ,"chair_collision" , [chair_on_use_trigger]),
-  ("mm_chair1" ,0,"chair1" ,"chair_collision" , []),
   ("mm_little_table" ,0,"little_table" ,"little_table_collision" , []),
   ("mm_little_table2" ,0,"little_table2" ,"little_table2_collision" , []),
   ("mm_bank1" ,0,"bank" ,"bank_collision" , []),
@@ -6415,139 +6413,6 @@ scene_props = [
   ("triangle_mmstuco4",0,"mm_triangle_mmstuco4","bo_mm_triangle_wood1", []),
 
   ("pyramid",0,"pyramid","bo_pyramid", []),
-
-  ("mm_ambience_sound_global_wind_snow",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_snow"),
-    ]),]),  
-
-  ("mm_ambience_sound_global_night",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_night"),
-    ]),]),  
-
- ("mm_ambience_sound_global_beach",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_beach"),
-    ]),]),  
-
- ("mm_ambience_sound_global_farmland",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_farmland"),
-    ]),]),  
-
- ("mm_ambience_sound_global_farmland_evening",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_farmland_evening"),
-    ]),]),  
-
- ("mm_ambience_sound_global_farmland_empty",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_farmland_empty"),
-    ]),]),  
- 
-("mm_ambience_sound_global_city_empty",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_global_ambient_city_empty"),
-    ]),]),  
-
- ("mm_ambience_sound_local_birds",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_birds"),
-    ]), ]),  
- ("mm_ambience_sound_local_birds_many",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_birds_many"),
-    ]), ]),  
- ("mm_ambience_sound_local_ocean",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_ocean"),
-    ]), ]),  
-  ("mm_ambience_sound_local_crickets",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_crickets_few"),
-    ]), ]),  
-  ("mm_ambience_sound_local_crickets_many",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_crickets_many"),
-    ]), ]),     
-  ("mm_ambience_sound_local_river",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_river"),
-    ]), ]),   
-  ("mm_ambience_sound_local_night",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_night"),
-    ]), ]),  
-  ("mm_ambience_sound_local_seagulls",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_seagulls"),
-    ]), ]),  
-  ("mm_ambience_sound_local_flys",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_fly"),
-    ]), ]),    
-
- ("mm_ambience_sound_local_roof_rain",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_roof"),
-    ]), ]), 
- ("mm_ambience_sound_local_stone_rain",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_stone"),
-    ]), ]), 
- ("mm_ambience_sound_local_windmill",0,"0" ,"0" , [
-  (ti_on_init_scene_prop,
-    [
-      (neg|multiplayer_is_dedicated_server),
-      (play_sound,"snd_ambient_windmill"),
-    ]), ]), 
-
-  ("mm_ambience_sound_local_crow",0,"0","0",
-   [
-   (ti_on_scene_prop_init,
-    [
-      (store_trigger_param_1,":instance_id"),
-      (store_random_in_range,":cur_time",1,31),
-      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time")
-    ]),
-  ]),
 
   ("custom_button_instant",spr_use_time(0),"0","cannon_button_collision", [
     (ti_on_scene_prop_use,

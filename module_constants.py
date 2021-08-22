@@ -102,6 +102,9 @@ pn_trade_route_9                            = 9
 pn_trade_routes_props_begin                 = "spr_pn_trade_route_coffee_capture_point"
 pn_trade_routes_props_end                   = "spr_mm_hugo1"
 
+pn_chairs_begin                             = "spr_chair_castle_a"
+pn_chairs_end                               = "spr_tavern_table_a"
+
 pn_ship_climber_down_rel_z                  = 100
 pn_ship_climber_down_rel_x                  = -110
 pn_ship_climber_down_rel_y                  = 0
@@ -118,7 +121,7 @@ pn_drummers_uniforms_begin                  = "itm_french_45e_body_drummer"
 pn_drummers_uniforms_end                    = "itm_british_infantry_ranker"
 
 pn_hittable_props_begin                     = "spr_table_tavern"
-pn_hittable_props_end                       = "spr_mm_ambience_sound_global_wind_snow"
+pn_hittable_props_end                       = "spr_custom_button_instant"
 
 pn_usable_not_dam_doors_small_begin         = "spr_pw_door_teleport_small_arch_a"
 pn_usable_not_dam_doors_small_end           = "spr_pw_door_teleport_arch_a"

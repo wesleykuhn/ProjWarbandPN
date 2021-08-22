@@ -2492,18 +2492,6 @@ multiplayer_play_sounds_and_particles  = (
       (try_end),
       (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
     (try_end),
-    #end
-    (try_for_prop_instances, ":instance_id", "spr_mm_ambience_sound_local_crow", somt_object),  #Name of prop
-      (scene_prop_get_slot,":cur_time",":instance_id",scene_prop_slot_time),
-      (val_sub,":cur_time",1),
-      (try_begin),
-        (le,":cur_time",0),
-        (prop_instance_get_position, pos56, ":instance_id"),
-        (play_sound_at_position, "snd_ambient_crow", pos56),#sound name
-        (store_random_in_range,":cur_time",10,61), #Seconds until next sound
-      (try_end),
-      (scene_prop_set_slot, ":instance_id", scene_prop_slot_time,":cur_time"),
-    (try_end),
 ])
 
 # PN END *******************************************************************************************************************
