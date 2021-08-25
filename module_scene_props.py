@@ -6461,6 +6461,26 @@ scene_props = [
   ("mm_weather_fog_color_green", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in green color. (like html RGB)
   ("mm_weather_fog_color_blue", 0, "0", "0", []), # var1 0-127 number; var2: 0-127, values are added up to get a value of 0-254 in blue color. (like html RGB)
 
+  ("portrait_a", 0, "portrait_a", "0", []),
+  ("portrait_b", 0, "portrait_b", "0", []),
+  ("portrait_c", 0, "portrait_c", "0", []),
+  ("portrait_d", 0, "portrait_d", "0", []),
+  ("portrait_e", 0, "portrait_e", "0", []),
+  ("portrait_f", 0, "portrait_f", "0", []),
+  ("portrait_g", 0, "portrait_g", "0", []),
+  ("portrait_h", 0, "portrait_h", "0", []),
+  ("portrait_i", 0, "portrait_i", "0", []),
+  ("portrait_j", 0, "portrait_j", "0", []),
+  ("portrait_k", 0, "portrait_k", "0", []),
+  ("portrait_l", 0, "portrait_l", "0", []),
+  ("portrait_m", 0, "portrait_m", "0", []),
+  ("portrait_n", 0, "portrait_n", "0", []),
+  ("portrait_o", 0, "portrait_o", "0", []),
+  ("tall_clock", 0, "pn_tall_clock", "bo_pn_tall_clock", []),
+  ("book_shelf", 0, "pn_bookshelf", "bo_pn_bookshelf", []),
+  ("chair_leather", 0, "pn_leather_chair", "bo_pn_leather_chair", []),
+  ("carpet_blue_a", 0, "pn_carpet_a", "0", []),
+
   #PN END ***************************************************************************************************************************
 
   ("code_freeze_agent",sokf_moveable,"0","bo_pw_freeze_agent", []),
