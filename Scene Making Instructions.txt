@@ -22,9 +22,13 @@
 -There's a very boring bug which makes a tiny barrier in front of a "Mortar" placed on scene. So,
 	make tests to check if it will cause problems.
 
-* HORSES *
--Horses that has "Artellery" in name spawns with cannons. So, don't place them like they are
-	normal horses.
+* HORSES WITH CANNON/HOWITZER *
+-The scene props with name "pn_buy_arty_horse_cannon_*" and "pn_buy_arty_horse_howitzer_*" are 
+	horses that spawns with cannon/howitzer. So, don't place them like they are normal horses.
+
+* ARTILLERY HORSE ONLY *
+-The scene props with name "pn_buy_arty_horse_*", which hasn't cannon/howitzer on name are only
+	artillery horse, they won't spawn with cannon/howitzer!
 
 * TREES *
 -All the trees that are usable (player can cut down) starts with "mm_tree_" name and DOESN'T has
