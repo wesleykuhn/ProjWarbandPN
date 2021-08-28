@@ -103,3 +103,6 @@ place various types of window, wich are: 1 = Rich type glass
 	30 = (NW) The same farmland again, but empty, no cows
 	31 = (NW) Great city empty
 	32 = Heavy snow
+
+* NEW INTERIOR (BY L'AIGLE) *
+-All the props of L'aigle mod starts with "laigle_".

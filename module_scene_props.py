@@ -6527,7 +6527,7 @@ scene_props = [
   ("laigle_lamp_b", 0, "laigle_prop_lamp_brass", "0", []),
   ("laigle_lampwall_a", 0, "laigle_prop_lampwall", "0", []),
   ("laigle_lampwall_b", 0, "laigle_prop_lampwall_brass", "0", []),
-  ("laigle_leathertrunk", 0, "laigle_prop_leathertrunk", "bo_laigle_prop_leathertrunk", []),
+  ("laigle_leathertrunk", spr_chest_flags(1), "laigle_prop_leathertrunk", "bo_laigle_prop_leathertrunk", spr_item_chest_triggers(hit_points=6000, inventory_count=32, max_item_length=120)),
   ("laigle_mantle_marble", 0, "laigle_prop_mantle", "bo_laigle_prop_mantle", []),
   ("laigle_mantle_wood", 0, "laigle_prop_mantle_wood", "bo_laigle_prop_mantle_wood", []),
   ("laigle_map_europe", 0, "laigle_prop_map_europe", "0", []),
