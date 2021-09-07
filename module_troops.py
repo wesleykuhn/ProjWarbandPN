@@ -199,7 +199,7 @@ troops = [
    str_12|agi_12|pw_attr,wpex(120,0,20,0,50,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_1|knows_riding_5,default_face_1,default_face_2],
 
   ["cavalry_officer","Cavalry Officer","a cavalry officer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_gentleman_outfit_brown", "itm_leather_boots_b", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
+   ["itm_civil_gentleman_outfit_brown", "itm_civil_leather_boots_b", "itm_french_old_pistol_1766", "itm_bullets", "itm_spyglass"],
    str_14|agi_14|pw_attr,wpex(160,70,100,0,90,20),knows_pw|knows_ironflesh_3|knows_power_strike_2|knows_athletics_2|knows_riding_6,default_face_1,default_face_2],
   # PN CAVALRY END
 
@@ -245,7 +245,7 @@ troops = [
 
   # PN Le Emperor
   ["lord","Majesty","the majesty",tf_mounted|tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_emperor_crown", "itm_civil_gentleman_outfit_blue", "itm_leather_boots_b", "itm_cane"],
+   ["itm_civil_emperor_crown", "itm_civil_gentleman_outfit_blue", "itm_civil_leather_boots_b", "itm_cane"],
    str_12|agi_15|pw_attr,wpex(160,0,70,0,50,20),knows_pw|knows_leadership_4|knows_ironflesh_3|knows_power_strike_2|knows_athletics_3|knows_riding_6,default_face_1,default_face_2],
 
   # PN BANDITS BEGIN

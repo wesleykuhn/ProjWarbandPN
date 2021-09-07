@@ -1692,7 +1692,7 @@ animations = [
  [3.0, "anim_stick_idle", 0, 100, arf_blend_in_0|arf_cyclic],
 ],
 ["salute_sword", 0, amf_play|amf_priority_continue,
- [4.0, "mm_salute_sword", 0, 59, arf_blend_in_5],
+ [4.0, "pn_salute_sword", 0, 59, arf_blend_in_5],
 ],
 ["sitting_1", acf_enforce_lowerbody,amf_play|amf_keep|amf_priority_mount,
  [8.0, "sitting_1", 0, 58, arf_blend_in_5|arf_cyclic],

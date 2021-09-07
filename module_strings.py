@@ -1167,7 +1167,7 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_40", "Austerlitz"),
   ("castle_name_41", "Praha"),
   ("castle_name_42", "Cracow"),
-  ("castle_name_43", "Desden"),
+  ("castle_name_43", "Dresden"),
   ("castle_name_44", "Kiev"),
   ("castle_name_45", "Sofia"),
   ("castle_name_46", "Belgrade"),
@@ -1190,7 +1190,7 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("castle_name_63", "Granada"),
   ("castle_name_64", "Marseilles"),
   ("castle_name_65", "Malta"),
-  ("castle_name_66", "Cagliari"),
+  ("castle_name_66", "Demenhur"),
   ("castle_names_end", "Invalid Castle Name"),
 
 ]

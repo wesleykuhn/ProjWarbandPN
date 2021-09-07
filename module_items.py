@@ -206,7 +206,7 @@ items = [
  243, weight(0.75)|head_armor(13)|difficulty(0), imodbits_cloth],
 ["black_hood", "Black Hood", [("hood_black",0)], itp_type_head_armor, 0,
  143, weight(2)|head_armor(11)|difficulty(0), imodbits_cloth],
-["surgeon_coif", "Surgeon's Coif", [("pw_surgeon_coif",0)], itp_type_head_armor, 0,
+["surgeon_coif", "Healer's Coif", [("pw_surgeon_coif",0)], itp_type_head_armor, 0,
  182, weight(1.5)|head_armor(10)|difficulty(0), imodbits_cloth],
 ["pilgrim_hood", "Pilgrim Hood", [("pilgrim_hood",0)], itp_type_head_armor, 0,
  123, weight(1.25)|head_armor(11)|difficulty(0), imodbits_cloth],
@@ -416,7 +416,7 @@ items = [
  490, weight(7)|body_armor(22)|leg_armor(8)|difficulty(0), imodbits_cloth],
 ["ragged_outfit", "Ragged Outfit", [("ragged_outfit_a_new",0)], itp_type_body_armor|itp_covers_legs, 0,
  521, weight(7)|body_armor(23)|leg_armor(9)|difficulty(0), imodbits_cloth],
-["surgeon_coat", "Surgeon's Coat", [("pw_surgeon_coat", 0)], itp_type_body_armor|itp_covers_legs, 0,
+["surgeon_coat", "Healers's Coat", [("pw_surgeon_coat", 0)], itp_type_body_armor|itp_covers_legs, 0,
  732, weight(11)|body_armor(24)|leg_armor(9)|difficulty(0), imodbits_cloth],
 ["nomad_armor", "Nomad Armor", [("nomad_armor_new", 0)], itp_type_body_armor|itp_covers_legs, 0,
  550, weight(3)|body_armor(24)|difficulty(0), imodbits_cloth],
@@ -2293,7 +2293,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  950 , weight(11)|head_armor(4)|body_armor(19)|leg_armor(6)|difficulty(11) ,imodbits_cloth ],
 ["russian_surgeon", "Russian Surgeon Outfit", [("russia_surgeon",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  740 , weight(6)|head_armor(4)|body_armor(15)|leg_armor(12)|difficulty(5) ,imodbits_cloth ],
-["kutuzov_uniform", "Kutuzov's Uniform", [("rus_kutuzov",0)],  itp_type_body_armor  |itp_covers_legs ,0,
+["rus_kutuzov_uniform", "Kutuzov's Uniform", [("rus_kutuzov",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  4750 , weight(5.2)|head_armor(4)|body_armor(20)|leg_armor(8)|difficulty(11) ,imodbits_cloth ],
 
 ## Austrian
@@ -2530,7 +2530,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  299 , weight(0.9)|head_armor(10) ,imodbits_cloth ],
 ["civil_pirates_headscarf_a", "Pirate Red Head Scarf", [("pirates_headscarf_a",0)],  itp_type_head_armor |itp_doesnt_cover_hair ,0, 
  33 , weight(0.1)|head_armor(2) ,imodbits_cloth ],
-["pirate_hat", "Pirate Hat", [("pirate_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 347 , weight(0.5)|head_armor(10) ,imodbits_cloth ],
+["civil_pirate_hat", "Pirate Hat", [("pirate_hat",0)],  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 347 , weight(0.5)|head_armor(10) ,imodbits_cloth ],
 # Body
 ["civil_militia_uniform", "Militia Uniform", [("rus_militia_ranker",0)],  itp_type_body_armor |itp_covers_legs ,0,
  420 , weight(5.2)|head_armor(4)|body_armor(16)|leg_armor(10)|difficulty(8) ,imodbits_cloth ],
@@ -2559,9 +2559,9 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["civil_coat_a", "Brown Coat", [("coat_a",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  523 , weight(3)|head_armor(1)|body_armor(11)|leg_armor(2)|difficulty(0) ,imodbits_cloth ],
 ["civil_colonial_grey_dress", "Colonial Grey Dress", [("colonial_grey_dress",0)],  itp_type_body_armor  |itp_covers_legs ,0,
- 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth ],
+ 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth|imodbit_female ],
 ["civil_colonial_red_dress", "Colonial Red Dress", [("colonial_red_dress",0)],  itp_type_body_armor  |itp_covers_legs ,0,
- 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth ],
+ 388 , weight(4)|head_armor(0)|body_armor(9)|leg_armor(9)|difficulty(0) ,imodbits_cloth|imodbit_female ],
 ["civil_peasant_shirt_1", "Farmer Shirt", [("peasant_shirt_1",0)],  itp_type_body_armor  |itp_covers_legs ,0,
  86 , weight(2)|head_armor(0)|body_armor(6)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
 ["civil_pirate_black_uniform", "Pirate Black Coat", [("pirates_uniform",0)],  itp_type_body_armor  |itp_covers_legs ,0,
@@ -2579,7 +2579,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  288 , weight(1)|head_armor(0)|body_armor(0)|leg_armor(14)|difficulty(0) ,imodbits_cloth ],
 ["civil_noble_shoes", "Noble Shoes", [("civilian_shoes",0)],  itp_type_foot_armor |itp_attach_armature,0,
  699 , weight(0.5)|head_armor(0)|body_armor(0)|leg_armor(8)|difficulty(0) ,imodbits_cloth ],
-["leather_boots_b", "Black Leather Boots", [("leather_boots_b", 0)], itp_type_foot_armor|itp_attach_armature, 0,
+["civil_leather_boots_b", "Black Leather Boots", [("leather_boots_b", 0)], itp_type_foot_armor|itp_attach_armature, 0,
  423, weight(1.25)|leg_armor(16)|difficulty(6), imodbits_cloth],
 ["civil_inf_pants_a", "Infantry Pants", [("british_coldstream_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
@@ -2718,7 +2718,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],
 ["rus_jaeger_shako_ranker", "Russian Jaeger Shako", [("rus_jaeger_ranker_shako",0)],  itp_type_head_armor |itp_doesnt_cover_hair  
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],
-["kutuzov_hat", "Kutuzov's Hair Style", [("rus_general",0)],  itp_type_head_armor |itp_covers_beard  
+["rus_kutuzov_hat", "Kutuzov's Hair Style", [("rus_general",0)],  itp_type_head_armor |itp_covers_beard  
  ,0, 288 , weight(0.1)|head_armor(1) ,imodbits_cloth ],
 ["rus_guard_shako_officer", "Russian Guard Infantry Officer Shako", [("rus_preobr_captain_shako",0)],  itp_type_head_armor |itp_civilian |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],
@@ -2787,7 +2787,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["french_voltigeur_shako_ranker", "French Voltigeur Shako", [("french_voltigeur_shako_ranker",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
 ["french_ldlg_czapka_officer", "French Guard Lancer Officer Czapka", [("french_LdlG_officer_czapka",0)],
-  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 800 , weight(1.2)|head_armor(27) ,imodbits_cloth ],
+ itp_type_head_armor |itp_doesnt_cover_hair  ,0, 800 , weight(1.2)|head_armor(27) ,imodbits_cloth ],
 ["french_ldlg_czapka_ranker", "French Guard Lancer Czapka", [("french_LdlG_ranker_czapka",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 800 , weight(1.2)|head_armor(27) ,imodbits_cloth ],
 ["french_ldlg_czapka_trumpeter", "French Guard Lancer Trumpeter Czapka", [("french_LdlG_trumpeter_czapka",0)], 
@@ -2812,11 +2812,11 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
 ["french_nappy_hat", "Bicorne de l'Empereur Napoleon", [("french_nappy_hat",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 600 , weight(0.5)|head_armor(10) ,imodbits_cloth ],    
-["grach_bearskin_ranker", "French Grenadiers a Cheval Bearskin", [("grach_bearskin_ranker",0)], 
+["french_grach_bearskin_ranker", "French Grenadiers a Cheval Bearskin", [("grach_bearskin_ranker",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],    
-["grach_bearskin_officer", "French Grenadiers a Cheval Officer Bearskin", [("grach_bearskin_officer",0)], 
+["french_grach_bearskin_officer", "French Grenadiers a Cheval Officer Bearskin", [("grach_bearskin_officer",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],    
-["grach_bearskin_trumpeter", "French Grenadiers a Cheval Trumpeter Bearskin", [("grach_bearskin_trumpeter",0)], 
+["french_grach_bearskin_trumpeter", "French Grenadiers a Cheval Trumpeter Bearskin", [("grach_bearskin_trumpeter",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 550 , weight(0.8)|head_armor(20) ,imodbits_cloth ],    
 ["french_captain_hat", "French Captain Bicorne", [("french_captain_hat",0)], 
  itp_type_head_armor |itp_doesnt_cover_hair  ,0, 600 , weight(0.5)|head_armor(10) ,imodbits_cloth ],    
@@ -2914,7 +2914,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
 ["british_guard_shako_ranker", "British Guard Infantry Shako", [("british_guard_shako_ranker",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
-["33_stovepipe", "British Infantry Shako", [("33_stovepipe",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
+["british_infantry_shako", "British Infantry Shako", [("33_stovepipe",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
 ["british_lightdragoon_shako_ranker", "British Light Dragoon Shako", [("british_23rd_lightdragoon_shako",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
@@ -2922,11 +2922,11 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
 ["british_lightdragoon_shako_trumpeter", "British Light Dragoon Trumpeter Shako", [("british_23rd_lightdragoon_shako_trumpeter",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],    
-["british_iniskilling_helmet_ranker", "British Dragoon Helmet", [("british_iniskilling_helmet_ranker",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
+["british_iniskilling_helmet_ranker", "British Dragoon Helmet", [("british_iniskilling_helmet_ranker",0)],  itp_type_head_armor |itp_covers_hair
  ,0, 1200 , weight(2)|head_armor(30)|difficulty(12) ,imodbits_cloth ],
-["british_iniskilling_helmet_officer", "British Dragoon Officer Helmet", [("british_iniskilling_helmet_officer",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
+["british_iniskilling_helmet_officer", "British Dragoon Officer Helmet", [("british_iniskilling_helmet_officer",0)],  itp_type_head_armor |itp_covers_hair
  ,0, 1200 , weight(2)|head_armor(30)|difficulty(12) ,imodbits_cloth ],
-["british_iniskilling_helmet_trumpeter", "British Dragoon Trumpeter Helmet", [("british_iniskilling_helmet_trumpeter",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
+["british_iniskilling_helmet_trumpeter", "British Dragoon Trumpeter Helmet", [("british_iniskilling_helmet_trumpeter",0)],  itp_type_head_armor |itp_covers_hair
  ,0, 1200 , weight(2)|head_armor(30)|difficulty(12) ,imodbits_cloth ],
 ["british_lifeguard_helmet_ranker", "British Horse Guard Helmet", [("british_lifeguard_helmet_ranker",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 1800, weight(2)|head_armor(34)|difficulty(15) ,imodbits_cloth ],    
@@ -2948,9 +2948,9 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 87 , weight(0.3)|head_armor(6) ,imodbits_cloth ],    
 ["british_seaman_hat_2", "British Seaman Hat", [("british_seaman_hat_2",0)],  itp_type_head_armor |itp_covers_hair 
  ,0, 102 , weight(0.3)|head_armor(6) ,imodbits_cloth ],    
-["royal_marine_beret", "British Royal Marine Beret", [("royal_marine_beret",0)],  itp_type_head_armor |itp_covers_hair 
+["british_royal_marine_beret", "British Royal Marine Beret", [("royal_marine_beret",0)],  itp_type_head_armor |itp_covers_hair 
  ,0, 99 , weight(0.3)|head_armor(6) ,imodbits_cloth ],    
-["royal_marine_hat", "British Royal Marine Hat", [("royal_marine_hat",0)],  itp_type_head_armor |itp_covers_hair 
+["british_royal_marine_hat", "British Royal Marine Hat", [("royal_marine_hat",0)],  itp_type_head_armor |itp_covers_hair 
  ,0, 134 , weight(0.3)|head_armor(8) ,imodbits_cloth ],    
 ["british_surgeon_bicorne", "British Surgeon Bicorne", [("british_surgeon_bicorne",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 600 , weight(0.5)|head_armor(10) ,imodbits_cloth ],    
@@ -3163,7 +3163,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
 ["french_equipage_batallion_pants", "French Equipage Batallion Pants", [("french_equipage_batallion_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
 ["french_surgeon_pants", "French Surgeon Pants", [("french_surgeon_pants",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
- 886 , weight(1.25)|leg_armor(22)|difficulty(11) ,imodbits_cloth ],
+ 886 , weight(1.25)|leg_armor(22)|difficulty(5) ,imodbits_cloth ],
 # Russian
 ["rus_infantry_pants1", "Russian Infantry Gaiters", [("rus_musketeer_pants1",0)],  itp_type_foot_armor  |itp_civilian | itp_attach_armature,0,
   400 , weight(1)|leg_armor(16) ,imodbits_cloth ],

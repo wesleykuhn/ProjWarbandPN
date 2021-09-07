@@ -162,6 +162,7 @@ sounds = [
  ("flag_returned", sf_2d|sf_priority_10|sf_vol_10, ["your_flag_returned.ogg"]),
  ("team_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["you_scored_a_point.ogg"]),
  ("enemy_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["enemy_scored_a_point.ogg"]),
+ ("cheer_claps", sf_2d|sf_priority_10|sf_vol_10, ["cheer_claps.ogg"]),
 
  ("failure", sf_2d|sf_priority_6|sf_vol_5, ["cue_failure.ogg"]),
  ("man_yawn", sf_priority_6|sf_vol_10, ["man_yawn_1.ogg"]),

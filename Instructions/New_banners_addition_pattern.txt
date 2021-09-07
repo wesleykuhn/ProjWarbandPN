@@ -1,0 +1,30 @@
+1 - Use GIMP.
+2 - Add the Fold_brushes to the program's custom brushes.
+3 - Use a totally plain, without folds, banner/flag. The folds needs be added by you!
+4 - Rotate the banner's/flag's left side to the upper side (Rotate +90°).
+
+* Cloth shadow effect (fabric fold) *
+Tool: Brush
+Color: Totally black (#000000)
+Mode: Normal
+Opacity: 16,0
+Brush type: Fold_brushes.abr-001
+Size: 350,0
+Proportion: 0,0
+Angle: 0,0
+Space: 25,0
+Hardness: 100,0
+Strengh: 50,0
+Dynamics of paiting: Dynamics off.
+Dynamics' options: On
+Apply scattering: On
+Intensity: 1,00
+Soft paiting: On
+Quality: 15
+Weight: 85,0
+Lock brush to view: Off
+Incremental: Off
+
+* Folds technique *
+- Aim the cursor to the center of the flag/banner and click 5-8 times.
+- Done!

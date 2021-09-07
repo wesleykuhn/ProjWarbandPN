@@ -3605,7 +3605,6 @@ scene_props = [
   ("pn_buy_horn", spr_buy_item_flags(7), "horn", "bo_pw_weapon_small", spr_buy_item_triggers("itm_horn", resources=["itm_copper_bar_short"], engineer=2)),
   ("pn_buy_trumpet", spr_buy_item_flags(9), "trumpet", "bo_pw_weapon_small", spr_buy_item_triggers("itm_trumpet", resources=["itm_copper_bar"], engineer=2)),
   ("pn_buy_bugle", spr_buy_item_flags(7), "bugle", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bugle", resources=["itm_copper_bar_short"], engineer=2)),
-  #("pn_buy_bagpipe", spr_buy_item_flags(14), "mm_invisible", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bagpipe", resources=["itm_wood_pole_short"], engineer=6)),
 
   # BULLETS
   ("pn_buy_bullets", spr_buy_item_flags(1), "cartridge_box_mesh", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bullets", resources=[], engineer=1)),
@@ -3865,7 +3864,7 @@ scene_props = [
   ("pn_buy_russian_arty_officer", spr_buy_item_flags(6), "rus_arty_off", "bo_pw_armor_body", spr_buy_item_triggers("itm_russian_arty_officer", resources=["itm_linen_cloth", "itm_copper_piece"], tailoring=2)),
   ("pn_buy_rus_pioneer", spr_buy_item_flags(4), "rus_pioneer", "bo_pw_armor_body", spr_buy_item_triggers("itm_rus_pioneer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_russian_surgeon", spr_buy_item_flags(4), "russia_surgeon", "bo_pw_armor_body", spr_buy_item_triggers("itm_russian_surgeon", resources=["itm_linen_cloth"], tailoring=2)),
-  ("pn_buy_kutuzov_uniform", spr_buy_item_flags(10), "rus_kutuzov", "bo_pw_armor_body", spr_buy_item_triggers("itm_kutuzov_uniform", resources=[("itm_linen_cloth", 2), "itm_copper_piece"], tailoring=2)),
+  ("pn_buy_rus_kutuzov_uniform", spr_buy_item_flags(10), "rus_kutuzov", "bo_pw_armor_body", spr_buy_item_triggers("itm_rus_kutuzov_uniform", resources=[("itm_linen_cloth", 2), "itm_copper_piece"], tailoring=2)),
   ("pn_buy_austrian_infantry", spr_buy_item_flags(4), "austrian_infantry", "bo_pw_armor_body", spr_buy_item_triggers("itm_austrian_infantry", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_austrian_infantry_fifer", spr_buy_item_flags(4), "austrian_infantry_musician", "bo_pw_armor_body", spr_buy_item_triggers("itm_austrian_infantry_fifer", resources=["itm_linen_cloth"], tailoring=2)),
   ("pn_buy_austrian_infantry_nco", spr_buy_item_flags(4), "austrian_infantry_nco", "bo_pw_armor_body", spr_buy_item_triggers("itm_austrian_infantry_nco", resources=["itm_linen_cloth"], tailoring=2)),
@@ -3979,7 +3978,7 @@ scene_props = [
   ("pn_buy_civil_fur_hat", spr_buy_item_flags(3), "arena_helmetb", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_fur_hat", resources=["itm_leather_piece"], tailoring=2)),
   ("pn_buy_civil_outlaw_mask", spr_buy_item_flags(3), "OutlawMask", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_outlaw_mask", resources=["itm_linen_cloth_small", "itm_leather_piece"], tailoring=2)),
   ("pn_buy_civil_pirates_headscarf_a", spr_buy_item_flags(2), "pirates_headscarf_a", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_pirates_headscarf_a", resources=["itm_linen_cloth_small"], tailoring=1)),
-  ("pn_buy_pirate_hat", spr_buy_item_flags(3), "pirate_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_pirate_hat", resources=["itm_leather_piece"], tailoring=2)),
+  ("pn_buy_civil_pirate_hat", spr_buy_item_flags(3), "pirate_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_civil_pirate_hat", resources=["itm_leather_piece"], tailoring=2)),
   #Civil body
   ("pn_buy_civil_militia_uniform", spr_buy_item_flags(4), "rus_militia_ranker", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_militia_uniform", resources=["itm_linen_cloth"], tailoring=1)),
   ("pn_buy_civil_inf_uniform_a", spr_buy_item_flags(4), "neutral_uniform_a", "bo_pw_armor_body", spr_buy_item_triggers("itm_civil_inf_uniform_a", resources=["itm_linen_cloth"], tailoring=1)),
@@ -4005,7 +4004,7 @@ scene_props = [
   ("pn_buy_civil_militia_pants1", spr_buy_item_flags(2), "rus_militia_ranker_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_militia_pants1", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_civil_militia_pants2", spr_buy_item_flags(2), "rus_militia_ranker_pants1", "bo_pw_armor_foot", spr_buy_item_triggers("itm_civil_militia_pants2", resources=["itm_linen_cloth_small", "itm_leather_piece"], tailoring=2)),
   ("pn_buy_civil_noble_shoes", spr_buy_item_flags(2), "civilian_shoes", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_noble_shoes", resources=["itm_linen_cloth_small", "itm_leather_piece"], tailoring=2)),
-  ("pn_buy_civil_leather_boots_b", spr_buy_item_flags(3), "leather_boots_b", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_leather_boots_b", resources=[("itm_leather_piece", 2)], tailoring=2)),
+  ("pn_buy_civil_leather_boots_b", spr_buy_item_flags(3), "leather_boots_b", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_leather_boots_b", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_civil_inf_pants_a", spr_buy_item_flags(3), "british_coldstream_pants", "bo_pw_armor_foot", spr_buy_item_triggers  ("itm_civil_inf_pants_a", resources=["itm_leather_piece", "itm_linen_cloth"], tailoring=2)),
 
   #Ottoman head
@@ -4087,7 +4086,7 @@ scene_props = [
   ("pn_buy_rus_hussar_shako_trumpeter", spr_buy_item_flags(3), "rus_hussard_trumpeter_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_hussar_shako_trumpeter", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_rus_jaeger_shako_nco", spr_buy_item_flags(3), "rus_jaeger_sarge_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_jaeger_shako_nco", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_rus_jaeger_shako_ranker", spr_buy_item_flags(3), "rus_jaeger_ranker_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_jaeger_shako_ranker", resources=[("itm_leather_piece", 2)], tailoring=2)),
-  ("pn_buy_kutuzov_hat", spr_buy_item_flags(1), "rus_general", "bo_pw_armor_head", spr_buy_item_triggers("itm_kutuzov_hat", resources=["itm_linen_thread"], tailoring=1)),
+  ("pn_buy_rus_kutuzov_hat", spr_buy_item_flags(1), "rus_general", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_kutuzov_hat", resources=["itm_linen_thread"], tailoring=1)),
   ("pn_buy_rus_guard_shako_officer", spr_buy_item_flags(3), "rus_preobr_captain_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_guard_shako_officer", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_rus_guard_shako_nco", spr_buy_item_flags(3), "rus_preobr_sarge_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_guard_shako_nco", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_rus_guard_shako_ranker", spr_buy_item_flags(3), "rus_preobr_ranker_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_rus_guard_shako_ranker", resources=[("itm_leather_piece", 2)], tailoring=2)),
@@ -4133,9 +4132,9 @@ scene_props = [
   ("pn_buy_french_inf_bicorne_45_officer", spr_buy_item_flags(3), "french_inf_bicorne_45_officer", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_inf_bicorne_45_officer", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_french_artillery_train_shako", spr_buy_item_flags(3), "french_artillery_train_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_artillery_train_shako", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_french_nappy_hat", spr_buy_item_flags(6), "french_nappy_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_nappy_hat", resources=[("itm_leather_piece", 2)], tailoring=2)),
-  ("pn_buy_grach_bearskin_ranker", spr_buy_item_flags(4), "grach_bearskin_ranker", "bo_pw_armor_head", spr_buy_item_triggers("itm_grach_bearskin_ranker", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
-  ("pn_buy_grach_bearskin_officer", spr_buy_item_flags(4), "grach_bearskin_officer", "bo_pw_armor_head", spr_buy_item_triggers("itm_grach_bearskin_officer", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
-  ("pn_buy_grach_bearskin_trumpeter", spr_buy_item_flags(4), "grach_bearskin_trumpeter", "bo_pw_armor_head", spr_buy_item_triggers("itm_grach_bearskin_trumpeter", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
+  ("pn_buy_french_grach_bearskin_ranker", spr_buy_item_flags(4), "grach_bearskin_ranker", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_grach_bearskin_ranker", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
+  ("pn_buy_french_grach_bearskin_officer", spr_buy_item_flags(4), "grach_bearskin_officer", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_grach_bearskin_officer", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
+  ("pn_buy_french_grach_bearskin_trumpeter", spr_buy_item_flags(4), "grach_bearskin_trumpeter", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_grach_bearskin_trumpeter", resources=[("itm_leather_piece", 2), "itm_linen_cloth_small"], tailoring=2)),
   ("pn_buy_french_captain_hat", spr_buy_item_flags(3), "french_captain_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_captain_hat", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_french_marine_hat", spr_buy_item_flags(3), "french_marine_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_marine_hat", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_french_seaman_hat", spr_buy_item_flags(1), "french_seaman_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_french_seaman_hat", resources=["itm_linen_cloth_small"], tailoring=1)),
@@ -4182,7 +4181,7 @@ scene_props = [
   ("pn_buy_british_highland_bonnet_drummer", spr_buy_item_flags(3), "british_highland_bonnet_drummer", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_highland_bonnet_drummer", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_guard_shako_officer", spr_buy_item_flags(3), "british_guard_shako_officer", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_guard_shako_officer", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_guard_shako_ranker", spr_buy_item_flags(3), "british_guard_shako_ranker", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_guard_shako_ranker", resources=[("itm_leather_piece", 2)], tailoring=2)),
-  ("pn_buy_33_stovepipe", spr_buy_item_flags(3), "33_stovepipe", "bo_pw_armor_head", spr_buy_item_triggers("itm_33_stovepipe", resources=[("itm_leather_piece", 2)], tailoring=2)),
+  ("pn_buy_british_infantry_shako", spr_buy_item_flags(3), "33_stovepipe", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_infantry_shako", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_lightdragoon_shako_ranker", spr_buy_item_flags(3), "british_23rd_lightdragoon_shako", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_lightdragoon_shako_ranker", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_lightdragoon_shako_officer", spr_buy_item_flags(3), "british_23rd_lightdragoon_shako_officer", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_lightdragoon_shako_officer", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_lightdragoon_shako_trumpeter", spr_buy_item_flags(3), "british_23rd_lightdragoon_shako_trumpeter", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_lightdragoon_shako_trumpeter", resources=[("itm_leather_piece", 2)], tailoring=2)),
@@ -4199,8 +4198,8 @@ scene_props = [
   ("pn_buy_british_captain_hat", spr_buy_item_flags(3), "british_captain_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_captain_hat", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_british_seaman_hat", spr_buy_item_flags(2), "british_seaman_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_seaman_hat", resources=["itm_leather_piece"], tailoring=1)),
   ("pn_buy_british_seaman_hat_2", spr_buy_item_flags(2), "british_seaman_hat_2", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_seaman_hat_2", resources=["itm_leather_piece"], tailoring=1)),
-  ("pn_buy_royal_marine_beret", spr_buy_item_flags(1), "royal_marine_beret", "bo_pw_armor_head", spr_buy_item_triggers("itm_royal_marine_beret", resources=["itm_linen_cloth_small"], tailoring=1)),
-  ("pn_buy_royal_marine_hat", spr_buy_item_flags(2), "royal_marine_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_royal_marine_hat", resources=["itm_leather_piece"], tailoring=2)),
+  ("pn_buy_british_royal_marine_beret", spr_buy_item_flags(1), "royal_marine_beret", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_royal_marine_beret", resources=["itm_linen_cloth_small"], tailoring=1)),
+  ("pn_buy_british_royal_marine_hat", spr_buy_item_flags(2), "royal_marine_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_royal_marine_hat", resources=["itm_leather_piece"], tailoring=2)),
   ("pn_buy_british_surgeon_bicorne", spr_buy_item_flags(3), "british_surgeon_bicorne", "bo_pw_armor_head", spr_buy_item_triggers("itm_british_surgeon_bicorne", resources=[("itm_leather_piece", 2)], tailoring=2)),
   ("pn_buy_prussian_landwehr_hat", spr_buy_item_flags(2), "landwehr_hat", "bo_pw_armor_head", spr_buy_item_triggers("itm_prussian_landwehr_hat", resources=["itm_leather_piece"], tailoring=2)),
   ("pn_buy_prussian_landwehr_hat_2", spr_buy_item_flags(2), "landwehr_hat_2", "bo_pw_armor_head", spr_buy_item_triggers("itm_prussian_landwehr_hat_2", resources=["itm_leather_piece"], tailoring=2)),
@@ -6502,7 +6501,7 @@ scene_props = [
   ("laigle_interior_pub_b", 0, "laigle_interior_pub2", "bo_laigle_interior_pub2", []),
   ("laigle_interior_tavern_a", 0, "laigle_interior_tavern", "bo_laigle_interior_tavern", []),
   ("laigle_interior_tavern_b", 0, "laigle_interior_tavern2", "bo_laigle_interior_tavern2", []),
-  ("laigle_bed", 0, "laigle_prop_bed", "bo_laigle_prop_bed", []),
+  ("laigle_bed",spr_use_time(30),"laigle_prop_bed","bo_laigle_prop_bed", spr_rest_triggers(50, min_health_pct=30)),
   ("laigle_bench_velvet_red", 0, "laigle_prop_bench_velvet", "bo_laigle_prop_bench_velvet", []),
   ("laigle_bench_velvet_green", 0, "laigle_prop_bench_velvet_white", "bo_laigle_prop_bench_velvet_white", []),
   ("laigle_bookcase_closed", 0, "laigle_prop_bookcase", "bo_laigle_prop_bookcase", []),
@@ -6557,6 +6556,8 @@ scene_props = [
   ("laigle_armchair_red", 0, "laigle_armchair_velvet", "bo_laigle_armchair_velvet", []),
   ("laigle_armchair_green", 0, "laigle_armchair_velvet_white", "bo_laigle_armchair_velvet_white", []),
   # Laigle props end
+
+  ("pn_buy_bagpipe_flute", spr_buy_item_flags(14), "mm_fife_small", "bo_pw_weapon_small", spr_buy_item_triggers("itm_bagpipe", resources=["itm_wood_pole_short"], engineer=6)),
 
   #PN END ***************************************************************************************************************************
 

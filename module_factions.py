@@ -20,7 +20,7 @@ from header_factions import *
 
 factions = [
   ("commoners","Commoners", 0, 0, [], [], 0x990099),
-  ("outlaws","Outlaws", 0, 0, [], [], 0x775500),
+  ("outlaws","Outlaws", 0, 0, [], [], 0x5F5F5F),
   ("1","Red Faction", 0, 0, [], [], 0xDD0000),
   ("2","White Faction", 0, 0, [], [], 0xFFFFFF),
   ("3","Blue Faction", 0, 0, [], [], 0x3333FF),
