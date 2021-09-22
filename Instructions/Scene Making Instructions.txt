@@ -18,7 +18,8 @@
 
 * CANNONS *
 -Do not use the cannons that has "wood", "limber", "wheel", "barrel" or "plataform" on name. Use 
-	the normal cannons (with the complete set of equipaments: Limber, Wheels, etc).
+	the normal cannons (with the complete set of equipaments: Limber, Wheels, Ammobox, etc).
+-Cannons names are: "mm_cannon_*".
 -There's a very boring bug which makes a tiny barrier in front of a "Mortar" placed on scene. So,
 	make tests to check if it will cause problems.
 

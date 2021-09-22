@@ -1119,7 +1119,7 @@ multiplayer_client_music_and_sapper = (0, 0, 0, [(neg|multiplayer_is_dedicated_s
               # If Drumm, checks if the player has the gloves and uniform of drummer
               (eq, ":item_id", "itm_drumstick_right"),
               (try_begin),
-                (neg|agent_has_item_equipped, ":player_agent", "itm_drummer_gloves"),
+                (neg|agent_has_item_equipped, ":player_agent", "itm_gloves_drummer"),
                 (assign, ":can_play", 0),
                 (call_script, "script_preset_message", "str_need_drummer_gloves", preset_message_error, 0, 0),
               (else_try),

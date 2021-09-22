@@ -1302,8 +1302,8 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":health",400),
       (else_try),
         (eq,":prop_kind_id","spr_mm_dummy"),
-        (assign,":max_health",70),
-        (assign,":health",70),
+        (assign,":max_health",99999),
+        (assign,":health",99999),
       (else_try), # override for the is_between 2 elses later.
         (this_or_next|is_between, ":prop_kind_id", "spr_mm_wall3", "spr_mm_palisade"),
         (this_or_next|eq,":prop_kind_id","spr_mm_sp_poor_bridge1"),
@@ -9034,9 +9034,10 @@ scripts.extend([("game_start", []), # single player only, not used
       (set_fixed_point_multiplier, 100),
 
       # PN Bots setup
+      # Merchant
       (set_cheer_at_no_enemy, 0),
       (try_begin),
-        (neg|entry_point_is_auto_generated, 5), # Entry point was placed
+        (neg|entry_point_is_auto_generated, 5), # Entry point wasnt placed by scene maker
         (entry_point_get_position, pos64, 5),  
         (set_spawn_position, pos64),
         # Merchant 1
@@ -9050,6 +9051,24 @@ scripts.extend([("game_start", []), # single player only, not used
         (agent_set_team, reg0, team_spawn_invulnerable),
         (agent_set_position, reg0, pos64),
         (display_message, "@Entry Point 5 detected! Merchants bots added successfully to the game!"),
+      (try_end),
+      # Teller 1
+      (try_begin),
+        (neg|entry_point_is_auto_generated, 6),
+        (entry_point_get_position, pos64, 6),  
+        (set_spawn_position, pos64),
+        (spawn_agent, "trp_bot_teller_1"),
+        (agent_set_team, reg0, team_spawn_invulnerable),
+        (display_message, "@Entry Point 6 detected! Teller bot 1 added successfully to the game!"),
+      (try_end),
+      # Teller 2
+      (try_begin),
+        (neg|entry_point_is_auto_generated, 7),
+        (entry_point_get_position, pos64, 7),  
+        (set_spawn_position, pos64),
+        (spawn_agent, "trp_bot_teller_2"),
+        (agent_set_team, reg0, team_spawn_invulnerable),
+        (display_message, "@Entry Point 7 detected! Teller bot 2 added successfully to the game!"),
       (try_end),
 
       (call_script, "script_setup_trade_routes"),

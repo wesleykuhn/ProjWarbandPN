@@ -54,8 +54,14 @@ rhodok_face_middle_2  = 0x00000007c00062c76ddcdf7feefbffff00000000001efdbc000000
 rhodok_face_old_2     = 0x0000000bc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
 rhodok_face_older_2   = 0x0000000fc00062c76ddcdf7feefbffff00000000001efdbc0000000000000000
 
-bot_custom_face_1 = 0x000000000010200036db6db6db6db6db00000000001db6db0000000000000000
-bot_custom_face_2 = 0x0000000fff1076e96baeb6db6db6d92d00000000001f6db60000000000000000
+bot_custom_face_1 = 0x000000037000209136db6db6db61b6db00000000001db6db0000000000000000 #European
+bot_custom_face_2 = 0x000000073f00209236db6db6db61b6db00000000001db6db0000000000000000 #European
+
+bot_custom_face_3 = 0x00000001000022e620168236db61b6db00000000001db6e90000000000000000 #Chinese
+bot_custom_face_4 = 0x00000007bf00346920168236db61b6db00000000001db6e90000000000000000 #Chinese
+
+bot_custom_face_5 = 0x000000055e08352434db4d349269b4d200000000001d24d30000000000000000 #European
+bot_custom_face_6 = 0x0000000e3f083624491c92491b91b8e400000000001db6e30000000000000000 #European
 
 default_face_1 = 0x0000000400000001124000000020000000000000001c00800000000000000000
 default_face_2 = 0x0000000cbf00230c4deeffffffffffff00000000001efff90000000000000000
@@ -284,7 +290,7 @@ troops = [
    str_15|agi_13|pw_attr,wpex(80,140,70,0,90,40),knows_pw|knows_ironflesh_4|knows_power_strike_2|knows_athletics_4|knows_riding_1|knows_engineer_2,default_face_1,default_face_2],
    
   ["godlike_hero","Godlike Hero","a godlike hero",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_french_artillery_bearskin_officer", "itm_admin_uniform", "itm_prussian_freikorps_pants", "itm_officer_gloves"],
+   ["itm_french_artillery_bearskin_officer", "itm_admin_uniform", "itm_prussian_freikorps_pants", "itm_gloves_officer"],
    str_30|agi_30|pw_attr,wpex(300,300,300,300,300,300),knows_pw|knows_ironflesh_10|knows_power_strike_10|knows_power_draw_10|knows_power_throw_10|knows_shield_10|knows_athletics_10|knows_riding_10|knows_engineer_10|knows_wound_treatment_10|knows_looting_10|knows_labouring_10|knows_sailing_10|knows_tailoring_10|knows_herding_10,default_face_1,default_face_2],
 
   ["playable_troops_end","playable_troops_end","playable_troops_end",0,0,0,0,[],0,0,0,0,0],
@@ -334,13 +340,21 @@ troops = [
   # End NW Gambiarra
 
   # PN Bots begin
-  ["bot_merchant_1", "(BOT)Fakir", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_fur_coat", "itm_leather_boots", "itm_civil_peasant_hat2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+  ["bot_merchant_1", "(BOT)Li", "{!}bot_merchant_1", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_nomad_cap_b", "itm_leather_boots", "itm_khergit_armor"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_3, bot_custom_face_4],
+
+  ["bot_merchant_2", "(BOT)Wu", "{!}bot_merchant_2", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_nomad_vest", "itm_hide_boots", "itm_turban"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_3, bot_custom_face_4],
+
+  ["bot_teller_1", "(BOT)Wesley", "{!}bot_teller_1", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_french_voltigeur_officer_pants", "itm_civil_shirt_1"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
    knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
 
-  ["bot_merchant_2", "(BOT)Muhtar", "{!}bot_merchant", tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_leather_jacket", "itm_hide_boots", "itm_civil_top_hat"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
-   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_1, bot_custom_face_2],
+  ["bot_teller_2", "(BOT)Oslec", "{!}bot_teller_2", tf_guarantee_all,0,0,"fac_commoners",
+   ["itm_french_equipage_batallion_pants", "itm_civil_shirt_2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_5, bot_custom_face_6],
   # PN Bots end
 
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],

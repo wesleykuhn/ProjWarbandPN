@@ -3307,14 +3307,14 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  400 , weight(1)|leg_armor(16) ,imodbits_cloth ],
 
 # Gloves
-["officer_gloves","Officer Gloves", [("officer_gloves_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
-["drummer_gloves","Drummer Gloves", [("drummer_gloves_L",0)], itp_type_hand_armor,0, 111, weight(0.2)|body_armor(1),imodbits_cloth],
-["cuirassier_gloves", "Cuirassier Gloves", [("fr_cavalry_glove_L",0)], itp_type_hand_armor, 0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
-["artillery_gloves", "Artillery Gloves", [("glove_black_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
-["cavalry_gloves", "Cavalry Gloves", [("white_cavalry_glove_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
-["horseguard_gloves", "Horse Guard Gloves", [("hg_cavalry_glove_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
-["cavalry_gloves_short", "Cavalry Short Gloves", [("white_cavalry_glove_short_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
-["horseguard_gloves_short", "Horse Guard Short Gloves", [("hg_cavalry_glove_short_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
+["gloves_officer","Officer Gloves", [("officer_gloves_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
+["gloves_drummer","Drummer Gloves", [("drummer_gloves_L",0)], itp_type_hand_armor,0, 111, weight(0.2)|body_armor(1),imodbits_cloth],
+["gloves_cuirassier", "Cuirassier Gloves", [("fr_cavalry_glove_L",0)], itp_type_hand_armor, 0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
+["gloves_artillery", "Artillery Gloves", [("glove_black_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
+["gloves_cavalry", "Cavalry Gloves", [("white_cavalry_glove_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
+["gloves_horseguard", "Horse Guard Gloves", [("hg_cavalry_glove_L",0)], itp_type_hand_armor,0, 432, weight(0.6)|body_armor(5),imodbits_cloth],
+["gloves_cavalry_short", "Cavalry Short Gloves", [("white_cavalry_glove_short_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
+["gloves_horseguard_short", "Horse Guard Short Gloves", [("hg_cavalry_glove_short_L",0)], itp_type_hand_armor,0, 288, weight(0.2)|body_armor(2),imodbits_cloth],
 
 # 1400 - 4799
 # Dragoon - 1434, hit_points(110)|body_armor(20)|difficulty(3)|horse_speed(40)|horse_maneuver(47)|horse_charge(12)
@@ -3336,6 +3336,7 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  1359,hit_points(200)|body_armor(7)|difficulty(1)|horse_speed(20)|horse_maneuver(10)|horse_charge(1)|horse_scale(116),imodbits_none],
 
 # Normal Horses
+# France
 ["hussar_horse_french","French Hussar Horse",[("french_hussards_horse",0)], itp_type_horse, 0,
  1922, hit_points(135)|body_armor(20)|difficulty(5)|horse_speed(43)|horse_maneuver(52)|horse_charge(22)|horse_scale(104),imodbits_none],
 ["lancer_horse_french","French Lancer Horse",[("french_lancier_polonais_horse",0)], itp_type_horse, 0,
