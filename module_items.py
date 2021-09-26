@@ -2734,14 +2734,15 @@ itcf_shoot_musket|itcf_reload_musket|itcf_carry_crossbow_back, 2467 , weight(3.0
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],
 ["rus_pioneer_shako", "Pioneer Shako", [("shako_rus_pioneer",0)],  itp_type_head_armor |itp_doesnt_cover_hair 
  ,0, 350 , weight(0.5)|head_armor(20) ,imodbits_cloth ],
-["rus_uhlan_czapka_officer", "Russian Uhlan Officer Czapka", [("czapka_officer_uhlan",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature  
- ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
-["rus_uhlan_czapka_nco", "Russian Uhlan Sergeant Czapka", [("czapka_nco_uhlan",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
- ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
-["rus_uhlan_czapka_ranker", "Russian Uhlan Czapka", [("czapka_ranker_uhlan",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
- ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
-["rus_uhlan_czapka_trumpeter", "Russian Uhlan Trumpeter Czapka", [("czapka_trump_uhlan",0)],  itp_type_head_armor |itp_doesnt_cover_hair|itp_attach_armature 
- ,0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
+
+["rus_uhlan_czapka_officer", "Russian Uhlan Officer Czapka", [("czapka_officer_uhlan",0)], itp_type_head_armor |itp_doesnt_cover_hair,
+ 0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
+["rus_uhlan_czapka_nco", "Russian Uhlan Sergeant Czapka", [("czapka_nco_uhlan",0)], itp_type_head_armor |itp_doesnt_cover_hair,
+ 0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
+["rus_uhlan_czapka_ranker", "Russian Uhlan Czapka", [("czapka_ranker_uhlan",0)], itp_type_head_armor |itp_doesnt_cover_hair,
+ 0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
+["rus_uhlan_czapka_trumpeter", "Russian Uhlan Trumpeter Czapka", [("czapka_trump_uhlan",0)], itp_type_head_armor |itp_doesnt_cover_hair,
+ 0, 800 , weight(1.2)|head_armor(27)|difficulty(12) ,imodbits_cloth ],
 
 # French
 ["french_dragoon_helmet", "French Dragoon Helmet", [("french_dragons_dlG_ranker",0)],  
