@@ -116,16 +116,14 @@ troops = [
   #   - Sargeant
 
   ["peasant","Peasant","a peasant",tf_guarantee_all,0,0,"fac_commoners",
-    ["itm_leather_vest_plain","itm_civil_coat1", "itm_civil_coat2", "itm_civil_fur_cloth_a", "itm_civil_peasant_shirt_1",
-      "itm_leather_boots", "itm_hide_boots", "itm_hunter_boots", "itm_old_knife", "itm_russian_peasant_axe", "itm_hatchet", "itm_russian_peasant_knife",
-      "itm_knife", "itm_cheap_scythe", "itm_small_mining_pick"],
+    ["itm_leather_vest_plain", "itm_civil_peasant_shirt_1",
+      "itm_hide_boots", "itm_hunter_boots", "itm_hatchet", "itm_cheap_scythe", "itm_russian_peasant_knife"],
     str_8|agi_8|pw_attr,wpex(50,30,30,0,0,30),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_2|knows_tailoring_1|knows_riding_1,default_face_1,default_face_2
   ],
 
   ["serf","Serf","a serf",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_fur_coat","itm_leather_vest_plain","itm_civil_coat1", "itm_civil_coat2", "itm_civil_fur_cloth_a", "itm_civil_peasant_shirt_1",
-      "itm_leather_boots", "itm_hide_boots", "itm_hunter_boots", "itm_old_knife", "itm_russian_peasant_axe", "itm_hatchet", "itm_russian_peasant_knife",
-      "itm_knife", "itm_cheap_scythe", "itm_small_mining_pick", "itm_fishing_spear"],
+   ["itm_civil_coat2", "itm_civil_peasant_shirt_1",
+      "itm_hide_boots", "itm_hunter_boots", "itm_hatchet", "itm_cheap_scythe", "itm_russian_peasant_knife"],
    str_5|agi_5|pw_attr,wpex(30,30,30,0,0,50),knows_pw|knows_power_strike_1|knows_power_draw_1|knows_labouring_5|knows_engineer_1|knows_tailoring_2|knows_herding_3|knows_riding_1,default_face_1,default_face_2],
 
   ["militia","Militia","a militia",tf_guarantee_all,0,0,"fac_commoners",
@@ -219,11 +217,11 @@ troops = [
    str_15|agi_15|pw_attr,wpex(110,125,110,20,60,40),knows_pw|knows_ironflesh_5|knows_power_strike_4|knows_shield_2|knows_athletics_5|knows_riding_2,default_face_1,default_face_2],
   
   ["engineer","Engineer","an engineer",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
+   ["itm_leather_apron", "itm_leather_boots", "itm_repair_hammer", "itm_gloves_horseguard"],
    str_10|agi_12|pw_attr,wpex(90,50,60,30,65,50),knows_pw|knows_ironflesh_2|knows_power_strike_2|knows_athletics_2|knows_engineer_5|knows_riding_2|knows_looting_1|knows_sailing_4,default_face_1,default_face_2],
   
   ["master_smith","Master Smith","a master smith",tf_guarantee_all,0,0,"fac_commoners",
-   ["itm_civil_shirt_3", "itm_civil_waistcoat_custom_4", "itm_leather_boots"],
+   ["itm_leather_apron", "itm_leather_boots", "itm_repair_hammer", "itm_gloves_horseguard"],
    str_12|agi_12|pw_attr,wpex(100,55,70,30,70,50),knows_pw|knows_ironflesh_3|knows_power_strike_3|knows_athletics_2|knows_engineer_7|knows_riding_2|knows_looting_2|knows_sailing_4,default_face_1,default_face_2],
   
   ["doctor","Doctor","a doctor",tf_guarantee_all,0,0,"fac_commoners",

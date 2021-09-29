@@ -1108,11 +1108,11 @@ Poisonous herbs can also sometimes be found, which are then applied to the blade
   ("name_server", "localhost/pwnameserver"),
   ("name_server_password", "pNmOd2021"),
 
-  ("scene_name_1", "Default Scene"),
+  ("scene_name_1", "Default Scene (Vengeance)"),
   ("scene_name_2", "Blank Scene 2"),
   ("scene_name_3", "Blank Scene 3"),
   ("scene_name_4", "Blank Scene 4"),
-  ("scene_name_5", "Kuhn's Scene"),
+  ("scene_name_5", "Blank Scene 5"),
   ("scene_name_6", "Blank Scene 6"),
   ("scene_name_7", "Blank Scene 7"),
   ("scene_name_8", "Blank Scene 8"),
