@@ -5001,7 +5001,7 @@ scene_props = [
   ("pw_local_precious_price_area",sokf_invisible,"pw_local_precious_price_area","0", []),
 
   # PN START ************************************************************************************************************************
-  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=2000, length=290, width=90, height=-20, speed=1, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
+  ("pn_ship_longboat",sokf_moveable|sokf_destructible|sokf_show_hit_point_bar,"pn_ship_longboat", "bo_pn_ship_longboat",spr_ship_triggers(hit_points=2000, length=290, width=90, height=50, speed=2, sail="pn_ship_longboat_sail", collision="pn_ship_longboat_cd")),
   ("pn_ship_longboat_sail",sokf_moveable,"pn_ship_longboat_sail","bo_birdmodel", []),
   ("pn_ship_longboat_cd",sokf_invisible|sokf_dont_move_agent_over,"0","bo_pn_ship_longboat_cd", []),
 

@@ -4,7 +4,7 @@ from header_sounds import *
 # Add your own sounds just before the animation sounds group, or before sounds_end.
 
 sounds = [
- ("click", sf_2d|sf_priority_9|sf_vol_2, ["drum_click.ogg"]),
+ ("click", sf_2d|sf_priority_9|sf_vol_1, ["drum_click.ogg"]),
  ("tutorial_1", sf_2d|sf_priority_9|sf_vol_7, ["tutorial_1.ogg"]),
  ("tutorial_2", sf_2d|sf_priority_9|sf_vol_7, ["tutorial_2.ogg"]),
  ("gong", sf_2d|sf_priority_9|sf_vol_7, ["s_cymbals.ogg"]),
@@ -159,10 +159,8 @@ sounds = [
  ("tutorial_fail", sf_2d|sf_priority_10|sf_vol_7,["cue_failure.ogg"]),
  ("your_flag_taken", sf_2d|sf_priority_10|sf_vol_10, ["your_flag_taken.ogg"]),
  ("enemy_flag_taken", sf_2d|sf_priority_10|sf_vol_10, ["enemy_flag_taken.ogg"]),
- ("flag_returned", sf_2d|sf_priority_10|sf_vol_10, ["your_flag_returned.ogg"]),
  ("team_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["you_scored_a_point.ogg"]),
  ("enemy_scored_a_point", sf_2d|sf_priority_10|sf_vol_10, ["enemy_scored_a_point.ogg"]),
- ("cheer_claps", sf_2d|sf_priority_10|sf_vol_10, ["cheer_claps.ogg"]),
 
  ("failure", sf_2d|sf_priority_6|sf_vol_5, ["cue_failure.ogg"]),
  ("man_yawn", sf_priority_6|sf_vol_10, ["man_yawn_1.ogg"]),
@@ -327,7 +325,6 @@ sounds = [
   "man_pain_21.wav","man_pain_22.wav","man_pain_23.wav","man_pain_24.wav"
  ]),
 
- ("leader_rise", sf_2d|sf_priority_7|sf_vol_7,["happy_1.ogg"]),
  ("musket", sf_priority_15|sf_vol_10,["musket2.wav","musket3.wav","musket4.wav","musket5.wav","musket_shot01.wav","musket_shot02.wav","musket_shot03.wav","musket_shot04.wav","musket_shot05.wav"]),
  ("rifle", sf_priority_15|sf_vol_10, ["rifle.wav"]),
  ("pistol", sf_priority_15|sf_vol_10,["musket1.wav"]),

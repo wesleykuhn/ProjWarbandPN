@@ -8896,255 +8896,206 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign,reg0,":instance_id"),
    ]),
 
-  #script_initialize_scene_prop_slots
-  # INPUT: arg1 = scene_prop_no
-  # OUTPUT: none
-  ("initialize_scene_prop_slots",
+  ("setup_nw_scene_props",
     [
-     (store_script_param, ":scene_prop_no", 1),
+      (try_begin),
+        (get_scene_boundaries, pos10,pos11),
+        (set_fixed_point_multiplier, 100),
+        (position_get_x,"$g_scene_min_x",pos10),
+        (position_get_x,"$g_scene_max_x",pos11),
+        (position_get_y,"$g_scene_min_y",pos10),
+        (position_get_y,"$g_scene_max_y",pos11),
+        
+        # for constructible props placed by the mapper set the correct healths.
+        (try_for_range,":prop_type", "spr_mm_palisadedd", mm_construct_props_end),
+          (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+          (assign,":max_health",reg1),
+          (assign,":health",reg2),
+          (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+            (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+            (gt,":max_health",0),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+            (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+            (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+          (try_end),
+        (try_end),
+      
+        # set health for mapper added windows
+        (try_for_range,":prop_type", "spr_mm_window1_poor", "spr_mm_window1d_poor"),
+          (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+          (assign,":max_health",reg1),
+          (assign,":health",reg2),
+          (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+            (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+            (gt,":max_health",0),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+            (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+            (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+          (try_end),
+        (try_end),
+        
+        # set health for mapper added windows
+        (try_for_range,":prop_type", "spr_mm_window3_poor", "spr_mm_window3d_poor"),
+          (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
+          (assign,":max_health",reg1),
+          (assign,":health",reg2),
+          (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
+            (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
+            (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
+            (gt,":max_health",0),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
+            (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
+            (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
+            (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
+          (try_end),
+        (try_end),
+        (rebuild_shadow_map),
+        
+        # The rest is only for servers setting up the props and stuff.
+        (this_or_next|multiplayer_is_server),
+        (neg|game_in_multiplayer_mode),
 
-     (try_for_prop_instances, ":cur_instance_id", ":scene_prop_no"),
-       (assign,":cur_instance_id",":cur_instance_id"),
-       
-       # Reset slots
-       (try_for_range, ":cur_slot", 0, scene_prop_slots_end),
-         (scene_prop_set_slot, ":cur_instance_id", ":cur_slot", 0),
-       (try_end),
-     (try_end),
+        # init all scales.
+        (set_fixed_point_multiplier, 1000),
+        (try_for_range, ":prop_type", "spr_invalid_object", "spr_mm_weather_fog_color_red"),
+          (scene_prop_get_num_instances, ":num_instances_of_scene_prop", ":prop_type"),  
+          (try_for_range, ":cur_prop_instance", 0, ":num_instances_of_scene_prop"),
+            (scene_prop_get_instance, ":prop_instance_id", ":prop_type", ":cur_prop_instance"),
+            (prop_instance_get_scale, pos59, ":prop_instance_id"),
+            (position_get_scale_x, ":x_scale", pos59),
+            (position_get_scale_y, ":y_scale", pos59),
+            (position_get_scale_z, ":z_scale", pos59),  
+            (assign, ":is_scaled",0),
+            (try_begin),
+              (this_or_next|neq,":x_scale",1000),
+              (this_or_next|neq,":y_scale",1000),
+              (neq,":z_scale",1000),
+              (assign, ":is_scaled",1),
+            (try_end),
+            (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_x_scale,":x_scale"),
+            (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_y_scale,":y_scale"),
+            (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_z_scale,":z_scale"),
+            (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_is_scaled,":is_scaled"),
+          (try_end),
+        (try_end),
+
+        (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
+          (scene_prop_get_num_instances, ":num_instances", ":cannon_type"),
+          (gt,":num_instances",0),
+          
+          (try_for_range,":prop_no", 0, ":num_instances"),
+            (scene_prop_get_instance,":instance_id",":cannon_type",":prop_no"),
+
+            (call_script,"script_generate_bits_for_cannon_instance",":instance_id", 0, 0, 1),
+          (try_end),
+        (try_end),
+
+        # set birds added by mapper as in_use so they start flying around ;)
+        (try_for_prop_instances, ":instance_id", "spr_mm_bird", somt_object),
+          (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),      
+        (try_end),
+
+        (try_for_range,":wall_type", "spr_mm_new_wall_1_1", "spr_mm_woodenwall1"),
+          (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
+            (call_script,"script_attach_window_to_wall",":instance_id"),
+          (try_end),
+        (try_end),
+        (try_for_range,":wall_type", "spr_mm_house_wall_2", "spr_mm_house_wall_41d"),
+          (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
+            (call_script,"script_attach_window_to_wall",":instance_id"),
+          (try_end),
+        (try_end),
+        (try_for_prop_instances, ":instance_id", "spr_mm_woodenwall3", somt_object),
+          (call_script,"script_attach_window_to_wall",":instance_id"),
+        (try_end),
+        (try_for_prop_instances, ":instance_id", "spr_mm_woodenwallsnowy3", somt_object),
+          (call_script,"script_attach_window_to_wall",":instance_id"),
+        (try_end),
+        
+        (set_fixed_point_multiplier, 100),
+        (try_for_prop_instances, ":instance_id", "spr_mm_restroom", somt_object),
+          (prop_instance_get_position, pos30, ":instance_id"),
+          (assign,":x_movement",30),
+          (assign,":z_movement",30),
+          # Resize the prefered positions to scale
+          (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
+          (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
+          (try_begin),
+            (this_or_next|gt,":x_scale",0),
+            (gt,":z_scale",0),
+            (val_mul, ":x_movement", ":x_scale"),           
+            (val_mul, ":z_movement", ":z_scale"),              
+            (val_div, ":x_movement", 1000),
+            (val_div, ":z_movement", 1000),
+          (try_end),
+          (position_move_x,pos30,":x_movement"),
+          (position_move_z,pos30,":z_movement"),
+          (copy_position,pos49,pos30), # pos49 is prop pos.
+          (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_shithouse_button", 0, 0, 0),
+        (try_end),
+      (try_end),
     ]
   ),
 
-  # script_multiplayer_mm_after_mission_start_common
-  # Input: 
-  # Output: 
-  ("multiplayer_mm_after_mission_start_common",
-  [
-    (try_begin),
-      (get_scene_boundaries, pos10,pos11),
-      (set_fixed_point_multiplier, 100),
-      (position_get_x,"$g_scene_min_x",pos10),
-      (position_get_x,"$g_scene_max_x",pos11),
-      (position_get_y,"$g_scene_min_y",pos10),
-      (position_get_y,"$g_scene_max_y",pos11),
-
-      # Set wall slot to their variation for linking walls to cannons for final destruction.
-      (try_for_range,":prop_type", mm_destructible_props_begin, mm_destructible_props_end),
-        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-        (assign,":max_health",reg1),
-        (assign,":health",reg2),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
-          
-          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this wall.
-          
-          (prop_instance_get_variation_id_2,":linked_cannon_index",":cur_instance_id"),
-          (scene_prop_set_slot,":cur_instance_id", scene_prop_slot_linked_prop, ":linked_cannon_index"),
-          
-          (gt,":max_health",0),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-        (try_end),
-      (try_end),
-      
-      # for constructible props placed by the mapper set the correct healths.
-      (try_for_range,":prop_type", "spr_mm_palisadedd", mm_construct_props_end),
-        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-        (assign,":max_health",reg1),
-        (assign,":health",reg2),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
-          
-          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
-          
-          (gt,":max_health",0),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-        (try_end),
-      (try_end),
-	  
-      # set health for mapper added windows
-      (try_for_range,":prop_type", "spr_mm_window1_poor", "spr_mm_window1d_poor"),
-        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-        (assign,":max_health",reg1),
-        (assign,":health",reg2),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
-          
-          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
-          
-          (gt,":max_health",0),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-        (try_end),
-      (try_end),
-      
-      # set health for mapper added windows
-      (try_for_range,":prop_type", "spr_mm_window3_poor", "spr_mm_window3d_poor"),
-        (call_script,"script_get_default_health_for_prop_kind",":prop_type"),
-        (assign,":max_health",reg1),
-        (assign,":health",reg2),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type", somt_object),
-          (scene_prop_slot_eq,":cur_instance_id",scene_prop_slot_is_spawned,0),
-          
-          (call_script,"script_reset_prop_slots",":cur_instance_id"), # reset the slots for this construction object.
-          
-          (gt,":max_health",0),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_health,":health"),
-          (scene_prop_set_slot,":cur_instance_id",scene_prop_slot_max_health,":max_health"),
-          (scene_prop_set_hit_points, ":cur_instance_id", ":max_health"),
-          (scene_prop_set_cur_hit_points, ":cur_instance_id", ":health"),
-        (try_end),
-      (try_end),
-
-      (rebuild_shadow_map),
-      
-      # The rest is only for servers setting up the props and stuff.
-      (this_or_next|multiplayer_is_server),
-      (neg|game_in_multiplayer_mode),
-
-      # init all scales.
-      (set_fixed_point_multiplier, 1000),
-      (try_for_range, ":prop_type", "spr_invalid_object", "spr_mm_weather_fog_color_red"),
-        (scene_prop_get_num_instances, ":num_instances_of_scene_prop", ":prop_type"),  
-        (try_for_range, ":cur_prop_instance", 0, ":num_instances_of_scene_prop"),
-          (scene_prop_get_instance, ":prop_instance_id", ":prop_type", ":cur_prop_instance"),
-          (prop_instance_get_scale, pos59, ":prop_instance_id"),
-          (position_get_scale_x, ":x_scale", pos59),
-          (position_get_scale_y, ":y_scale", pos59),
-          (position_get_scale_z, ":z_scale", pos59),  
-          (assign, ":is_scaled",0),
-          (try_begin),
-            (this_or_next|neq,":x_scale",1000),
-            (this_or_next|neq,":y_scale",1000),
-            (neq,":z_scale",1000),
-            (assign, ":is_scaled",1),
+  ("setup_pn_scene_props",
+    [
+      (try_begin),
+        (multiplayer_is_server),
+        (try_for_range,":prop_type", pn_hittable_props_begin, pn_hittable_props_end),
+          (try_for_prop_instances, ":cur_instance_id", ":prop_type"),
+            (call_script, "script_multiplayer_server_initialise_destructable_prop_slots", ":cur_instance_id", ":prop_type"),
           (try_end),
-          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_x_scale,":x_scale"),
-          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_y_scale,":y_scale"),
-          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_z_scale,":z_scale"),
-          (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_is_scaled,":is_scaled"),
         (try_end),
       (try_end),
-      (set_fixed_point_multiplier, 100),
+    ]
+  ),
 
-      # PN Bots setup
-      # Merchant
-      (set_cheer_at_no_enemy, 0),
+  ("setup_pn_scene_bots",
+    [
       (try_begin),
-        (neg|entry_point_is_auto_generated, 5), # Entry point wasnt placed by scene maker
-        (entry_point_get_position, pos64, 5),  
-        (set_spawn_position, pos64),
-        # Merchant 1
-        (spawn_agent, "trp_bot_merchant_1"),
-        (agent_set_team, reg0, team_spawn_invulnerable),
-        # Merchant 2
-        (position_move_x, pos64, -80),
-        (position_move_y, pos64, -50),
-        (position_rotate_z, pos64, -10),
-        (spawn_agent, "trp_bot_merchant_2"),
-        (agent_set_team, reg0, team_spawn_invulnerable),
-        (agent_set_position, reg0, pos64),
-        (display_message, "@Entry Point 5 detected! Merchants bots added successfully to the game!"),
-      (try_end),
-      # Teller 1
-      (try_begin),
-        (neg|entry_point_is_auto_generated, 6),
-        (entry_point_get_position, pos64, 6),  
-        (set_spawn_position, pos64),
-        (spawn_agent, "trp_bot_teller_1"),
-        (agent_set_team, reg0, team_spawn_invulnerable),
-        (display_message, "@Entry Point 6 detected! Teller bot 1 added successfully to the game!"),
-      (try_end),
-      # Teller 2
-      (try_begin),
-        (neg|entry_point_is_auto_generated, 7),
-        (entry_point_get_position, pos64, 7),  
-        (set_spawn_position, pos64),
-        (spawn_agent, "trp_bot_teller_2"),
-        (agent_set_team, reg0, team_spawn_invulnerable),
-        (display_message, "@Entry Point 7 detected! Teller bot 2 added successfully to the game!"),
-      (try_end),
-
-      (call_script, "script_setup_trade_routes"),
-
-      (try_for_range,":prop_type", pn_hittable_props_begin, pn_hittable_props_end),
-        (try_for_prop_instances, ":cur_instance_id", ":prop_type"),
-          (call_script, "script_multiplayer_server_initialise_destructable_prop_slots", ":cur_instance_id", ":prop_type"),
-        (try_end),
-      (try_end),
-
-      (try_for_range,":cannon_type", mm_cannon_types_begin, mm_cannon_types_end),
-        (scene_prop_get_num_instances, ":num_instances", ":cannon_type"),
-        (gt,":num_instances",0),
-        
-        (try_for_range,":prop_no", 0, ":num_instances"),
-          (scene_prop_get_instance,":instance_id",":cannon_type",":prop_no"),
-
-          (call_script,"script_generate_bits_for_cannon_instance",":instance_id", 0, 0, 1),
-        (try_end),
-      (try_end),
-
-      # set birds added by mapper as in_use so they start flying around ;)
-      (try_for_prop_instances, ":instance_id", "spr_mm_bird", somt_object),
-        (scene_prop_set_slot,":instance_id",scene_prop_slot_in_use,1),      
-      (try_end),
-
-      (try_for_range,":wall_type", "spr_mm_new_wall_1_1", "spr_mm_woodenwall1"),
-        (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
-          (call_script,"script_attach_window_to_wall",":instance_id"),
-        (try_end),
-      (try_end),
-      
-      (try_for_range,":wall_type", "spr_mm_house_wall_2", "spr_mm_house_wall_41d"),
-        (try_for_prop_instances, ":instance_id", ":wall_type", somt_object),
-          (call_script,"script_attach_window_to_wall",":instance_id"),
-        (try_end),
-      (try_end),
-      
-      (try_for_prop_instances, ":instance_id", "spr_mm_woodenwall3", somt_object),
-        (call_script,"script_attach_window_to_wall",":instance_id"),
-      (try_end),
-      
-      (try_for_prop_instances, ":instance_id", "spr_mm_woodenwallsnowy3", somt_object),
-        (call_script,"script_attach_window_to_wall",":instance_id"),
-      (try_end),
-      
-      
-      (set_fixed_point_multiplier, 100),
-      (try_for_prop_instances, ":instance_id", "spr_mm_restroom", somt_object),
-        (prop_instance_get_position, pos30, ":instance_id"),
-        (assign,":x_movement",30),
-        (assign,":z_movement",30),
-        
-        # Resize the prefered positions to scale
-        (scene_prop_get_slot,":x_scale",":instance_id",scene_prop_slot_x_scale),
-        (scene_prop_get_slot,":z_scale",":instance_id",scene_prop_slot_z_scale),
-        
+        (multiplayer_is_server),
+        (set_fixed_point_multiplier, 100),
+        # PN Bots setup
+        # Merchant
+        (set_cheer_at_no_enemy, 0),
         (try_begin),
-          (this_or_next|gt,":x_scale",0),
-          (gt,":z_scale",0),
-          
-          (val_mul, ":x_movement", ":x_scale"),           
-          (val_mul, ":z_movement", ":z_scale"),              
-          (val_div, ":x_movement", 1000),
-          (val_div, ":z_movement", 1000),
+          (neg|entry_point_is_auto_generated, 5), # Entry point wasnt placed by scene maker
+          (entry_point_get_position, pos64, 5),  
+          (set_spawn_position, pos64),
+          # Merchant 1
+          (spawn_agent, "trp_bot_merchant_1"),
+          (agent_set_team, reg0, team_spawn_invulnerable),
+          # Merchant 2
+          (position_move_x, pos64, -80),
+          (position_move_y, pos64, -50),
+          (position_rotate_z, pos64, -10),
+          (spawn_agent, "trp_bot_merchant_2"),
+          (agent_set_team, reg0, team_spawn_invulnerable),
+          (agent_set_position, reg0, pos64),
         (try_end),
-        
-        (position_move_x,pos30,":x_movement"),
-        (position_move_z,pos30,":z_movement"),
-        
-        (copy_position,pos49,pos30), # pos49 is prop pos.
-        
-        (call_script, "script_find_or_create_scene_prop_instance", "spr_mm_shithouse_button", 0, 0, 0),
+        # Teller 1
+        (try_begin),
+          (neg|entry_point_is_auto_generated, 6),
+          (entry_point_get_position, pos64, 6),  
+          (set_spawn_position, pos64),
+          (spawn_agent, "trp_bot_teller_1"),
+          (agent_set_team, reg0, team_spawn_invulnerable),
+        (try_end),
+        # Teller 2
+        (try_begin),
+          (neg|entry_point_is_auto_generated, 7),
+          (entry_point_get_position, pos64, 7),  
+          (set_spawn_position, pos64),
+          (spawn_agent, "trp_bot_teller_2"),
+          (agent_set_team, reg0, team_spawn_invulnerable),
+        (try_end),
       (try_end),
-    (try_end),
-  ]),
+    ]
+  ),
 
   #script_multiplayer_server_player_joined_common
   # INPUT: arg1 = player_no
@@ -9154,6 +9105,7 @@ scripts.extend([("game_start", []), # single player only, not used
       (store_script_param, ":player_no", 1),
       (try_begin),   
         (multiplayer_is_server),
+        (neq, ":player_no", -1),
         # send prop sizes, only cannons.    
         (try_for_range,":prop_type", "spr_mm_cannon_aim_platform", "spr_mm_tunnel_wall"),
           (neg|is_between,":prop_type", mm_unlimber_button_types_begin, mm_unlimber_button_types_end), # dont send those scales.
@@ -9194,7 +9146,6 @@ scripts.extend([("game_start", []), # single player only, not used
   ("get_prop_center",
   [
     (store_script_param, ":prop_instance_id", 1),
-    
     (assign,":is_ok",0),
     (assign,":wall_height",0),
     (assign,":wall_width",0),
@@ -9207,14 +9158,11 @@ scripts.extend([("game_start", []), # single player only, not used
     (assign,":move_width_to_center",0),
     (assign,":move_length_to_center",0),
     (assign,":rotate_z_90",0),
-    
     (init_position,pos42),
     (init_position,pos43),
     (try_begin),
       (prop_instance_is_valid,":prop_instance_id"),
-      
       (scene_prop_get_slot,":cur_max_wall_length",":prop_instance_id",scene_prop_slot_destruct_max_length),
-      
       (try_begin), # are the slots assigned yet?
         (gt,":cur_max_wall_length",0),
         (scene_prop_get_slot,":wall_height",":prop_instance_id",scene_prop_slot_destruct_wall_height),
@@ -9244,7 +9192,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":wall_width_offset",reg9),
         (assign,":wall_length_offset",reg10),
         (assign,":inverse_width_movement",reg11),
-       
         (call_script,"script_get_prop_scaled_size",":prop_instance_id" ,":wall_height", ":wall_width", ":wall_length", ":wall_height_offset",":wall_width_offset",":wall_length_offset"),
         (eq,reg1,1), # is ok :)
         (assign,":wall_height",reg2),
@@ -9254,7 +9201,6 @@ scripts.extend([("game_start", []), # single player only, not used
         (assign,":wall_height_offset",reg6),
         (assign,":wall_width_offset",reg7),
         (assign,":wall_length_offset",reg8),
-         
         # assign the slots for next time.
         (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_height,":wall_height"),
         (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_wall_width,":wall_width"),
@@ -9269,10 +9215,8 @@ scripts.extend([("game_start", []), # single player only, not used
         (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_inverse_width_movement,":inverse_width_movement"),
         (scene_prop_set_slot,":prop_instance_id",scene_prop_slot_destruct_max_length,":cur_max_wall_length"),
       (try_end),
-      
       # We have values assigned now?
       (gt,":cur_max_wall_length",0),
-
       (prop_instance_get_position, pos42, ":prop_instance_id"),
       (copy_position,pos43,pos42), # copy to the orig pos
       # If needed rotate the position to fit in our hit detection system for the length/width on the right direction :)
@@ -9280,15 +9224,12 @@ scripts.extend([("game_start", []), # single player only, not used
         (eq,":rotate_z_90",1),
         (position_rotate_z,pos42,90),
       (try_end),
-      
       # move pos to center
       (try_begin),
         (this_or_next|eq,":move_length_to_center",1),
         (this_or_next|eq,":move_width_to_center",1),
         (eq,":move_height_to_center",1),
-        
         (set_fixed_point_multiplier, 100),
-        
         (try_begin),
           (neq,":wall_length_offset",0),
           (position_move_y,pos42,":wall_length_offset"),
@@ -9301,7 +9242,6 @@ scripts.extend([("game_start", []), # single player only, not used
           (neq,":wall_height_offset",0),
           (position_move_z,pos42,":wall_height_offset"),
         (try_end),
-        
         (try_begin),
           (eq,":move_length_to_center",1),
           (store_div, ":actual_length_div2", ":wall_length", 2),
@@ -9324,10 +9264,8 @@ scripts.extend([("game_start", []), # single player only, not used
           (position_move_z,pos42,":actual_height_div2"),
         (try_end),
       (try_end),
-      
       (assign,":is_ok",1),
     (try_end),
-    
     (assign,reg1,":is_ok"),
   ]),
 
@@ -12757,16 +12695,6 @@ scripts.extend([("game_start", []), # single player only, not used
     (else_try),
       (eq, "$g_preset_message_string_id", "str_s15_captured_trade_s18"),
       (play_sound, "snd_your_flag_taken"),
-    (else_try),
-      (eq, "$g_preset_message_string_id", "str_s1_now_hostile_towards_s10"),
-      (play_sound, "snd_flag_returned"),
-    (else_try),
-      (eq, "$g_preset_message_string_id", "str_s1_and_s10_made_peace"),
-      (play_sound, "snd_cheer_claps"),
-    (else_try),
-      (this_or_next|eq, "$g_preset_message_string_id", "str_s10_now_lord_of_s1"),
-      (eq, "$g_preset_message_string_id", "str_you_are_now_lord_of_s1"),
-      (play_sound, "snd_leader_rise"),
     (try_end),
 
     (assign, ":color", ":flags"), # unpack the color from the flags parameter
