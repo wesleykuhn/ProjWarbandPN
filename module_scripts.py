@@ -15244,35 +15244,30 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
       (store_script_param, ":agent_id", 1), # must be valid
       (store_script_param, ":instance_id", 2), # must be valid
       (store_script_param, ":completed", 3), # 1 if completed using the scene prop
-
       (agent_get_player_id, ":player_id", ":agent_id"),
       (player_is_active, ":player_id"),
-      (this_or_next | neq, ":completed", 1),
-      (neg | scene_prop_slot_eq, ":instance_id", slot_scene_prop_disabled, ":player_id"), # player started using when not hostile
-      (scene_prop_set_slot, ":instance_id", slot_scene_prop_disabled, 0),
-
+      (eq, ":completed", 1),
       (player_get_slot, ":player_faction_id", ":player_id", slot_player_faction_id),
       (scene_prop_get_slot, ":cur_faction_id", ":instance_id", slot_scene_prop_trade_route_owning_faction),
       (neq, ":cur_faction_id", ":player_faction_id"),
-
       # No commoners or outlaws
       (gt, ":player_faction_id", 1),
       (lt, ":player_faction_id", 10),
-
-      (gt, ":cur_faction_id", -1),
-      (lt, ":cur_faction_id", 10),
-
       (agent_get_wielded_item, ":wielded_item_id", ":agent_id", 0),
       (faction_get_slot, ":banner_item_id", ":player_faction_id", slot_faction_banner_mesh),
       (val_sub, ":banner_item_id", banner_meshes_begin),
       (val_add, ":banner_item_id", banner_items_begin),
       (eq, ":wielded_item_id", ":banner_item_id"),
-
       (item_get_slot, ":difficulty", ":wielded_item_id", slot_item_difficulty),
       (agent_get_troop_id, ":troop_id", ":agent_id"),
       (store_attribute_level, ":strength", ":troop_id", ca_strength),
-      (ge, ":strength", ":difficulty"),
-
+      (assign, ":continue", 1),
+      (try_begin),
+        (lt, ":strength", ":difficulty"),
+        (assign, ":continue", 0),
+        (multiplayer_send_2_int_to_player, ":player_id", multiplayer_event_show_multiplayer_message, multiplayer_message_type_error, "str_cant_capture_trade_route"),
+      (try_end),
+      (eq, ":continue", 1),
       (call_script, "script_cf_agent_consume_item", ":agent_id", ":banner_item_id", 1),
       (call_script, "script_capture_trade_route", ":player_faction_id", ":instance_id"),
     ]

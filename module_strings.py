@@ -448,6 +448,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("fac_received_trade_gold", "Your faction receives the income from trade route(s)!"),
   ("menu_trade_routes", "Show Trade Routes Details"),
   ("trade_routes_details", "Trade routes details:"),
+  ("cant_capture_trade_route", "Your class cannot capture a trade route!"),
 
   ("bank_deposit", "Deposit gold in bank"),
   ("bank_withdraw", "Withdraw gold from bank"),
