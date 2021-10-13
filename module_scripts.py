@@ -9093,6 +9093,16 @@ scripts.extend([("game_start", []), # single player only, not used
           (spawn_agent, "trp_bot_teller_2"),
           (agent_set_team, reg0, team_spawn_invulnerable),
         (try_end),
+        # Outlaws
+        (try_begin),
+          (neg|entry_point_is_auto_generated, 8),
+          (entry_point_get_position, pos64, 8),  
+          (set_spawn_position, pos64),
+          (spawn_agent, "trp_bot_outlaw_1"),
+          (agent_set_team, reg0, team_default),
+          (agent_set_group, reg0, grc_infantry),
+          (team_give_order, team_default, grc_infantry, mordr_hold),
+        (try_end),
       (try_end),
     ]
   ),
@@ -15273,8 +15283,7 @@ scripts.extend([("load_profile_options", generate_load_profile_options()),
     ]
   ),
 
-  ("capture_trade_route", # server: perform capture of the castle by the faction, without checking
-                     # anything
+  ("capture_trade_route", # server: perform capture of the trade route by the faction, without checking anything
    [(store_script_param, ":faction_id", 1),
     (store_script_param, ":trade_route_pole_instace", 2),
 

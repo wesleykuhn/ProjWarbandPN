@@ -353,6 +353,10 @@ troops = [
   ["bot_teller_2", "(BOT)Oslec", "{!}bot_teller_2", tf_guarantee_all,0,0,"fac_commoners",
    ["itm_french_equipage_batallion_pants", "itm_civil_shirt_2"], str_10|agi_10|pw_attr, wpex(20,20,20,20,20,20), 
    knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_5, bot_custom_face_6],
+
+  ["bot_outlaw_1", "(BOT)Outlaw", "{!}bot_outlaw_1", tf_guarantee_all,0,0,"fac_outlaws",
+   ["itm_french_equipage_batallion_pants", "itm_civil_shirt_2", "itm_short_bow", "itm_arrows"], str_13|agi_14|pw_attr, wpex(20,20,20,20,20,20), 
+   knows_pw|knows_ironflesh_1|knows_power_strike_2|knows_athletics_5, bot_custom_face_5, bot_custom_face_6],
   # PN Bots end
 
   ["inactive_players_array","inactive_players_array","inactive_players_array",0,0,0,0,[],0,0,0,0,0],
