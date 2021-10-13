@@ -1091,6 +1091,11 @@ colour_pink       = 6
 colour_magenta    = 7
 colour_invisible  = 8
 
+drown_height_default = -192
+drown_height_rider = -275
+drown_height_crouched = -127
+
+
 from header_common import *
 
 profile_options = [ # global flag variables for options stored in a player profile

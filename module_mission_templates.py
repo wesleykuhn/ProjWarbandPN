@@ -258,7 +258,23 @@ item_dropped = (ti_on_item_dropped, 0, 0, [], # handle agents dropping an item
 item_wielded = (ti_on_item_wielded, 0, 0, [], # handle agents wielding an item
    [(store_trigger_param_1, ":agent_id"),
     (store_trigger_param_2, ":item_id"),
+    
     (call_script, "script_agent_calculate_stat_modifiers_for_item", ":agent_id", ":item_id", 1, 1),
+    
+    (multiplayer_is_server),
+    
+    (try_begin), # drop couchable lances if unusable, since the different attack method won't be detected by the normal check.
+      (agent_get_horse, ":horse_agent_id", ":agent_id"),
+      (neq, ":horse_agent_id", -1),
+      (agent_slot_eq, ":agent_id", slot_agent_cannot_attack, 1),
+      (agent_get_wielded_item, ":item_id", ":agent_id", 0),
+      (neq, ":item_id", -1),
+      (item_slot_eq, ":item_id", slot_item_couchable, 1),
+      (call_script, "script_cf_agent_consume_item", ":agent_id", ":item_id", 1),
+      (agent_get_position, pos1, ":agent_id"),
+      (set_spawn_position, pos1),
+      (spawn_item, ":item_id", 0, "$g_spawn_item_prune_time"),
+    (try_end),
     ])
 
 item_unwielded = (ti_on_item_unwielded, 0, 0, [], # handle agents un-wielding an item
@@ -274,6 +290,16 @@ agent_mount = (ti_on_agent_mount, 0, 0, [], # server: check speed factor and att
     (agent_set_slot, ":agent_id", slot_agent_last_horse_ridden, ":horse_agent_id"),
     (multiplayer_is_server),
     (call_script, "script_check_agent_horse_speed_factor", ":agent_id", ":horse_agent_id", 0),
+    (try_begin), # drop couchable lances if unusable, since the different attack method won't be detected by the normal check.
+      (agent_slot_eq, ":agent_id", slot_agent_cannot_attack, 1),
+      (agent_get_wielded_item, ":item_id", ":agent_id", 0),
+      (neq, ":item_id", -1),
+      (item_slot_eq, ":item_id", slot_item_couchable, 1),
+      (call_script, "script_cf_agent_consume_item", ":agent_id", ":item_id", 1),
+      (agent_get_position, pos1, ":agent_id"),
+      (set_spawn_position, pos1),
+      (spawn_item, ":item_id", 0, "$g_spawn_item_prune_time"),
+    (try_end),
     (try_begin),
       (call_script, "script_cf_attach_cart", ":agent_id", -1, ":agent_id"),
     (try_end),
@@ -334,59 +360,31 @@ player_check_loop = (0, 0, 0.5, # server: check all players to see if any need a
     (try_end),
     ], [])
 
-agent_check_loop = (0, 0, 0.5, # server: loop over all agents, doing all common repetitive checks together for each agent, to minimize the penalty of using try_for_agents
+# server: loop over all agents, doing all common repetitive checks together for each agent.
+agent_check_loop_drowning = (loop_agent_check_interval, 0, 0,
    [(multiplayer_is_server),
-    (try_begin), # if the loop was not restarted
-      (gt, "$g_loop_agent_last_checked", -2),
-      (assign, ":agent_id", -1),
-      (try_for_agents, ":loop_agent_id"), # find the next agent id greater than the previous checked
-        (eq, ":agent_id", -1),
-        (gt, ":loop_agent_id", "$g_loop_agent_last_checked"),
-        (assign, ":agent_id", ":loop_agent_id"),
-      (try_end),
+    (try_for_agents, ":agent_id"),
+      (call_script, "script_cf_check_agent_drowning", ":agent_id"),
+    (try_end),
+    ], [])
+
+agent_check_loop_health = (loop_health_check_interval, 0, 0,
+   [(multiplayer_is_server),
+    (try_for_agents, ":agent_id"),
+      (call_script, "script_check_agent_health", ":agent_id"),
+    (try_end),
+    ], [])
+
+agent_check_loop_horse = (loop_horse_check_interval, 0, 0,
+   [(multiplayer_is_server),
+    (try_for_agents, ":agent_id"),
       (try_begin),
-        (gt, ":agent_id", -1), # if a next agent id was found
-        (assign, "$g_loop_agent_last_checked", ":agent_id"),
-        (call_script, "script_check_agent_drowning", ":agent_id"),
-        (try_begin),
-          (eq, "$g_loop_horse_check", 1),
-          (try_begin),
-            (neg|agent_is_human, ":agent_id"),
-            (call_script, "script_check_remove_lost_horse", ":agent_id"),
-          (else_try),
-            (call_script, "script_agent_remove_empty_ammo_stacks", ":agent_id"),
-          (try_end),
-        (try_end),
-        (try_begin),
-          (eq, "$g_loop_health_check", 1),
-          (call_script, "script_check_agent_health", ":agent_id"),
-        (try_end),
+        (neg|agent_is_human, ":agent_id"),
+        (call_script, "script_check_remove_lost_horse", ":agent_id"),
       (else_try),
-        (assign, "$g_loop_agent_last_checked", -2),
-      (try_end),
-    (else_try), # setting up to restart the loop
-      (store_mission_timer_a, ":time"),
-      (try_begin),
-        (ge, ":time", "$g_loop_agent_check_time"),
-        (val_add, "$g_loop_agent_check_time", loop_agent_check_interval),
-        (assign, "$g_loop_agent_last_checked", -1), # set to an invalid low agent id to start
-        (try_begin),
-          (ge, ":time", "$g_loop_horse_check_time"),
-          (val_add, "$g_loop_horse_check_time", loop_horse_check_interval),
-          (assign, "$g_loop_horse_check", 1),
-        (else_try),
-          (assign, "$g_loop_horse_check", 0),
-        (try_end),
-        (try_begin),
-          (ge, ":time", "$g_loop_health_check_time"),
-          (val_add, "$g_loop_health_check_time", loop_health_check_interval),
-          (assign, "$g_loop_health_check", 1),
-        (else_try),
-          (assign, "$g_loop_health_check", 0),
-        (try_end),
+        (call_script, "script_agent_remove_empty_ammo_stacks", ":agent_id"),
       (try_end),
     (try_end),
-    (eq, "$g_loop_agent_last_checked", -2), # at the end of the loop, the trigger succeeds to wait the rearm interval before restarting
     ], [])
 
 agent_check_attack_loop = (0, 0, 0.2, [], # server: repeatedly check all agents for attacking with a weapon they can't use - should be kept as simple as possible
@@ -2619,7 +2617,9 @@ def common_triggers(self):
     agent_dismount,
 
     player_check_loop,
-    agent_check_loop,
+    agent_check_loop_drowning,
+    agent_check_loop_health,
+    agent_check_loop_horse,
     agent_check_attack_loop,
     ship_movement_loop,
 
